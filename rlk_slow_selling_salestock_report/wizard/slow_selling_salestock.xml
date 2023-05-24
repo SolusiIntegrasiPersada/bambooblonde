@@ -1,0 +1,55 @@
+<odoo>
+	<data>
+	
+	    <record id="slow_selling_salestock_report_form_view" model="ir.ui.view">
+			<field name="name">slow.selling.salestock.report.form</field>
+			<field name="model">slow.selling.salestock.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				
+		        <form string="Slow Selling Sale Stock">
+		        	<group>
+		                <group>
+		                	<field name="start_period" required="1"/>
+		                    <field name="end_period" required="1"/>
+		                </group>
+		            </group>
+
+		        	<group>
+		        		<label for="start_aging" string="Aging"/>
+						<div>
+							<field name="start_aging" required="1" class="oe_inline"/> s/d <field name="end_aging" required="1" class="oe_inline"/> weeks
+						</div>
+					</group>
+
+	                <group>
+	                	<group>
+		                	<field name="categ_id" options="{'no_create':True, 'no_open':True}"/>
+		                	<field name="parent_categ_id" options="{'no_create':True, 'no_open':True}"/>
+		                	<field name="class_id" options="{'no_create':True, 'no_open':True}"/>
+		                	<field name="types"/>
+		                </group>
+	                </group>
+
+	                <footer>
+	                    <button name="print_excel_report" string="Export" type="object" class="oe_highlight"/> or 
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+		          	
+		        </form>
+	    	</field>
+	    </record>
+		
+	    <record id="action_slow_selling_salestock_report_xlsx" model="ir.actions.act_window">
+			<field name="name">Slow Selling Sale Stock</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">slow.selling.salestock.report</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="slow_selling_salestock_report_form_view"/>
+			<field name="target">new</field>
+	    </record>
+		
+		<menuitem id="menu_slow_selling_salestock_report_xlsx" action="action_slow_selling_salestock_report_xlsx" parent="point_of_sale.menu_point_rep" sequence="100"/>
+	
+	</data>
+</odoo>

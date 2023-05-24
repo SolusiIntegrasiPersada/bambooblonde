@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_account_journal_form_inherit_account" model="ir.ui.view">
+    <field name="name">account.journal.view.form.inherit</field>
+    <field name="model">account.journal</field>
+    <field name="inherit_id" ref="account.view_account_journal_form"/>
+    <field name="arch" type="xml">
+      <field name="type" position="after">
+        <field name="account_no" />
+        <field name="branch" />
+        <field name="swift_code" />
+      </field>
+    </field>
+  </record>
+
+  <record id="view_account_journal_tree_inherit_account" model="ir.ui.view">
+    <field name="name">account.journal.view.tree.inherit</field>
+    <field name="model">account.journal</field>
+    <field name="inherit_id" ref="account.view_account_journal_tree"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="account_no" />
+      </field>
+    </field>
+  </record>
+
+</odoo>

@@ -1,0 +1,84 @@
+<odoo>
+    <data>
+
+        <record id="report_paperformat_a4_landscape_quotation_gls" model="report.paperformat">
+            <field name="name">Paper Format Landscape RFQ</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">19</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+        
+        <record id="action_report_production" model="ir.actions.report">
+            <field name="name">Report - PO Supplier</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sol_purchase.report_po</field>
+            <field name="report_file">sol_purchase.report_po</field>
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_landscape_quotation_gls" />
+            <field name="print_report_name">'PO SUPPLIER - %s' % object.name</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_sample_po" model="ir.actions.report">
+            <field name="name">Report - PO Sample</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sol_purchase.report_sample_po</field>
+            <field name="report_file">sol_purchase.report_sample_po</field>
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_landscape_quotation_gls" />
+            <field name="print_report_name">'PO SAMPLE - %s' % object.name</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_production_po" model="ir.actions.report">
+            <field name="name">Report - PO Production</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sol_purchase.report_production_po</field>
+            <field name="report_file">sol_purchase.report_production_po</field>
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_landscape_quotation_gls" />
+            <field name="print_report_name">'PO PRODUCTION - %s' % object.name</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="report_action_production_order_tb" model="ir.actions.report">
+            <field name="name">Report - PO Material</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sol_purchase.production_order_tb</field>
+            <field name="report_file">sol_purchase.production_order_tb</field>
+            <field name="paperformat_id" ref="solinda_mrp.report_paperformat_a4_portrait_costing_product_tb" />
+            <field name="print_report_name">'PO MATERIAL - %s' % object.name</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="report_action_production_order_sample_tb" model="ir.actions.report">
+            <field name="name">Report - PO Material Sample</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sol_purchase.production_order_sample_tb</field>
+            <field name="report_file">sol_purchase.production_order_sample_tb</field>
+            <field name="paperformat_id" ref="solinda_mrp.report_paperformat_a4_portrait_costing_product_tb" />
+            <field name="print_report_name">'PO MATERIAL SAMPLE - %s' % object.name</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+    
+    </data>
+    
+        
+
+</odoo>

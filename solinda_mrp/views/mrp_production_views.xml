@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_inherit_supplier_form" model="ir.ui.view">
+        <field name="name">mrp.production.inherit.supplier.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/group/field[@name='product_id']" position="before">
+                <!-- <field name="initial" />
+                <field name="seq_report" /> -->
+            </xpath>
+            <!-- <xpath expr="//sheet/div[@class='oe_title']/h1/field[@name='name']" position="replace">
+                <field name="seq_report" placeholder="Manufacturing Reference" nolabel="1" />
+            </xpath> -->
+        </field>
+    </record>
+
+</odoo>

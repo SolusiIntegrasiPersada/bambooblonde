@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  
+    <record id="inherit_view_id_inherit_pos_config" model="ir.ui.view">
+      <field name="name">pos.config.view.form.inherit</field>
+      <field name="model">pos.config</field>
+      <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//h2[@name='order']" position="before">
+          <h2>Additional Information</h2>
+          <div class="row mt16 o_settings_container">
+            <div id="additional_info" class="col-12 col-lg-6 o_setting_box">
+              <div class="o_setting_right_pane">
+                <!-- <span class="o_form_label">Additional Info</span> -->
+                <div class="content-group mt16">
+                  <div>
+                      <span class="o_form_label col-lg-2 o_light_label">Address</span>
+                      <field name="address"/>
+                  </div>
+                  <div>
+                      <span class="o_form_label col-lg-2 o_light_label">Supervisor</span>
+                      <field name="supervisor"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </xpath>
+      </field>
+    </record>  
+  
+  </data>
+  
+
+</odoo>

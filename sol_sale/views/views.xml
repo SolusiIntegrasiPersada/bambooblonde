@@ -1,0 +1,49 @@
+<odoo>
+  <data>
+   
+  <record id="sale_order_inherit" model="ir.ui.view">
+    <field name="name">sale.order.view.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+      <field name="payment_term_id" position="after">
+        <field name="style_name" />
+      </field>
+      <xpath expr="//group[@name='sale_header']/group[@name='order_details']/field[@name='payment_term_id']" position="after">
+        <!-- <field name="po_number" />
+        <field name="so_number" /> -->
+        <!-- <field name="source" /> -->
+      </xpath>
+      <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position="after">
+        <field name="colour" />
+        <field name="size" />
+      </xpath>
+      <xpath expr="//notebook/page[@name='other_information']/group" position="inside">
+        <group name="add_info_report" string="Addition in Report">
+          <field name="prepared" />
+          <field name="ordered" />
+          <field name="approved" />
+        </group>
+      </xpath>
+      <xpath expr="//page[@name='order_lines']" position="inside">
+        <br/>            
+        <label for="total_sale_qty" string="Total Quantity: " />			
+        <field name="total_sale_qty" nolabel="1"></field>
+      </xpath>    
+    </field>
+  </record>
+
+  <record id="view_quotation_tree_with_onboarding_inherit_sale" model="ir.ui.view">
+    <field name="name">sale.order.view.tree.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+    <field name="arch" type="xml">
+      <field name="create_date" position="after">
+        <field name="style_name" />
+      </field>
+    </field>
+  </record>
+
+
+  </data>
+</odoo>

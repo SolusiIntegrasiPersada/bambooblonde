@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <data>
+
+    <record id="report_soh_all_shop_action" model="ir.actions.report">
+      <field name="name">Stock On Hand All Shop</field>
+      <field name="model">stock.quant</field>
+      <field name="report_type">xlsx</field>
+      <field name="report_name">sol_stock.report_soh_all_shop_xlsx</field>
+      <field name="report_file">sol_stock.report_soh_all_shop_xlsx</field>
+      <field name="print_report_name">'Stock On Hand All Shop'</field>
+      <field name="binding_model_id" ref="stock.model_stock_quant"/>
+      <field name="binding_type">report</field>
+    </record>
+
+    <record id="stock_per_store_action_xlsx" model="ir.actions.report">
+      <field name="name">Stock On Hand Per Store</field>
+      <field name="model">stock.per.store.wizard</field>
+      <field name="report_type">xlsx</field>
+      <field name="report_name">sol_stock.report_soh_per_shop_xlsx</field>
+      <field name="report_file">sol_stock.report_soh_per_shop_xlsx</field>
+      <field name="binding_type">report</field>
+    </record>
+  
+  </data>
+  
+
+</odoo>

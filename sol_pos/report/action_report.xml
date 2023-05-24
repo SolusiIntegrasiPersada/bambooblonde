@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <data>
+
+    <record id="report_stock_needs_action" model="ir.actions.report">
+      <field name="name">Report - Stock Needs</field>
+      <field name="model">stock.needs</field>
+      <field name="report_type">xlsx</field>
+      <field name="report_name">sol_pos.report_stock_needs_xlsx</field>
+      <field name="report_file">sol_pos.report_stock_needs_xlsx</field>
+      <field name="print_report_name">'Stock Needs - %s' % object.name</field>
+      <field name="binding_model_id" ref="sol_pos.model_stock_needs"/>
+      <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_stock_comment_action" model="ir.actions.report">
+      <field name="name">Report - Stock Comments</field>
+      <field name="model">stock.comment</field>
+      <field name="report_type">xlsx</field>
+      <field name="report_name">sol_pos.report_stock_comment_xlsx</field>
+      <field name="report_file">sol_pos.report_stock_comment_xlsx</field>
+      <field name="print_report_name">'Stock Comments - %s' % object.name</field>
+      <field name="binding_model_id" ref="sol_pos.model_stock_comment"/>
+      <field name="binding_type">report</field>
+    </record>
+  
+  </data>
+  
+
+</odoo>

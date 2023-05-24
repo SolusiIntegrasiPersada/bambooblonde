@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="generate_cashflow_wizard_view_form" model="ir.ui.view">
+            <field name="name">generate.cashflow.wizard.view.form</field>
+            <field name="model">generate.cashflow.wizard</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="company_id" required="1"/>
+                            <label for="start_date" string="Date" />
+                            <div>
+                                <field name="start_date" class="oe_inline" required="1" widget="daterange"
+                                    options="{'related_end_date': 'end_date'}" placeholder="From" /> -
+                                <field name="end_date" class="oe_inline" required="1" widget="daterange"
+                                    options="{'related_start_date': 'start_date'}" placeholder="To" />
+                            </div>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Generate" name="download_xlsx_report" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel" type="object" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="cashflow_report_action" model="ir.actions.act_window">
+            <field name="name">Cashflow Report</field>
+            <field name="res_model">generate.cashflow.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="cashflow_report_menu" name="Cashflow" action="cashflow_report_action"
+            parent="account.menu_finance_reports" sequence="10" />
+
+    </data>
+
+
+</odoo>

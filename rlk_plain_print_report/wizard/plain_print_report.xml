@@ -1,0 +1,39 @@
+<odoo>
+	<data>
+	
+	    <record id="plain_print_report_form_view" model="ir.ui.view">
+			<field name="name">rlk.plain.print.report.form</field>
+			<field name="model">rlk.plain.print.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				
+		        <form string="Plain &amp; Print Report">
+	                <group>
+		                <group>
+		                	<field name="start_period" required="1"/>
+		                    <field name="end_period" required="1"/>
+		                </group>
+		        	</group>
+
+	                <footer>
+	                    <button name="print_excel_report" string="Export" type="object" class="oe_highlight"/> or 
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+		          	
+		        </form>
+	    	</field>
+	    </record>
+		
+	    <record id="action_plain_print_report_xlsx" model="ir.actions.act_window">
+			<field name="name">Plain &amp; Print Report</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">rlk.plain.print.report</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="plain_print_report_form_view"/>
+			<field name="target">new</field>
+	    </record>
+		
+		<menuitem id="menu_plain_print_report_xlsx" action="action_plain_print_report_xlsx" parent="point_of_sale.menu_point_rep" sequence="10"/>
+	
+	</data>
+</odoo>

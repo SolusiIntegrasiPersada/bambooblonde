@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="product_template_inherit_sol_form">
+            <field name="name">product.template.inherit.sol.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="product_model_id"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- List View -->
+        <record model="ir.ui.view" id="product_model_tree">
+            <field name="name">product.model.tree</field>
+            <field name="model">product.model</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record model="ir.ui.view" id="product_model_form">
+            <field name="name">product.model.form</field>
+            <field name="model">product.model</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="product_model_action">
+            <field name="name">Product Model</field>
+            <field name="res_model">product.model</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_product_model_in_config_stock" name="Model" action="product_model_action" parent="stock.menu_stock_config_settings" sequence="8"/>
+
+        <record model="ir.ui.view" id="product_category_inherit_sol_form">
+            <field name="name">product.category.inherit.sol.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="number_of_best_product" attrs="{'invisible':[('category_product', '!=', 'category')]}"/>
+                    <field name="less_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
+                    <field name="more_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

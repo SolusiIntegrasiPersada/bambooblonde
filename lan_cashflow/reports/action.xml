@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <report id="action_report_cashflow" model="generate.cashflow.wizard" string="Cashflow Report" report_type="xlsx" name="lan_cashflow.cashflow_report_xlsx" file="Cashflow Report" attachment_use="False"/>
+
+    </data>
+
+
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rlk_stock_sales_summary_report_all,rlk_stock_sales_summary_report_all,model_stock_sales_summary_report,,1,1,1,1

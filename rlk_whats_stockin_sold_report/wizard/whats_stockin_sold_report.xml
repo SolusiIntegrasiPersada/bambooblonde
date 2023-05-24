@@ -1,0 +1,39 @@
+<odoo>
+	<data>
+	
+	    <record id="whats_stockin_sold_report_form_view" model="ir.ui.view">
+			<field name="name">whats.stockin.sold.report.form</field>
+			<field name="model">whats.stockin.sold.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				
+		        <form string="What in Stock vs What is Sold">
+	                <group>
+		                <group>
+		                	<field name="start_period" required="1"/>
+		                    <field name="end_period" required="1"/>
+		                </group>
+		        	</group>
+
+	                <footer>
+	                    <button name="print_excel_report" string="Export" type="object" class="oe_highlight"/> or 
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+		          	
+		        </form>
+	    	</field>
+	    </record>
+		
+	    <record id="action_whats_stockin_sold_report_xlsx" model="ir.actions.act_window">
+			<field name="name">What in Stock vs What is Sold</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">whats.stockin.sold.report</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="whats_stockin_sold_report_form_view"/>
+			<field name="target">new</field>
+	    </record>
+		
+		<menuitem id="menu_whats_stockin_sold_report_xlsx" action="action_whats_stockin_sold_report_xlsx" parent="stock.menu_warehouse_report" sequence="200"/>
+	
+	</data>
+</odoo>

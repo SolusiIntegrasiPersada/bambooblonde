@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="RegionList" owl="1">
+        <tr t-attf-class="client-line {{highlight}}" t-att-data-id="props.region.id"
+            t-on-click="trigger('click-region', {region: props.region})">
+            <td>
+                <t t-esc="props.region.name" />
+            </td>
+        </tr>
+    </t>
+
+</templates>

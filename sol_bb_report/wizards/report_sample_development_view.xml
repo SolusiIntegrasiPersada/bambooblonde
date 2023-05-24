@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record model='ir.ui.view' id='report_sample_development_wizard_form'>
+            <field name="name">report.sample.development.wizard.form</field>
+            <field name="model">report.sample.development.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Order">
+                        <field name="from_date" required="1"/>
+                        <field name="to_date" required="1"/>
+                    </group>          
+                    <group string="Sales">
+                        <field name="sales_from_date" required="1"/>
+                        <field name="sales_to_date" required="1"/>
+                        <!-- <field name="incoming_date" required="1"/> -->
+                    </group>          
+                    <footer>
+                        <button name="button_generate_excel" type="object" default_focus="1"
+                            string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model='ir.actions.act_window' id='report_sample_development_wizard_action'>
+            <field name="name">Report Sample Development</field>
+            <field name="res_model">report.sample.development.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_sample_development_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Report"
+            parent="purchase_request.parent_menu_purchase_request"
+            id="menu_report_sample_development"
+            sequence="5"/>
+
+        <menuitem name="Report Sample Development"
+            parent="sol_bb_report.menu_report_sample_development"
+            id="menu_report_sample_development_wizard"
+            action="report_sample_development_wizard_action"
+            sequence="5"/>
+
+        <report
+            id="report_sample_development_wizard_xlsx"
+            model="report.sample.development.wizard"
+            string="Report Sample Development"
+            report_type="xlsx"
+            name="sol_bb_report.sample_development.xlsx"
+            file="Report Sample Development.xlsx"
+            menu="False"
+            attachment_use="False"/>
+    </data>
+</odoo>

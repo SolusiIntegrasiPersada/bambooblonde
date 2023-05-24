@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="stock_per_store_wizard_view_form" model="ir.ui.view">
+    <field name="name">stock.per.store.wizard.view.form</field>
+    <field name="model">stock.per.store.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Stock On Hand From Store">
+        <sheet>
+          <group>
+            <group>
+              <field name="warehouse" />
+            </group>
+          </group>
+          <footer>
+            <button name="action_print_report" type="object" string="Export" class="btn btn-primary"/>
+            <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+          </footer>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="stock_per_store_wizard_action" model="ir.actions.act_window">
+    <field name="name">Stock Per Store</field>
+    <field name="res_model">stock.per.store.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="stock_per_store_wizard_view_form"/>
+    <field name="target">new</field>
+  </record>
+
+  <menuitem id="menu_stock_per_store_wizard" name="Stock Per Store" parent="stock.menu_warehouse_report" action="stock_per_store_wizard_action" sequence="21"/>
+
+
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_payment_view_form_inherit_approval" model="ir.ui.view">
+        <field name="name">account.payment.view.form.inherit.approval</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/group/field[@name='is_internal_transfer']" position="after">
+                <field name="need_approval" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

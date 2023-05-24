@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="RegionControlButton" owl="1">  
+        <div class="control-button">
+            <i class="fa fa-globe"></i>
+            <t t-if="env.pos.get_order().get_region()">
+                <t t-esc="env.pos.get_region().name" />
+            </t>
+            <t t-if="!env.pos.get_region()">
+                Region
+            </t>
+        </div>
+   </t>
+</templates>

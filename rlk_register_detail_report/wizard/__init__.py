@@ -1,0 +1,1 @@
+from . import register_detail_report

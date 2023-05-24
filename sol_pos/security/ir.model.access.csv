@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_needs,access.stock.needs,model_stock_needs,base.group_user,1,1,1,1
+access_stock_line,access.stock.line,model_stock_line,base.group_user,1,1,1,1
+access_stock_comment,access.stock.comment,model_stock_comment,base.group_user,1,1,1,1
+access_stock_line_comment,access.stock.line.comment,model_stock_line_comment,base.group_user,1,1,1,1

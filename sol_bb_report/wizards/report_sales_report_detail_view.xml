@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record model='ir.ui.view' id='report_sales_report_detail_wizard_form'>
+            <field name="name">report.sales.report.detail.wizard.form</field>
+            <field name="model">report.sales.report.detail.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Order">
+                        <field name="from_date" required="1"/>
+                        <field name="to_date" required="1"/>
+                    </group>         
+                    <footer>
+                        <button name="button_generate_excel" type="object" default_focus="1"
+                            string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model='ir.actions.act_window' id='report_sales_report_detail_wizard_action'>
+            <field name="name">Sales Report Detail</field>
+            <field name="res_model">report.sales.report.detail.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_sales_report_detail_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Sales Report Detail"
+            parent="point_of_sale.menu_point_rep"
+            id="menu_report_sales_report_detail_wizard"
+            action="report_sales_report_detail_wizard_action"
+            sequence="5"/>
+
+        <report
+            id="report_sales_report_detail_wizard_xlsx"
+            model="report.sales.report.detail.wizard"
+            string="Sales Report Detail"
+            report_type="xlsx"
+            name="sol_bb_report.sales_report_detail.xlsx"
+            file="Sales Report Detail.xlsx"
+            menu="False"
+            attachment_use="False"/>
+    </data>
+</odoo>

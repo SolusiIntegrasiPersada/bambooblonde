@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  
+  <template id="external_layout_standard_printout">
+    <div class="header">
+      <div class="col-xs-2">
+        <image src="/ati_srf_report/static/src/img/logo2.png" style="display: inline;width: 120px;height: 75px;margin: 10px;"/>
+      </div>
+    </div>
+    <div class="article o_report_layout_standard">
+      <t t-raw="0" />
+    </div>
+  </template>
+
+  <template id="report_ptr">
+    <t t-call="web.basic_layout">
+      <div class="page">
+        <t t-foreach="docs" t-as="doc">
+          <header>
+            <div class="row">
+              <div class="col-xs-2">
+                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 125px;" alt="Logo"/>
+              </div>
+              <div class="col-xs-2">
+              </div>
+            </div>
+          </header>
+
+          <div class="container">
+            <h2 style="text-align: left;"><span style="text-decoration: underline;">PATTERN ALTERATION</span></h2>
+            <p style="text-align: right;"></p>
+            <table style="table-layout: fixed; border-collapse: collapse; width: 100%; height: 183px;">
+              <tbody style="font-size: 15px;">
+                <t t-foreach="doc.line_ids" t-as="line">
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;">Trans No.</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;">
+                      <t t-esc="doc.name"/>
+                    </td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;">Print Date</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.0241%; height: 18px;border: 1px solid black;">
+                      <t t-esc="datetime.date.today().strftime('%b %d, %Y')"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 36px;">
+                    <td style="width: 18.7954%; height: 21px;border: 1px solid black;">Trans Date</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;">
+                      <t t-esc="doc.date_start"/>
+                    </td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;">Style Name</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 32.0241%; height: 18px;border: 1px solid black;">
+                      <span t-field="line.product_id.name"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;">Model</td>
+                    <!-- <td style="width: 1.36426%; height: 21px;">:</td> -->
+                    <td style="width: 32.9372%; height: 21px;border: 1px solid black;">
+                      <span t-field="line.product_id.categ_id"/>
+                    </td>
+                    <!-- <td style="width: 1.36426%; height: 21px;"></td> -->
+                    <td style="width: 20.4689%; height: 21px;border: 1px solid black;">Size</td>
+                    <!-- <td style="width: 1.36426%; height: 21px;">:</td> -->
+                    <td style="width: 32.0241%; height: 21px;border: 1px solid black;">
+                      <span t-field="line.size"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;">Print/Color</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;">
+                      <span t-field="line.colour"/>
+                    </td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;">Size Approve</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.0241%; height: 18px;border: 1px solid black;">
+                      <t t-esc="doc.size_approve"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 36px;">
+                    <td style="width: 18.7954%; height: 36px;border: 1px solid black;">Pattern Marker</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;">
+                      <t t-esc="doc.pattern_marker"/>
+                    </td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;">Fabric</td>
+                    <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                    <td style="width: 32.0241%; height: 18px;border: 1px solid black;">
+                      <span t-field="line.fabric_smp"/>
+                    </td>
+                  </tr> 
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 36px;"></td> -->
+                    <td style="width: 32.9372%; height: 36px;border: 1px solid black;"></td>
+                    <!-- <td style="height: 36px; width: 1.36426%;"></td> -->
+                    <td style="height: 36px; width: 20.4689%;border: 1px solid black;">Approved</td>
+                    <!-- <td style="width: 1.36426%; height: 36px;">:</td> -->
+                    <td style="height: 36px; width: 32.0241%;border: 1px solid black;">
+                      <span t-field="doc.assigned_to"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;">User</td>
+                    <!-- <td style="height: 18px; width: 1.36426%;">:</td> -->
+                    <td style="width: 32.0241%; height: 18px;border: 1px solid black;">
+                    <span t-field="doc.requested_by"/>
+                    </td>
+                  </tr>
+                  <tr style="height: 18px;">
+                    <td style="width: 18.7954%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 32.9372%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 20.4689%; height: 18px;border: 1px solid black;"></td>
+                    <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                    <td style="width: 32.0241%; height: 18px;"></td>
+                  </tr>
+                </t>
+
+              </tbody>
+            </table>
+            <table style="border-collapse: collapse; width: 100%;" border="0">
+              <tbody>
+                <tr>
+                  <td style="width: 100%;border: 1px solid black;"><strong>Alteration Comments :</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <table style="border-collapse: collapse; width: 100%; height: 36px;border: 1px solid black;" border="0">
+            <tbody>
+              <t t-foreach="doc.line_ids" t-as="order">
+                <tr style="height: 36px;">
+                    <td style="width: 50.5457%; height: 36px;border: 1px solid black;">
+                      <t t-esc='doc.alt_cmnt'/>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <br/>
+                      <br/>
+                      
+                    </td>
+                    <td style="width: 49.4543%; height: 36px;border: 1px solid black;"><br/>
+                      <img t-if="order.product_id.image_1920" t-att-src="image_data_uri(order.product_id.image_1920)" style="max-height:220px; max-width:225px;"/>
+                    </td>
+                </tr>
+              </t>
+                <tr>
+                    <td style="width: 50.5457%;border-right: 1px solid transparent;">
+                        <strong>Pattern Maker To Fill Out :</strong>
+                    </td>
+                    <td style="width: 49.4543%;"></td>
+                </tr>
+            </tbody>
+            </table>
+            <table style="table-layout: fixed; border-collapse: collapse; width: 100%; height: 49px;">
+              <tbody style="font-size: 15px;">
+                <tr style="height: 18px;">
+                  <td style="width: 18.7954%; height: 10px;border: 1px solid black;">Sample Size</td>
+                  <!-- <td style="width: 1.36426%; height: 10px;">:</td> -->
+                  <td style="width: 32.9372%; height: 10px;border: 1px solid black;">
+                    <t t-esc="doc.sample_size"/>
+                  </td>
+                  <!-- <td style="width: 1.36426%; height: 10px;"></td> -->
+                  <td style="width: 20.4689%; height: 10px;border: 1px solid black;">Consumption</td>
+                  <!-- <td style="width: 1.36426%; height: 10px;">:</td> -->
+                  <td style="width: 32.0241%; height: 10px;border: 1px solid black;">
+                    <t t-esc="doc.consumption"/>
+                  </td>
+                </tr>
+                <tr style="height: 36px;">
+                  <td style="width: 18.7954%; height: 21px;border: 1px solid black;">Fabric Width</td>
+                  <!-- <td style="width: 1.36426%; height: 21px;">:</td> -->
+                  <td style="width: 32.9372%; height: 21px;border: 1px solid black;">
+                    <t t-esc="doc.fabric_width"/>
+                  </td>
+                  <!-- <td style="width: 1.36426%; height: 21px;"></td> -->
+                  <td style="width: 20.4689%; height: 21px;border: 1px solid black;">Pattern Cost</td>
+                  <!-- <td style="width: 1.36426%; height: 21px;"></td> -->
+                  <td style="width: 32.0241%; height: 21px;border: 1px solid black;">
+                    <t t-esc="doc.pattern_cost"/>
+                  </td>
+                </tr>
+                <tr style="height: 18px;">
+                  <td style="width: 18.7954%; height: 18px;border: 1px solid black;">Pattern Time</td>
+                  <!-- <td style="width: 1.36426%; height: 18px;">:</td> -->
+                  <td style="width: 32.9372%; height: 18px;border: 1px solid black;">
+                    <t t-esc="doc.pattern_cost"/>
+                  </td>
+                  <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                  <td style="width: 20.4689%; height: 18px;border: 1px solid black;"></td>
+                  <!-- <td style="width: 1.36426%; height: 18px;"></td> -->
+                  <td style="width: 32.0241%; height: 18px;border: 1px solid black;"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </t>
+      </div>
+    </t>
+  </template>
+
+</odoo>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="product_barcode_labels">
+		<t t-call="web.basic_layout">
+			<t t-foreach="docs" t-as="doc">
+				<t t-foreach="range(doc.qty)" t-as='l'>
+					<div class="page">
+						<div class="col-4" style="padding:0;">
+							<table style="border-collapse: collapse; width: 100%;" border="1">
+								<tbody style="font-size: 11px">
+									<t t-set="barcode_info" t-value="get_barcode_details_info"/>
+									<tr>
+										<td style="width: 10%;"></td>
+										<td style="width: 90%;" colspan="2">
+											<strong t-field="doc.product_id.name"/>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 10%;"></td>
+										<td style="width: 45%;">
+											<strong t-field="doc.colour"/>
+										</td>
+										<td style="width: 45%; text-align: right; padding-right: 4px">
+											<strong t-field="doc.product_id.cost_code"/>
+										</td>
+									</tr>
+									<tr>
+										<td style="width: 10%; text-align: right;">
+											<strong t-field="doc.product_id.default_code"/>
+										</td>
+										<t t-if="doc.product_id.barcode">
+											<td style="width: 90%;" colspan="2" rowspan="2">
+												<div t-out="doc.product_id.barcode" style="padding:0" t-options="{'widget': 'barcode', 'symbology': 'auto', 'img_style': 'width:50mm;height:10mm'}"/>
+												<!-- <img alt="Barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % (barcode_info['barcode_type'], doc.product_id.barcode_with_qty(doc.product_qty), 600, 200)" t-attf-style="width: #{barcode_info['barcode_width']}px; height: #{barcode_info['barcode_height']}px;" /> -->
+												<!-- <span t-field="doc.product_id.barcode" /> -->
+											</td>
+										</t>
+									</tr>
+									<tr>
+										<td style="width: 12%; text-align: center;">
+											<strong t-field="doc.size"/>
+										</td>
+									</tr>
+
+									<tr>
+										<td style="width: 12%;"></td>
+										<td style="width: 88%; text-align: center;" colspan="2">
+											<t t-if="barcode_info['barcode_currency_position'] == 'before'">
+												<strong>
+													<span t-esc="barcode_info['barcode_currency_id'].symbol" />
+													<span t-field="doc.product_id.list_price"/>
+												</strong>
+											</t>
+											<t t-if="barcode_info['barcode_currency_position'] != 'before'">
+												<strong>
+													<span t-field="doc.product_id.list_price"/>
+													<span t-esc="barcode_info['barcode_currency_id'].symbol" />
+												</strong>
+											</t>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- <table style="border-bottom: 0px solid white !important; width: 3in;">
+								<t t-set="barcode_info" t-value="get_barcode_details_info"/>
+								<tr>
+									<th style="font-size: 10px;">
+										[										<strong t-field="doc.product_id.default_code"/>
+]										<strong t-field="doc.product_id.name"/>
+									</th>
+								</tr>
+								<t t-if="doc.product_id.barcode">
+									<tr>
+										<td style="vertical-align: middle; horizontal-align: left;" class="col-8">
+											<figure>
+												<img alt="Barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % (barcode_info['barcode_type'], doc.product_id.barcode_with_qty(doc.product_qty), 600, 200)" t-attf-style="width: #{barcode_info['barcode_width']}px; height: #{barcode_info['barcode_height']}px;" />
+											</figure>
+										</td>
+										<td style="padding:10px; font-size:15px; vertical-align: middle; text-align: right;" class="col-4">
+											<t t-if="barcode_info['barcode_currency_position'] == 'before'">
+												<strong>
+													<span t-esc="doc.product_id.uom_id.name" />
+													<span t-field="doc.product_qty"/>
+												</strong>
+											</t>
+											<t t-if="barcode_info['barcode_currency_position'] != 'before'">
+												<strong>
+													<span t-field="doc.product_qty"/>
+													<span t-esc="doc.product_id.uom_id.name" />
+												</strong>
+											</t>
+										</td>
+									</tr>
+								</t>
+							</table> -->
+						</div>
+					</div>
+					<div style="page-break-before:always;"/>
+				</t>
+			</t>
+		</t>
+	</template>
+</odoo>

@@ -1,0 +1,45 @@
+<odoo>
+	<data>
+	
+	    <record id="monthy_report_form_view" model="ir.ui.view">
+			<field name="name">rlk.monthy.report.form</field>
+			<field name="model">rlk.monthy.report</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				
+		        <form string="Monthy Report">
+	                <group>
+	                	<group>
+		                	<field name="month" required="1"/>
+		                    <field name="year" required="1"/>
+		                </group>
+		                <group>
+		                	<field name="start_date" required="1" invisible="1"/>
+		                    <field name="end_date" required="1" invisible="1"/>
+		                    <field name="last_start_date" required="1" invisible="1"/>
+		                    <field name="last_end_date" required="1" invisible="1"/>
+		                </group>
+		        	</group>
+
+	                <footer>
+	                    <button name="print_excel_report" string="Export" type="object" class="oe_highlight"/> or 
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+		          	
+		        </form>
+	    	</field>
+	    </record>
+		
+	    <record id="action_monthy_report_xlsx" model="ir.actions.act_window">
+			<field name="name">Monthy Report</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">rlk.monthy.report</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="monthy_report_form_view"/>
+			<field name="target">new</field>
+	    </record>
+		
+		<menuitem id="menu_monthy_report_xlsx" action="action_monthy_report_xlsx" parent="stock.menu_warehouse_report" sequence="210"/>
+	
+	</data>
+</odoo>
