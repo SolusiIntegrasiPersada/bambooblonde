@@ -15,7 +15,7 @@ class ProductProduct(models.Model):
     consumption = fields.Float(string="Consumption")
     fabric_width = fields.Float(string="Fabric Width")
     category = fields.Char(related="categ_id.name", string="Category")
-    standard_price = fields.Float(related="product_tmpl_id.standard_price")
+    # standard_price = fields.Float(related="product_tmpl_id.standard_price")
     product_template_variant_value_ids = fields.Many2many(
         "product.template.attribute.value",
         relation="product_variant_combination",
