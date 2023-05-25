@@ -105,6 +105,11 @@ class PurchaseOrder(models.Model):
       'style_name_bill': self.product_mo,
     }
     return invoice_vals
+
+  def _prepare_picking(self):
+    res = super()._prepare_picking()
+    res.update({'style_name': self.product_mo,})
+    return res
  
 class PurchaseOrderLine(models.Model):
   _inherit = 'purchase.order.line'
