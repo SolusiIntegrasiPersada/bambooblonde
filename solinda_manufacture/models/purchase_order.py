@@ -102,8 +102,8 @@ class PurchaseOrder(models.Model):
         company_bb = self.env["res.company"].search([('is_manufacturing', '=', False)],limit=1)
         if not company:
             raise ValidationError("Company for manufacture is not defined")
-        if not company_bb:
-            raise ValidationError("Company for SO is not defined")
+        # if not company_bb:
+        #     raise ValidationError("Company for SO is not defined")
         self = self.sudo()
         for data in self.order_line:
             update.append([0,0,{
