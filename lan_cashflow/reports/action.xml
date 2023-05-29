@@ -3,7 +3,16 @@
 
     <data>
 
-        <report id="action_report_cashflow" model="generate.cashflow.wizard" string="Cashflow Report" report_type="xlsx" name="lan_cashflow.cashflow_report_xlsx" file="Cashflow Report" attachment_use="False"/>
+        <record id="action_report_cashflow" model="ir.actions.report">
+            <field name="name">Report Cashflow</field>
+            <field name="model">generate.cashflow.wizard</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">lan_cashflow.cashflow_report_xlsx</field>
+            <field name="report_file">lan_cashflow.cashflow_report_xlsx</field>
+            <field name="print_report_name">'Cashflow Report'</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
 
     </data>
 

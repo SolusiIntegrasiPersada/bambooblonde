@@ -20,6 +20,7 @@
     'data': [
         'security/ir.model.access.csv',
         'reports/action.xml',
+        'views/config.xml',
         'views/views.xml',
     ],
 }
