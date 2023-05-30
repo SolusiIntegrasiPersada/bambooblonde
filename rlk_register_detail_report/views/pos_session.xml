@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="view_pos_session_form_inherited" model="ir.ui.view">
         <field name="name">view.pos.session.form.inherited</field>
         <field name="model">pos.session</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
         <field name="arch" type="xml">
-            
             <xpath expr="/form" position="attributes">
                 <attribute name="edit">true</attribute>
                 <attribute name="delete">false</attribute>
             </xpath>
-
-            <field name="user_id" position="after">
+            <xpath expr="//field[@name='user_id']" position="after">
                 <field name="shift"/>
-            </field>
-
+                <field name="visitor_count"/>
+            </xpath>
         </field>
     </record>
 
@@ -24,12 +21,9 @@
         <field name="model">pos.session</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
         <field name="arch" type="xml">
-
-            <field name="user_id" position="after">
+            <xpath expr="//field[@name='user_id']" position="after">
                 <field name="shift"/>
-            </field>
-
+            </xpath>
         </field>
     </record>
-
 </odoo>

@@ -30,10 +30,5 @@
         'views/pos_config_views.xml',
         'views/sequence_data.xml',
         'report/action_report.xml',
-        'views/templates.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
     ],
 }

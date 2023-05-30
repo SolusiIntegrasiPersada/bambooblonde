@@ -1,76 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
-  
+    <record id="stock_comment_view_tree" model="ir.ui.view">
+        <field name="name">stock.comment.view.tree</field>
+        <field name="model">stock.comment</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+                <field name="shop_name"/>
+                <field name="periode"/>
+            </tree>
+        </field>
+    </record>
 
-  <record id="stock_comment_view_tree" model="ir.ui.view">
-    <field name="name">stock.comment.view.tree</field>
-    <field name="model">stock.comment</field>
-    <field name="arch" type="xml">
-      <tree string="">
-        <field name="name" />
-        <field name="shop_name" />
-        <field name="periode" />
-        <!-- <field name="last_periode" />       -->
-      </tree>
-    </field>
-  </record>
+    <record id="stock_comment_view_form" model="ir.ui.view">
+        <field name="name">stock.comment.view.form</field>
+        <field name="model">stock.comment</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="shop_name"/>
+                            <field name="address" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="periode"/>
+                            <field name="category_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="stock_comment_ids" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="colour"/>
+                                    <field name="category_id"/>
+                                    <field name="comment"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-  <record id="stock_comment_view_form" model="ir.ui.view">
-    <field name="name">stock.comment.view.form</field>
-    <field name="model">stock.comment</field>
-    <field name="arch" type="xml">
-      <form string="">
-        <sheet>
-          <div class="oe_title">
-            <h1>
-              <field name="name" readonly="1" />
-            </h1>
-          </div>
-          <group>
-            <group>
-              <field name="shop_name" />
-              <field name="address" readonly="1" />
-            </group>
-            <group>
-              <field name="periode" />
-              <field name="category_id" />
-            </group>
-          </group>
-          <notebook>
-            <page string="Products">
-              <field name="stock_comment_ids" widget="one2many">
-                <tree editable="bottom">
-                  <field name="product_id" />
-                  <field name="colour" />
-                  <field name="category_id" />
-                  <field name="comment" />
-                </tree>
-              </field>
-            </page>
-          </notebook>
-        </sheet>
-      </form>
-    </field>
-  </record>
+    <record id="stock_comment_action_module" model="ir.actions.act_window">
+        <field name="name">Stock Comments</field>
+        <field name="res_model">stock.comment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-  <record id="stock_comment_action_module" model="ir.actions.act_window">
-    <field name="name">Stock Comments</field>
-    <field name="res_model">stock.comment</field>
-    <!-- <field name="view_type">form</field> -->
-    <field name="view_mode">tree,form</field>
-  </record> 
-
-
-  <menuitem
-    id="stock_comment_menu"
-    name="Stock Comments"
-    action="stock_comment_action_module"
-    parent="point_of_sale.pos_config_menu_catalog"
-    sequence="12"
-    groups="base.group_user"
-    />
-
-
-  
+    <menuitem id="stock_comment_menu"
+              name="Stock Comments"
+              action="stock_comment_action_module"
+              parent="point_of_sale.pos_config_menu_catalog"
+              sequence="12"
+              groups="base.group_user"/>
 </odoo>

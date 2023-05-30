@@ -16,8 +16,5 @@
             <field name="prefix">SC</field>
             <field name="company_id" eval="2"/>
         </record>
-
-
-
     </data>
 </odoo>

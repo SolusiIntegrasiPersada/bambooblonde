@@ -1,15 +1,10 @@
-from email.policy import default
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.osv.expression import AND, NEGATIVE_TERM_OPERATORS
-from odoo.tools import float_round
-
-from collections import defaultdict
+from odoo import fields, models
 
 _SHIFT = [
-  ("Shift A", "Shift A"),
-  ("Shift B", "Shift B"),
+    ("Shift A", "Shift A"),
+    ("Shift B", "Shift B"),
 ]
+
 
 class PosSession(models.Model):
     _inherit = 'pos.session'
@@ -21,3 +16,4 @@ class PosSession(models.Model):
         tracking=True,
         copy=False,
     )
+    visitor_count = fields.Integer(string='Visitor Count')
