@@ -137,7 +137,7 @@
                     <div class="clearfix">
                         <div id="total" class="row justify-content-end">
                             <div class="col-6" style="border: 1px solid transparent;">
-                                <t t-if="o.move_type == 'out_invoice'">
+                                <t t-if="o.move_type == 'in_invoice'">
                                     <table style="border: 1px solid transparent;">
                                         <tbody style="border: 1px solid transparent;">
                                             <tr style="border: 1px solid transparent;">
