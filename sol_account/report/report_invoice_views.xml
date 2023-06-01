@@ -136,37 +136,40 @@
 
                     <div class="clearfix">
                         <div id="total" class="row justify-content-end">
-                            <div class="col-6" style="border: 1px solid transparent;">
-                                <table style="border: 1px solid transparent;">
-                                    <tbody style="border: 1px solid transparent;">
-                                        <tr style="border: 1px solid transparent;">
-                                            <td>
-                                                Account Name: <b><span t-field="o.transfer.company_id"/></b>
-                                            </td>
-                                        </tr>
-                                        <tr style="border: 1px solid transparent;">
-                                            <td>
-                                                Bank Name : <b><span t-field="o.transfer"/></b>
-                                            </td>
-                                        </tr>
-                                        <tr style="border: 1px solid transparent;">
-                                            <td>
-                                                Account No : <b><span t-field="o.transfer.account_no"/></b>
-                                            </td>
-                                        </tr>
-                                        <tr style="border: 1px solid transparent;">
-                                            <td>
-                                                Branch : <b><span t-field="o.transfer.branch"/></b>
-                                            </td>
-                                        </tr>
-                                        <tr style="border: 1px solid transparent;">
-                                            <td>
-                                                Swift Code : <b><span t-field="o.transfer.swift_code"/></b>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <t t-if="o.move_type == 'in_invoice">
+                                <div class="col-6" style="border: 1px solid transparent;">
+                                    <table style="border: 1px solid transparent;">
+                                        <tbody style="border: 1px solid transparent;">
+                                            <tr style="border: 1px solid transparent;">
+                                                <td>
+                                                    Account Name: <b><span t-field="o.transfer.company_id"/></b>
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid transparent;">
+                                                <td>
+                                                    Bank Name : <b><span t-field="o.transfer"/></b>
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid transparent;">
+                                                <td>
+                                                    Account No : <b><span t-field="o.transfer.account_no"/></b>
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid transparent;">
+                                                <td>
+                                                    Branch : <b><span t-field="o.transfer.branch"/></b>
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid transparent;">
+                                                <td>
+                                                    Swift Code : <b><span t-field="o.transfer.swift_code"/></b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </t>
+
                             <div class="col-6">
                                 <table class="table table-sm" style="page-break-inside: avoid;">
 
