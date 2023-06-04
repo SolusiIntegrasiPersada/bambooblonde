@@ -2,7 +2,7 @@ import xlsxwriter
 import base64
 from odoo import fields, models, api
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 import io
@@ -169,7 +169,16 @@ class SummarySalesReport(models.TransientModel):
         worksheet.set_column('E:E', 8)
         worksheet.set_column('F:F', 8)
         worksheet.set_column('G:G', 8)
+        
+        period = self.start_period
+        start_datetime = datetime(period.year, period.month, period.day, 0, 0, 0) - timedelta(hours=7)
+        end_datetime = datetime(period.year, period.month, period.day, 23, 59, 59) - timedelta(hours=7)
+        if self.shift == 'ALL':
+            pos_session_ids = self.env['pos.session'].sudo().search([('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime), ('config_id', '=', self.config_id.id)])
+        else:
+            pos_session_ids = self.env['pos.session'].sudo().search([('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime), ('config_id', '=', self.config_id.id), ('shift', '=', self.shift)])
 
+        visitor_count = sum(pos_session_ids.mapped('visitor_count'))
         for res in result :
 
             worksheet.merge_range('A1:G1', str(pos_name), wbf['title_doc'])
@@ -257,7 +266,7 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('D%s:G%s' %(row3+3, row3+3), '-', wbf['content_float'])
             worksheet.merge_range('D%s:G%s' %(row3+4, row3+4), '-', wbf['content_float'])
             worksheet.merge_range('D%s:G%s' %(row3+5, row3+5), res['print_receipt'] or '', wbf['content'])
-            worksheet.merge_range('D%s:G%s' %(row3+6, row3+6), '', wbf['content'])
+            worksheet.merge_range('D%s:G%s' %(row3+6, row3+6), visitor_count, wbf['content'])
 
             row4 = row3+6
             worksheet.write(row4, 0, 'Asian', wbf['content2'])
