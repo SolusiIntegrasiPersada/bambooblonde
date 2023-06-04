@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
+                        <field name="is_stock_type" />
                         <field name="class_product" />
                         <field name="product_model_id" required="1"/>
                         <field name="product_category_id" />

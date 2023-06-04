@@ -16,6 +16,7 @@ class ReportMensClothes(models.TransientModel):
     aging_from = fields.Integer(string='Aging From')
     aging_to = fields.Integer(string='Aging To')
     stock_type = fields.Many2one('stock.type', string='Stock Type')
+    is_stock_type = fields.Boolean(string='Stock Type ?')
 
     @api.onchange('product_model_id')
     def onchange_domain_product_category_id(self):

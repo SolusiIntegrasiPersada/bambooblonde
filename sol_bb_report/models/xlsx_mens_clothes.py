@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 import io
 import base64
+from PIL import Image
 
 
 class XlsxMensClothes(models.Model):
@@ -12,7 +13,19 @@ class XlsxMensClothes(models.Model):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, objs):
+
+        def calculate_scale(file_path, bound_size):
+            # check the image size without loading it into memory
+            im = Image.open(file_path)
+            original_width, original_height = im.size
+
+            # calculate the resize factor, keeping original aspect and staying within boundary
+            bound_width, bound_height = bound_size
+            ratios = (float(bound_width) / original_width, float(bound_height) / original_height)
+            return min(ratios)
+        
         header_table_real = ['Model', 'Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Aging', 'Barcode', 'Size', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
+        header_table_real_with_stock_type = ['Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Stock Type', 'Aging', 'Barcode', 'Size', 'Photo', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
 
         formatHeaderCompany = workbook.add_format({'font_size': 14, 'valign':'vcenter', 'align': 'center', 'bold': True})
         formatHeaderTable = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bold': True, 'bg_color':'#8db4e2', 'color':'black', 'text_wrap': True, 'border': 1})
@@ -39,6 +52,7 @@ class XlsxMensClothes(models.Model):
         dt_pos_config_id = datas.get('pos_config_id', False)
         dt_aging_from = datas.get('aging_from', 0)
         dt_aging_to = datas.get('aging_to', 0)
+        dt_is_stock_type = datas.get('is_stock_type', False)
 
         # product_model_id = self.env['product.model'].sudo().browse(dt_product_model_id)
         product_model_id = self.env['product.category'].sudo().browse(dt_product_model_id)
@@ -91,12 +105,21 @@ class XlsxMensClothes(models.Model):
 
         sheet = workbook.add_worksheet(f'{product_model_id.name}')
         row = 1
-        sheet.merge_range(row, 0, row, len(header_table_real)-1, f'BEST SELLER {product_model_id.name}', formatNormal)
-        row += 1
-        sheet.merge_range(row, 0, row, len(header_table_real)-1, f'PERIODE SALES : {from_date} - {to_date}', formatNormal)
-        row += 1
-        sheet.merge_range(row, 0, row, len(header_table_real)-1, f'Data Last Stock : {to_date}', formatNormal)
-        row += 1
+
+        if dt_is_stock_type:
+            sheet.merge_range(row, 0, row, len(header_table_real_with_stock_type)-1, f'BEST SELLER {product_model_id.name} WITH STOCK TYPE', formatNormal)
+            row += 1
+            sheet.merge_range(row, 0, row, len(header_table_real_with_stock_type)-1, f'PERIODE SALES : {from_date} - {to_date}', formatNormal)
+            row += 1
+            sheet.merge_range(row, 0, row, len(header_table_real_with_stock_type)-1, f'Data Last Stock : {to_date}', formatNormal)
+            row += 1
+        else:
+            sheet.merge_range(row, 0, row, len(header_table_real)-1, f'BEST SELLER {product_model_id.name}', formatNormal)
+            row += 1
+            sheet.merge_range(row, 0, row, len(header_table_real)-1, f'PERIODE SALES : {from_date} - {to_date}', formatNormal)
+            row += 1
+            sheet.merge_range(row, 0, row, len(header_table_real)-1, f'Data Last Stock : {to_date}', formatNormal)
+            row += 1
 
         for categ in categ_ids:
             product_tmpl_ids = self.env['product.template'].sudo().search([
@@ -110,7 +133,7 @@ class XlsxMensClothes(models.Model):
                 ('active', '!=', True)
             ])
             # header_table = []
-            header_table = header_table_real.copy()
+            # header_table = header_table_real.copy()
             # row += 1
             # column = len(header_table)
             # grand_column = len(header_table)
@@ -300,6 +323,8 @@ class XlsxMensClothes(models.Model):
                         stockid = pp.default_code or ''
                         aging = diff_date_in_week
                         barcode = pp.barcode or ''
+                        stock_type = pp.stock_type.name or ''
+                        photo = pp.image_1920
 
                         last_po_id = self.env['purchase.order.line'].sudo().search([
                             ('order_id.date_order', '>=', datas.get('from_date')),
@@ -333,6 +358,8 @@ class XlsxMensClothes(models.Model):
                             'stockname': stockname,
                             'stockid': stockid,
                             'color': color,
+                            'stock_type': stock_type,
+                            'photo': photo,
                             'aging': aging,
                             'barcode': barcode,
                             'size': size,
@@ -476,131 +503,246 @@ class XlsxMensClothes(models.Model):
             data_grand_total = {'grand_total_qty_sale_retail': 0, 'grand_total_qty_stock_retail': 0, 'grand_total_qty_stock_warehouse': 0, 'gt_sale_retail': {}, 'gt_stock_retail': {}}
             # number_of_best_product = product_model_id.number_of_best_product
             number_of_best_product = categ.number_of_best_product
-            if raw_data:
-                new_raw_data = sorted(raw_data, key=lambda d: d['all_qty_sale_retail'], reverse=True)
-                max_data = new_raw_data[:number_of_best_product] if number_of_best_product else new_raw_data
+            if dt_is_stock_type:
+                if raw_data:
+                    new_raw_data = sorted(raw_data, key=lambda d: d['all_qty_sale_retail'], reverse=True)
+                    max_data = new_raw_data[:number_of_best_product] if number_of_best_product else new_raw_data
 
-                # Header
-                header_table = header_table_real.copy()
-                row += 1
-                column = len(header_table)
-                grand_column = len(header_table)
-                sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
-                sheet.write(row, column-1, 'WH', formatHeaderTableSand)
-                for warehouse in warehouse_name_ids:
-                    sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
-                    column += 2
-                    header_table += ['Qty Sold', 'In Stock']
-                row += 1
-                column = 0
-                for header in header_table:
-                    sheet.write(row, column, header.upper(), formatHeaderTable)
-                    column += 1
-                for x in range(0, len(header_table)):
-                    sheet.set_column(x, x, 15)
-                row += 1
-
-                # Detail
-                # for zz in new_raw_data[:number_of_best_product]:
-                for zz in max_data:
-                    if date_period < 21:
-                        if not (zz['all_qty_sale_retail'] >= product_model_id.less_than_one_month):
-                            continue
-                    else:
-                        if not (zz['all_qty_sale_retail'] >= product_model_id.more_than_one_month):
-                            continue
-
-                    for xx in zz['order_line']:
-                        sheet.write(row, 0, xx['model'], formatDetailTableReOrder)
-                        sheet.write(row, 1, xx['category'], formatDetailTableReOrder)
-                        sheet.write(row, 2, xx['style'], formatDetailTableReOrder)
-                        sheet.write(row, 3, xx['stockname'], formatDetailTableReOrder)
-                        sheet.write(row, 4, xx['stockid'], formatDetailTableReOrder)
-                        sheet.write(row, 5, xx['color'], formatDetailTableReOrder)
-                        sheet.write(row, 6, xx['aging'], formatDetailTableReOrder)
-                        sheet.write(row, 7, xx['barcode'], formatDetailTableReOrder)
-                        sheet.write(row, 8, xx['size'], formatDetailTableReOrder)
-                        sheet.write(row, 9, xx['order_notes'], formatDetailTableReOrder)
-                        sheet.write(row, 10, xx['cost'], formatDetailCurrencyTableReOrder)
-                        sheet.write(row, 11, xx['sale_price'], formatDetailCurrencyTableReOrder)
-                        sheet.write(row, 12, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
-                        sheet.write(row, 13, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
-                        sheet.write(row, 14, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
-                        column_2 = 14
-                        if warehouse_ids:
-                            for ww in warehouse_ids:
-                                column_2 += 1
-                                sheet.write(row, column_2, xx[ww]['qty_sale_retail'] or '', formatDetailTableReOrderSand)
-                                column_2 += 1
-                                sheet.write(row, column_2, xx[ww]['qty_stock_retail'] or '', formatDetailTableReOrder)
-                        row += 1
-                    sheet.write(row, 0, zz['model'], formatDetailTableReOrderBlue)
-                    sheet.write(row, 1, zz['category'], formatDetailTableReOrderBlue)
-                    sheet.write(row, 2, zz['style'], formatDetailTableReOrderBlue)
-                    sheet.write(row, 3, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 4, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 5, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 6, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 7, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 8, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 9, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 10, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 11, '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 12, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 13, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 14, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                    column_3 = 14
-                    if warehouse_ids:
-                        for ww in warehouse_ids:
-                            if ww not in data_grand_total['gt_sale_retail']:
-                                data_grand_total['gt_sale_retail'][ww] = 0
-                            if ww not in data_grand_total['gt_stock_retail']:
-                                data_grand_total['gt_stock_retail'][ww] = 0
-                            column_3 += 1
-                            sheet.write(row, column_3, zz[ww]['all_sale_retail'] or '', formatDetailTableReOrderBlue)
-                            data_grand_total['gt_sale_retail'][ww] += zz[ww]['all_sale_retail']
-                            column_3 += 1
-                            sheet.write(row, column_3, zz[ww]['all_stock_retail'] or '', formatDetailTableReOrderBlue)
-                            data_grand_total['gt_stock_retail'][ww] += zz[ww]['all_stock_retail']
-
-                    data_grand_total['grand_total_qty_sale_retail'] += zz['all_qty_sale_retail']
-                    data_grand_total['grand_total_qty_stock_retail'] += zz['all_qty_stock_retail']
-                    data_grand_total['grand_total_qty_stock_warehouse'] += zz['all_qty_stock_warehouse']
+                    # Header
+                    header_table = header_table_real_with_stock_type.copy()
+                    row += 1
+                    column = len(header_table)
+                    grand_column = len(header_table)
+                    sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
+                    sheet.write(row, column-1, 'WH', formatHeaderTableSand)
+                    for warehouse in warehouse_name_ids:
+                        sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
+                        column += 2
+                        header_table += ['Qty Sold', 'In Stock']
+                    row += 1
+                    column = 0
+                    for header in header_table:
+                        sheet.write(row, column, header.upper(), formatHeaderTable)
+                        column += 1
+                    for x in range(0, len(header_table)):
+                        sheet.set_column(x, x, 15)
                     row += 1
 
-                # Footer
-                sheet.merge_range(row, 0, row, grand_column-4, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
-                sheet.write(row, 12, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                sheet.write(row, 13, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                sheet.write(row, 14, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                column_3 = 14
-                for wh in warehouse_ids:
-                    column_3 += 1
-                    if wh in data_grand_total['gt_sale_retail']:
-                        sheet.write(row, column_3, data_grand_total['gt_sale_retail'][wh] or '', formatDetailTableReOrderBlue)
-                    else:
-                        sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
-                    column_3 += 1
-                    if wh in data_grand_total['gt_stock_retail']:
-                        sheet.write(row, column_3, data_grand_total['gt_stock_retail'][wh] or '', formatDetailTableReOrderBlue)
-                    else:
-                        sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
-                row += 1
-            # sheet.write(row, 12, grand_total_qty_sale_retail, formatDetailTableReOrderBlue)
-            # sheet.write(row, 13, grand_total_qty_stock_retail, formatDetailTableReOrderBlue)
-            # sheet.write(row, 14, grand_total_qty_stock_warehouse, formatDetailTableReOrderBlue)
-            # column_3 = 14
-            # for wh in warehouse_ids:
-            #     column_3 += 1
-            #     if wh in all_sale_retail['grand_total']:
-            #         sheet.write(row, column_3, all_sale_retail['grand_total'][wh], formatDetailTableReOrderBlue)
-            #     else:
-            #         sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
-            #     column_3 += 1
-            #     if wh in all_stock_retail['grand_total']:
-            #         sheet.write(row, column_3, all_stock_retail['grand_total'][wh], formatDetailTableReOrderBlue)
-            #     else:
-            #         sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
-            
-            # row += 1
+                    # Detail
+                    # for zz in new_raw_data[:number_of_best_product]:
+                    for zz in max_data:
+                        if date_period < 21:
+                            if not (zz['all_qty_sale_retail'] >= product_model_id.less_than_one_month):
+                                continue
+                        else:
+                            if not (zz['all_qty_sale_retail'] >= product_model_id.more_than_one_month):
+                                continue
+
+                        for xx in zz['order_line']:
+                            d_photo = ''
+                            resize_scale = 0
+                            if xx['photo']:
+                                d_photo = io.BytesIO(base64.b64decode(xx['photo']))
+                                bound_width_height = (80, 80)
+                                if d_photo:
+                                    resize_scale = calculate_scale(d_photo, bound_width_height)
+
+                            # sheet.write(row, 0, xx['model'], formatDetailTableReOrder)
+                            sheet.write(row, 0, xx['category'], formatDetailTableReOrder)
+                            sheet.write(row, 1, xx['style'], formatDetailTableReOrder)
+                            sheet.write(row, 2, xx['stockname'], formatDetailTableReOrder)
+                            sheet.write(row, 3, xx['stockid'], formatDetailTableReOrder)
+                            sheet.write(row, 4, xx['color'], formatDetailTableReOrder)
+                            sheet.write(row, 5, xx['stock_type'], formatDetailTableReOrder)
+                            sheet.write(row, 6, xx['aging'], formatDetailTableReOrder)
+                            sheet.write(row, 7, xx['barcode'], formatDetailTableReOrder)
+                            sheet.write(row, 8, xx['size'], formatDetailTableReOrder)
+
+                            sheet.write(row, 9, xx['photo'], formatDetailTableReOrder)
+                            sheet.set_column(row, 9, 15)
+                            sheet.set_row(row, 75)
+                            if xx['photo']:
+                                sheet.insert_image(row, 9, "image.png", {'image_data': d_photo, 'bg_color': '#FFFFFF', 'x_scale': resize_scale, 'y_scale': resize_scale, 'x_offset': 10, 'y_offset': 10})
+                            else:
+                                sheet.write(row, 9, '', formatDetailTableReOrder)
+
+                            sheet.write(row, 10, xx['order_notes'], formatDetailTableReOrder)
+                            sheet.write(row, 11, xx['cost'], formatDetailCurrencyTableReOrder)
+                            sheet.write(row, 12, xx['sale_price'], formatDetailCurrencyTableReOrder)
+                            sheet.write(row, 13, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                            sheet.write(row, 14, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
+                            sheet.write(row, 15, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                            column_2 = 15
+                            if warehouse_ids:
+                                for ww in warehouse_ids:
+                                    column_2 += 1
+                                    sheet.write(row, column_2, xx[ww]['qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                                    column_2 += 1
+                                    sheet.write(row, column_2, xx[ww]['qty_stock_retail'] or '', formatDetailTableReOrder)
+                            row += 1
+                        # sheet.write(row, 0, zz['model'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 0, zz['category'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 1, zz['style'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 2, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 3, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 4, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 5, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 6, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 7, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 8, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 9, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 10, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 11, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 12, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 13, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 14, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 15, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 15
+                        if warehouse_ids:
+                            for ww in warehouse_ids:
+                                if ww not in data_grand_total['gt_sale_retail']:
+                                    data_grand_total['gt_sale_retail'][ww] = 0
+                                if ww not in data_grand_total['gt_stock_retail']:
+                                    data_grand_total['gt_stock_retail'][ww] = 0
+                                column_3 += 1
+                                sheet.write(row, column_3, zz[ww]['all_sale_retail'] or '', formatDetailTableReOrderBlue)
+                                data_grand_total['gt_sale_retail'][ww] += zz[ww]['all_sale_retail']
+                                column_3 += 1
+                                sheet.write(row, column_3, zz[ww]['all_stock_retail'] or '', formatDetailTableReOrderBlue)
+                                data_grand_total['gt_stock_retail'][ww] += zz[ww]['all_stock_retail']
+
+                        data_grand_total['grand_total_qty_sale_retail'] += zz['all_qty_sale_retail']
+                        data_grand_total['grand_total_qty_stock_retail'] += zz['all_qty_stock_retail']
+                        data_grand_total['grand_total_qty_stock_warehouse'] += zz['all_qty_stock_warehouse']
+                        row += 1
+
+                    # Footer
+                    sheet.merge_range(row, 0, row, grand_column-4, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
+                    sheet.write(row, 13, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                    sheet.write(row, 14, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                    sheet.write(row, 15, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                    column_3 = 15
+                    for wh in warehouse_ids:
+                        column_3 += 1
+                        if wh in data_grand_total['gt_sale_retail']:
+                            sheet.write(row, column_3, data_grand_total['gt_sale_retail'][wh] or '', formatDetailTableReOrderBlue)
+                        else:
+                            sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
+                        column_3 += 1
+                        if wh in data_grand_total['gt_stock_retail']:
+                            sheet.write(row, column_3, data_grand_total['gt_stock_retail'][wh] or '', formatDetailTableReOrderBlue)
+                        else:
+                            sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
+                    row += 1
+            else:
+                if raw_data:
+                    new_raw_data = sorted(raw_data, key=lambda d: d['all_qty_sale_retail'], reverse=True)
+                    max_data = new_raw_data[:number_of_best_product] if number_of_best_product else new_raw_data
+
+                    # Header
+                    header_table = header_table_real.copy()
+                    row += 1
+                    column = len(header_table)
+                    grand_column = len(header_table)
+                    sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
+                    sheet.write(row, column-1, 'WH', formatHeaderTableSand)
+                    for warehouse in warehouse_name_ids:
+                        sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
+                        column += 2
+                        header_table += ['Qty Sold', 'In Stock']
+                    row += 1
+                    column = 0
+                    for header in header_table:
+                        sheet.write(row, column, header.upper(), formatHeaderTable)
+                        column += 1
+                    for x in range(0, len(header_table)):
+                        sheet.set_column(x, x, 15)
+                    row += 1
+
+                    # Detail
+                    # for zz in new_raw_data[:number_of_best_product]:
+                    for zz in max_data:
+                        if date_period < 21:
+                            if not (zz['all_qty_sale_retail'] >= product_model_id.less_than_one_month):
+                                continue
+                        else:
+                            if not (zz['all_qty_sale_retail'] >= product_model_id.more_than_one_month):
+                                continue
+
+                        for xx in zz['order_line']:
+                            sheet.write(row, 0, xx['model'], formatDetailTableReOrder)
+                            sheet.write(row, 1, xx['category'], formatDetailTableReOrder)
+                            sheet.write(row, 2, xx['style'], formatDetailTableReOrder)
+                            sheet.write(row, 3, xx['stockname'], formatDetailTableReOrder)
+                            sheet.write(row, 4, xx['stockid'], formatDetailTableReOrder)
+                            sheet.write(row, 5, xx['color'], formatDetailTableReOrder)
+                            sheet.write(row, 6, xx['aging'], formatDetailTableReOrder)
+                            sheet.write(row, 7, xx['barcode'], formatDetailTableReOrder)
+                            sheet.write(row, 8, xx['size'], formatDetailTableReOrder)
+                            sheet.write(row, 9, xx['order_notes'], formatDetailTableReOrder)
+                            sheet.write(row, 10, xx['cost'], formatDetailCurrencyTableReOrder)
+                            sheet.write(row, 11, xx['sale_price'], formatDetailCurrencyTableReOrder)
+                            sheet.write(row, 12, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                            sheet.write(row, 13, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
+                            sheet.write(row, 14, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                            column_2 = 14
+                            if warehouse_ids:
+                                for ww in warehouse_ids:
+                                    column_2 += 1
+                                    sheet.write(row, column_2, xx[ww]['qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                                    column_2 += 1
+                                    sheet.write(row, column_2, xx[ww]['qty_stock_retail'] or '', formatDetailTableReOrder)
+                            row += 1
+                        sheet.write(row, 0, zz['model'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 1, zz['category'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 2, zz['style'], formatDetailTableReOrderBlue)
+                        sheet.write(row, 3, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 4, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 5, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 6, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 7, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 8, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 9, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 10, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 11, '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 12, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 13, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 14, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 14
+                        if warehouse_ids:
+                            for ww in warehouse_ids:
+                                if ww not in data_grand_total['gt_sale_retail']:
+                                    data_grand_total['gt_sale_retail'][ww] = 0
+                                if ww not in data_grand_total['gt_stock_retail']:
+                                    data_grand_total['gt_stock_retail'][ww] = 0
+                                column_3 += 1
+                                sheet.write(row, column_3, zz[ww]['all_sale_retail'] or '', formatDetailTableReOrderBlue)
+                                data_grand_total['gt_sale_retail'][ww] += zz[ww]['all_sale_retail']
+                                column_3 += 1
+                                sheet.write(row, column_3, zz[ww]['all_stock_retail'] or '', formatDetailTableReOrderBlue)
+                                data_grand_total['gt_stock_retail'][ww] += zz[ww]['all_stock_retail']
+
+                        data_grand_total['grand_total_qty_sale_retail'] += zz['all_qty_sale_retail']
+                        data_grand_total['grand_total_qty_stock_retail'] += zz['all_qty_stock_retail']
+                        data_grand_total['grand_total_qty_stock_warehouse'] += zz['all_qty_stock_warehouse']
+                        row += 1
+
+                    # Footer
+                    sheet.merge_range(row, 0, row, grand_column-4, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
+                    sheet.write(row, 12, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                    sheet.write(row, 13, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                    sheet.write(row, 14, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                    column_3 = 14
+                    for wh in warehouse_ids:
+                        column_3 += 1
+                        if wh in data_grand_total['gt_sale_retail']:
+                            sheet.write(row, column_3, data_grand_total['gt_sale_retail'][wh] or '', formatDetailTableReOrderBlue)
+                        else:
+                            sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
+                        column_3 += 1
+                        if wh in data_grand_total['gt_stock_retail']:
+                            sheet.write(row, column_3, data_grand_total['gt_stock_retail'][wh] or '', formatDetailTableReOrderBlue)
+                        else:
+                            sheet.write(row, column_3, 0, formatDetailTableReOrderBlue)
+                    row += 1
             

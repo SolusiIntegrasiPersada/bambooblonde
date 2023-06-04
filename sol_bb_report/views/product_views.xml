@@ -60,6 +60,9 @@
                     <field name="number_of_best_product" attrs="{'invisible':[('category_product', '!=', 'category')]}"/>
                     <field name="less_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
                     <field name="more_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
+                    <field name="number_of_slow_product" attrs="{'invisible':[('category_product', '!=', 'category')]}"/>
+                    <field name="slow_less_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
+                    <field name="slow_more_than_one_month" attrs="{'invisible':[('category_product', '!=', 'department')]}"/>
                 </xpath>
             </field>
         </record>
