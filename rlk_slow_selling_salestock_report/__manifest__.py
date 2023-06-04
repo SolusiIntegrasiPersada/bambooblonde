@@ -11,7 +11,7 @@
         Slow Selling Sale Stock Report
     """,
     "depends"       : [
-        "sol_pos",
+        "sol_pos", "sol_bb_report",
     ],
     "data"          : [
         "wizard/slow_selling_salestock.xml",
