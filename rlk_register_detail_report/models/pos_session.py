@@ -16,4 +16,3 @@ class PosSession(models.Model):
         tracking=True,
         copy=False,
     )
-    visitor_count = fields.Integer(string='Visitor Count')
