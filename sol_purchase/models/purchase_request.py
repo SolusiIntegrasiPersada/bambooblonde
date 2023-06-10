@@ -151,7 +151,7 @@ class PurchaseRequest(models.Model):
     fabric_width = fields.Char('Fabric Width')
     pattern_time = fields.Float('Pattern Time')
     consumption = fields.Char('Consumption')
-    pattern_cost = fields.Float('Pattern Cost')
+    pattern_cost = fields.Float('Costing Order')
 
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')
