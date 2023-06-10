@@ -197,7 +197,7 @@
                       <tr style="height: 0px;">
                           <td style="width: 11.229%; height: 10px; border: 1px solid black;">Description</td>
                           <td style="width: 52.221%; height: 10px; border: 1px solid black;">
-                            <t t-esc="label.description"/>
+                            <t t-esc="label.description_name"/>
                           </td>
                       </tr>
                       <tr style="height: 18px;">
@@ -271,7 +271,7 @@
                       <tr style="height: 0px;">
                           <td style="width: 11.229%; height: 10px; border: 1px solid black;">Summary</td>
                           <td style="width: 52.221%; height: 10px; border: 1px solid black;">
-                            <t t-esc="summ.summary"/>
+                            <t t-esc="summ.summary_name"/>
                           </td>
                       </tr>
                       <tr>

@@ -43,6 +43,8 @@
         'views/product_menuitem.xml',
         # 'views/templates.xml',
         'views/sequence_data.xml',
+        'views/data_label_hardware.xml',
+        'views/data_prod_summary.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

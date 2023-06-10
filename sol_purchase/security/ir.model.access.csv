@@ -14,4 +14,6 @@ access_data_master_story,sol_purchase.data_master_story,model_data_master_story,
 access_original_sample,sol_purchase.original_sample,model_original_sample,base.group_user,1,1,1,1
 access_attribute_line,sol_purchase.attribute_line,model_attribute_line,base.group_user,1,1,1,1
 access_product_workorder,sol_purchase.product_workorder,model_product_workorder,base.group_user,1,1,1,1
+access_data_label_hardware,sol_purchase.data_label_hardware,model_data_label_hardware,base.group_user,1,1,1,1
+access_data_prod_summary,sol_purchase.data_prod_summary,model_data_prod_summary,base.group_user,1,1,1,1
 

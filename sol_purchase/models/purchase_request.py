@@ -19,17 +19,29 @@ class CustomPattern(models.Model):
     print_color_id = fields.Many2one('product.template.attribute.value', string='Print/Color')
     model_ptr = fields.Many2one('product.category', string='Model')
     size = fields.Many2one('product.template.attribute.value', string='Size')
-    
+
+class DataLabelHardware(models.Model):
+    _name = 'data.label.hardware'
+    _description = 'Data Label Hardware'
+
+    name = fields.Char(string="Label")
 
 class LabelHardware(models.Model):
     _name = 'label.hardware'
     _description = 'Label Hardware'
 
     label_hardware_id = fields.Many2one('purchase.request', string='label hardware ids')
-    description = fields.Char('Description')
+    description = fields.Many2one('data.label.hardware', string='Label')
+    description_name = fields.Char(string="Description", tracking=True)
     color = fields.Many2one(comodel_name='print.color', string='Color')
     color_id = fields.Many2one('product.attribute.value', string='Color', domain="[('attribute_id.name', '=', 'COLOR')]")
     qty_label = fields.Float('Qty')
+
+    @api.onchange("description")
+    def _onchange_description(self):
+        if self.description:
+            description = self.description.name
+            self.description_name = description
 
 class LabelDress(models.Model):
     _name = 'label.dress'
@@ -40,13 +52,25 @@ class LabelDress(models.Model):
     image = fields.Image('Label Pict')
     comment = fields.Html('Comment')
 
+class DataProdSummary(models.Model):
+    _name = 'data.prod.summary'
+    _description = 'Data Prod Summary'
+
+    name = fields.Char('Production Summary')
 class ProductionSummary(models.Model):
     _name = 'production.summary'
     _description = 'Production Summary'
 
     prod_summ_id = fields.Many2one('purchase.request', string='prod summ ids')
-    summary = fields.Char('Summary')
+    summary = fields.Many2one('data.prod.summary', string='Prod Summary')
+    summary_name = fields.Char('Summary', tracking=True)
     description = fields.Char('Description')
+
+    @api.onchange("summary")
+    def _onchange_summary(self):
+        if self.summary:
+            summary = self.summary.name
+            self.summary_name = summary
 
 class RequestDetail(models.Model):
     _name = 'request.detail'
@@ -127,6 +151,32 @@ class PurchaseRequestLine(models.Model):
 class PurchaseRequest(models.Model):
     _inherit = 'purchase.request'
 
+    @api.model
+    def default_get(self, fields):
+        res = super(PurchaseRequest, self).default_get(fields)
+        updt_label = [(5,0,0)]
+        updt_summary = [(5, 0, 0)]
+        label = self.env["data.label.hardware"].search([])
+        summary = self.env["data.prod.summary"].search([])
+        for i in label:
+            line_i = (0, 0, {
+                'description': i.id,
+                'description_name': i.name
+            })
+            updt_label.append(line_i)
+        for j in summary:
+            line_j = (0, 0, {
+                'summary': j.id,
+                'summary_name': j.name
+            })
+            updt_summary.append(line_j)
+        res.update({
+            'label_hardware_ids': updt_label,
+            'prod_summ_ids': updt_summary,
+        })
+        return res
+
+
     ### SAMPLE DEVELOPMENT ###
     request_detail_id = fields.Many2one(string='Original Sample', comodel_name='request.detail', ondelete='cascade')
     notes = fields.Html(string='FIT NOTES')
@@ -151,7 +201,7 @@ class PurchaseRequest(models.Model):
     fabric_width = fields.Char('Fabric Width')
     pattern_time = fields.Float('Pattern Time')
     consumption = fields.Char('Consumption')
-    pattern_cost = fields.Float('Pattern Cost')
+    pattern_cost = fields.Float('Costing Order')
 
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')

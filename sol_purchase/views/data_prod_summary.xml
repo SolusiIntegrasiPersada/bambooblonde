@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="summary_prod_tree" model="ir.ui.view">
+        <field name="name">data.prod.summary.tree</field>
+        <field name="model">data.prod.summary</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="summary_prod_form" model="ir.ui.view">
+        <field name="name">data.prod.summary.form</field>
+        <field name="model">data.prod.summary</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="prod_summary_action" model="ir.actions.act_window">
+        <field name="name">Master Production Summary</field>
+        <field name="res_model">data.prod.summary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="prod_summary_menu"
+        name="Master Production Summary"
+        action="sol_purchase.prod_summary_action"
+        parent="menu_purchase_products"
+        sequence="12"/>
+
+    </data>
+
+</odoo>

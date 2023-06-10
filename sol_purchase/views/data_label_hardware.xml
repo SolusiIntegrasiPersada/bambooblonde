@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="label_hardware_tree" model="ir.ui.view">
+        <field name="name">data.label.hardware.tree</field>
+        <field name="model">data.label.hardware</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="label_hardware_form" model="ir.ui.view">
+        <field name="name">data.label.hardware.form</field>
+        <field name="model">data.label.hardware</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="label_hardware_action" model="ir.actions.act_window">
+        <field name="name">Master Label Hardware</field>
+        <field name="res_model">data.label.hardware</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="label_hardware_menu"
+        name="Master Label Hardware"
+        action="sol_purchase.label_hardware_action"
+        parent="menu_purchase_products"
+        sequence="11"/>
+
+    </data>
+
+</odoo>

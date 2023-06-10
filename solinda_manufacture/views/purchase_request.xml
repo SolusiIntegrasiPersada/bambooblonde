@@ -20,8 +20,9 @@
         </xpath>
 
         <xpath expr="//header" position="inside">
-          <button string="Create Manufacturing Orders Sample" name="create_mo_production" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/>
-          <button string="Create Pre-Production Sample" name="create_pps" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/>
+          <button string="Create Production Sample" name="create_mo_production" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/>
+          <button string="Create Proto Sample" name="create_pps" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ('draft','rejected'))]}"/>
+          <button string="Costing Product" name="create_pps" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ('done'))]}"/>
         </xpath>
 
 
