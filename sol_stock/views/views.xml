@@ -13,10 +13,24 @@
           <field name="mrp_id" invisible="1"/>
           <field name="count" invisible="1"/>
         </field>
+        <field name="location_dest_id" position="after">
+          <field name="location_dest_id_internal" attrs="{'invisible': ['&amp;', ('picking_type_code', 'not in', 'internal'), ('is_manufacture', '=', True)]}"/>
+          <field name="is_manufacture" />
+        </field>
+        <xpath expr="//field[@name='location_dest_id']" position="attributes">
+          <attribute name="attrs">{'invisible': [('is_manufacture', '=', False)]}</attribute>
+        </xpath>
+        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="before">
+          <field name="colour"/>
+          <field name="size"/>
+        </xpath>
         <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
           <field name="image" widget="image" class="oe_avatar"/>
-          <field name="fabric_width" optional="show" />
+<!--          <field name="fabric_width" optional="show" />-->
           <field name="price" />
+        </xpath>
+        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="attributes">
+          <attribute name="string">Quantity</attribute>
         </xpath>
       </field>
     </record>

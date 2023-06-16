@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx'],
+    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx', 'product'],
 
     # always loaded
     'data': [
@@ -30,6 +30,7 @@
         'report/action_report.xml',
         'views/templates.xml',
         'wizard/stock_per_store_wizard.xml',
+        'views/stock_location.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
