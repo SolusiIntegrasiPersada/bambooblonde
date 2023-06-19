@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mrp', 'purchase_stock','sol_purchase','solinda_mrp', 'sale', 'stock', 'quality_mrp'],
+    'depends': ['base', 'mrp', 'purchase_stock','sol_purchase','solinda_mrp', 'sale', 'stock', 'quality_mrp', 'sol_stock'],
 
     # always loaded
     'data': [
