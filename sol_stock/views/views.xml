@@ -15,7 +15,7 @@
         </field>
         <field name="location_dest_id" position="after">
           <field name="location_dest_id_internal" attrs="{'invisible': ['&amp;', ('picking_type_code', 'not in', 'internal'), ('is_manufacture', '=', True)]}"/>
-          <field name="is_manufacture" />
+          <field name="is_manufacture" invisible="1"/>
         </field>
         <xpath expr="//field[@name='location_dest_id']" position="attributes">
           <attribute name="attrs">{'invisible': [('is_manufacture', '=', False)]}</attribute>

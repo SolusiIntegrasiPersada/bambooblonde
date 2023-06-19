@@ -23,7 +23,7 @@ class StockPicking(models.Model):
     domain=[('is_transit', '=', True)],
     check_company=True, readonly=True,
     states={'draft': [('readonly', False)]})
-  is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
+  is_manufacture = fields.Boolean(string="Is Manufacturing", readonly=True)
 
   @api.onchange("location_dest_id_internal")
   def _onchange_location_transfer(self):

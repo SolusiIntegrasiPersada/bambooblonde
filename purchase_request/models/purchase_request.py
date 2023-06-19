@@ -282,6 +282,8 @@ class PurchaseRequest(models.Model):
         return self.write({"state": "rejected"})
 
     def button_done(self):
+        # name = str.split('-')
+        # self.name = name
         return self.write({"state": "done"})
 
     def check_auto_reject(self):

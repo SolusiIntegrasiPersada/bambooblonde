@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx', 'product'],
+    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx', 'product', 'solinda_manufacture'],
 
     # always loaded
     'data': [
