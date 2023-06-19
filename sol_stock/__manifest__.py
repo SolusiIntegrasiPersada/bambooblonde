@@ -31,6 +31,7 @@
         'views/templates.xml',
         'wizard/stock_per_store_wizard.xml',
         'views/stock_location.xml',
+        'views/stock_move_line.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

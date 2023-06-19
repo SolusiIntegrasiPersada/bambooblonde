@@ -66,3 +66,33 @@ class StockMove(models.Model):
         s = ''
       i.colour = c
       i.size = s
+
+class StockMoveLine(models.Model):
+  _inherit = 'stock.move.line'
+
+  color_ids = fields.Many2many('product.template.attribute.value', string="Size and Color")
+  colour = fields.Char('Color', compute="_onchange_color_size")
+  size = fields.Char('Size', compute="_onchange_color_size")
+
+  @api.depends('product_id')
+  def _onchange_color_size(self):
+    for i in self:
+      c, s = '', ''
+      if i.product_id.product_template_variant_value_ids:
+        i.color_ids = i.product_id.product_template_variant_value_ids
+        list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
+        list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
+        for v in i.product_id.product_template_variant_value_ids:
+          if any(v.display_name.upper().startswith(word) for word in list_color):
+            c += ' ' + v.name + ' '
+          elif any(v.display_name.upper().startswith(word) for word in list_size):
+            s += ' ' + v.name + ' '
+          else:
+            c += ''
+            s += ''
+      else:
+        c = ''
+        s = ''
+      i.colour = c
+      i.size = s
+
