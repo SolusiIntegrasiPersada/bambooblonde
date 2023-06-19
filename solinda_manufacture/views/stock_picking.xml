@@ -6,7 +6,7 @@
     <field name="model">stock.picking</field>
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
-      <field name="style_name" position="after">
+      <field name="origin" position="after">
         <field name="mrp_prod_id" invisible="1"/>
       </field>
     </field>
