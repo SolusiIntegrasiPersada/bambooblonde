@@ -28,7 +28,7 @@
         'security/ir.model.access.csv',
         'views/purchase.xml',
         'views/purchase_request.xml',
-        'views/stock_picking.xml',
+        # 'views/stock_picking.xml',
         # 'views/purchase_order_view.xml',
         'views/company.xml',
         'views/mrp_breakdown.xml',
