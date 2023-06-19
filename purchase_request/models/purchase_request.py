@@ -286,7 +286,7 @@ class PurchaseRequest(models.Model):
         # new_name = '%s' % (new_string[0], type(new_string[0]))
         res = self.write({
             "state": "done",
-            'name': (new_string[0])
+            'name': (new_string[0]) + ' - FIX'
         })
         return res
 
