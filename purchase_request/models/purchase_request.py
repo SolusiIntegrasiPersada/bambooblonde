@@ -282,9 +282,13 @@ class PurchaseRequest(models.Model):
         return self.write({"state": "rejected"})
 
     def button_done(self):
-        # name = str.split('-')
-        # self.name = name
-        return self.write({"state": "done"})
+        new_string = self.name.split('-')
+        # new_name = '%s' % (new_string[0], type(new_string[0]))
+        res = self.write({
+            "state": "done",
+            'name': (new_string[0])
+        })
+        return res
 
     def check_auto_reject(self):
         """When all lines are cancelled the purchase request should be
