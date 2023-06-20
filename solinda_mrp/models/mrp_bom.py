@@ -111,11 +111,23 @@ class MrpBom(models.Model):
     margin = fields.Float(string="Margin 1")
     margin_2 = fields.Float(string="Margin 2")
     margin_3 = fields.Float(string="Margin 3")
+    nominal1 = fields.Float('Nominal1',compute=_compute_nominal)
+    nominal2 = fields.Float('Nominal2',compute=_compute_nominal)
+    nominal3 = fields.Float('Nominal3',compute=_compute_nominal)
     suggest_price = fields.Float(string="Suggest Price", compute=_compute_suggest_price)
     suggest_price_2 = fields.Float(string="Suggest Price 2", compute=_compute_suggest_price_2)
     suggest_price_3 = fields.Float(string="Suggest Price 3", compute=_compute_suggest_price_3)
     bom_line_variant_ids = fields.One2many('mrp.bom.line.variant', 'bom_id', 'Material Variant', copy=True)
     label_hardware_ids = fields.One2many('mrp.bom.label.hardware', 'label_hardware_id', string='Label Hardware')
+
+    field_name = fields.Char(compute='_compute_field_name', string='Field Name')
+    
+    @api.depends('margin','margin_2','margin_3','total_cost')
+    def _compute_nominal(self):
+        for i in self:
+            i.nominal1 = i.margin * total_cost
+            i.nominal2 = i.margin2 * total_cost
+            i.nominal3 = i.margin3 * total_cost
 
     # @api.onchange('bom_line_variant_ids')
     # def _onchange_bom_line_qty(self):
