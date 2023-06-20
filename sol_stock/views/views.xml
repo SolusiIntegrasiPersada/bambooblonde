@@ -15,7 +15,7 @@
           <field name="count" invisible="1"/>
         </field>
         <field name="location_dest_id" position="after">
-          <field name="location_dest_id_internal" attrs="{'invisible': ['&amp;', ('picking_type_code', 'not in', 'internal'), ('is_manufacture', '=', True)]}"/>
+          <field name="location_dest_id_internal" attrs="{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', True)]}"/>
           <field name="is_manufacture" invisible="1"/>
         </field>
         <xpath expr="//field[@name='partner_id']" position="attributes">
