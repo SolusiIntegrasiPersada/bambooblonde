@@ -6,6 +6,7 @@ class StockPickingType(models.Model):
   _inherit = 'stock.picking.type'
 
   mandatory_source = fields.Boolean('Required Source Documents', default=False)
+  hide_return = fields.Boolean('Hide Return Operations', default=False)
 
 class StockPicking(models.Model):
   _inherit = 'stock.picking'
@@ -24,6 +25,7 @@ class StockPicking(models.Model):
     check_company=True, readonly=True,
     states={'draft': [('readonly', False)]})
   is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
+  hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
 
   @api.onchange("location_dest_id_internal")
   def _onchange_location_transfer(self):
