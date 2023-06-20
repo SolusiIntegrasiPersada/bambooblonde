@@ -10,6 +10,7 @@
                     <field name="date"/>
                     <field name="product_id" invisible="1"/>
                     <field name="product_tmpl_id"/>
+                    <field name="costing"/>
                     <field name="end_tender" invisible="1"/>
                 </tree>
             </field>
@@ -49,6 +50,7 @@
                             <group>
                                 <field name="date" readonly="1"/>
                                 <field name="end_tender" readonly="1" invisible="1"/>
+                                <field name="costing"/>
                             </group>
                         </group>
                         <group>
