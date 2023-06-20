@@ -35,6 +35,10 @@ class TenderBom(models.Model):
     product_id = fields.Many2one('product.product', string='Product Variant',required=False)
     product_tmpl_id = fields.Many2one('product.template', string='Product')
     deal_bom_id = fields.Many2one('mrp.bom', string='Deal Pre-Production Sample')
+    costing = fields.Selection([
+        ('costing_proto', 'Costing Proto'),
+        ('costing_product', 'Costing Product'),
+    ], string='Costing')
 
     def new_bom(self):
         for i in self:

@@ -70,6 +70,9 @@ class PurchaseRequest(models.Model):
         if self.is_create_pps == True:
             return self.show_pps()
         else:
+            costing = 'costing_proto'
+            if self.state == 'done':
+                costing = 'costing_product'
             ParentBoM = self.env["tender.bom"]
             label_hardware_ids = []
             for label in self.label_hardware_ids:
@@ -88,7 +91,8 @@ class PurchaseRequest(models.Model):
                             }))
                 parent_bom_id = ParentBoM.create({'name': line.product_id.name,
                                   'product_tmpl_id': line.product_id.product_tmpl_id.id,
-                                  'date': fields.date.today()
+                                  'date': fields.date.today(),
+                                  'costing': costing
                                   })
                 parent_bom_id.new_bom()
                 bom_id = self.env["mrp.bom"].search([('tender_id','=',parent_bom_id.id)],limit=1)
