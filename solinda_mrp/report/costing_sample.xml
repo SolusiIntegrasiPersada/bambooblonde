@@ -320,6 +320,31 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <br/>
+                        <table style="border-collapse: collapse; width: 50%;" border="1">
+                            <tr>
+                                <td style="border: 1px solid black;font-weight:bold">Component</td>
+                                <td style="border: 1px solid black;font-weight:bold">Sizes</td>
+                                <td style="text-align: right; border: 1px solid black;font-weight:bold">Quantity</td>
+                                <td style="border: 1px solid black;font-weight:bold">UoM</td>
+                            </tr>
+                            <t t-foreach="doc.bom_line_variant_ids" t-as="variant">
+                                <tr>
+                                    <td style="border: 1px solid black;">
+                                        <t t-esc="variant.product_id.name"/>
+                                    </td>
+                                    <td style="border: 1px solid black;">
+                                        <t t-esc="variant.sizes"/>
+                                    </td>
+                                    <td style="text-align: right;border: 1px solid black;">
+                                        <t t-esc="variant.product_qty"/>
+                                    </td>
+                                    <td style="border: 1px solid black;">
+                                        <t t-esc="variant.product_uom_id.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
                     </div>
                 </t>
             </div>
