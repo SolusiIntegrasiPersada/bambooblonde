@@ -120,8 +120,6 @@ class MrpBom(models.Model):
     bom_line_variant_ids = fields.One2many('mrp.bom.line.variant', 'bom_id', 'Material Variant', copy=True)
     label_hardware_ids = fields.One2many('mrp.bom.label.hardware', 'label_hardware_id', string='Label Hardware')
 
-    field_name = fields.Char(compute='_compute_field_name', string='Field Name')
-    
     @api.depends('margin','margin_2','margin_3','total_cost')
     def _compute_nominal(self):
         for i in self:
