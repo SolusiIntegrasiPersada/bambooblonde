@@ -106,9 +106,9 @@ class MrpBom(models.Model):
     def _compute_nominal(self):
         for i in self:
             i.nominal1 = i.margin * i.total_cost
-            i.nominal2 = i.margin2 * i.total_cost
-            i.nominal3 = i.margin3 * i.total_cost
-            
+            i.nominal2 = i.margin_2 * i.total_cost
+            i.nominal3 = i.margin_3 * i.total_cost
+
     code = fields.Char('Child PPS')
     over_packaging = fields.Float(string='Over & Packaging', default=0.00)
     customer = fields.Many2one(comodel_name='res.partner', string='Customer')
