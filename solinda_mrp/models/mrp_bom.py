@@ -213,27 +213,18 @@ class MrpBomLine(models.Model):
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
-            c,s = False,False
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 list_size = ['SIZE:','SIZES:','UKURAN:']
                 list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
                 for v in i.product_id.product_template_variant_value_ids:
-                    if any(v.display_name.upper().startswith(word) for word in list_color):
-                        c = v.id
-                        # c += ' '+v.name+' '
-                        # indexc = c.index(':')
-                        # c = c[indexc+1:]
-                    elif any(v.display_name.upper().startswith(word) for word in list_size):
-                        s = s.id
-                        # s += ' '+v.name+' '
-                        # indexs = s.index(':')
-                        # s = s[indexs+1:]
-                    else:
-                        c += ''
-                        s += ''
-            i.color = c
-            i.sizes = s
+                    if any(v.product_attribute_value_id.attribute_id.name.upper().startswith(word) for word in list_color):
+                        i.color = v.product_attribute_value_id.id
+                    elif any(v.product_attribute_value_id.attribute_id.name.upper().startswith(word) for word in list_size):
+                        i.sizes = v.product_attribute_value_id.id
+            else:
+                i.color = False
+                i.sizes = False
 
     supplier = fields.Many2one('res.partner',string='Supplier')
     color = fields.Many2one('product.attribute.value', string='Color', domain="[('attribute_id.name', '=', 'COLOR')]")
