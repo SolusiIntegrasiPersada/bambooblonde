@@ -18,7 +18,7 @@ class StockQuant(models.Model):
   stock_type_id = fields.Many2one('stock.type', string='Stock Type', related='product_id.stock_type')
   name_warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', related='location_id.warehouse_id', store=True)
   barcode = fields.Char(string="Barcode", related='product_id.barcode')
-
+  notes = fields.Text(string="Note")
   @api.depends('product_id')
   def _onchange_color_size(self):
     for i in self:
