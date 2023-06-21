@@ -214,19 +214,19 @@ class MrpBomLine(models.Model):
     def _onchange_color_size(self):
         for i in self:
             c,s = '',''
-            if i.product_id.product_template_variant_value_ids:
+            if i.product_id.produ   ct_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 list_size = ['SIZE:','SIZES:','UKURAN:']
                 list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.display_name.upper().startswith(word) for word in list_color):
                         c += ' '+v.name+' '
-                        indexc = c.index(':')
-                        c = c[indexc+1:]
+                        # indexc = c.index(':')
+                        # c = c[indexc+1:]
                     elif any(v.display_name.upper().startswith(word) for word in list_size):
                         s += ' '+v.name+' '
-                        indexs = s.index(':')
-                        s = s[indexs+1:]
+                        # indexs = s.index(':')
+                        # s = s[indexs+1:]
                     else:
                         c += ''
                         s += ''
