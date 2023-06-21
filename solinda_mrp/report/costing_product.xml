@@ -126,10 +126,12 @@
                                             <t t-esc="bom.product_qty"/>
                                         </td>
                                         <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="bom.product_id.standard_price" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                            <t t-esc="bom.product_id.lst_price" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                         </td>
                                         <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="bom.total_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                            <t t-set="sub_tot" t-value="bom.product_qty * bom.product_id.lst_price"/>
+                                            <!-- <t t-esc="bom.total_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/> -->
+                                            <t t-esc="sub_tot" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                             <t t-set="total_material" t-value="total_material + bom.total_material"/>
                                         </td>
                                     </tr>
@@ -246,7 +248,7 @@
                                                         <t t-esc="doc.margin * 100"/>
                                                     </td>
                                                     <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
-                                                        <t t-esc="doc.suggest_price" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                                        <t t-esc="doc.nominal1" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
@@ -254,7 +256,7 @@
                                                         <t t-esc="doc.margin_2 * 100"/>
                                                     </td>
                                                     <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
-                                                        <t t-esc="doc.suggest_price_2" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                                        <t t-esc="doc.nominal2" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
@@ -262,7 +264,7 @@
                                                         <t t-esc="doc.margin_3 * 100"/>
                                                     </td>
                                                     <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
-                                                        <t t-esc="doc.suggest_price_3" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                                        <t t-esc="doc.nominal3" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
