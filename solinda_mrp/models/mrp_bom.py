@@ -215,8 +215,8 @@ class MrpBomLine(models.Model):
         for i in self:
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
-                list_size = ['SIZE:','SIZES:','UKURAN:']
-                list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
+                list_size = ['SIZE','SIZES','UKURAN']
+                list_color = ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.product_attribute_value_id.attribute_id.name.upper().startswith(word) for word in list_color):
                         i.color = v.product_attribute_value_id.id
