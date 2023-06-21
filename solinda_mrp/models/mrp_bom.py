@@ -220,11 +220,13 @@ class MrpBomLine(models.Model):
                 list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.display_name.upper().startswith(word) for word in list_color):
-                        c += ' '+v.name+' '
+                        c = v.id
+                        # c += ' '+v.name+' '
                         # indexc = c.index(':')
                         # c = c[indexc+1:]
                     elif any(v.display_name.upper().startswith(word) for word in list_size):
-                        s += ' '+v.name+' '
+                        s = s.id
+                        # s += ' '+v.name+' '
                         # indexs = s.index(':')
                         # s = s[indexs+1:]
                     else:
