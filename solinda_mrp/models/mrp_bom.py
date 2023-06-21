@@ -221,12 +221,12 @@ class MrpBomLine(models.Model):
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.display_name.upper().startswith(word) for word in list_color):
                         c += ' '+v.name+' '
-                        indexc = c.find(':')
-                        c = c[0:0:] + c[indexc+1::]
+                        indexc = c.index(':')
+                        c = c[indexc+1:]
                     elif any(v.display_name.upper().startswith(word) for word in list_size):
                         s += ' '+v.name+' '
-                        indexs = s.find(':')
-                        s = s[0:0:] + s[indexs+1::]
+                        indexs = s.index(':')
+                        s = s[indexs+1:]
                     else:
                         c += ''
                         s += ''
