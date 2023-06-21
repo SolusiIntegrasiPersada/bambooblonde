@@ -213,7 +213,7 @@ class MrpBomLine(models.Model):
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
-            c,s = '',''
+            c,s = False,False
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 list_size = ['SIZE:','SIZES:','UKURAN:']
