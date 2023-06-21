@@ -41,9 +41,9 @@ class StockQuant(models.Model):
       i.colour = c
       i.size = s
 
-      @api.model
-      def _get_inventory_fields_write(self):
-        fields = super(StockQuant, self)._get_inventory_fields_write()
-        return fields + ['notes']
+  @api.model
+  def _get_inventory_fields_write(self):
+    fields = super(StockQuant, self)._get_inventory_fields_write()
+    return fields + ['notes']
   
 
