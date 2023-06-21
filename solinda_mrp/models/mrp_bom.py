@@ -214,7 +214,7 @@ class MrpBomLine(models.Model):
     def _onchange_color_size(self):
         for i in self:
             c,s = '',''
-            if i.product_id.produ   ct_template_variant_value_ids:
+            if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 list_size = ['SIZE:','SIZES:','UKURAN:']
                 list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
