@@ -20,6 +20,15 @@ class CustomPattern(models.Model):
     model_ptr = fields.Many2one('product.category', string='Model')
     size = fields.Many2one('product.template.attribute.value', string='Size')
 
+    no_ptr = fields.Char('Pattern No')
+    pattern_marker = fields.Char('Pattern Marker')
+    size_approve = fields.Char('Size Approve')
+    sample_size = fields.Char('Sample Size')
+    fabric_width = fields.Char('Fabric Width')
+    pattern_time = fields.Float('Pattern Time')
+    consumption = fields.Char('Consumption')
+    pattern_cost = fields.Float('Costing Order')
+
 class DataLabelHardware(models.Model):
     _name = 'data.label.hardware'
     _description = 'Data Label Hardware'
@@ -108,7 +117,7 @@ class PurchaseRequestLine(models.Model):
     color = fields.Many2many('product.template.attribute.value', string="Size and Color")
     colour = fields.Char('Color',compute="_onchange_color_size")
     size = fields.Char('Size',compute="_onchange_color_size")
-    
+
 
     @api.depends('product_id')
     def _onchange_color_size(self):
@@ -139,7 +148,7 @@ class PurchaseRequestLine(models.Model):
             if self.product_id.image_1920:
                 self.image = self.product_id.image_1920
             self.image = self.image
-    
+
     @api.onchange('product_id')
     def _onchange_department(self):
         if self.product_id:
@@ -195,13 +204,7 @@ class PurchaseRequest(models.Model):
     purchase_revision_id = fields.Many2one('purchase.request', string='Pattern Alteration')
     pattern_count = fields.Integer(string='Pattern', compute='_find_len')
     test = fields.Boolean(string="Test", default=False)
-    pattern_marker = fields.Char('Pattern Marker')
-    size_approve = fields.Char('Size Approve')
-    sample_size = fields.Char('Sample Size')
-    fabric_width = fields.Char('Fabric Width')
-    pattern_time = fields.Float('Pattern Time')
-    consumption = fields.Char('Consumption')
-    pattern_cost = fields.Float('Costing Order')
+
 
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')
@@ -226,35 +229,53 @@ class PurchaseRequest(models.Model):
     @api.model
     def create(self, vals):
         res = super(PurchaseRequest, self).create(vals)
-        res.name = self.env["ir.sequence"].next_by_code("purchase.request.sequ")
+        if not res.test:
+            res.name = self.env["ir.sequence"].next_by_code("purchase.request.sequ")
         return res
 
     def _find_len(self):
         self.pattern_count = len(self.purchase_pattern_ids.ids)
 
     def create_pattern_alteration(self):
-        pattern = self.copy({
-            'count': 1 + len(self.purchase_pattern_ids.ids)
+        custom = self.env['custom.pattern'].create({
+            'parent_custom_id': self.ids[0],
         })
+        custom.write({
+            'no_ptr': 'PTR ' + str(self.count + 1),
+        })
+        new_name = self.name[0: self.name.index(' - PTR')] if self.test else self.name
+
+        pattern = self.copy({
+            # 'count': 1 + len(self.purchase_pattern_ids.ids),
+            # 'name': "%s - PTR %s" % (new_name, self.count + 1),
+            'revision_id': self.id,
+            'count': self.count + 1,
+            'test': True,
+        })
+        pattern.write({
+            'name': "%s - PTR %s" % (new_name, self.count + 1),
+        })
+        # if self.test:
+        # pattern.name = self.name + ' - PTR ' + str(self.count)
+
         uid_id = self.env.user.id
         self.env['pattern.alteration'].create({
             'pattern_id': pattern.id,
             'user_id': uid_id,
             'parent_purchase_id': self.ids[0],
         })
-        pattern.name = self.name + ' - PTR ' + str(len(self.purchase_pattern_ids.ids))
-        pattern.test = True
-        self.env['custom.pattern'].create({
-            'parent_custom_id': self.ids[0],
-        })
+        pattern.recompute()
+        # pattern.name = self.name + ' - PTR ' + str(len(self.purchase_pattern_ids.ids))
+
         return {
-            "name": _("Pattern Alteration"),
+            # "name": _("Pattern Alteration"),
             "type": "ir.actions.act_window",
             "res_model": "purchase.request",
-            "views": [
-                (self.env.ref("purchase_request.view_purchase_request_form").id, "form"),
-            ],
-            "target": "current",
+            # "views": [
+            #     (self.env.ref("purchase_request.view_purchase_request_form").id, "form"),
+            # ],
+            # "target": "current",
+            "view_mode": "form",
             "res_id": pattern.id,
         }
         

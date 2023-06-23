@@ -56,6 +56,7 @@
           <field name="count" invisible="1"/>
           <!-- <field name="request_detail_id" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/> -->
           <field name="story_id" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+          <field name="revision_id" invisible="1"/>
         </xpath>
         <xpath expr="//field[@name='origin']" position="attributes">
           <attribute name="invisible">1</attribute>
@@ -77,16 +78,16 @@
           </group>
         </xpath>
         <xpath expr="//button[@name='button_rejected']" position="attributes">
-          <attribute name="invisible">1</attribute> 
+          <attribute name="invisible">1</attribute>
         </xpath>
         <xpath expr="//button[@name='button_to_approve']" position="attributes">
           <attribute name="attrs">{'invisible':['|',('count', '&lt;', 3)]}</attribute>
         </xpath>
         <xpath expr="//header" position="inside">
-          <button 
-            name="button_done" 
+          <button
+            name="button_done"
             states="draft"
-            type="object" 
+            type="object"
             string="Pending Order"
             style="background-color:#3366cc; border-color:#3366cc"
             class="oe_highlight"
@@ -94,10 +95,10 @@
           />
         </xpath>
         <xpath expr="//header" position="inside">
-          <button 
-            name="button_to_pattern" 
+          <button
+            name="button_to_pattern"
             states="draft"
-            type="object" 
+            type="object"
             string="Pattern Alteration"
             class="oe_highlight"
             attrs="{'invisible': ['|',('count', '&gt;=', 3)]}"
@@ -113,10 +114,10 @@
           </group>
         </xpath>
         <xpath expr="//header" position="inside">
-          <button 
-            name="button_to_pattern" 
+          <button
+            name="button_to_pattern"
             states="approved"
-            type="object" 
+            type="object"
             string="Pattern Alteration"
             class="oe_highlight"
             style="background-color:#ff9900; border-color:#ff9900"
@@ -124,30 +125,27 @@
           />
         </xpath>
         <xpath expr="//button[@name='button_approved']" position="after">
-          <button name="create_pattern_alteration" type="object" string="Create Pattern Alteration" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', ('rejected')), ('test', '=', True)]}"/>
+          <button name="create_pattern_alteration" type="object" string="Create Pattern Alteration" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('rejected'))]}"/>
         </xpath>
-        <xpath expr="//div[@class='oe_button_box']" position="inside">
-          <button type="object" name="view_pattern_alteration" class="oe_stat_button" icon="fa-align-justify" attrs="{'invisible': [('pattern_count', '=', 0)]}">
-            <field name='pattern_count' widget="statinfo" string='Pattern Alteration'/>
-          </button>
-        </xpath>
+<!--        <xpath expr="//div[@class='oe_button_box']" position="inside">-->
+<!--          <button type="object" name="view_pattern_alteration" class="oe_stat_button" icon="fa-align-justify" attrs="{'invisible': [('pattern_count', '=', 0)]}">-->
+<!--            <field name='pattern_count' widget="statinfo" string='Pattern Alteration'/>-->
+<!--          </button>-->
+<!--        </xpath>-->
         <xpath expr="//notebook//page[1]" position="after">
           <page string="Custom Pattern" attrs="{'invisible': [('test', '=', False)]}">
-            <group >
-              <group>
+            <field name="purchase_custom_ids">
+              <tree editable="top">
+                <field name="no_ptr"/>
                 <field name="pattern_marker" />
                 <field name="size_approve" />
-              </group>
-              <group>
                 <field name="sample_size" />
                 <field name="fabric_width" />
                 <field name="pattern_time" widget="float_time"/>
-              </group>
-              <group>
                 <field name="consumption" />
                 <field name="pattern_cost" />
-              </group>
-            </group>
+              </tree>
+            </field>
             <group >
               <group string="ALTERATION COMMENT">
                 <field name="alt_cmnt" nolabel="1" placeholder="Comments ....." />
