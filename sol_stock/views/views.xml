@@ -15,8 +15,9 @@
           <field name="count" invisible="1"/>
         </field>
         <field name="location_dest_id" position="after">
-          <field name="location_dest_id_internal" attrs="{'invisible': ['&amp;', ('picking_type_code', 'in', ['internal','incoming','outgoing','mrp_operation']), ('is_manufacture', '=', True)]}"/>
+<!--          <field name="location_dest_id_internal" attrs="{'invisible': ['|', ('picking_type_code', 'not in', 'internal'), ('is_manufacture', '=', True)]}"/>-->
           <field name="is_manufacture" invisible="1"/>
+          <field name="is_foc_type" invisible="1"/>
         </field>
         <xpath expr="//field[@name='partner_id']" position="attributes">
           <attribute name="attrs">{'invisible': ['&amp;',  ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>
@@ -24,9 +25,9 @@
         <xpath expr="//div[@class='o_td_label']" position="attributes">
           <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>
         </xpath>
-        <xpath expr="//field[@name='location_dest_id']" position="attributes">
-          <attribute name="attrs">{'invisible': [('is_manufacture', '=', False)]}</attribute>
-        </xpath>
+<!--        <xpath expr="//field[@name='location_dest_id']" position="attributes">-->
+<!--          <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>-->
+<!--        </xpath>-->
         <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
           <attribute name="attrs">{'invisible': [('hide_return', '=', True)]}</attribute>
         </xpath>
@@ -53,6 +54,7 @@
         <field name="show_operations" position="after">
           <field name="mandatory_source" />
           <field name="hide_return"/>
+          <field name="is_foc_type"/>
         </field>
       </field>
     </record>

@@ -7,6 +7,7 @@ class StockPickingType(models.Model):
 
   mandatory_source = fields.Boolean('Required Source Documents', default=False)
   hide_return = fields.Boolean('Hide Return Operations', default=False)
+  is_foc_type = fields.Boolean('Is FOC Operation?', default=False)
 
 class StockPicking(models.Model):
   _inherit = 'stock.picking'
@@ -17,25 +18,37 @@ class StockPicking(models.Model):
   # analytic_account_id = fields.Many2one('account.analytic.account',string='Analytic Account')
   mrp_id = fields.Many2one('mrp.production', string="MRP")
   count = fields.Integer(string="Count Service")
-  location_dest_id_internal = fields.Many2one(
-    'stock.location', "Destination Location",
-    default=lambda self: self.env['stock.picking.type'].browse(
-      self._context.get('default_picking_type_id')).default_location_dest_id,
-    domain=[('is_transit', '=', True)],
-    check_company=True, readonly=True,
-    states={'draft': [('readonly', False)]})
+  # location_dest_id_internal = fields.Many2one(
+  #   'stock.location', "Destination Location Transit",
+  #   # default=lambda self: self.env['stock.picking.type'].browse(
+  #   #   self._context.get('default_picking_type_id')).default_location_dest_id,
+  #   domain=[('is_transit', '=', True)],
+  #   check_company=True, readonly=True,
+  #   states={'draft': [('readonly', False)]})
   is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
   hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
+  is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
 
-  @api.onchange("location_dest_id_internal")
-  def _onchange_location_transfer(self):
-    for i in self:
-      if i.location_dest_id_internal:
-        location = ''
-        if i.location_dest_id:
-          i.location_dest_id = i.location_dest_id_internal
-        return location
+  # @api.onchange("location_dest_id_internal")
+  # def _onchange_location_transfer(self):
+  #   for i in self:
+  #     if i.location_dest_id_internal:
+  #       location = ''
+  #       if i.location_dest_id:
+  #         i.location_dest_id = i.location_dest_id_internal
+  #       return location
 
+  @api.onchange('is_foc_type')
+  def _onchange_location(self):
+    for rec in self:
+      data = {}
+      ## FOC Location
+      if rec.is_foc_type == True:
+        data = {'domain': {'location_dest_id': [('is_foc', '=', True)]}}
+      ## Bamboo Transit
+      if rec.picking_type_id.code == 'internal' and rec.is_manufacture == False:
+        data = {'domain': {'location_dest_id': [('is_transit', '=', True)]}}
+      return data
 
 class StockMove(models.Model):
   _inherit = 'stock.move'
