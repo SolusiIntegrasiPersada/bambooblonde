@@ -35,18 +35,12 @@
                 <field name="over_packaging" />
                 <field name="is_final" widget="boolean_toggle"/>
                 <field name="total_cost" />
-                <group col="4">
-                    <group>
-                        <field name="margin" widget="percentage"/>
-                        <field name="margin_2" widget="percentage"/>
-                        <field name="margin_3" widget="percentage"/>
-                    </group>
-                    <group>
-                        <field name="nominal1"/>
-                        <field name="nominal2"/>
-                        <field name="nominal3"/>
-                    </group>
-                </group>
+                <field name="margin" widget="percentage"/>
+                <field name="margin_2" widget="percentage"/>
+                <field name="margin_3" widget="percentage"/>
+                <field name="nominal1"/>
+                <field name="nominal2"/>
+                <field name="nominal3"/>
                 <field name="retail_price" />
             </field>
 
