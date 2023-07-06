@@ -31,4 +31,9 @@
         'views/sequence_data.xml',
         'report/action_report.xml',
     ],
+    'assets': {
+            'web.assets_backend': [
+                'remove_decimal_zero_trailing/static/src/js/field_utils.js',
+                ]
+        },
 }

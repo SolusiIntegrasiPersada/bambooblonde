@@ -3,3 +3,4 @@
 from . import stock_needs
 from . import pos_config
 from . import stock_comment
+from . import ir_qweb_fields
