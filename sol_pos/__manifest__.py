@@ -17,30 +17,32 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '15.0.1.0.2',
+    'version': '15.0.1.0.4',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale', 'product', 'report_xlsx'], 
+    'depends': ['base', 'point_of_sale', 'product', 'report_xlsx'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/stock_need_views.xml',
         'views/stock_comment_views.xml',
         'views/pos_config_views.xml',
+        'views/res_users_view.xml',
         'views/sequence_data.xml',
         'report/action_report.xml',
     ],
     'assets': {
-            'web.assets_backend': [
-                'sol_pos/static/src/js/field_utils.js',
-                ],
-            'point_of_sale.assets': [
-                'sol_pos/static/src/js/pos_screem.js',
-            ],
-            'web.assets_qweb': [
-                'sol_pos/static/src/xml/pos.xml',
-                'sol_pos/static/src/xml/pos_screen.xml',
-            ],
-        },
+        'web.assets_backend': [
+            'sol_pos/static/src/js/field_utils.js',
+        ],
+        'point_of_sale.assets': [
+            'sol_pos/static/src/js/pos_screem.js',
+        ],
+        'web.assets_qweb': [
+            'sol_pos/static/src/xml/pos.xml',
+            'sol_pos/static/src/xml/pos_screen.xml',
+        ],
+    },
 }
