@@ -33,6 +33,7 @@
         'wizard/stock_per_store_wizard.xml',
         'views/stock_location.xml',
         'views/stock_move_line.xml',
+        'report/report_receive.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
