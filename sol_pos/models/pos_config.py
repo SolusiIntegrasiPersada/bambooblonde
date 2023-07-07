@@ -1,12 +1,9 @@
-from odoo import models, fields, api
+from odoo import models, fields
+
 
 class PosConfig(models.Model):
-  _inherit = 'pos.config'
+    _inherit = 'pos.config'
 
-  address = fields.Char(string='Address')
-  supervisor = fields.Char(string='Supervisor')
-
-class PosSession(models.Model):
-  _inherit = 'pos.session'
-
-  visitor_count = fields.Integer(string='Visitor Count')
+    address = fields.Char(string='Address')
+    supervisor = fields.Char(string='Supervisor')
+    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account")
