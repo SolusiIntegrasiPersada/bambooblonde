@@ -57,3 +57,9 @@ class DataFabricLining(models.Model):
     _description = 'Database Fabric and Lining'
 
     name = fields.Char(string='Name')
+
+class MainColor(models.Model):
+    _name = 'main.color'
+    _description = 'Main Color'
+
+    name = fields.Char(string="Name")
