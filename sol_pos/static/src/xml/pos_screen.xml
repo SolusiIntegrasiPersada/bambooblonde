@@ -1,4 +1,16 @@
 <templates id="template" xml:space="preserve">
+    <t t-name="OrderDetails" t-inherit="point_of_sale.OrderDetails" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('subentry')]" position="replace">
+            <div class="empty"/>
+        </xpath>
+    </t>
+
+    <t t-name="OrderSummary" t-inherit="point_of_sale.OrderSummary" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('subentry')]" position="replace">
+            <div class="empty"/>
+        </xpath>
+    </t>
+
     <t t-name="RefundButton" t-inherit="point_of_sale.RefundButton" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('control-button')]" position="replace">
             <div class="control-button">

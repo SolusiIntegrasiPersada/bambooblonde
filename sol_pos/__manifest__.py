@@ -17,10 +17,10 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '15.0.1.0.7',
+    'version': '15.0.1.0.9',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale', 'pos_sale', 'product', 'report_xlsx'],
+    'depends': ['base', 'point_of_sale', 'pos_sale', 'pos_discount', 'product', 'report_xlsx'],
 
     # always loaded
     'data': [
@@ -41,6 +41,7 @@
             'sol_pos/static/src/js/field_utils.js',
         ],
         'point_of_sale.assets': [
+            'sol_pos/static/src/js/GlobalLineDiscount.js',
             'sol_pos/static/src/js/product_screen.js',
             'sol_pos/static/src/js/order_receipt.js',
             'sol_pos/static/src/js/models.js',
