@@ -1,41 +1,40 @@
-odoo.define('pos_delete_orderline.ItemsCount', function(require) {
+odoo.define('sol_pos.ItemsCount', function (require) {
     'use strict';
-   const { Gui } = require('point_of_sale.Gui');
-   const PosComponent = require('point_of_sale.PosComponent');
-   const { identifyError } = require('point_of_sale.utils');
-   const ProductScreen = require('point_of_sale.ProductScreen');
-   const { useListener } = require("@web/core/utils/hooks");
-   const Registries = require('point_of_sale.Registries');
-   const PaymentScreen = require('point_of_sale.PaymentScreen');
+    const {Gui} = require('point_of_sale.Gui');
+    const PosComponent = require('point_of_sale.PosComponent');
+    const {identifyError} = require('point_of_sale.utils');
+    const ProductScreen = require('point_of_sale.ProductScreen');
+    const {useListener} = require("@web/core/utils/hooks");
+    const Registries = require('point_of_sale.Registries');
+    const PaymentScreen = require('point_of_sale.PaymentScreen');
 
-   class ItemsCount extends PosComponent {
+    class ItemsCount extends PosComponent {
         setup() {
-           super.setup();
-       }
-
-       get_items_qty() {
+            super.setup();
+        }
+        get_items_qty() {
             /**
-            * Get the total quantity of items in the current order.
-            *
-            * @returns {number} The total quantity of items in the current order.
-            */
-            var order    = this.env.pos.get_order();
+             * Get the total quantity of items in the current order.
+             *
+             * @returns {number} The total quantity of items in the current order.
+             */
+            var order = this.env.pos.get_order();
             var sum = 0;
-            order.orderlines.forEach(function(t) {
+            order.orderlines.forEach(function (t) {
                 sum += t.quantity;
             })
             return sum
-       }
+        }
 
-   }
-   ItemsCount.template = 'ItemsCount';
-   ProductScreen.addControlButton({
-       component: ItemsCount,
-       condition: function() {
-           return this.env.pos;
-       },
-   });
-   Registries.Component.add(ItemsCount);
-   return ItemsCount;
+    }
 
+    ItemsCount.template = 'ItemsCount';
+    ProductScreen.addControlButton({
+        component: ItemsCount,
+        condition: function () {
+            return this.env.pos;
+        },
+    });
+    Registries.Component.add(ItemsCount);
+    return ItemsCount;
 });

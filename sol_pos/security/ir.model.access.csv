@@ -3,3 +3,4 @@ access_stock_needs,access.stock.needs,model_stock_needs,base.group_user,1,1,1,1
 access_stock_line,access.stock.line,model_stock_line,base.group_user,1,1,1,1
 access_stock_comment,access.stock.comment,model_stock_comment,base.group_user,1,1,1,1
 access_stock_line_comment,access.stock.line.comment,model_stock_line_comment,base.group_user,1,1,1,1
+access_pos_receipt,access_pos_receipt,model_pos_receipt,base.group_user,1,1,1,1

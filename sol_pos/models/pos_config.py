@@ -1,12 +1,25 @@
-from odoo import models, fields, api
+from odoo import models, fields
+
 
 class PosConfig(models.Model):
-  _inherit = 'pos.config'
+    _inherit = 'pos.config'
 
-  address = fields.Char(string='Address')
-  supervisor = fields.Char(string='Supervisor')
-
-class PosSession(models.Model):
-  _inherit = 'pos.session'
-
-  visitor_count = fields.Integer(string='Visitor Count')
+    address = fields.Char(string='Address')
+    supervisor = fields.Char(string='Supervisor')
+    analytic_account_id = fields.Many2one(comodel_name='account.analytic.account', string='Analytic Account')
+    receipt_design_id = fields.Many2one(
+        'pos.receipt',
+        string='Receipt Design',
+        help='Choose any receipt design',
+        required=True
+    )
+    design_receipt = fields.Text(
+        related='receipt_design_id.design_receipt',
+        string='Receipt XML',
+        help='Helps to get related receipt design'
+    )
+    is_custom_receipt = fields.Boolean(
+        string='Is Custom Receipt',
+        help='Boolean field to enable the custom receipt design',
+        default=True,
+    )

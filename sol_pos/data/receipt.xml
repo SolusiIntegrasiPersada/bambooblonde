@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="default_receipt" model="pos.receipt">
+        <field name="name">Default Receipt</field>
+        <field name="design_receipt">
+            <![CDATA[
+            <div class="pos-receipt" style="font-size: 12px;">
+                <div class="pos-receipt-header">
+                    <div class="pos-center-align">
+                        <div style="font-weight: bolder; font-size: 15px;">
+                            <t t-esc="pos.config.name"/>
+                        </div>
+                        <t t-esc="pos.config.address"/>
+                        <br/>
+                        <span/>
+                    </div>
+                </div>
+
+                <div class="pos-receipt-orderlines">
+                    <br/>
+                    <table style="width: 100%;">
+                        <colgroup>
+                            <col width="100px"/>
+                            <col width="25px"/>
+                            <col width="75px"/>
+                            <col width="25px"/>
+                            <col width="75px"/>
+                        </colgroup>
+
+                        <tr style="text-align: center; border-top: 2px solid black; border-bottom: 2px solid black;">
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Disc</th>
+                            <th>Total</th>
+                        </tr>
+
+                        <t t-set="total_qty" t-value="0"/>
+                        <t t-foreach="receipt.orderlines" t-as="line">
+                            <t t-set="total_qty" t-value="total_qty + line.quantity"/>
+                            <tr>
+                                <td t-esc="line.product_name_wrapped[0]"/>
+                                <td t-esc="line.quantity"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(line.price)"/>
+                                <td style="text-align: center;" t-esc="line.discount">
+                                    <span>%</span>
+                                </td>
+                                <td style="text-align: right;" t-esc="pos.format_currency(line.price_display)"/>
+                            </tr>
+                        </t>
+
+                        <tr style="border-top: 2px solid black;">
+                            <td>Total Qty</td>
+                            <td t-esc="total_qty"/>
+                            <td colspan="2">Subtotal</td>
+                            <td style="text-align: right;" t-esc="pos.format_currency(receipt.total_with_tax)"/>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="pos-payment">
+                    <br/>
+                    <br/>
+                    <span style="text-decoration: underline;">Payment</span>
+                    <table style="width: 100%">
+                        <colgroup>
+                            <col width="10px"/>
+                            <col width="100px"/>
+                            <col width="190px"/>
+                        </colgroup>
+
+                        <t t-foreach="receipt.paymentlines" t-as="payment">
+                            <tr>
+                                <td/>
+                                <td t-esc="payment.name"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(payment.amount)"/>
+                            </tr>
+                        </t>
+
+                        <tr>
+                            <td/>
+                            <td>Change</td>
+                            <td style="text-align: right;" t-esc="pos.format_currency(receipt.change)"/>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="pos-details">
+                    <br/>
+                    <br/>
+                    <table style="width: 100%;">
+                        <colgroup>
+                            <col width="100px"/>
+                            <col width="10px"/>
+                            <col width="190px"/>
+                        </colgroup>
+
+                        <tr>
+                            <td>Receipt No.</td>
+                            <td>:</td>
+                            <td style="text-align: right;" t-esc="order.name"/>
+                        </tr>
+
+                        <tr>
+                            <td>Date</td>
+                            <td>:</td>
+                            <td style="text-align: right;" t-esc="order.formatted_validation_date"/>
+                        </tr>
+
+                        <tr>
+                            <td>Cashier</td>
+                            <td>:</td>
+                            <td style="text-align: right;" t-esc="pos.config.name"/>
+                        </tr>
+
+                        <tr>
+                            <td>Member</td>
+                            <td>:</td>
+                            <t t-if="receipt.client">
+                                <td style="text-align: right;" t-esc="receipt.client.name"/>
+                            </t>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="pos-footer" style="align: center;">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <span style="text-align: center; text-decoration: underline; display: block;">We are unable to provide refund
+                    </span>
+                    <span style="text-align: center; text-decoration: underline; display: block;">at our discretion. We may
+                        exchange
+                    </span>
+                    <span style="text-align: center; text-decoration: underline; display: block;">faulty/defect items for identical
+                        items.
+                    </span>
+                    <span style="text-align: center; text-decoration: underline; display: block;">Items must be returned within 3
+                        days
+                    </span>
+                    <span style="text-align: center; text-decoration: underline; display: block;">with valid proof of purchase.
+                    </span>
+                    <span style="text-align: center; text-decoration: underline; display: block;">***** official receipt ******
+                    </span>
+                </div>
+            </div>
+            ]]>
+        </field>
+    </record>
+</odoo>
