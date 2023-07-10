@@ -1,4 +1,4 @@
-odoo.define('remove_decimal_zero_trailing.field_utils', function (require) {
+odoo.define('sol_pos.field_utils', function (require) {
     "use strict";
 
 var core = require('web.core');
