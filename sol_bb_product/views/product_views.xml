@@ -9,7 +9,7 @@
           <group name="additional" string="Additional Info">
             <field name="class_product" required="1"/>
             <field name="launch_date" />
-            <field name="main_color"/>
+            <field name="main_color_id"/>
             <field name="collection_product" />
             <field name="order_notes" />
             <field name="consumption" />
