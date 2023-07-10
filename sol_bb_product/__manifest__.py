@@ -27,6 +27,7 @@
         "views/collections_views.xml",
         "views/stock_type_views.xml",
         "views/product_attribute_views.xml",
+        "views/main_color_views.xml",
     ],
     # only loaded in demonstration mode
     "demo": [

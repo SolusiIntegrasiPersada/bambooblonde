@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="main_color_view_tree" model="ir.ui.view">
+        <field name="name">main.color.view.tree</field>
+        <field name="model">main.color</field>
+        <field name="arch" type="xml">
+            <tree string="Main Color" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="main_color_view_form" model="ir.ui.view">
+        <field name="name">main.color.view.form</field>
+        <field name="model">main.color</field>
+        <field name="arch" type="xml">
+            <form string="Main Color">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="main_color_action" model="ir.actions.act_window">
+        <field name="name">Main Color</field>
+        <field name="res_model">main.color</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="stock_type_menu" name="Data Master Story" action="sol_purchase.stock_type_action" parent="purchase_request.parent_menu_purchase_request" sequence="10"/> -->
+    <menuitem id="menu_stock_type_in_config_stock" name="Main Color" action="sol_bb_product.main_color_action" parent="stock.menu_stock_config_settings" sequence="11"/>
+
+</odoo>

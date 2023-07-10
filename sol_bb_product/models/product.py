@@ -13,7 +13,7 @@ class ProductProduct(models.Model):
     fabric_width = fields.Float(string="Fabric Width")
     category = fields.Char(related="categ_id.name", string="Category")
     is_print = fields.Boolean(string="Print", default=False)
-    main_color_id = fields.Many2one('product.attribute.value', string="Main Color", domain="[('attribute_id.name', '=', 'COLOR')]")
+    main_color_id = fields.Many2one('main.color', string="Main Color")
     # @api.depends("categ_id", "product_template_variant_value_ids")
     # def _compute_barcode(self):
     #     for product in self:
