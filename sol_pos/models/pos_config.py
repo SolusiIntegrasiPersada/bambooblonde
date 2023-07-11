@@ -23,3 +23,4 @@ class PosConfig(models.Model):
         help='Boolean field to enable the custom receipt design',
         default=True,
     )
+    global_discount_in_line = fields.Boolean(string="Add Discount in Line", default=True)
