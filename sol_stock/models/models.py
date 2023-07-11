@@ -42,6 +42,8 @@ class StockPicking(models.Model):
     #         i.location_dest_id = i.location_dest_id_internal
     #       return location
 
+    def action_print_quotation_receive(self):
+        return self.env.ref('sol_stock.action_report_picking_action').report_action(self)
     @api.onchange('is_foc_type')
     def _onchange_location(self):
         for rec in self:

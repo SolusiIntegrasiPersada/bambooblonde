@@ -33,11 +33,11 @@
                     </div>
                 </div>
                 <div class="page">
-                    <table style="border-collapse: collapse; width: 100%; height: 85px;" border="1">
+                    <table style="border-collapse: collapse; width: 100%; height: 85px; border: 1pt solid black;" border="1">
                         <tbody>
                             <tr style="height: 85px;">
                                 <td style="width: 54.0936%; height: 85px;">
-                                    <table style="border-collapse: collapse; width: 100%;" border="0">
+                                    <table style="border-collapse: collapse; width: 100%; border: 0pt solid black;" border="0">
                                         <tbody>
                                             <tr>
                                                 <td style="width: 37.8615%; text-align: right;"><strong>Register</strong></td>
@@ -92,18 +92,18 @@
                         </tbody>
                     </table>
 
-                    <table style="border-collapse: collapse; width: 100%; height: 270px;" border="1">
+                    <table style="border-collapse: collapse; width: 100%; height: 270px; border: 1pt solid black;" border="1">
                         <tbody>
                             <tr style="height: 36px;">
-                                <td style="width: 32.9896%; text-align: center; height: 36px;" colspan="3">Code / Descriptions</td>
-                                <td style="width: 2.54517%; height: 36px;">Size Type</td>
-                                <td style="width: 46.0949%; text-align: center; height: 36px;" colspan="11">Quantity</td>
-                                <td style="width: 2.51857%; height: 36px;">TTL QTY</td>
-                                <td style="width: 7.4815%; height: 36px;">Cost Price</td>
-                                <td style="width: 8.37037%; height: 36px;">Sub Total</td>
+                                <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px;" colspan="3">Code / Descriptions</td>
+                                <td style="width: 2.54517%; height: 36px; font-size: 10px;">Size Type</td>
+                                <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px;" colspan="11">Quantity</td>
+                                <td style="width: 2.51857%; height: 36px; font-size: 10px;">TTL QTY</td>
+                                <td style="width: 7.4815%; height: 36px; font-size: 10px;">Cost Price</td>
+                                <td style="width: 8.37037%; height: 36px; font-size: 10px;">Sub Total</td>
                             </tr>
                             <tr style="height: 18px;">
-                                <td style="width: 6.67336%; height: 18px;" colspan="3" rowspan="9"></td>
+                                <td style="width: 6.67336%; height: 18px; font-size: 13px;" colspan="3" rowspan="9"></td>
                                 <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">A</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">6</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">8</td>
@@ -177,7 +177,7 @@
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">12-13</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">13-14</td>
                                 <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">14-15</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;">15-16</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">15-16</td>
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">37-38</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;">38-39</td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
@@ -292,38 +292,47 @@
                                 <td style="width: 7.4815%; text-align: right; height: 18px;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
                             </tr>
-                            <t t-foreach="o.move_ids_without_package" t-as="move">
+<!--                            <t t-set="no" t-value="1"/>-->
+                            <t t-set="recs" t-value="o.get_rec"/>
+<!--                            <t t-foreach="request.env['stock.picking'].search([])" t-as="move">-->
+                            <t t-foreach="o.move_ids_without_package" t-as="line">
                                 <tr style="height: 18px;">
-                                    <td style="width: 6.67336%; height: 18px;">
-                                        <t t-esc="move.product_id.default_code"/>
+                                    <td style="width: 6.67336%; height: 18px; font-size: 11px;">
+<!--                                        <t t-esc="line"/>-->
                                     </td>
-                                    <td style="width: 7.33994%; height: 18px;">
-                                        <t t-esc="move.colour"/>
+                                    <td style="width: 7.33994%; height: 18px; font-size: 11px;">
+<!--                                        <t t-esc="move.colour"/>-->
                                     </td>
-                                    <td style="width: 18.9763%; height: 18px;">
-                                        <t t-esc="move.product_id.name"/>
+                                    <td style="width: 18.9763%; height: 18px; font-size: 11px;">
+                                        <t t-esc="get_rec"/>
                                     </td>
-                                    <td style="width: 2.54517%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px;"></td>
-                                    <td style="width: 2.51857%; text-align: right; height: 18px;"></td>
-                                    <td style="width: 7.4815%; text-align: right; height: 18px;"></td>
-                                    <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
+                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px;">
+<!--                                        <span t-field="line.product_uom_qty"/>-->
+                                    </td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px;"></td>
                                 </tr>
                             </t>
 
+<!--                            </t>-->
+
                             <tr style="height: 18px;">
                                 <td style="text-align: right; height: 18px;" colspan="3">Sub Total - Category nama</td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px;">
+<!--                                     <t t-esc="get_rec"/>-->
+                                </td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px;"></td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px;"></td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px;"></td>

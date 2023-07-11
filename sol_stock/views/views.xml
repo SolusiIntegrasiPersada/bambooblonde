@@ -6,6 +6,9 @@
       <field name="model">stock.picking</field>
       <field name="inherit_id" ref="stock.view_picking_form"/>
       <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+            <button name="action_print_quotation_receive" type="object" string="Print Receive" class="oe_highlight"/>
+        </xpath>
         <field name="origin" position="after">
           <field name="style_name" attrs="{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}"/>
           <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
@@ -34,6 +37,7 @@
         <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="before">
           <field name="colour"/>
           <field name="size"/>
+            <field name="count_product" optional="hide"/>
         </xpath>
         <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
           <field name="image" widget="image" class="oe_avatar"/>
