@@ -304,7 +304,7 @@
 <!--                                        <t t-esc="move.colour"/>-->
                                     </td>
                                     <td style="width: 18.9763%; height: 18px; font-size: 11px;">
-                                        <t t-esc="get_rec"/>
+                                        <t t-esc="recs"/>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px;"></td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px;">
