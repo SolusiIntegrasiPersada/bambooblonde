@@ -15,9 +15,9 @@ class StockPicking(models.Model):
                 print(vals)
         return vals
 
-    def get_recs(self, rec):
+    def get_recs(self):
         data = {}
-        for move in rec.move_ids_without_package:
+        for move in self.move_ids_without_package:
             product = move.product_id.name
             color = move.colour
             key = (product, color)
