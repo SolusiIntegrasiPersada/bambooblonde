@@ -24,7 +24,7 @@
 
         <template id="report_picking">
             <t t-call="web.basic_layout">
-                <div t-attf-class="header" t-att-style="report_header_style">
+                <div class="header" t-att-style="report_header_style">
                     <t t-set="company" t-value="res_company"></t>
                     <div class="row">
                         <div class="col-3 mb4">
@@ -95,275 +95,275 @@
                     <table style="border-collapse: collapse; width: 100%; height: 270px; border: 1pt solid black;" border="1">
                         <tbody>
                             <tr style="height: 36px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px;" colspan="3">Code / Descriptions</td>
-                                <td style="width: 2.54517%; height: 36px; font-size: 10px;">Size Type</td>
-                                <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px;" colspan="11">Quantity</td>
-                                <td style="width: 2.51857%; height: 36px; font-size: 10px;">TTL QTY</td>
-                                <td style="width: 7.4815%; height: 36px; font-size: 10px;">Cost Price</td>
-                                <td style="width: 8.37037%; height: 36px; font-size: 10px;">Sub Total</td>
+                                <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black;" colspan="3">Code / Descriptions</td>
+                                <td style="width: 2.54517%; height: 36px; font-size: 10px; border: 1pt solid black;">Size Type</td>
+                                <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black;" colspan="11">Quantity</td>
+                                <td style="width: 2.51857%; height: 36px; font-size: 10px; border: 1pt solid black;">TTL QTY</td>
+                                <td style="width: 7.4815%; height: 36px; font-size: 10px; border: 1pt solid black;">Cost Price</td>
+                                <td style="width: 8.37037%; height: 36px; font-size: 10px; border: 1pt solid black;">Sub Total</td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 6.67336%; height: 18px; font-size: 13px;" colspan="3" rowspan="9"></td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">A</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">6</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">8</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">10</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">12</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;">14</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">4</td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 6.67336%; height: 18px; font-size: 13px; border: 1pt solid black;" colspan="3" rowspan="9"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">A</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">6</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">8</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">10</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">12</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">14</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">4</td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">B</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">7</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">9</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">11</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">B</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">7</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">9</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">11</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">C</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">32</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">34</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">36</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">38</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;">40</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">42</td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">C</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">32</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">34</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">36</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">38</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">40</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">42</td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">D</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">33</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">35</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">37</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">39</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;">41</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">43</td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">D</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">33</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">35</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">37</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">39</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">41</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">43</td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">F</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">11-12</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">12-13</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">13-14</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">14-15</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">15-16</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">37-38</td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;">38-39</td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">F</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">11-12</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">12-13</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">13-14</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">14-15</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">15-16</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">37-38</td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">38-39</td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">G</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">A</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">B</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">C</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">D</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">G</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">A</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">B</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">C</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">D</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">H</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">XXS</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">XS</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">XSS</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">S</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;">M</td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;">L</td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;">XL</td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;">OS</td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">H</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XXS</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XS</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XSS</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">S</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">M</td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">L</td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XL</td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">OS</td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">I</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">XS/S</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">S/M</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">M/L</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">L/XL</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;">ALL</td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">I</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XS/S</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">S/M</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">M/L</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">L/XL</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">ALL</td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px;">J</td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px;">15</td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px;">16</td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px;">17</td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px;">18</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px;"></td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">J</td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">15</td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">16</td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">17</td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">18</td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; height: 18px;" colspan="3">ISI CATEGORY</td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
+                                <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">ISI CATEGORY</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; height: 18px;" colspan="3">ISI SUB CATEGORY</td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
+                                <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">ISI SUB CATEGORY</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
 <!--                            <t t-set="no" t-value="1"/>-->
-                            <t t-set="recs" t-value="docs.get_recs()"/>
+                            <t t-set="recs" t-value="docs.get_rec()"/>
                             <t t-foreach="o.move_ids_without_package" t-as="line">
                                 <tr style="height: 18px; border: 1pt solid black;">
-                                    <td style="width: 6.67336%; height: 18px; font-size: 11px;">
+                                    <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
 <!--                                        <t t-esc="line"/>-->
                                     </td>
-                                    <td style="width: 7.33994%; height: 18px; font-size: 11px;">
+                                    <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
 <!--                                        <t t-esc="move.colour"/>-->
                                     </td>
-                                    <td style="width: 18.9763%; height: 18px; font-size: 11px;">
-                                        <t t-esc="recs"/>
+                                    <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                        <span t-field="recs"/>
                                     </td>
-                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px;">
+                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
 <!--                                        <span t-field="line.product_uom_qty"/>-->
                                     </td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px;"></td>
-                                    <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px;"></td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                 </tr>
                             </t>
 
 <!--                            </t>-->
 
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="text-align: right; height: 18px;" colspan="3">Sub Total - Category nama</td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px;">
+                                <td style="text-align: right; height: 18px; border: 1pt solid black;" colspan="3">Sub Total - Category nama</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;">
 <!--                                     <t t-esc="get_rec"/>-->
                                 </td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
+                                <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; text-align: right;" colspan="3">GRAND TOTAL</td>
-                                <td style="width: 2.54517%; text-align: center;"></td>
-                                <td style="width: 3.75692%; text-align: center;"></td>
-                                <td style="width: 3.81019%; text-align: center;"></td>
-                                <td style="width: 3.76856%; text-align: center;"></td>
-                                <td style="width: 3.90741%; text-align: center;"></td>
-                                <td style="width: 3.37041%; text-align: center;"></td>
-                                <td style="width: 3.55555%; text-align: center;"></td>
-                                <td style="width: 4.14809%; text-align: center;"></td>
-                                <td style="width: 5.62967%; text-align: center;"></td>
-                                <td style="width: 4.66663%; text-align: center;"></td>
-                                <td style="width: 4.74072%; text-align: center;"></td>
-                                <td style="width: 4.74078%; text-align: center;"></td>
-                                <td style="width: 2.51857%; text-align: right;"></td>
-                                <td style="width: 7.4815%; text-align: right;"></td>
-                                <td style="width: 8.37037%; text-align: right;"></td>
+                                <td style="width: 32.9896%; text-align: right; border: 1pt solid black;" colspan="3">GRAND TOTAL</td>
+                                <td style="width: 2.54517%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.75692%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.81019%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.76856%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.90741%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.37041%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 3.55555%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 4.14809%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 5.62967%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 4.66663%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: right; border: 1pt solid black;"></td>
+                                <td style="width: 7.4815%; text-align: right; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; border: 1pt solid black;"></td>
                             </tr>
                         </tbody>
                     </table>

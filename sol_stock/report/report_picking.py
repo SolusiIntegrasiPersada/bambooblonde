@@ -3,16 +3,13 @@ from odoo import fields, api, models
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def get_rec(self, rec):
+    def get_rec(self):
         vals = {}
-        print(vals)
-        for move in rec.move_ids_without_package:
+        for move in self.move_ids_without_package:
             if move.product_id.name in vals:
                 vals[move.product_id.name] += move.product_uom_qty
-                print(vals)
             else:
                 vals.update({move.product_id.name: move.product_uom_qty})
-                print(vals)
         return vals
 
     def get_recs(self):
