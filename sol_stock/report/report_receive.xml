@@ -293,8 +293,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px;"></td>
                             </tr>
 <!--                            <t t-set="no" t-value="1"/>-->
-                            <t t-set="recs" t-value="docs.get_recs"/>
-<!--                            <t t-foreach="request.env['stock.picking'].search([])" t-as="move">-->
+                            <t t-set="recs" t-value="docs.get_recs()"/>
                             <t t-foreach="o.move_ids_without_package" t-as="line">
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 6.67336%; height: 18px; font-size: 11px;">
