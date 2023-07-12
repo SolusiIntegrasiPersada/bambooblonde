@@ -5,12 +5,27 @@ class StockPicking(models.Model):
 
     def get_rec(self, rec):
         vals = {}
+        print(vals)
         for move in rec.move_ids_without_package:
             if move.product_id.name in vals:
                 vals[move.product_id.name] += move.product_uom_qty
+                print(vals)
             else:
                 vals.update({move.product_id.name: move.product_uom_qty})
+                print(vals)
         return vals
+
+    def get_recs(self, rec):
+        data = {}
+        for move in rec.move_ids_without_package:
+            product = move.product_id.name
+            color = move.colour
+            key = (product, color)
+            if key in data:
+                data[key].append(move)
+            else:
+                data[key] = [move]
+        return data
 
     def get_last_rec(self):
         for rec in self:
