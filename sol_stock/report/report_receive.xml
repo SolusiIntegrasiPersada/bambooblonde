@@ -292,37 +292,46 @@
                                 <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
-<!--                            <t t-set="no" t-value="1"/>-->
-                            <t t-set="recs" t-value="docs.get_rec()"/>
-                            <t t-foreach="o.move_ids_without_package" t-as="line">
-                                <tr style="height: 18px; border: 1pt solid black;">
-                                    <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="line"/>-->
-                                    </td>
-                                    <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="move.colour"/>-->
-                                    </td>
-                                    <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <span t-field="recs"/>
-                                    </td>
-                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-<!--                                        <span t-field="line.product_uom_qty"/>-->
-                                    </td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                </tr>
+
+                            <t t-set="product_name" t-value="[]"/>
+                            <t t-foreach="o.move_ids_without_package" t-as="move">
+                                <t t-set="product_name" t-value="product_name+[move.product_id]"/>
+                            </t>
+<!--                            <t t-set="recs" t-value="docs.test_grouping()"/>-->
+                            <t t-foreach="set(product_name)" t-as="prod">
+                                <t t-foreach="o.move_ids_without_package" t-as="move">
+                                    <t t-if="prod.id==move.product_id.id">
+                                        <tr style="height: 18px; border: 1pt solid black;">
+                                            <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
+        <!--                                        <t t-esc="line"/>-->
+                                            </td>
+                                            <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
+        <!--                                        <t t-esc="move.colour"/>-->
+                                            </td>
+                                            <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                <span t-field="move.product_id"/>
+                                            </td>
+                                            <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+        <!--                                        <span t-field="line.product_uom_qty"/>-->
+                                            </td>
+                                            <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                            <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                        </tr>
+                                    </t>
+                                </t>
+
                             </t>
 
 <!--                            </t>-->
