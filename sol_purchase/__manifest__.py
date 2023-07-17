@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '15.1.0.0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'purchase_request', 'purchase', 'stock', 'purchase_stock','sol_bb_product', 'product'],
@@ -26,7 +26,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/pattern_security.xml',
-        # 'security/record_rule.xml',
+        'security/record_rule.xml',
         'views/purchase_request_views.xml',
         'views/purchase_order_views.xml',
         'report/report_action.xml',
@@ -41,7 +41,6 @@
         'views/data_master_story.xml',
         'views/original_sample.xml',
         'views/product_menuitem.xml',
-        # 'views/templates.xml',
         'views/sequence_data.xml',
         'views/data_label_hardware.xml',
         'views/data_prod_summary.xml',
