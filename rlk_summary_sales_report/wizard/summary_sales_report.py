@@ -266,10 +266,8 @@ class SummarySalesReport(models.TransientModel):
 
             row3 = row
             worksheet.merge_range('D%s:G%s' % (row3, row3), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 1, row3 + 1), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 3, row3 + 3), res['print_receipt'] or '', wbf['content'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 4, row3 + 4), visitor_count, wbf['content'])
+            worksheet.merge_range('D%s:G%s' % (row3 + 1, row3 + 1), res['print_receipt'] or '', wbf['content'])
+            worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), visitor_count, wbf['content'])
 
             row4 = row3 + 6
             worksheet.write(row4, 0, 'Asian', wbf['content2'])
