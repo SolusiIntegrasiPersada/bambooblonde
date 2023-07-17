@@ -25,6 +25,9 @@
                        position="attributes">
                     <attribute name="attrs">{}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='tic_category_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
 
