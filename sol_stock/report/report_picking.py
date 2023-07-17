@@ -28,6 +28,27 @@ class StockPicking(models.Model):
         for rec in self:
             return rec.move_ids_without_package.sorted(lambda l: l.id, reverse=True)[0]
 
+        # move_ids = self.env['stock.move'].sudo().search()
+        # move_items = move_ids.mapped('move_ids_without_package')
+        # list_move = []
+        # print("Testing", self.read([0]))
+        # data = {
+        #     'form': self.read()[0],
+        # }
+        # return self.env.ref('sol_stock.action_report_picking_action').report_action(self, data=data)
+
+    def group_by_product_name(self):
+        grouped_data = self.read_group(
+            domain=[],
+            fields=['product_id', 'product_uom_qty'],
+            groupby=['product_id.name'],
+        )
+        return grouped_data
+
+    def test_grouping(self):
+        grouped_data = self.group_by_product_name()
+        for group in grouped_data:
+            print(group)
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
