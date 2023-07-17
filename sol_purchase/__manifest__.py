@@ -46,8 +46,4 @@
         'views/data_label_hardware.xml',
         'views/data_prod_summary.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }

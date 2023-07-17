@@ -35,8 +35,4 @@
         'views/stock_move_line.xml',
         'report/report_receive.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }

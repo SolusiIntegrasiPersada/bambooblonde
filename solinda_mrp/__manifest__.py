@@ -38,8 +38,4 @@
         'wizard/sewing_report_views.xml',
 
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }
