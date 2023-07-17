@@ -255,27 +255,21 @@ class SummarySalesReport(models.TransientModel):
             # worksheet.set_row(row1 + 1, None, None, {'hidden': True})
             # worksheet.set_row(row1 + 2, None, None, {'hidden': True})
             # worksheet.set_row(row1 + 3, None, None, {'hidden': True})
-            worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Received Voucher', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Total Receipt Print', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 3, row1 + 3), 'Visitor Statistic:', wbf['content_number'])
+            worksheet.merge_range('A%s:B%s' % (row1, row1), 'Total Received Voucher', wbf['content_number'])
+            worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Receipt Print', wbf['content_number'])
+            worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Visitor Statistic:', wbf['content_number'])
 
             row2 = row
             worksheet.write('C%s: C%s' % (row2, row2), ': ', wbf['content_float'])
             worksheet.write('C%s: C%s' % (row2 + 1, row2 + 1), ': ', wbf['content_float'])
-            worksheet.write('C%s: C%s' % (row2 + 2, row2 + 2), ': ', wbf['content_float'])
-            worksheet.write('C%s: C%s' % (row2 + 3, row2 + 3), ': ', wbf['content_float'])
-            worksheet.write('C%s: C%s' % (row2 + 4, row2 + 4), ': ', wbf['content_float'])
-            worksheet.write('C%s: C%s' % (row2 + 5, row2 + 5), ': ', wbf['content_float'])
-            worksheet.write('C%s: C%s' % (row2 + 6, row2 + 6), ': ', wbf['content'])
+            worksheet.write('C%s: C%s' % (row2 + 2, row2 + 2), ': ', wbf['content'])
 
             row3 = row
             worksheet.merge_range('D%s:G%s' % (row3, row3), '-', wbf['content_float'])
             worksheet.merge_range('D%s:G%s' % (row3 + 1, row3 + 1), '-', wbf['content_float'])
             worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 3, row3 + 3), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 4, row3 + 4), '-', wbf['content_float'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 5, row3 + 5), res['print_receipt'] or '', wbf['content'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 6, row3 + 6), visitor_count, wbf['content'])
+            worksheet.merge_range('D%s:G%s' % (row3 + 3, row3 + 3), res['print_receipt'] or '', wbf['content'])
+            worksheet.merge_range('D%s:G%s' % (row3 + 4, row3 + 4), visitor_count, wbf['content'])
 
             row4 = row3 + 6
             worksheet.write(row4, 0, 'Asian', wbf['content2'])
