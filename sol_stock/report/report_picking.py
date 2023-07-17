@@ -37,13 +37,18 @@ class StockPicking(models.Model):
         # }
         # return self.env.ref('sol_stock.action_report_picking_action').report_action(self, data=data)
 
-    def group_by_product_name(self):
-        grouped_data = self.read_group(
-            domain=[],
-            fields=['product_id', 'product_uom_qty'],
-            groupby=['product_id.name'],
-        )
-        return grouped_data
+    def consolidate_lines(self):
+        consolidated_lines = {}
+        for line in self.move_ids_without_package:
+            name = line.product_id.name  # Assuming 'product_id' is the field holding the product name.
+            amount = line.product_uom_qty  # Assuming 'product_uom_qty' is the field holding the quantity.
+            if name in consolidated_lines:
+                consolidated_lines[name] += amount
+            else:
+                consolidated_lines[name] = amount
+
+        # Convert the dictionary into a list of dictionaries for QWeb
+        return [{'name': name, 'amount': consolidated_lines[name]} for name in consolidated_lines]
 
     def test_grouping(self):
         grouped_data = self.group_by_product_name()

@@ -282,55 +282,58 @@
 
                             <t t-foreach="set(product_category)" t-as="category">
                                 <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">
-                                    <strong t-esc="category.name"/>
-                                </td>
-                                <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
-                                <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">
+                                        <strong t-esc="category.name"/>
+                                    </td>
+                                    <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                 </tr>
                                 <t t-foreach="o.move_ids_without_package" t-as="l">
                                     <t t-if="category.id==l.product_id.categ_id.id">
-                                        <tr style="height: 18px; border: 1pt solid black;">
-                                            <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
-        <!--                                        <t t-esc="line"/>-->
-                                            </td>
-                                            <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
-        <!--                                        <t t-esc="move.colour"/>-->
-                                            </td>
-                                            <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                                <span t-field="l.product_id"/>
-                                            </td>
-                                            <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-        <!--                                        <span t-field="line.product_uom_qty"/>-->
-                                            </td>
-                                            <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                            <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                        </tr>
+                                         <t t-foreach="docs.consolidate_lines()" t-as="line">
+                                             <tr style="height: 18px; border: 1pt solid black;">
+                                                <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
+            <!--                                        <t t-esc="line"/>-->
+                                                </td>
+                                                <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
+            <!--                                        <t t-esc="move.colour"/>-->
+                                                </td>
+                                                <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['name']"/>
+                                                </td>
+                                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount']"/>
+                                                </td>
+                                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                             </tr>
+                                         </t>
+
 
                                     </t>
                                 </t>
