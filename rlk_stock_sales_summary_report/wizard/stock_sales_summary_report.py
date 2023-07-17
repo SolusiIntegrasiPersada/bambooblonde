@@ -575,7 +575,7 @@ class StockSalesSummaryReport(models.TransientModel):
             'yellow': '#F6FA03',
             'pink': '#FF69B4',
             'violet': '#EE82EE',
-            'blue': '#00CCFF'
+            'gray': '#DCDCDC'
         }
 
         wbf = {}
@@ -599,7 +599,7 @@ class StockSalesSummaryReport(models.TransientModel):
         wbf['header_violet'].set_border()
 
         wbf['header_orange'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000',
+            {'bold': 1, 'align': 'center', 'bg_color': colors['gray'], 'font_color': '#000000',
              'font_name': 'Calibri'})
         wbf['header_orange'].set_border()
 
@@ -609,9 +609,9 @@ class StockSalesSummaryReport(models.TransientModel):
         wbf['header_yellow'].set_border()
 
         wbf['header_no'] = workbook.add_format(
-            {'bold': 1, 'align': 'left', 'bg_color': colors['blue'], 'font_color': '#000000', 'font_name': 'Calibri'})
+            {'bold': 1, 'align': 'left', 'bg_color': colors['gray'], 'font_color': '#000000', 'font_name': 'Calibri'})
         wbf['header_number'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000',
+            {'bold': 1, 'align': 'center', 'bg_color': colors['gray'], 'font_color': '#000000',
              'font_name': 'Calibri'})
         # wbf['header_no'].set_border()
         # wbf['header_no'].set_align('vcenter')
@@ -718,7 +718,7 @@ class StockSalesSummaryReport(models.TransientModel):
         # wbf['total_float'].set_right()         
 
         wbf['total_number'] = workbook.add_format(
-            {'align': 'right', 'bg_color': colors['blue'], 'bold': 1, 'num_format': '#,##0',
+            {'align': 'right', 'bg_color': colors['gray'], 'bold': 1, 'num_format': '#,##0',
              'font_name': 'Calibri'})
         wbf['total_number'].set_top()
         wbf['total_number'].set_bottom()
@@ -726,7 +726,7 @@ class StockSalesSummaryReport(models.TransientModel):
         wbf['total_number'].set_right()
 
         wbf['total'] = workbook.add_format(
-            {'bold': 1, 'bg_color': colors['blue'], 'align': 'center', 'font_name': 'Calibri'})
+            {'bold': 1, 'bg_color': colors['gray'], 'align': 'center', 'font_name': 'Calibri'})
         wbf['total'].set_left()
         wbf['total'].set_right()
         wbf['total'].set_top()
@@ -754,21 +754,21 @@ class StockSalesSummaryReport(models.TransientModel):
         wbf['total_yellow'].set_bottom()
 
         wbf['total_float_orange'] = workbook.add_format(
-            {'bold': 1, 'bg_color': colors['blue'], 'align': 'right', 'num_format': '#,##0', 'font_name': 'Calibri'})
+            {'bold': 1, 'bg_color': colors['gray'], 'align': 'right', 'num_format': '#,##0', 'font_name': 'Calibri'})
         wbf['total_float_orange'].set_top()
         wbf['total_float_orange'].set_bottom()
         wbf['total_float_orange'].set_left()
         wbf['total_float_orange'].set_right()
 
         wbf['total_number_orange'] = workbook.add_format(
-            {'align': 'right', 'bg_color': colors['blue'], 'bold': 1, 'num_format': '#,##0', 'font_name': 'Calibri'})
+            {'align': 'right', 'bg_color': colors['gray'], 'bold': 1, 'num_format': '#,##0', 'font_name': 'Calibri'})
         wbf['total_number_orange'].set_top()
         wbf['total_number_orange'].set_bottom()
         wbf['total_number_orange'].set_left()
         wbf['total_number_orange'].set_right()
 
         wbf['total_orange'] = workbook.add_format(
-            {'bold': 1, 'bg_color': colors['blue'], 'align': 'center', 'font_name': 'Calibri'})
+            {'bold': 1, 'bg_color': colors['gray'], 'align': 'center', 'font_name': 'Calibri'})
         wbf['total_orange'].set_left()
         wbf['total_orange'].set_right()
         wbf['total_orange'].set_top()

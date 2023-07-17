@@ -247,17 +247,17 @@ class SummarySalesReport(models.TransientModel):
                 row += 1
 
             row1 = row
-            worksheet.merge_range('A%s:B%s' % (row1, row1), 'Total Received US$', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Received AUD', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Total Received JPY', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 3, row1 + 3), 'Total Received Euro', wbf['content_number'])
-            worksheet.set_row(row1, None, None, {'hidden': True})
-            worksheet.set_row(row1 + 1, None, None, {'hidden': True})
-            worksheet.set_row(row1 + 2, None, None, {'hidden': True})
-            worksheet.set_row(row1 + 3, None, None, {'hidden': True})
-            worksheet.merge_range('A%s:B%s' % (row1 + 4, row1 + 4), 'Total Received Vouc', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 5, row1 + 5), 'Total Receipt Print', wbf['content_number'])
-            worksheet.merge_range('A%s:B%s' % (row1 + 6, row1 + 6), 'Visitor Statistic:', wbf['content_number'])
+            # worksheet.merge_range('A%s:B%s' % (row1, row1), 'Total Received US$', wbf['content_number'])
+            # worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Received AUD', wbf['content_number'])
+            # worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Total Received JPY', wbf['content_number'])
+            # worksheet.merge_range('A%s:B%s' % (row1 + 3, row1 + 3), 'Total Received Euro', wbf['content_number'])
+            # worksheet.set_row(row1, None, None, {'hidden': True})
+            # worksheet.set_row(row1 + 1, None, None, {'hidden': True})
+            # worksheet.set_row(row1 + 2, None, None, {'hidden': True})
+            # worksheet.set_row(row1 + 3, None, None, {'hidden': True})
+            worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Received Voucher', wbf['content_number'])
+            worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Total Receipt Print', wbf['content_number'])
+            worksheet.merge_range('A%s:B%s' % (row1 + 3, row1 + 3), 'Visitor Statistic:', wbf['content_number'])
 
             row2 = row
             worksheet.write('C%s: C%s' % (row2, row2), ': ', wbf['content_float'])
