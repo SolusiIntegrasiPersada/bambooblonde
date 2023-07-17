@@ -14,6 +14,7 @@
     # for the full list
     "category": "Uncategorized",
     "version": "15.1.0.0.2",
+    'license': "LGPL-3",
     # any module necessary for this one to work correctly
     "depends": ["base", "product", "stock"],
     # always loaded
