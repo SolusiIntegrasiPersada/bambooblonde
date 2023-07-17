@@ -31,4 +31,22 @@
             <attribute name="style">display: none;</attribute>
         </xpath>
     </t>
+
+    <t t-name="ProductInfoPopup" t-inherit="point_of_sale.ProductInfoPopup" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('section-inventory-body')]" position="replace">
+            <div class="section-inventory-body-extended">
+                <table class="mobile-table">
+                    <t t-foreach="productInfo.warehouses" t-as="warehouse" t-key="warehouse.name">
+                        <tr>
+                            <td><span t-esc="warehouse.name" class="table-name"/>:</td>
+                            <td>
+                                <t t-esc="warehouse.available_quantity"/><span> </span>
+                                <t t-esc="warehouse.uom"/> available,
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+        </xpath>
+    </t>
 </templates>
