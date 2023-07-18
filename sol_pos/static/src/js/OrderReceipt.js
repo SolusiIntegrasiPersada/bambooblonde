@@ -25,16 +25,14 @@ odoo.define('sol_pos.receipt', function (require) {
                         moment: moment,
                     };
                     var parser = new DOMParser();
-                    var xmlDoc = parser.parseFromString(receipt_design,
-                        "text/xml");
+                    var xmlDoc = parser.parseFromString(receipt_design, "text/xml");
                     var s = new XMLSerializer();
                     var newXmlStr = s.serializeToString(xmlDoc);
                     var qweb = new QWeb2.Engine();
                     qweb.add_template('<templates><t t-name="receipt_design">'
                         + newXmlStr + '</t></templates>');
                     receipt = qweb.render('receipt_design', data);
-                    $(
-                        'div.pos-receipt').replaceWith(receipt);
+                    $('div.pos-receipt').replaceWith(receipt);
                     return receipt_render_env;
                 }
                 return receipt_render_env;

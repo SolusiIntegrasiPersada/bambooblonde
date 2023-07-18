@@ -29,7 +29,6 @@
         'views/views.xml',
         'views/stock_quant.xml',
         'report/action_report.xml',
-        'views/templates.xml',
         'wizard/stock_per_store_wizard.xml',
     ],
 }
