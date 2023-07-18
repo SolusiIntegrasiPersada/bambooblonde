@@ -293,7 +293,7 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('A%s:G%s' % (row6 + 2, row6 + 2), '', wbf['content'])
             worksheet.merge_range('A%s:G%s' % (row6 + 3, row6 + 3), '', wbf['content'])
 
-            row7 = row6 + 3 + 1
+            row7 = row6 + 1
 
             worksheet.merge_range('A%s:G%s' % (row7, row7), 'Conversion Ratio:', wbf['content2'])
             # # # worksheet.merge_range('A28:G28', '', wbf['content'])

@@ -8,15 +8,6 @@ class AccountMove(models.Model):
     @api.model
     def _get_default_requested_by(self):
         return self.env["res.users"].browse(self.env.uid)
-        
-    # state = fields.Selection(selection_add=[('approve', 'Approved')], ondelete={'approv': 'cascade'})
-    state = fields.Selection(selection=[
-            ('draft', 'Draft'),
-            ('approve', 'Approved'),
-            ('posted', 'Posted'),
-            ('cancel', 'Cancelled'),
-        ], string='Status', required=True, readonly=True, copy=False, tracking=True,
-        default='draft')
 
     state_bill = fields.Selection(selection=[
             ('draft', 'Draft'),

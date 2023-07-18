@@ -40,13 +40,29 @@
                         <tr>
                             <td><span t-esc="warehouse.name" class="table-name"/>:</td>
                             <td>
-                                <t t-esc="warehouse.available_quantity"/><span> </span>
-                                <t t-esc="warehouse.uom"/> available,
+                                <t t-esc="warehouse.available_quantity"/>
+                                <span> </span>
+                                <t t-esc="warehouse.uom"/>
+                                available,
                             </td>
                         </tr>
                     </t>
                 </table>
             </div>
+        </xpath>
+    </t>
+
+    <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th[hasclass('client-line-email')]" position="before">
+            <th>ID</th>
+        </xpath>
+    </t>
+
+    <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td[hasclass('client-line-email')]" position="before">
+            <td><t t-esc="props.partner.ref or ''"/>
+                <span t-if="highlight"><br/></span>
+            </td>
         </xpath>
     </t>
 </templates>

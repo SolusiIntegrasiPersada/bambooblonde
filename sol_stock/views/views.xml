@@ -1,50 +1,48 @@
 <odoo>
-  <data>
+    <data>
+        <record id="inherit_view_stock_picking" model="ir.ui.view">
+            <field name="name">stock.picking.view.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="style_name"/>
+                    <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
+                    <field name="mandatory_source" invisible="1"/>
+                    <field name="mrp_id" invisible="1"/>
+                    <field name="count" invisible="1"/>
+                </field>
+                <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <field name="fabric_width" optional="show"/>
+                    <field name="price"/>
+                </xpath>
+            </field>
+        </record>
 
-    <record id="inherit_view_stock_picking" model="ir.ui.view">
-      <field name="name">stock.picking.view.form.inherit</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-        <field name="origin" position="after">
-          <field name="style_name" />
-          <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
-          <field name="mandatory_source" invisible="1"/>
-          <field name="mrp_id" invisible="1"/>
-          <field name="count" invisible="1"/>
-        </field>
-        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
-          <field name="image" widget="image" class="oe_avatar"/>
-          <field name="fabric_width" optional="show" />
-          <field name="price" />
-        </xpath>
-      </field>
-    </record>
+        <record id="inherit_stock_picking_type" model="ir.ui.view">
+            <field name="name">stock.picking.type.view.form.inherit</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="show_operations" position="after">
+                    <field name="mandatory_source"/>
+                </field>
+            </field>
+        </record>
 
-    <record id="inherit_stock_picking_type" model="ir.ui.view">
-      <field name="name">stock.picking.type.view.form.inherit</field>
-      <field name="model">stock.picking.type</field>
-      <field name="inherit_id" ref="stock.view_picking_type_form"/>
-      <field name="arch" type="xml">
-        <field name="show_operations" position="after">
-          <field name="mandatory_source" />
-        </field>
-      </field>
-    </record>
-
-    <record id="vpicktree_inherit_stock" model="ir.ui.view">
-      <field name="name">stock.picking.view.tree.inherit</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.vpicktree"/>
-      <field name="arch" type="xml">
-        <field name="location_dest_id" position="after">
-          <field name="style_name" readonly="1"/>
-        </field>
-        <xpath expr="//field[@name='origin']" position="attributes">
-          <attribute name="optional">hide</attribute>
-        </xpath>
-      </field>
-    </record>
-
-  </data>
+        <record id="vpicktree_inherit_stock" model="ir.ui.view">
+            <field name="name">stock.picking.view.tree.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="location_dest_id" position="after">
+                    <field name="style_name" readonly="1"/>
+                </field>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>
