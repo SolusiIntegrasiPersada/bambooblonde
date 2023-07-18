@@ -269,7 +269,7 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('D%s:G%s' % (row3 + 1, row3 + 1), res['print_receipt'] or '', wbf['content'])
             worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), visitor_count, wbf['content'])
 
-            row4 = row3 + 6
+            row4 = row3 + 3
             worksheet.write(row4, 0, 'Asian', wbf['content2'])
             worksheet.write(row4, 1, 'Ina', wbf['content2'])
             worksheet.write(row4, 2, '', wbf['content2'])
@@ -293,7 +293,7 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('A%s:G%s' % (row6 + 2, row6 + 2), '', wbf['content'])
             worksheet.merge_range('A%s:G%s' % (row6 + 3, row6 + 3), '', wbf['content'])
 
-            row7 = row6 + 3 + 1
+            row7 = row6 + 1
 
             worksheet.merge_range('A%s:G%s' % (row7, row7), 'Conversion Ratio:', wbf['content2'])
             # # # worksheet.merge_range('A28:G28', '', wbf['content'])

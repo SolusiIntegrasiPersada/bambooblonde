@@ -1,91 +1,48 @@
 <odoo>
-  <data>
+    <data>
+        <record id="inherit_view_stock_picking" model="ir.ui.view">
+            <field name="name">stock.picking.view.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="style_name"/>
+                    <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
+                    <field name="mandatory_source" invisible="1"/>
+                    <field name="mrp_id" invisible="1"/>
+                    <field name="count" invisible="1"/>
+                </field>
+                <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <field name="fabric_width" optional="show"/>
+                    <field name="price"/>
+                </xpath>
+            </field>
+        </record>
 
-    <record id="inherit_view_stock_picking" model="ir.ui.view">
-      <field name="name">stock.picking.view.form.inherit</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-        <xpath expr="//header" position="inside">
-            <button name="action_print_quotation_receive" type="object" string="Print Receive" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'incoming')]}"/>
-        </xpath>
-        <field name="origin" position="after">
-          <field name="style_name" attrs="{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}"/>
-          <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
-          <field name="hide_return" invisible="1" />
-          <field name="mandatory_source" invisible="1"/>
-          <field name="mrp_id" invisible="1"/>
-          <field name="count" invisible="1"/>
-        </field>
-        <field name="location_dest_id" position="after">
-<!--          <field name="location_dest_id_internal" attrs="{'invisible': ['|', ('picking_type_code', 'not in', 'internal'), ('is_manufacture', '=', True)]}"/>-->
-          <field name="is_manufacture" invisible="1"/>
-          <field name="is_foc_type" invisible="1"/>
-        </field>
-        <xpath expr="//field[@name='partner_id']" position="attributes">
-          <attribute name="attrs">{'invisible': ['&amp;',  ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>
-        </xpath>
-        <xpath expr="//div[@class='o_td_label']" position="attributes">
-          <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>
-        </xpath>
-<!--        <xpath expr="//field[@name='location_dest_id']" position="attributes">-->
-<!--          <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>-->
-<!--        </xpath>-->
-        <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
-          <attribute name="attrs">{'invisible': [('hide_return', '=', True)]}</attribute>
-        </xpath>
-        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="before">
-          <field name="colour"/>
-          <field name="size"/>
-            <field name="count_product" optional="hide"/>
-        </xpath>
-        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
-          <field name="image" widget="image" class="oe_avatar"/>
-<!--          <field name="fabric_width" optional="show" />-->
-          <field name="price" />
-        </xpath>
-        <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="attributes">
-          <attribute name="string">Quantity</attribute>
-        </xpath>
-      </field>
-    </record>
+        <record id="inherit_stock_picking_type" model="ir.ui.view">
+            <field name="name">stock.picking.type.view.form.inherit</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="show_operations" position="after">
+                    <field name="mandatory_source"/>
+                </field>
+            </field>
+        </record>
 
-    <record id="inherit_stock_picking_type" model="ir.ui.view">
-      <field name="name">stock.picking.type.view.form.inherit</field>
-      <field name="model">stock.picking.type</field>
-      <field name="inherit_id" ref="stock.view_picking_type_form"/>
-      <field name="arch" type="xml">
-        <field name="show_operations" position="after">
-          <field name="mandatory_source" />
-          <field name="hide_return"/>
-          <field name="is_foc_type"/>
-        </field>
-      </field>
-    </record>
-
-    <record id="vpicktree_inherit_stock" model="ir.ui.view">
-      <field name="name">stock.picking.view.tree.inherit</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.vpicktree"/>
-      <field name="arch" type="xml">
-        <field name="location_dest_id" position="after">
-          <field name="style_name" readonly="1"/>
-        </field>
-        <xpath expr="//field[@name='origin']" position="attributes">
-          <attribute name="optional">hide</attribute>
-        </xpath>
-        <xpath expr="//field[@name='scheduled_date']" position="attributes">
-          <attribute name="widget">datetime</attribute>
-        </xpath>
-        <xpath expr="//field[@name='state']" position="after">
-          <field name="note" optional="show"/>
-        </xpath>
-      </field>
-    </record>
-
-    <record model="ir.ui.menu" id="stock.menu_action_inventory_tree">
-      <field name="groups_id" eval="[(4,ref('sol_stock.inventory_adjustment_access_group'))]" />
-    </record>
-
-  </data>
+        <record id="vpicktree_inherit_stock" model="ir.ui.view">
+            <field name="name">stock.picking.view.tree.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <field name="location_dest_id" position="after">
+                    <field name="style_name" readonly="1"/>
+                </field>
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
 </odoo>
