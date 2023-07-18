@@ -42,13 +42,12 @@
             'sol_pos/static/src/js/field_utils.js',
         ],
         'web.assets_qweb': [
-            'sol_pos/static/src/xml/pos.xml',
             'sol_pos/static/src/xml/pos_screen.xml',
         ],
         'point_of_sale.assets': [
             'sol_pos/static/src/js/GlobalLineDiscount.js',
-            'sol_pos/static/src/js/product_screen.js',
-            'sol_pos/static/src/js/order_receipt.js',
+            'sol_pos/static/src/js/OrderWidget.js',
+            'sol_pos/static/src/js/OrderReceipt.js',
             'sol_pos/static/src/js/models.js',
         ],
     },
