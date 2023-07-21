@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    "version": "15.1.0.0.11",
+    "version": "15.1.0.0.12",
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
@@ -47,8 +47,9 @@
         ],
         'point_of_sale.assets': [
             'sol_pos/static/src/js/GlobalLineDiscount.js',
-            'sol_pos/static/src/js/OrderWidget.js',
             'sol_pos/static/src/js/OrderReceipt.js',
+            'sol_pos/static/src/js/OrderWidget.js',
+            'sol_pos/static/src/js/PaymentScreen.js',
             'sol_pos/static/src/js/models.js',
             'sol_pos/static/src/js/screens.js',
         ],

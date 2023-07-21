@@ -14,9 +14,9 @@
                     <field name="types"/>
                 </xpath>
 
-                <xpath expr="//field[@name='default_code']" position="attributes">
-                    <attribute name="attrs">{}</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='default_code']" position="attributes">-->
+<!--                    <attribute name="attrs">{}</attribute>-->
+<!--                </xpath>-->
                 <xpath expr="//notebook/page[@name='general_information']/group/group[@name='group_standard_price']/label[@for='standard_price']"
                        position="attributes">
                     <attribute name="attrs">{}</attribute>

@@ -236,6 +236,7 @@ odoo.define("sol_pos.models", function (require) {
             this.trigger("change", this);
         },
     });
+
     var _super_order = models.Order.prototype;
     models.Order = models.Order.extend({
         add_product: function (product, options) {
@@ -261,6 +262,22 @@ odoo.define("sol_pos.models", function (require) {
                 _super_order.get_total_discount.apply(this, arguments) +
                 this.get_total_absolute_discount()
             );
+        },
+        set_order_note: function(order_note) {
+            this.order_note = order_note;
+        },
+        get_order_note: function() {
+            return this.order_note;
+        },
+        export_as_JSON: function() {
+            var selectedOrder = _super_order.export_as_JSON.call(this);
+            $.extend(selectedOrder, {note: this.get_order_note()});
+            return selectedOrder;
+        },
+        export_for_printing: function(){
+            var orders = _super_order.export_for_printing.call(this);
+            $.extend(orders, {note: this.get_order_note() || ''});
+            return orders;
         },
     });
 });

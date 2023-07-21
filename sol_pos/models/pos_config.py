@@ -31,3 +31,7 @@ class PosConfig(models.Model):
         string="Include Discount in Prices",
         help="If box is unchecked the displayed prices will not include discounts",
     )
+    is_order_note = fields.Boolean('Order Note', default=True)
+    is_order_note_receipt = fields.Boolean('Order Note on Receipt', default=True)
+    is_line_note = fields.Boolean('Order Line Note')
+    is_line_note_receipt = fields.Boolean('Order Line Note on Receipt')

@@ -110,14 +110,14 @@
                         <tr>
                             <td>Cashier</td>
                             <td>:</td>
-                            <td style="text-align: right;" t-esc="pos.config.name"/>
+                            <td style="text-align: right;" t-esc="receipt.name"/>
                         </tr>
 
                         <tr>
                             <td>Member</td>
                             <td>:</td>
                             <t t-if="receipt.client">
-                                <td style="text-align: right;" t-esc="receipt.client.name"/>
+                                <td style="text-align: right;" t-esc="receipt.note"/>
                             </t>
                         </tr>
                     </table>
