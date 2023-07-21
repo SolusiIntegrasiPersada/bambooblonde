@@ -46,6 +46,12 @@
         </xpath>
     </t>
 
+    <t t-name="TicketScreen" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('subpads')]/t[@t-set]" position="replace">
+            <t t-set="_actionName">Exchange</t>
+        </xpath>
+    </t>
+
 <!--    SetSaleOrderButton-->
     <t t-name="SetSaleOrderButton" t-inherit="pos_sale.SetSaleOrderButton" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('control-button')]" position="attributes">
@@ -99,18 +105,14 @@
             </t>
             <t t-if="env.pos.config.include_discount_in_prices">
                 <span class="price">
-                    <t
-                            t-esc="env.pos.format_currency(props.line.get_display_price())"
-                    />
+                    <t t-esc="env.pos.format_currency(props.line.get_display_price())"/>
                 </span>
             </t>
         </xpath>
         <xpath expr="//ul[hasclass('info-list')]/t[@t-if][2]/li" position="inside">
             <t t-if="!env.pos.config.include_discount_in_prices">
                 <span class="price">
-                    <t
-                            t-esc="env.pos.format_currency(props.line.get_display_price())"
-                    />
+                    <t t-esc="env.pos.format_currency(props.line.get_display_price())"/>
                 </span>
             </t>
         </xpath>
