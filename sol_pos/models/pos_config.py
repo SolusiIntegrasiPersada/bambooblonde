@@ -23,4 +23,11 @@ class PosConfig(models.Model):
         help='Boolean field to enable the custom receipt design',
         default=True,
     )
-    global_discount_in_line = fields.Boolean(string="Add Discount in Line", default=True)
+    global_discount_in_line = fields.Boolean(
+        string="Add Discount in Line",
+        default=True
+    )
+    include_discount_in_prices = fields.Boolean(
+        string="Include Discount in Prices",
+        help="If box is unchecked the displayed prices will not include discounts",
+    )

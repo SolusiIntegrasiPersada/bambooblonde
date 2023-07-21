@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    "version": "15.1.0.0.9",
+    "version": "15.1.0.0.10",
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
@@ -33,6 +33,7 @@
         'views/pos_config_views.xml',
         'views/point_of_sale_views.xml',
         'views/pos_receipt_views.xml',
+        'views/pos_order_views.xml',
         'views/res_users_view.xml',
         'views/sequence_data.xml',
         'report/action_report.xml',
@@ -49,6 +50,7 @@
             'sol_pos/static/src/js/OrderWidget.js',
             'sol_pos/static/src/js/OrderReceipt.js',
             'sol_pos/static/src/js/models.js',
+            'sol_pos/static/src/js/screens.js',
         ],
     },
 }

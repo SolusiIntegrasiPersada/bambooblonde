@@ -6,26 +6,32 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="is_stock_type" />
-                        <field name="class_product" />
-                        <field name="product_model_id" required="1"/>
-                        <field name="product_category_id" />
-                        <field name="types" />
-                        <field name="stock_type" />
+                        <group>
+                            <field name="class_product"/>
+                            <field name="product_model_id" required="1"/>
+                            <field name="product_category_id"/>
+                            <field name="types"/>
+                        </group>
+                        <group>
+                            <field name="stock_type"/>
+                            <field name="from_date" string="Start Period" required="1"/>
+                            <field name="to_date" string="End Period" required="1"/>
+                            <field name="pos_config_id"/>
+                        </group>
+                    </group>
+                    <group>
                         <label for="aging_from" string="Aging"/>
-						<div>
-							<field name="aging_from" required="1" class="oe_inline"/> s/d <field name="aging_to" required="1" class="oe_inline"/> weeks
-						</div>
-                        <field name="from_date" string="Start Period" required="1"/>
-                        <field name="to_date" string="End Period" required="1"/>
-                        <field name="pos_config_id" />
-                        <!-- <field name="aging_from" />
-                        <field name="aging_to" /> -->
-                    </group>        
+                        <div>
+                            <field name="aging_from" required="1" class="oe_inline"/>
+                            s/d
+                            <field name="aging_to" required="1" class="oe_inline"/>
+                            weeks
+                        </div>
+                    </group>
                     <footer>
                         <button name="button_generate_excel" type="object" default_focus="1"
-                            string="Excel Report" class="oe_highlight" icon="fa-download"/>
-                        <button string="Cancel" class="oe_link" special="cancel" />
+                                string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
             </field>
@@ -40,19 +46,19 @@
         </record>
 
         <menuitem name="Report Best Seller"
-            parent="point_of_sale.menu_point_rep"
-            id="menu_report_mens_clothes_wizard"
-            action="report_mens_clothes_wizard_action"
-            sequence="5"/>
+                  parent="point_of_sale.menu_point_rep"
+                  id="menu_report_mens_clothes_wizard"
+                  action="report_mens_clothes_wizard_action"
+                  sequence="5"/>
 
         <report
-            id="report_mens_clothes_wizard_xlsx"
-            model="report.mens.clothes.wizard"
-            string="Report Best Seller Model"
-            report_type="xlsx"
-            name="sol_bb_report.mens_clothes.xlsx"
-            file="Report Best Seller Model.xlsx"
-            menu="False"
-            attachment_use="False"/>
+                id="report_mens_clothes_wizard_xlsx"
+                model="report.mens.clothes.wizard"
+                string="Report Best Seller Model"
+                report_type="xlsx"
+                name="sol_bb_report.mens_clothes.xlsx"
+                file="Report Best Seller Model.xlsx"
+                menu="False"
+                attachment_use="False"/>
     </data>
 </odoo>
