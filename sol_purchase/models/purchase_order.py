@@ -4,19 +4,16 @@ from odoo.exceptions import UserError
 
 class BuyerComp(models.Model):
     _name = 'buyer.comp'
-
     name = fields.Char('buyer')
 
 
 class AttComp(models.Model):
     _name = 'att.comp'
-
     name = fields.Char('attention')
 
 
 class LabelComp(models.Model):
     _name = 'label.comp'
-
     name = fields.Char('Label')
 
 
@@ -126,10 +123,32 @@ class PurchaseOrder(models.Model):
         """Function to duplicate lines in order_line to create variant of size regarding templates"""
         for record in self:
             template_ids = list(set(record.order_line.mapped('product_id.product_tmpl_id.id')))
+            vals = []
             for template in template_ids:
-                product_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)
-                # TODO: Search size variant
+                # TODO: Search size variant after getting color
                 # TODO: Duplicate for each size variant in same label
+
+                product_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)[0]
+                product_colors_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)
+                color_list = []
+                for line in product_colors_line:
+                    # color = line.product_id.product_template_variant_value_ids
+
+                    color = line.product_id.product_template_variant_value_ids.filtered(
+                        lambda l: l.attribute_id.display_type == 'color').mapped('name')
+                    color_list.append(color)
+
+                vals.append({
+                    'template_id': template,
+                    'order_line': {
+                        'product_qty': product_line.product_qty,
+                        'product_uom': product_line.product_uom,
+                        'price_unit': product_line.price_unit
+                    }
+                })
+                # product = self.env['product.product'].
+
+            # record.order_line = [(5, 0)]
 
 
 
