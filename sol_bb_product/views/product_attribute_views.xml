@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="product_attribute_view_form_inherit_code" model="ir.ui.view">
         <field name="name">product.attribute.view.form.inherit.code</field>
         <field name="model">product.attribute</field>
         <field name="inherit_id" ref="product.product_attribute_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_variant']" position="after">
+                <field name="is_size"/>
+            </xpath>
+
             <xpath expr="//notebook/page/field/tree/field[@name='name']" position="after">
-                <field name="code" />
+                <field name="code"/>
+                <field name="label_id"
+                       attrs="{'column_invisible': [('parent.is_size', '=', False)]}"
+                       options="{'no_show':True,'no_create':True,'no_open':True}"/>
             </xpath>
         </field>
     </record>
-
 </odoo>

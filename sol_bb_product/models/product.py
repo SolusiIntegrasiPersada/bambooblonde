@@ -14,29 +14,6 @@ class ProductProduct(models.Model):
     category = fields.Char(related="categ_id.name", string="Category")
     is_print = fields.Boolean(string="Print", default=False)
     main_color_id = fields.Many2one('main.color', string="Main Color")
-    # @api.depends("categ_id", "product_template_variant_value_ids")
-    # def _compute_barcode(self):
-    #     for product in self:
-    #         color_value = product.product_template_variant_value_ids.filtered(
-    #             lambda x: x.attribute_id.name == "COLOR"
-    #         )
-    #         size_value = product.product_template_variant_value_ids.filtered(
-    #             lambda x: x.attribute_id.name == "SIZE"
-    #         )
-    #         color_code = color_value.product_attribute_value_id.code
-    #         if not color_code:
-    #             color_code = "0"
-    #         size_code = size_value.product_attribute_value_id.code
-    #         if not size_code:
-    #             size_code = "0"
-    #         model = product.categ_id.parent_id.parent_id.code
-    #         if not model:
-    #             model = "0"
-    #         sub_categ = product.categ_id.code
-    #         if not sub_categ:
-    #             sub_categ = "0"
-    #         product.barcode = model + sub_categ + color_code + size_code
-    #         # product.barcode = values
 
 
 class ProductCollections(models.Model):
