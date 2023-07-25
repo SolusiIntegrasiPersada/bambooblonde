@@ -1,8 +1,8 @@
 from odoo import _, fields, api, models
 from odoo.exceptions import UserError
 
-list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
-list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
+LIST_SIZE = ['SIZE:', 'SIZES:', 'UKURAN:']
+LIST_COLOR = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
 
 
 class BuyerComp(models.Model):
@@ -197,9 +197,9 @@ class PurchaseOrderLine(models.Model):
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 for v in i.product_id.product_template_variant_value_ids:
-                    if any(v.display_name.upper().startswith(word) for word in list_color):
+                    if any(v.display_name.upper().startswith(word) for word in LIST_COLOR):
                         c += ' ' + v.name + ' '
-                    elif any(v.display_name.upper().startswith(word) for word in list_size):
+                    elif any(v.display_name.upper().startswith(word) for word in LIST_SIZE):
                         s += ' ' + v.name + ' '
                     else:
                         c += ''
