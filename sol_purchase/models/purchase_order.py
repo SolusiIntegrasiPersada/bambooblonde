@@ -1,9 +1,6 @@
 from odoo import _, fields, api, models
 from odoo.exceptions import UserError
 
-LIST_SIZE = ['SIZE:', 'SIZES:', 'UKURAN:']
-LIST_COLOR = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
-
 
 class BuyerComp(models.Model):
     _name = 'buyer.comp'
@@ -194,13 +191,15 @@ class PurchaseOrderLine(models.Model):
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
+            list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
+            list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
             c, s = '', ''
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
                 for v in i.product_id.product_template_variant_value_ids:
-                    if any(v.display_name.upper().startswith(word) for word in LIST_COLOR):
+                    if any(v.display_name.upper().startswith(word) for word in list_color):
                         c += ' ' + v.name + ' '
-                    elif any(v.display_name.upper().startswith(word) for word in LIST_SIZE):
+                    elif any(v.display_name.upper().startswith(word) for word in list_size):
                         s += ' ' + v.name + ' '
                     else:
                         c += ''
