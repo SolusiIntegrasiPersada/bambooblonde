@@ -1,6 +1,9 @@
 from odoo import _, fields, api, models
 from odoo.exceptions import UserError
 
+list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
+list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
+
 
 class BuyerComp(models.Model):
     _name = 'buyer.comp'
@@ -122,6 +125,8 @@ class PurchaseOrder(models.Model):
     def create_variant_label(self):
         """Function to duplicate lines in order_line to create variant of size regarding templates"""
         for record in self:
+            size_label = self.env['product.attribute.value'].search(
+                [('label_id', '=', record.label_id.id)]).mapped('name')
             template_ids = list(set(record.order_line.mapped('product_id.product_tmpl_id.id')))
             vals = []
             for template in template_ids:
@@ -132,11 +137,19 @@ class PurchaseOrder(models.Model):
                 product_colors_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)
                 color_list = []
                 for line in product_colors_line:
-                    # color = line.product_id.product_template_variant_value_ids
-
                     color = line.product_id.product_template_variant_value_ids.filtered(
                         lambda l: l.attribute_id.display_type == 'color').mapped('name')
-                    color_list.append(color)
+                    color_list.extend(color)
+
+                product_list = self.env['product.product'].search([('product_tmpl_id', '=', template)])
+                duplicate_line = []
+                for color in color_list:
+                    products = product_list.filtered(lambda p: str(color) in p.display_name)
+                    for product in products:
+                        if any(size in product.display_name for size in size_label):
+                            duplicate_line.append(product)
+
+                    # if any(size in products.display_name for size in size_label):
 
                 vals.append({
                     'template_id': template,
@@ -149,7 +162,6 @@ class PurchaseOrder(models.Model):
                 # product = self.env['product.product'].
 
             # record.order_line = [(5, 0)]
-
 
 
 class PurchaseOrderLine(models.Model):
@@ -180,8 +192,6 @@ class PurchaseOrderLine(models.Model):
             c, s = '', ''
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
-                list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
-                list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.display_name.upper().startswith(word) for word in list_color):
                         c += ' ' + v.name + ' '
