@@ -158,7 +158,8 @@ class PurchaseOrder(models.Model):
                             product_duplicate_list.append(product)
 
                 existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id == template_id)
-                existing_lines.unlink()
+                for line in existing_lines:
+                    line.unlink()
 
                 for product in product_duplicate_list:
                     line_vals = vals.copy()
