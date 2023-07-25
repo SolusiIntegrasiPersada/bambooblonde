@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="size_label_tree" model="ir.ui.view">
+        <field name="name">size.label.view.tree</field>
+        <field name="model">size.label</field>
+        <field name="arch" type="xml">
+            <tree string="Size Label" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="size_label_action" model="ir.actions.act_window">
+        <field name="name">Size Label</field>
+        <field name="res_model">size.label</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

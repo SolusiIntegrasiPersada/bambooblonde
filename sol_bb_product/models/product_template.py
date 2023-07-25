@@ -1,6 +1,7 @@
 from odoo import fields, models, api, models
 from odoo.exceptions import ValidationError
 
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -22,7 +23,6 @@ class ProductTemplate(models.Model):
     no_origin = fields.Char(string='Origin Sample No.')
     types = fields.Selection([('staples', 'Staples'),('trend', 'Trend')], string='Type')
 
-
     def _set_standard_price(self):
         for template in self:
             if len(template.product_variant_ids) > 1:
@@ -40,11 +40,13 @@ class ProductTemplate(models.Model):
         for template in (self - unique_variants):
             template.standard_price = False
 
+
 class ProductBrand(models.Model):
     _name = 'product.brand'
     _description = 'Product Brand'
 
     name = fields.Char(string='Name')
+
 
 class StockType(models.Model):
     _name = 'stock.type'
@@ -52,14 +54,24 @@ class StockType(models.Model):
 
     name = fields.Char(string='Name')
 
+
 class DataFabricLining(models.Model):
     _name = 'data.fabric.lining'
     _description = 'Database Fabric and Lining'
 
     name = fields.Char(string='Name')
 
+
 class MainColor(models.Model):
     _name = 'main.color'
     _description = 'Main Color'
 
     name = fields.Char(string="Name")
+
+
+class SizeLabel(models.Model):
+    _name = 'size.label'
+    _description = 'Size Attribute Label'
+    _order = 'name'
+
+    name = fields.Char(string='Name')
