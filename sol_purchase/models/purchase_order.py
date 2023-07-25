@@ -128,40 +128,44 @@ class PurchaseOrder(models.Model):
             size_label = self.env['product.attribute.value'].search(
                 [('label_id', '=', record.label_id.id)]).mapped('name')
             template_ids = list(set(record.order_line.mapped('product_id.product_tmpl_id.id')))
-            vals = []
-            for template in template_ids:
-                # TODO: Search size variant after getting color
-                # TODO: Duplicate for each size variant in same label
+            for template_id in template_ids:
+                order_lines = []
 
-                product_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)[0]
-                product_colors_line = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template)
+                product_line = record.order_line.filtered(
+                    lambda l: l.product_id.product_tmpl_id.id == template_id)[0]
+
+                vals = {
+                    'product_id': None,
+                    'product_qty': product_line.product_qty,
+                    'product_uom': product_line.product_uom.id,
+                    'price_unit': product_line.price_unit
+                }
+
+                product_colors_line = record.order_line.filtered(
+                    lambda l: l.product_id.product_tmpl_id.id == template_id)
                 color_list = []
                 for line in product_colors_line:
                     color = line.product_id.product_template_variant_value_ids.filtered(
                         lambda l: l.attribute_id.display_type == 'color').mapped('name')
                     color_list.extend(color)
 
-                product_list = self.env['product.product'].search([('product_tmpl_id', '=', template)])
-                duplicate_line = []
+                product_list = self.env['product.product'].search([('product_tmpl_id', '=', template_id)])
+                product_duplicate_list = []
                 for color in color_list:
                     products = product_list.filtered(lambda p: str(color) in p.display_name)
                     for product in products:
-                        if any(size in product.display_name for size in size_label):
-                            duplicate_line.append(product)
+                        if any(size in product.display_name.split('(')[1] for size in size_label):
+                            product_duplicate_list.append(product)
 
-                    # if any(size in products.display_name for size in size_label):
+                existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id == template_id)
+                existing_lines.unlink()
 
-                vals.append({
-                    'template_id': template,
-                    'order_line': {
-                        'product_qty': product_line.product_qty,
-                        'product_uom': product_line.product_uom,
-                        'price_unit': product_line.price_unit
-                    }
-                })
-                # product = self.env['product.product'].
+                for product in product_duplicate_list:
+                    line_vals = vals.copy()
+                    line_vals.update({'product_id': product.id})
+                    order_lines.append((0, 0, line_vals))
 
-            # record.order_line = [(5, 0)]
+                record.write({'order_line': order_lines})
 
 
 class PurchaseOrderLine(models.Model):
