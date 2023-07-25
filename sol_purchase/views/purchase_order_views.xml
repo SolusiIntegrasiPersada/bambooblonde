@@ -9,8 +9,13 @@
                 <xpath expr="//field[@name='currency_id']" position="after">
                     <label for="label_id"/>
                     <div class="o_row">
-                        <field name="label_id" options="{'no_show': True,'no_create':True,'no_open':True}"/>
-                        <button name="create_variant_label" type="object" string="Create Variant"/>
+                        <field name="label_id"
+                               options="{'no_show': True,'no_create':True,'no_open':True}"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <button name="create_variant_label"
+                                type="object"
+                                string="Create Variant"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='partner_ref']" position="attributes">
