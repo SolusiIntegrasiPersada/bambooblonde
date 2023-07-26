@@ -5,6 +5,9 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_print_quotation_receive" attrs="{'invisible': [('picking_type_code', 'not in', 'incoming')]}"/>
+                </xpath>
                 <field name="origin" position="after">
                     <field name="style_name"/>
                     <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
