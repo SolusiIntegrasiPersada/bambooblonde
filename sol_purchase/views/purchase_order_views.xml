@@ -6,8 +6,20 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <label for="label_id"/>
+                    <div class="o_row">
+                        <field name="label_id"
+                               options="{'no_show': True,'no_create':True,'no_open':True}"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <button name="create_variant_label"
+                                type="object"
+                                string="Create Variant"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    </div>
+                </xpath>
                 <xpath expr="//field[@name='partner_ref']" position="attributes">
-                    <attribute name="invisible" value="1">1</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -83,10 +95,8 @@
                 <xpath expr="//page[@name='products']" position="inside">
                     <br/>
                     <label for="total_purchase_qty" string="Total Quantity: "/>
-                    <field name="total_purchase_qty" nolabel="1"></field>
+                    <field name="total_purchase_qty" nolabel="1"/>
                 </xpath>
-
-
             </field>
         </record>
 
@@ -144,6 +154,5 @@
                 </field>
             </field>
         </record>
-
     </data>
 </odoo>
