@@ -42,13 +42,23 @@ class StockPicking(models.Model):
         for line in self.move_ids_without_package:
             name = line.product_id.name  # Assuming 'product_id' is the field holding the product name.
             amount = line.product_uom_qty  # Assuming 'product_uom_qty' is the field holding the quantity.
-            if name in consolidated_lines:
-                consolidated_lines[name] += amount
+            colour = line.colour
+            key = (name, colour)
+            if key in consolidated_lines:
+                consolidated_lines[key] += amount
             else:
-                consolidated_lines[name] = amount
+                consolidated_lines[key] = amount
 
+        consolidated_data = []
+        for (name, colour), amount in consolidated_lines.items():
+            consolidated_data.append({
+                'name': name,
+                'colour': colour,
+                'amount': amount,
+            })
+        return consolidated_data
         # Convert the dictionary into a list of dictionaries for QWeb
-        return [{'name': name, 'amount': consolidated_lines[name]} for name in consolidated_lines]
+        # return [{'name': name, 'amount': consolidated_lines[name]} for name in consolidated_lines]
 
     def test_grouping(self):
         grouped_data = self.group_by_product_name()
