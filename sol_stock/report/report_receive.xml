@@ -172,7 +172,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">F</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">E</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">11-12</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">12-13</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">13-14</td>
@@ -189,7 +189,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">G</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">F</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">A</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">B</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">C</td>
@@ -206,7 +206,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">H</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">G</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XXS</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XS</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XSS</td>
@@ -223,7 +223,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">I</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">H</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XS/S</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">S/M</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">M/L</td>
@@ -240,7 +240,7 @@
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">J</td>
+                                <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">I</td>
                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">15</td>
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">16</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">17</td>
@@ -280,10 +280,10 @@
                                 <t t-set="product_category" t-value="product_category+[l.product_id.categ_id]"/>
                             </t>
 
-                            <t t-foreach="set(product_category)" t-as="category">
+<!--                            <t t-foreach="set(product_category)" t-as="category">-->
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">
-                                        <strong t-esc="category.name"/>
+<!--                                        <strong t-esc="category.name"/>-->
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
@@ -309,22 +309,36 @@
             <!--                                        <t t-esc="line"/>-->
                                                 </td>
                                                 <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
-            <!--                                        <t t-esc="move.colour"/>-->
+                                                    <t t-esc="line['colour']"/>
                                                 </td>
                                                 <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
                                                     <t t-esc="line['name']"/>
                                                 </td>
                                                 <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                                 <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                                    <t t-esc="line['amount']"/>
+                                                    <t t-esc="line['amount_b']"/>
                                                 </td>
-                                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                                <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_c']"/>
+                                                </td>
+                                                <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_d']"/>
+                                                </td>
+                                                <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_e']"/>
+                                                </td>
+                                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_f']"/>
+                                                </td>
+                                                <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_g']"/>
+                                                </td>
+                                                <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_h']"/>
+                                                </td>
+                                                <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                                    <t t-esc="line['amount_i']"/>
+                                                </td>
                                                 <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                                 <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                                 <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
@@ -337,7 +351,7 @@
 
 <!--                                    </t>-->
                                 </t>
-                            </t>
+<!--                            </t>-->
                             <tr style="height: 18px; border: 1pt solid black;">
                                 <td style="text-align: right; height: 18px; border: 1pt solid black;" colspan="3">Sub Total - Category nama</td>
                                 <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
