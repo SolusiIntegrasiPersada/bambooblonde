@@ -1,9 +1,6 @@
 from odoo import _, fields, api, models
 from odoo.exceptions import UserError
 
-list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
-list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
-
 
 class BuyerComp(models.Model):
     _name = 'buyer.comp'
@@ -151,14 +148,20 @@ class PurchaseOrder(models.Model):
 
                 product_list = self.env['product.product'].search([('product_tmpl_id', '=', template_id)])
                 product_duplicate_list = []
-                for color in color_list:
-                    products = product_list.filtered(lambda p: str(color) in p.display_name)
-                    for product in products:
+                if color_list:
+                    for color in color_list:
+                        products = product_list.filtered(lambda p: str(color) in p.display_name)
+                        for product in products:
+                            if any(size in product.display_name.split('(')[1] for size in size_label):
+                                product_duplicate_list.append(product)
+                else:
+                    for product in product_list:
                         if any(size in product.display_name.split('(')[1] for size in size_label):
                             product_duplicate_list.append(product)
 
-                existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id == template_id)
-                existing_lines.unlink()
+                existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template_id)
+                for line in existing_lines:
+                    line.unlink()
 
                 for product in product_duplicate_list:
                     line_vals = vals.copy()
@@ -193,6 +196,8 @@ class PurchaseOrderLine(models.Model):
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
+            list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
+            list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
             c, s = '', ''
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
