@@ -133,6 +133,7 @@ class PurchaseOrder(models.Model):
 
                 vals = {
                     'product_id': None,
+                    'image': None,
                     'product_qty': product_line.product_qty,
                     'product_uom': product_line.product_uom.id,
                     'price_unit': product_line.price_unit
@@ -165,7 +166,10 @@ class PurchaseOrder(models.Model):
 
                 for product in product_duplicate_list:
                     line_vals = vals.copy()
-                    line_vals.update({'product_id': product.id})
+                    line_vals.update({
+                        'product_id': product.id,
+                        'image': product.image_1920,
+                    })
                     order_lines.append((0, 0, line_vals))
 
                 record.write({'order_line': order_lines})
