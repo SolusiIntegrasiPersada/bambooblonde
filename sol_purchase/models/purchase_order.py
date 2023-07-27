@@ -148,13 +148,18 @@ class PurchaseOrder(models.Model):
 
                 product_list = self.env['product.product'].search([('product_tmpl_id', '=', template_id)])
                 product_duplicate_list = []
-                for color in color_list:
-                    products = product_list.filtered(lambda p: str(color) in p.display_name)
-                    for product in products:
+                if color_list:
+                    for color in color_list:
+                        products = product_list.filtered(lambda p: str(color) in p.display_name)
+                        for product in products:
+                            if any(size in product.display_name.split('(')[1] for size in size_label):
+                                product_duplicate_list.append(product)
+                else:
+                    for product in product_list:
                         if any(size in product.display_name.split('(')[1] for size in size_label):
                             product_duplicate_list.append(product)
 
-                existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id == template_id)
+                existing_lines = record.order_line.filtered(lambda l: l.product_id.product_tmpl_id.id == template_id)
                 for line in existing_lines:
                     line.unlink()
 
