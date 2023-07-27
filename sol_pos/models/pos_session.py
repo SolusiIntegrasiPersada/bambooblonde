@@ -5,6 +5,14 @@ class PosSession(models.Model):
     _inherit = 'pos.session'
     
     visitor_count = fields.Integer(string='Visitor Count')
+    customer_count = fields.Integer(compute="_compute_customer_and_order_cont", string='Customer Count')
+    order_count = fields.Integer(compute="_compute_customer_and_order_cont", string="Order Count")
+
+    def _compute_customer_and_order_cont(self):
+        for pos_obj in self:
+            pos_obj.customer_count = pos_obj.env['pos.order'].search_count(
+                [('partner_id', '!=', False), ('session_id', '=', pos_obj.id)])
+            pos_obj.order_count = pos_obj.env['pos.order'].search_count([('session_id', '=', pos_obj.id)]) + 1
 
     # def _get_sale_vals(self, key, amount, amount_converted):
     #     account_id, sign, tax_keys, base_tag_ids = key

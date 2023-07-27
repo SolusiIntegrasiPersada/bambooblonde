@@ -6,6 +6,7 @@
             <field name="model">pos.config</field>
             <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
             <field name="arch" type="xml">
+<!--                Address and Supervisor-->
                 <xpath expr="//h2[@name='order']" position="before">
                     <h2>Additional Information</h2>
                     <div class="row mt16 o_settings_container">
@@ -27,6 +28,7 @@
                     </div>
                 </xpath>
 
+<!--                Analytic Account-->
                 <xpath expr="//div[@id='accounting_section']/div[hasclass('o_setting_box')]" position="after">
                     <div class="col-12 col-lg-6 o_setting_box pos_analytic_account"
                          title="Analytic account to be passed in journal entries">
@@ -47,6 +49,7 @@
                     </div>
                 </xpath>
 
+<!--                Custom Receipt-->
                 <xpath expr="//div[@id='order_reference']" position="after">
                     <div class="col-xs-12 col-md-6 o_setting_box">
                         <div class="o_setting_left_pane">
@@ -92,6 +95,7 @@
                     </div>
                 </xpath>
 
+<!--                PoS Order Note-->
                 <xpath expr="//div[@id='accounting_section']" position="after">
                     <h2>POS Note</h2>
                     <div class="row mt16 o_settings_container" id="order_note_section">
@@ -106,39 +110,47 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="col-12 col-lg-6 o_setting_box">-->
-<!--                            <div class="o_setting_left_pane">-->
-<!--                                <field name="is_line_note"/>-->
-<!--                            </div>-->
-<!--                            <div class="o_setting_right_pane">-->
-<!--                                <label for="is_line_note"/>-->
-<!--                                <div class="text-muted">-->
-<!--                                    Add note on pos order line-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div class="col-12 col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="is_order_note_receipt"/>
-                            </div>
+                    </div>
+                </xpath>
+
+<!--                PoS Promotions-->
+                <xpath expr="//div[@id='receipt']" position="after">
+                    <h2 style="margin-left: 1%;">Promotions</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
                             <div class="o_setting_right_pane">
-                                <label for="is_order_note_receipt"/>
+                                <label for="promo_message_ids"/>
                                 <div class="text-muted">
-                                    Display order note on pos receipt
+                                    Select Promositions to apply in POS
+                                </div>
+                                <div>
+                                    <field name="promo_message_ids" widget="many2many_tags"/>
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="col-12 col-lg-6 o_setting_box">-->
-<!--                            <div class="o_setting_left_pane">-->
-<!--                                <field name="is_line_note_receipt"/>-->
-<!--                            </div>-->
-<!--                            <div class="o_setting_right_pane">-->
-<!--                                <label for="is_line_note_receipt"/>-->
-<!--                                <div class="text-muted">-->
-<!--                                    Display order line note on pos receipt-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name='show_apply_promotion'/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_apply_promotion"/>
+                                <div class="text-muted">
+                                    Show Promotions button, or the offers wil apply automatically.
+                                    Promotions will apply only if the button is enabled.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box ">
+                            <div class="o_setting_left_pane">
+                                <field name='show_offers_in_orderline'/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_offers_in_orderline"/>
+                                <div class="text-muted">
+                                    Show Offers in Orderline.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </xpath>
             </field>
