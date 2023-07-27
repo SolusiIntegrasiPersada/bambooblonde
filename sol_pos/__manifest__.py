@@ -2,22 +2,20 @@
 {
     'name': 'sol_pos',
 
-    'summary': '''
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com''',
+    'summary': '''Custom PoS module for BambooBlonde''',
 
     'description': '''
-        Long description of module's purpose
+        Rework PoS workflow for requirement made by BambooBlonde
     ''',
 
-    'author': 'My Company',
-    'website': 'http://www.yourcompany.com',
+    'author': 'Solusi Integrasi Persada',
+    'website': 'http://www.solinda.co.id',
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    "version": "15.1.0.0.13",
+    "version": "15.1.0.0.14",
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
@@ -34,6 +32,7 @@
         'views/point_of_sale_views.xml',
         'views/pos_receipt_views.xml',
         'views/pos_order_views.xml',
+        'views/promotional_message_view.xml',
         'views/res_users_view.xml',
         'views/sequence_data.xml',
         'report/action_report.xml',

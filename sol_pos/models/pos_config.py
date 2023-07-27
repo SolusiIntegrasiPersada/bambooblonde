@@ -35,3 +35,14 @@ class PosConfig(models.Model):
     is_order_note_receipt = fields.Boolean('Order Note on Receipt', default=True)
     is_line_note = fields.Boolean('Order Line Note')
     is_line_note_receipt = fields.Boolean('Order Line Note on Receipt')
+    promo_message_ids = fields.Many2many('pos.promotions', string="Promotions")
+    show_apply_promotion = fields.Boolean(
+        string="Show Apply Promotion Button",
+        help="Enable this option to Show Promotions button on POS, or the offers will be applied automatically.",
+        default=False
+    )
+    show_offers_in_orderline = fields.Boolean(
+        string="Show Offers in Orderlines",
+        help="Enable this option to Show Offers in Orderline.",
+        default=True
+    )
