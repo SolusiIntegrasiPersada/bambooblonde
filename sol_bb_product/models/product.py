@@ -14,6 +14,10 @@ class ProductProduct(models.Model):
     category = fields.Char(related="categ_id.name", string="Category")
     is_print = fields.Boolean(string="Print", default=False)
     main_color_id = fields.Many2one('main.color', string="Main Color")
+    product_template_variant_value_ids = fields.Many2many('product.template.attribute.value',
+                                                          relation='product_variant_combination',
+                                                          domain=[('attribute_line_id.value_count', '>', 0)],
+                                                          string="Variant Values", ondelete='restrict')
 
 
 class ProductCollections(models.Model):
