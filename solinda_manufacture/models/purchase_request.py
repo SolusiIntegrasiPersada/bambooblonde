@@ -114,20 +114,20 @@ class PurchaseRequest(models.Model):
         if not company_bb:
             raise ValidationError("Company for SO is not defined")
         self = self.sudo()
-        # for data in self.line_ids:
-        #     update.append([0,0,{
-        #             'product_id' : data.product_id.id,
-        #             'name' : data.name,
-        #             'product_uom_qty' : data.product_qty,
-        #             'price_unit' : data.price_unit,
-        #             'price_subtotal' : data.price_subtotal,
-        #     }])
-        # so = self.env['sale.order'].create({
-        #     'partner_id': company_bb.partner_id.id,
-        #     'company_id': company.id,
-        #     'order_line': update,
-        #     # 'source': self.id,
-        #     })
+        for data in self.line_ids:
+            update.append([0,0,{
+                    'product_id': data.product_id.id,
+                    'name': data.name,
+                    'product_uom_qty': data.product_qty,
+                    'price_unit': 0,
+                    'price_subtotal': 0,
+            }])
+        so = self.env['sale.order'].create({
+            'partner_id': company_bb.partner_id.id,
+            'company_id': company.id,
+            'order_line': update,
+            # 'source': self.id,
+            })
         for i in self:
             if i.mrp_count > 0:
                 return i.show_mrp_prod()
@@ -197,7 +197,7 @@ class PurchaseRequest(models.Model):
                                 'purchase_request_id': i.id,
                                 'is_sample': True,
                                 # 'purchase_id':i.id,
-                                # 'sales_order_id': so.id,
+                                'sales_order_id': so.id,
                                 'picking_type_id':BoM.picking_type_id.id,
                                 'location_src_id':BoM.picking_type_id.default_location_src_id.id,
                                 'location_dest_id':BoM.picking_type_id.default_location_dest_id.id,

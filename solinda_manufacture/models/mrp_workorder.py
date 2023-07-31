@@ -33,6 +33,7 @@ class MrpWorkorder(models.Model):
     po_date = fields.Datetime(string='PO Date', related='order_id.date_approve')
     keterangan = fields.Selection(selection=[('person', 'Individual'), ('company', 'Company')], string='Keterangan', related='production_id.customer.company_type')
     product_tmpl_id = fields.Many2one('product.template', string='Product', related='product_id.product_tmpl_id')
+    mrp_payment_id = fields.Many2one('mrp.payment', string="Payment")
 
     # @api.depends('fabric_id', 'production_id.qty_po', 'hk')
     # def _compute_total_mtr(self):
@@ -128,6 +129,10 @@ class MrpWorkorder(models.Model):
             i.button_start()
             if not i.supplier:
                 raise ValidationError("Please input the supplier first")
+            if not i.in_date:
+                raise ValidationError("Please input In Date first")
+            if not i.total_dyeing and (i.workcenter_id.name == "DYEING" or i.workcenter_id.name == "WASHING" or i.workcenter_id.name == "PRINTING"):
+                raise ValidationError("Please input Total Dyeing in operation Dyeing, Washing, or Printing")
             po = i.env['purchase.order'].create({'partner_id': i.supplier.id,'state': 'draft','date_approve': datetime.now(), 'is_po_service': True})
             if po:
                 i.order_id = po.id

@@ -21,3 +21,12 @@ class ProductAttributeValue(models.Model):
 
     code = fields.Char("Code", help="for barcode structure", default="0")
     label_id = fields.Many2one('size.label', string='Size Label')
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.name
+            if record.attribute_id.name == 'COLOR' and name.startswith('COLOR: '):
+                name = name.replace('COLOR: ', '')
+            result.append((record.id, name))
+        return result

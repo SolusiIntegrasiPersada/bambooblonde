@@ -15,3 +15,4 @@ from . import stock_move
 from . import mrp_workorder
 # from . import mrp_bom
 from . import stock_picking
+from . import mrp_payment
