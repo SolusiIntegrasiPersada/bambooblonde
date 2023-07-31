@@ -7,3 +7,4 @@ access_temp_product_mo,temp_product_mo,model_temp_product_mo,base.group_user,1,1
 access_by_product_dummy,by_product_dummy,model_by_product_dummy,base.group_user,1,1,1,1
 access_mrp_production_bom_variant,mrp_production_bom_variant,model_mrp_production_bom_variant,base.group_user,1,1,1,1
 access_service_return,service_return,model_service_return,base.group_user,1,1,1,1
+access_mrp_payment,mrp_payment,model_mrp_payment,base.group_user,1,1,1,1

@@ -120,6 +120,7 @@
                 <!-- <field name="total_mtr" /> -->
                 <field name="total_buy" />
                 <field name="color" />
+                <field name="mrp_payment_id"/>
                 <field name="is_sample" invisible="1"/>
 
             </xpath>
@@ -142,7 +143,7 @@
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>
             <xpath expr="//group/group/field[@name='company_id']" position="after">
-                <field name="sales_order_id" attrs="{'invisible':[('sales_order_id','=', False)]}"/>
+                <field name="sales_order_id" />
                 <field name="purchase_id" attrs="{'invisible':[('purchase_id','=', False)]}"/>
                 <field name="is_sample" readonly="1" attrs="{'invisible': [('is_sample', '=', False)]}"/>
                 <field name="purchase_request_id" readonly="1" attrs="{'invisible': [('purchase_request_id', '=', False)]}"/>
@@ -168,6 +169,7 @@
                         <!-- additional -->
                         <field name="order_id" />
                         <field name="supplier" />
+                        <field name="mrp_payment_id"/>
                         <field name="cost_service" optional="hide" />
                         <field name="fabric_id" widget="many2many_tags" options="{'no_show':True,'no_create':True,'no_open':True}" string="Material"/>
                         <!-- <field name="accessories_ids" widget="many2many_tags" options="{'no_show':True,'no_create':True,'no_open':True}"/> -->

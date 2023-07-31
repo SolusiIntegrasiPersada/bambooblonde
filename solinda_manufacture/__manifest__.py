@@ -40,5 +40,6 @@
         'report/production_detail.xml',
         'report/sample_detail.xml',
         'views/templates.xml',
+        'views/mrp_payment.xml',
     ],
 }

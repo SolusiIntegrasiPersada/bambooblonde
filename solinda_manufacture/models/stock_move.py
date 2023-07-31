@@ -34,6 +34,7 @@ class StockMove(models.Model):
     po_qty = fields.Float(string="Qty PO")
     # total_mtr = fields.Float(string="Total Mtr")
     is_sample = fields.Boolean(string="Is Sample", related='raw_material_production_id.is_sample')
+    mrp_payment_id = fields.Many2one('mrp.payment', string="Payment")
 
     @api.depends('raw_material_production_id.qty_producing', 'product_uom_qty', 'product_uom')
     def _compute_should_consume_qty(self):
