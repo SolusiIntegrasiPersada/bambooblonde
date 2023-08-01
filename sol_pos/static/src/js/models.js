@@ -12,6 +12,7 @@ odoo.define("sol_pos.models", function (require) {
 
     models.load_fields('res.partner', ['pos_order_count', 'ref']);
     models.load_fields('pos.session', ['customer_count', 'order_count']);
+    models.load_fields('product.product', 'class_product');
 
     // -------load promo_message mode and ir_sequence model-------
     models.load_models([{
@@ -407,7 +408,7 @@ odoo.define("sol_pos.models", function (require) {
         },
         get_discount_val: function (offers, product) {
             var self = this;
-            if (product) {
+            if (product && product.class_product[1] != 'SALE') {
                 var discount_val = 0
                 var flag = false
                 _.each(self.pos.db.promotions_by_sequence_id, function (promotions) {
