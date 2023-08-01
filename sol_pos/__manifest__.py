@@ -45,7 +45,6 @@
             'sol_pos/static/src/xml/pos_screen.xml',
         ],
         'point_of_sale.assets': [
-            'sol_pos/static/src/js/GlobalLineDiscount.js',
             'sol_pos/static/src/js/OrderReceipt.js',
             'sol_pos/static/src/js/OrderWidget.js',
             'sol_pos/static/src/js/PaymentScreen.js',

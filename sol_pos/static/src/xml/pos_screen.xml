@@ -4,7 +4,7 @@
         <xpath expr="//img[hasclass('pos-logo')]" position="after">
             <div class="apply_promotions" t-on-click="click_apply_promotions"
                  style="float: right;height: 90%;width: 0%;">
-                <i class="fa fa-gift fa-4x" style="color: #6EC89B;" aria-hidden="true"></i>
+                <i class="fa fa-gift fa-4x" style="color: #6EC89B;" aria-hidden="true"/>
             </div>
         </xpath>
     </t>
@@ -143,42 +143,6 @@
                 <div>
                     <i class="fa fa-gift show_promotions" style="color: tomato;font-size: 18px;" aria-hidden="true"/>
                 </div>
-            </t>
-        </xpath>
-        <xpath expr="//span[hasclass('price')]" position="replace">
-            <t t-if="!env.pos.config.include_discount_in_prices">
-                <span class="price">
-                    <t t-esc="env.pos.format_currency(props.line.get_display_price_without_discount())"/>
-                </span>
-            </t>
-            <t t-if="env.pos.config.include_discount_in_prices">
-                <span class="price">
-                    <t t-esc="env.pos.format_currency(props.line.get_display_price())"/>
-                </span>
-            </t>
-        </xpath>
-        <xpath expr="//ul[hasclass('info-list')]/t[@t-if][2]/li" position="inside">
-            <t t-if="!env.pos.config.include_discount_in_prices">
-                <span class="price">
-                    <t t-esc="env.pos.format_currency(props.line.get_display_price())"/>
-                </span>
-            </t>
-        </xpath>
-        <xpath expr="//ul[hasclass('info-list')]/t[@t-if][2]" position="after">
-            <t t-if="props.line.get_absolute_discount_str() and props.line.get_absolute_discount_str() !== '0'">
-                <li class="info">
-                    With a
-                    <em>
-                        <t t-esc='props.line.pos.currency.symbol'/>
-                        <t t-esc="props.line.get_absolute_discount_str()"/>
-                    </em>
-                    discount
-                    <t t-if="!env.pos.config.include_discount_in_prices">
-                        <span class="price">
-                            <t t-esc="env.pos.format_currency(props.line.get_display_price())"/>
-                        </span>
-                    </t>
-                </li>
             </t>
         </xpath>
     </t>
