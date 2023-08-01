@@ -27,6 +27,7 @@ class StockMove(models.Model):
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     # payment = fields.Many2one(comodel_name='account.payment.method', related='supplier.property_payment_method_id')
     color = fields.Many2one(comodel_name='dpt.color', string='Color')
+    color_id = fields.Many2one(comodel_name='product.attribute.value', string='Color', related='bom_line_id.color')
     service = fields.Char(string='Fabric', default='FABRIC', readonly=True)
     hk = fields.Float(string='HK', related='bom_line_id.product_qty')
     purchase_id = fields.Many2one('purchase.order', string='Purchase')
