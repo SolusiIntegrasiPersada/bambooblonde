@@ -12,6 +12,7 @@ odoo.define("sol_pos.models", function (require) {
 
     models.load_fields('res.partner', ['pos_order_count', 'ref']);
     models.load_fields('pos.session', ['customer_count', 'order_count']);
+    models.load_fields('product.product', 'class_product');
 
     // -------load promo_message mode and ir_sequence model-------
     models.load_models([{
@@ -212,7 +213,6 @@ odoo.define("sol_pos.models", function (require) {
     models.Orderline = models.Orderline.extend({
         initialize: function (attr, options) {
             var self = this;
-            self.absolute_discount = 0;
             self.data = this.wk_offer_tag()
             self.is_offer_product = options.is_offer_product || false
             self.is_buy_x_get_y_product = options.is_buy_x_get_y_product || false
@@ -224,7 +224,6 @@ odoo.define("sol_pos.models", function (require) {
             self.is_buy_x_get_discount_on_y = options.is_buy_x_get_discount_on_y || false
             self.do_not_update = options.do_not_update || false
             SuperOrderLine.initialize.call(this, attr, options)
-            SuperOrderLine.initialize.apply(this, arguments);
         },
         wk_offer_tag: function () {
             if (this.is_discount_product) {
@@ -238,64 +237,6 @@ odoo.define("sol_pos.models", function (require) {
             } else {
                 return false
             }
-        },
-        init_from_JSON: function (json) {
-            SuperOrderLine.init_from_JSON.apply(this, arguments);
-            if (json.absolute_discount) {
-                this.set_absolute_discount(json.absolute_discount);
-            }
-        },
-        set_discount: function (discount) {
-            if (this.get_absolute_discount()) {
-                this.set_absolute_discount(0);
-            }
-            SuperOrderLine.set_discount.apply(this, arguments);
-        },
-        // Sets a absolute discount
-        set_absolute_discount: function (discount) {
-            var self = this;
-            if (this.price < discount) {
-                Gui.showPopup("ErrorPopup", {
-                    title: _t("Warning"),
-                    body: _t(
-                        "It is not allowed to create a credit by discount: " +
-                            discount +
-                            self.pos.currency.symbol +
-                            ". \r\n" +
-                            "The discount value should not be higher than unit price " +
-                            self.price +
-                            self.pos.currency.symbol
-                    ),
-                });
-                return false;
-            }
-            if (this.get_discount()) {
-                this.set_discount(0);
-            }
-            this.absolute_discount = discount || 0;
-            this.absolute_discountStr = String(this.absolute_discount);
-            this.trigger("change", this);
-        },
-        // Returns the absolute discount
-        get_absolute_discount: function () {
-            return this.absolute_discount;
-        },
-        get_absolute_discount_str: function () {
-            return this.absolute_discountStr;
-        },
-        clone: function () {
-            var res = SuperOrderLine.clone.apply(this, arguments);
-            res.absolute_discount = this.absolute_discount;
-            return res;
-        },
-        // When we add an new orderline we want to merge it with the last line to see reduce the number of items
-        // in the orderline. This returns true if it makes sense to merge the two
-        can_be_merged_with: function (orderline) {
-            // We don't merge discounted orderlines
-            if (this.get_absolute_discount() > 0) {
-                return false;
-            }
-            return SuperOrderLine.can_be_merged_with.apply(this, arguments);
         },
         export_as_JSON: function () {
             var loaded = SuperOrderLine.export_as_JSON.call(this);
@@ -315,113 +256,6 @@ odoo.define("sol_pos.models", function (require) {
             var loaded = SuperOrderLine.export_for_printing.call(this);
             loaded.data = this.wk_offer_tag()
             return loaded
-        },
-        get_base_price: function () {
-            var rounding = this.pos.currency.rounding;
-            if (this.get_absolute_discount()) {
-                return round_pr(
-                    (this.get_unit_price() - this.get_absolute_discount()) *
-                        this.get_quantity(),
-                    rounding
-                );
-            }
-            return SuperOrderLine.get_base_price.apply(this, arguments);
-        },
-        get_all_prices: function () {
-            var res = SuperOrderLine.get_all_prices.apply(this, arguments);
-            if (this.get_absolute_discount()) {
-                var price_unit = this.get_unit_price() - this.get_absolute_discount();
-                var taxtotal = 0;
-
-                var product = this.get_product();
-                var taxes_ids = product.taxes_id;
-                var taxes = this.pos.taxes;
-                var taxdetail = {};
-                var product_taxes = [];
-
-                _(taxes_ids).each(function (el) {
-                    product_taxes.push(
-                        _.detect(taxes, function (t) {
-                            return t.id === el;
-                        })
-                    );
-                });
-
-                var all_taxes = this.compute_all(
-                    product_taxes,
-                    price_unit,
-                    this.get_quantity(),
-                    this.pos.currency.rounding
-                );
-                _(all_taxes.taxes).each(function (tax) {
-                    taxtotal += tax.amount;
-                    taxdetail[tax.id] = tax.amount;
-                });
-                res.priceWithTax = all_taxes.total_included;
-                res.priceWithoutTax = all_taxes.total_excluded;
-                res.tax = taxtotal;
-                res.taxDetails = taxdetail;
-            }
-            return res;
-        },
-        get_display_price_without_discount: function () {
-            if (this.pos.config.iface_tax_included) {
-                return this.get_price_with_tax_without_discount();
-            }
-            return this.get_price_without_discount();
-        },
-        // Get orderline price without discount
-        get_price_without_discount: function () {
-            var rounding = this.pos.currency.rounding;
-            return round_pr(this.get_unit_price() * this.get_quantity(), rounding);
-        },
-        get_price_with_tax_without_discount: function () {
-            return this.get_all_prices_without_discounts().priceWithTax;
-        },
-        get_all_prices_without_discounts: function () {
-            var price_unit = this.get_unit_price();
-            var taxtotal = 0;
-
-            var product = this.get_product();
-            var taxes_ids = product.taxes_id;
-            var taxes = this.pos.taxes;
-            var taxdetail = {};
-            var product_taxes = [];
-
-            _(taxes_ids).each(function (el) {
-                product_taxes.push(
-                    _.detect(taxes, function (t) {
-                        return t.id === el;
-                    })
-                );
-            });
-
-            var all_taxes = this.compute_all(
-                product_taxes,
-                price_unit,
-                this.get_quantity(),
-                this.pos.currency.rounding
-            );
-            _(all_taxes.taxes).each(function (tax) {
-                taxtotal += tax.amount;
-                taxdetail[tax.id] = tax.amount;
-            });
-            return {
-                priceWithTax: all_taxes.total_included,
-                priceWithoutTax: all_taxes.total_excluded,
-                tax: taxtotal,
-                taxDetails: taxdetail,
-            };
-        },
-        apply_ms_data: function (data) {
-            // This methods is added for compatibility with module https://www.odoo.com/apps/modules/12.0/pos_multi_session/
-            if (SuperOrderLine.apply_ms_data) {
-                SuperOrderLine.apply_ms_data.apply(this, arguments);
-            }
-            this.absolute_discount = data.absolute_discount;
-            this.absolute_discountStr = data.absolute_discountStr;
-            // Rerender Orderline Widget after updating data
-            this.trigger("change", this);
         },
         set_quantity: function (quantity, keep_price) {
             var self = this;
@@ -574,7 +408,7 @@ odoo.define("sol_pos.models", function (require) {
         },
         get_discount_val: function (offers, product) {
             var self = this;
-            if (product) {
+            if (product && product.class_product[1] != 'SALE') {
                 var discount_val = 0
                 var flag = false
                 _.each(self.pos.db.promotions_by_sequence_id, function (promotions) {
@@ -962,23 +796,6 @@ odoo.define("sol_pos.models", function (require) {
                 return promo_message_list
             }
         },
-        get_total_absolute_discount: function () {
-            return round_pr(
-                this.orderlines.reduce(function (sum, orderLine) {
-                    return (
-                        sum +
-                        orderLine.get_absolute_discount() * orderLine.get_quantity()
-                    );
-                }, 0),
-                this.pos.currency.rounding
-            );
-        },
-        get_total_discount: function () {
-            return (
-                SuperOrder.get_total_discount.apply(this, arguments) +
-                this.get_total_absolute_discount()
-            );
-        },
         apply_discount: function (val, discount_product_id) {
             var self = this;
             var order = this.pos.get_order();
@@ -1341,7 +1158,6 @@ odoo.define("sol_pos.models", function (require) {
                 }
             }
         },
-
         can_apply_buy_x_get_y: function (offers, apply_offer, order, product, options, active_line) {
             var self = this;
             var orderlines = order.get_orderlines();

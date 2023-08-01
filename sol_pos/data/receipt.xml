@@ -38,10 +38,11 @@
                         <t t-set="total_qty" t-value="0"/>
                         <t t-foreach="receipt.orderlines" t-as="line">
                             <t t-set="total_qty" t-value="total_qty + line.quantity"/>
+                            <t t-set="total_price" t-value="line.quantity * line.price"/>
                             <tr>
                                 <td t-esc="line.product_name_wrapped[0]"/>
                                 <td t-esc="line.quantity"/>
-                                <td style="text-align: right;" t-esc="pos.format_currency(line.price)"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(total_price)"/>
                                 <td style="text-align: center;" t-esc="line.discount">
                                     <span>%</span>
                                 </td>
