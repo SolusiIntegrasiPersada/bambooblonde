@@ -167,6 +167,7 @@ class MrpProduction(models.Model):
             move.product_uom_qty = move.po_qty * move.hk
             # move.quantity_done = move.product_uom_qty
             move.supplier = move.bom_line_id.supplier
+            move.color_id = move.bom_line_id.color
 
     def update_qty_consume_with_variant_wo(self):
         for move in self.move_raw_ids:
@@ -244,6 +245,7 @@ class MrpProduction(models.Model):
                         'product_uom_id': production.product_uom_id.id,
                         'operation_id': operation.id,
                         'state': 'pending',
+                        'color_id': operation.color_id.id,
                         # 'accessories_ids': accessories_ids,
                         'fabric_id': accessories_ids,
                     }]

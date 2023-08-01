@@ -119,7 +119,8 @@
                 <!-- <field name="payment" /> -->
                 <!-- <field name="total_mtr" /> -->
                 <field name="total_buy" />
-                <field name="color" />
+                <field name="color" invisible="1"/>
+                <field name="color_id"/>
                 <field name="mrp_payment_id"/>
                 <field name="is_sample" invisible="1"/>
 
@@ -145,6 +146,7 @@
             <xpath expr="//group/group/field[@name='company_id']" position="after">
                 <field name="sales_order_id" />
                 <field name="purchase_id" attrs="{'invisible':[('purchase_id','=', False)]}"/>
+                <field name="purchase_taboo_id" attrs="{'invisible':[('purchase_id','=', False)]}"/>
                 <field name="is_sample" readonly="1" attrs="{'invisible': [('is_sample', '=', False)]}"/>
                 <field name="purchase_request_id" readonly="1" attrs="{'invisible': [('purchase_request_id', '=', False)]}"/>
             </xpath>

@@ -12,7 +12,7 @@ class MrpWorkorder(models.Model):
     fabric_id = fields.Many2many(comodel_name='mrp.bom.line',string='Fabric', related='operation_id.fabric_id')
     # accessories_ids = fields.Many2many(comodel_name='product.product', string='Accessories', domain="""[('type', 'in', ['product', 'consu']),'|',('company_id', '=', False),('company_id', '=', company_id)]""", check_company=True)
     hk = fields.Float(string='HK', related='operation_id.hk')
-    color_id = fields.Many2one(comodel_name='product.attribute.value', string='Color', related='operation_id.color_id')
+    color_id = fields.Many2one(comodel_name='product.attribute.value', string='Color', domain="[('attribute_id.name','=', 'COLOR')]", store=True)
     shrinkage = fields.Float(string='Shkg(%)', default=0.0)
     duration_expected = fields.Float(
         'Expected Duration',
@@ -129,8 +129,8 @@ class MrpWorkorder(models.Model):
             i.button_start()
             if not i.supplier:
                 raise ValidationError("Please input the supplier first")
-            if not i.in_date:
-                raise ValidationError("Please input In Date first")
+            if not i.out_date:
+                raise ValidationError("Please input Out Date first")
             if not i.total_dyeing and (i.workcenter_id.name == "DYEING" or i.workcenter_id.name == "WASHING" or i.workcenter_id.name == "PRINTING"):
                 raise ValidationError("Please input Total Dyeing in operation Dyeing, Washing, or Printing")
             po = i.env['purchase.order'].create({'partner_id': i.supplier.id,'state': 'draft','date_approve': datetime.now(), 'is_po_service': True})
