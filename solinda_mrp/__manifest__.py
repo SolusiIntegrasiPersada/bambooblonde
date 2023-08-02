@@ -2,26 +2,22 @@
 {
     'name': "solinda_mrp",
 
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    'summary': """Custom MRP Manufacture for BambooBlonde""",
 
-    'description': """
-        Long description of module's purpose
-    """,
+    'description': """""",
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Solusi Integrasi Persada",
+    'website': "http://www.solinda.co.id",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    "version": "15.1.0.0.1",
+    "version": "15.1.0.0.2",
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mrp','purchase_stock','sol_purchase','sale','purchase','sol_bb_report','report_xlsx'],
+    'depends': ['base', 'mrp', 'purchase_stock', 'sol_purchase', 'sale', 'purchase', 'sol_bb_report', 'report_xlsx'],
 
     # always loaded
     'data': [
