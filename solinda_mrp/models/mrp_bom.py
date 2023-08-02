@@ -81,7 +81,7 @@ class MrpBom(models.Model):
     suggest_price_2 = fields.Float(string='Suggest Price 2', compute=_compute_suggest_price_2)
     suggest_price_3 = fields.Float(string='Suggest Price 3', compute=_compute_suggest_price_3)
     bom_line_variant_ids = fields.One2many('mrp.bom.line.variant', 'bom_id', 'Material Variant', copy=True)
-    label_hardware_ids = fields.One2many('mrp.bom.label.hardware', 'label_hardware_id', string='Label Hardware')
+    label_hardware_ids = fields.One2many('mrp.bom.label.hardware', 'bom_id', string='Label Hardware')
 
     # @api.onchange('bom_line_variant_ids')
     # def _onchange_bom_line_qty(self):
@@ -325,29 +325,35 @@ class MrpBomLineVariant(models.Model):
         domain = ['|', '&', ('res_model', '=', 'product.product'), ('res_id', '=', self.product_id.id), '&',
                   ('res_model', '=', 'product.template'), ('res_id', '=', self.product_id.product_tmpl_id.id)]
         attachment_view = self.env.ref('mrp.view_document_file_kanban_mrp')
-        return {'name': _('Attachments'), 'domain': domain, 'res_model': 'mrp.document',
-                'type': 'ir.actions.act_window', 'view_id': attachment_view.id,
-                'views': [(attachment_view.id, 'kanban'), (False, 'form')],
-                'view_mode': 'kanban,tree,form', 'help': _(""""
+        return {
+            'name': _('Attachments'),
+            'domain': domain,
+            'res_model': 'mrp.document',
+            'type': 'ir.actions.act_window',
+            'view_id': attachment_view.id,
+            'views': [(attachment_view.id, 'kanban'), (False, 'form')],
+            'view_mode': 'kanban,tree,form',
+            'help': _(""""
                     <p class='o_view_nocontent_smiling_face'>
                             Upload files to your product
                         </p><p>
                             Use this feature to store any files, like drawings or specifications.
                         </p>
                     """),
-                'limit': 80,
-                'context': "{'default_res_model': '%s','default_res_id': %d, 'default_company_id': %s}" % (
-                    'product.product', self.product_id.id, self.company_id.id)}
+            'limit': 80,
+            'context': "{'default_res_model': '%s','default_res_id': %d, 'default_company_id': %s}" % (
+                'product.product', self.product_id.id, self.company_id.id)
+        }
 
 
 class MrpBomLabelHardware(models.Model):
     _name = 'mrp.bom.label.hardware'
     _description = 'Label Hardware'
 
-    label_hardware_id = fields.Many2one('mrp.bom', string='BoM')
-    description = fields.Char('Description')
-    color = fields.Many2one(comodel_name='print.color', string='Color')
-    qty_label = fields.Float('Qty')
+    bom_id = fields.Many2one('mrp.bom', string='BoM')
+    description_name = fields.Char('Description')
+    print_color_id = fields.Many2one(comodel_name='print.color', string='Color')
+    label_qty = fields.Float('Qty')
 
 
 class Sizes(models.Model):
@@ -364,22 +370,7 @@ class DptColor(models.Model):
     name = fields.Char(string='Name')
     code = fields.Char(string='Code')
 
-    @api.constrains('name')
-    def _check_code_unique(self):
-        for record in self:
-            if record.name:
-                ref_counts = record.search_count([('name', '=', record.name), ('id', '!=', record.id)])
-                if ref_counts > 0:
-                    raise ValidationError('Color already exists!')
-            else:
-                return
-
-    @api.constrains('code')
-    def _check_code_unique(self):
-        for record in self:
-            if record.code:
-                ref_counts = record.search_count([('code', '=', record.code), ('id', '!=', record.id)])
-                if ref_counts > 0:
-                    raise ValidationError('Code already exists!')
-            else:
-                return
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', 'Color already exists'),
+        ('code_uniq', 'unique (code)', 'Code already exists')
+    ]

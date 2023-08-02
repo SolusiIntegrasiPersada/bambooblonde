@@ -78,9 +78,9 @@ class PurchaseRequest(models.Model):
                 for label in record.label_hardware_ids:
                     label_hardware_ids.append(
                         (0, 0, {
-                            'description': label.description,
-                            'color': label.color.id,
-                            'qty_label': label.qty_label
+                            'description_name': label.description_name,
+                            'print_color_id': label.print_color_id.id,
+                            'label_qty': label.label_qty
                         })
                     )
                 for line in record.line_ids:
@@ -153,7 +153,8 @@ class PurchaseRequest(models.Model):
                                 'product_uom_id': o.product_uom_id.id,
                                 'fabric_por_id': o.fabric_smp.id,
                                 'lining_por_id': o.lining_smp.id,
-                                'colour': o.colour, 'size': o.size
+                                'colour': o.colour,
+                                'size': o.size
                             }))
 
                     for l in header_product:

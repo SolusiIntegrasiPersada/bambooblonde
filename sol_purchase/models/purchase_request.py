@@ -2,6 +2,7 @@
 
 from odoo import _, models, fields, api
 
+
 class PatternAlteration(models.Model):
     _name = 'pattern.alteration'
     _description = 'Link Purchase Request and Pattern Alteration'
@@ -9,6 +10,7 @@ class PatternAlteration(models.Model):
     parent_purchase_id = fields.Many2one('purchase.request', string='Request')
     pattern_id = fields.Many2one('purchase.request', string='Pattern Alteration')
     user_id = fields.Many2one('res.users', string='User Pattern Alteration')
+
 
 class CustomPattern(models.Model):
     _name = 'custom.pattern'
@@ -29,28 +31,34 @@ class CustomPattern(models.Model):
     consumption = fields.Char('Consumption')
     pattern_cost = fields.Float('Costing Order')
 
+
 class DataLabelHardware(models.Model):
     _name = 'data.label.hardware'
     _description = 'Data Label Hardware'
 
     name = fields.Char(string="Label")
 
+
 class LabelHardware(models.Model):
     _name = 'label.hardware'
     _description = 'Label Hardware'
 
-    label_hardware_id = fields.Many2one('purchase.request', string='label hardware ids')
-    description = fields.Many2one('data.label.hardware', string='Label')
+    purchase_id = fields.Many2one('purchase.request', string='Purchase Request')
+    label_id = fields.Many2one('data.label.hardware', string='Label')
     description_name = fields.Char(string="Description", tracking=True)
-    color = fields.Many2one(comodel_name='print.color', string='Color')
-    color_id = fields.Many2one('product.attribute.value', string='Color', domain="[('attribute_id.name', '=', 'COLOR')]")
-    qty_label = fields.Float('Qty')
+    print_color_id = fields.Many2one(comodel_name='print.color', string='Color')
+    color_id = fields.Many2one('product.attribute.value', string='Color',
+                               domain="[('attribute_id.name', '=', 'COLOR')]")
+    label_qty = fields.Float(string='Qty')
 
-    @api.onchange("description")
+    @api.onchange('label_id')
     def _onchange_description(self):
-        if self.description:
-            description = self.description.name
-            self.description_name = description
+        for record in self:
+            if record.label_id:
+                record.update({
+                    'description_name': record.label_id.name
+                })
+
 
 class LabelDress(models.Model):
     _name = 'label.dress'
@@ -61,18 +69,21 @@ class LabelDress(models.Model):
     image = fields.Image('Label Pict')
     comment = fields.Html('Comment')
 
+
 class DataProdSummary(models.Model):
     _name = 'data.prod.summary'
     _description = 'Data Prod Summary'
 
     name = fields.Char('Production Summary')
+
+
 class ProductionSummary(models.Model):
     _name = 'production.summary'
     _description = 'Production Summary'
 
     prod_summ_id = fields.Many2one('purchase.request', string='prod summ ids')
     summary = fields.Many2one('data.prod.summary', string='Prod Summary')
-    summary_name = fields.Char('Summary', tracking=True)
+    summary_name = fields.Char(string='Summary', tracking=True)
     description = fields.Char('Description')
 
     @api.onchange("summary")
@@ -80,6 +91,7 @@ class ProductionSummary(models.Model):
         if self.summary:
             summary = self.summary.name
             self.summary_name = summary
+
 
 class RequestDetail(models.Model):
     _name = 'request.detail'
@@ -97,11 +109,13 @@ class PrintColor(models.Model):
 
     name = fields.Char(string='color')
 
+
 class DataMasterStory(models.Model):
     _name = 'data.master.story'
     _description = 'Data Master Story'
 
     name = fields.Char('Story Name')
+
 
 class PurchaseRequestLine(models.Model):
     _inherit = 'purchase.request.line'
@@ -110,28 +124,27 @@ class PurchaseRequestLine(models.Model):
     department = fields.Many2one('product.category', string='Department/Category/Sub Category')
     sub_department = fields.Char(string='Sub Department')
     fabric = fields.Many2one('data.fabric.lining', string='Fabric', ondelete='cascade')
-    lining= fields.Many2one('data.fabric.lining', string='Lining', ondelete='cascade')
+    lining = fields.Many2one('data.fabric.lining', string='Lining', ondelete='cascade')
     fabric_smp = fields.Many2one('product.product', string='Fabric', ondelete='cascade')
     lining_smp = fields.Many2one('product.product', string='Lining', ondelete='cascade')
     view_story = fields.Many2one(string='Story', related='request_id.story_id', readonly=True)
     color = fields.Many2many('product.template.attribute.value', string="Size and Color")
-    colour = fields.Char('Color',compute="_onchange_color_size")
-    size = fields.Char('Size',compute="_onchange_color_size")
-
+    colour = fields.Char('Color', compute="_onchange_color_size")
+    size = fields.Char('Size', compute="_onchange_color_size")
 
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
-            c,s = '',''
+            c, s = '', ''
             if i.product_id.product_template_variant_value_ids:
                 i.color = i.product_id.product_template_variant_value_ids
-                list_size = ['SIZE:','SIZES:','UKURAN:']
-                list_color = ['COLOR:','COLOUR:','COLOURS:','COLORS:','WARNA:','CORAK:']
+                list_size = ['SIZE:', 'SIZES:', 'UKURAN:']
+                list_color = ['COLOR:', 'COLOUR:', 'COLOURS:', 'COLORS:', 'WARNA:', 'CORAK:']
                 for v in i.product_id.product_template_variant_value_ids:
                     if any(v.display_name.upper().startswith(word) for word in list_color):
-                        c += ' '+v.name+' '
+                        c += ' ' + v.name + ' '
                     elif any(v.display_name.upper().startswith(word) for word in list_size):
-                        s += ' '+v.name+' '
+                        s += ' ' + v.name + ' '
                     else:
                         c += ''
                         s += ''
@@ -157,13 +170,14 @@ class PurchaseRequestLine(models.Model):
                 self.department = self.product_id.categ_id
             return department
 
+
 class PurchaseRequest(models.Model):
     _inherit = 'purchase.request'
 
     @api.model
     def default_get(self, fields):
         res = super(PurchaseRequest, self).default_get(fields)
-        updt_label = [(5,0,0)]
+        updt_label = [(5, 0, 0)]
         updt_summary = [(5, 0, 0)]
         label = self.env["data.label.hardware"].search([])
         summary = self.env["data.prod.summary"].search([])
@@ -185,7 +199,6 @@ class PurchaseRequest(models.Model):
         })
         return res
 
-
     ### SAMPLE DEVELOPMENT ###
     request_detail_id = fields.Many2one(string='Original Sample', comodel_name='request.detail', ondelete='cascade')
     notes = fields.Html(string='FIT NOTES')
@@ -205,13 +218,14 @@ class PurchaseRequest(models.Model):
     pattern_count = fields.Integer(string='Pattern', compute='_find_len')
     test = fields.Boolean(string="Test", default=False)
 
-
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')
     ordering_date = fields.Date(string='Delivery Date', states={'done': [('readonly', False)]})
     delivery_date = fields.Date(states={'done': [('readonly', False)]})
-    thread_type = fields.Many2one('product.attribute.value', domain="[('attribute_id.name', '=', 'SIZE')]", string='Sample Size')
-    thread_color = fields.Many2one('product.attribute.value', domain="[('attribute_id.name', '=', 'SIZE')]", string='Sample Approve Size')
+    thread_type = fields.Many2one('product.attribute.value', domain="[('attribute_id.name', '=', 'SIZE')]",
+                                  string='Sample Size')
+    thread_color = fields.Many2one('product.attribute.value', domain="[('attribute_id.name', '=', 'SIZE')]",
+                                   string='Sample Approve Size')
     hanging_tape = fields.Char(string='Hanging Tape')
 
     seams = fields.Html(string='Seams')
@@ -219,12 +233,12 @@ class PurchaseRequest(models.Model):
     fit_changes = fields.Html(string='Fit Changes')
 
     # fabric_lining_ids = fields.One2many('fabric.lining', 'fabric_lining_id', string='fabric lining id')
-    label_hardware_ids = fields.One2many('label.hardware', 'label_hardware_id', string='label hardware id')
+    label_hardware_ids = fields.One2many('label.hardware', 'purchase_id', string='label hardware id')
     label_dress_ids = fields.One2many('label.dress', 'label_dress_id', string='label dress id')
     prod_summ_ids = fields.One2many('production.summary', 'prod_summ_id', string='prod summ id')
 
     def button_to_pattern(self):
-        return self.write({'state':'rejected'})
+        return self.write({'state': 'rejected'})
 
     @api.model
     def create(self, vals):
@@ -278,11 +292,11 @@ class PurchaseRequest(models.Model):
             "view_mode": "form",
             "res_id": pattern.id,
         }
-        
+
     def view_pattern_alteration(self):
         action = self.env.ref('purchase_request.purchase_request_form_action').read()[0]
         purchase_pattern_ids = self.mapped('purchase_pattern_ids.pattern_id')
-        if len(purchase_pattern_ids) > 1: 
+        if len(purchase_pattern_ids) > 1:
             action['domain'] = [('id', 'in', purchase_pattern_ids.ids)]
         elif purchase_pattern_ids:
             action['views'] = [
@@ -290,6 +304,3 @@ class PurchaseRequest(models.Model):
             ]
             action['res_id'] = purchase_pattern_ids.id
         return action
-
-
-    

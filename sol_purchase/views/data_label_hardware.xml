@@ -36,7 +36,5 @@
         action="sol_purchase.label_hardware_action"
         parent="menu_purchase_products"
         sequence="11"/>
-
     </data>
-
 </odoo>

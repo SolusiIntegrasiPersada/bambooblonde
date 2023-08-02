@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="mrp.mrp_bom_form_action" model="ir.actions.act_window">
         <field name="name">Pre-Production Sample</field>
     </record>
 
-    <menuitem name="Pre-Production Sample" id="mrp.menu_mrp_bom_form_action" sequence="13" parent="mrp.menu_mrp_bom"
+    <menuitem name="Pre-Production Sample"
+              id="mrp.menu_mrp_bom_form_action"
+              sequence="13"
+              parent="mrp.menu_mrp_bom"
               action="mrp.mrp_bom_form_action"/>
 
     <record id="mrp_bom_inherit_costing_product" model="ir.ui.view">
@@ -142,15 +144,15 @@
                 <page string="Label Hardware">
                     <field name="label_hardware_ids">
                         <tree editable="bottom">
-                            <field name="description"/>
-                            <field name="color"/>
-                            <field name="qty_label"/>
+                            <field name="description_name"/>
+                            <field name="print_color_id"/>
+                            <field name="label_qty"/>
                         </tree>
                         <form>
                             <group>
-                                <field name="description"/>
-                                <field name="color"/>
-                                <field name="qty_label"/>
+                                <field name="bom_id"/>
+                                <field name="print_color_id"/>
+                                <field name="label_qty"/>
                             </group>
                         </form>
                     </field>
@@ -175,10 +177,8 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//field[@name='product_uom_id']" position="after">
-                <!-- Add your fields here -->
                 <field name="is_final" widget="boolean_button"/>
             </xpath>
         </field>
     </record>
-
 </odoo>
