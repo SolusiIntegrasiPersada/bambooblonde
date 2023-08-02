@@ -5,7 +5,8 @@
         <field name="name">Pre-Production Sample</field>
     </record>
 
-    <menuitem name="Pre-Production Sample" id="mrp.menu_mrp_bom_form_action" sequence="13" parent="mrp.menu_mrp_bom" action="mrp.mrp_bom_form_action" />
+    <menuitem name="Pre-Production Sample" id="mrp.menu_mrp_bom_form_action" sequence="13" parent="mrp.menu_mrp_bom"
+              action="mrp.mrp_bom_form_action"/>
 
     <record id="mrp_bom_inherit_costing_product" model="ir.ui.view">
         <field name="name">mrp.bom.inherit.costing.product</field>
@@ -17,38 +18,51 @@
             </xpath>
             <xpath expr="//sheet" position="before">
                 <header>
-                    <button string="Order" name="order" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="Order" name="order" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                     <button string="Unorder" name="unorder" type="object" invisible="1"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,order" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,order"/>
                 </header>
             </xpath>
             <field name="product_tmpl_id" position="before">
-                <field name="name" />
-                <field name="parent_pps" readonly="1" />
-                <field name="trans_date" />
-                <field name="customer" />
+                <field name="name"/>
+                <field name="parent_pps" readonly="1"/>
+                <field name="trans_date"/>
+                <field name="customer"/>
             </field>
             <xpath expr="//group/group/div[@class='o_row']" position="after">
-                <field name="categ_id" />
+                <field name="categ_id"/>
             </xpath>
             <field name="company_id" position="after">
-                <field name="over_packaging" />
+                <field name="over_packaging"/>
                 <field name="is_final" widget="boolean_toggle"/>
-                <field name="total_cost" />
-                <field name="margin" widget="percentage"/>
-                <field name="margin_2" widget="percentage"/>
-                <field name="margin_3" widget="percentage"/>
-                <field name="nominal1"/>
-                <field name="nominal2"/>
-                <field name="nominal3"/>
-                <field name="retail_price" />
+                <field name="total_cost"/>
+                <label for="margin"/>
+                <div class="o_row">
+                    <field name="margin" widget="percentage"/>
+                    <label for="nominal_1"/>
+                    <field name="nominal_1"/>
+                </div>
+                <label for="margin_2"/>
+                <div class="o_row">
+                    <field name="margin_2" widget="percentage"/>
+                    <label for="nominal_2"/>
+                    <field name="nominal_2"/>
+                </div>
+                <label for="margin_3"/>
+                <div class="o_row">
+                    <field name="margin_3" widget="percentage"/>
+                    <label for="nominal_3"/>
+                    <field name="nominal_3"/>
+                </div>
+                <field name="retail_price"/>
             </field>
 
             <xpath expr="//notebook/page/field/tree/field[@name='product_id']" position="after">
-                <field name="supplier" />
-                <field name="color" />
-                <field name="sizes" />
-                <field name="ratio" />
+                <field name="supplier"/>
+                <field name="color"/>
+                <field name="sizes"/>
+                <field name="ratio"/>
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/field[@name='product_qty']" position="attributes">
@@ -69,7 +83,9 @@
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/field[@name='product_id']" position="attributes">
-                <attribute name="domain">['|','|',('categ_id.name','ilike','Raw Material'),('categ_id.name','ilike','ACCESSORIES'),('categ_id.parent_id.name','ilike','ACCESSORIES')]</attribute>
+                <attribute name="domain">['|','|',('categ_id.name','ilike','Raw
+                    Material'),('categ_id.name','ilike','ACCESSORIES'),('categ_id.parent_id.name','ilike','ACCESSORIES')]
+                </attribute>
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/button[@name='action_see_attachments']" position="attributes">
@@ -95,38 +111,48 @@
                         <tree string="Variant Material" editable="bottom" create="false">
                             <field name="company_id" invisible="1"/>
                             <field name="sequence" widget="handle"/>
-                            <field name="product_id" context="{'default_detailed_type': 'product'}" readonly="1" force_save="1"/>
+                            <field name="product_id" context="{'default_detailed_type': 'product'}" readonly="1"
+                                   force_save="1"/>
                             <field name="supplier" readonly="1" force_save="1"/>
-                            <field name="color" />
+                            <field name="color"/>
                             <field name="sizes" readonly="1" force_save="1"/>
                             <field name="ratio"/>
                             <field name="product_tmpl_id" invisible="1"/>
-                            <button name="action_see_attachments" type="object" icon="fa-files-o" aria-label="Product Attachments" title="Product Attachments" class="float-right oe_read_only" invisible="1"/>
+                            <button name="action_see_attachments" type="object" icon="fa-files-o"
+                                    aria-label="Product Attachments" title="Product Attachments"
+                                    class="float-right oe_read_only" invisible="1"/>
                             <field name="attachments_count" class="text-left oe_read_only" string=" " invisible="1"/>
                             <field name="product_qty"/>
                             <!-- <field name="shrinkage"/> -->
                             <field name="product_uom_category_id" invisible="1"/>
                             <field name="parent_product_tmpl_id" invisible="1"/>
-                            <field name="product_uom_id" options="{'no_open':True,'no_create':True}" groups="uom.group_uom" readonly="1" force_save="1"/>
+                            <field name="product_uom_id" options="{'no_open':True,'no_create':True}"
+                                   groups="uom.group_uom" readonly="1" force_save="1"/>
                             <field name="possible_bom_product_template_attribute_value_ids" invisible="1"/>
-                            <field name="bom_product_template_attribute_value_ids" optional="hide" widget="many2many_tags" options="{'no_create': True}" attrs="{'column_invisible': [('parent.product_id', '!=', False)]}" groups="product.group_product_variant" readonly="1" force_save="1"/>
+                            <field name="bom_product_template_attribute_value_ids" optional="hide"
+                                   widget="many2many_tags" options="{'no_create': True}"
+                                   attrs="{'column_invisible': [('parent.product_id', '!=', False)]}"
+                                   groups="product.group_product_variant" readonly="1" force_save="1"/>
                             <field name="allowed_operation_ids" invisible="1"/>
-                            <field name="operation_id" groups="mrp.group_mrp_routings" optional="hidden" attrs="{'column_invisible': [('parent.type','not in', ('normal', 'phantom'))]}" options="{'no_quick_create':True,'no_create_edit':True}" readonly="1" force_save="1"/>
+                            <field name="operation_id" groups="mrp.group_mrp_routings" optional="hidden"
+                                   attrs="{'column_invisible': [('parent.type','not in', ('normal', 'phantom'))]}"
+                                   options="{'no_quick_create':True,'no_create_edit':True}" readonly="1"
+                                   force_save="1"/>
                         </tree>
                     </field>
                 </page>
                 <page string="Label Hardware">
                     <field name="label_hardware_ids">
                         <tree editable="bottom">
-                            <field name="description" />
-                            <field name="color" />
-                            <field name="qty_label" />
+                            <field name="description"/>
+                            <field name="color"/>
+                            <field name="qty_label"/>
                         </tree>
                         <form>
                             <group>
-                                <field name="description" />
-                                <field name="color" />
-                                <field name="qty_label" />
+                                <field name="description"/>
+                                <field name="color"/>
+                                <field name="qty_label"/>
                             </group>
                         </form>
                     </field>
@@ -141,11 +167,11 @@
         <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
         <field name="arch" type="xml">
             <field name="sequence" position="after">
-                <field name="name" />
-                <field name="customer" />
+                <field name="name"/>
+                <field name="customer"/>
             </field>
             <field name="code" position="before">
-                <field name="parent_pps" />
+                <field name="parent_pps"/>
             </field>
             <xpath expr="//field[@name='type']" position="attributes">
                 <attribute name="invisible">1</attribute>
