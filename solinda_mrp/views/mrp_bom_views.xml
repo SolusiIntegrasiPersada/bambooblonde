@@ -83,9 +83,7 @@
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/field[@name='product_id']" position="attributes">
-                <attribute name="domain">['|','|',('categ_id.name','ilike','Raw
-                    Material'),('categ_id.name','ilike','ACCESSORIES'),('categ_id.parent_id.name','ilike','ACCESSORIES')]
-                </attribute>
+                <attribute name="domain">['|','|',('categ_id.name','ilike','Raw Material'),('categ_id.name','ilike','ACCESSORIES'),('categ_id.parent_id.name','ilike','ACCESSORIES')]</attribute>
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/button[@name='action_see_attachments']" position="attributes">
