@@ -9,11 +9,8 @@ class MrpBom(models.Model):
 
     state = fields.Selection(selection=_STATES, string='Status', index=True, tracking=True, required=True, copy=False,
                              default='draft', )
-
     name = fields.Char(required=False, default='New', index=True, readonly=True, string='Trans No.')
-
     trans_date = fields.Datetime(string='Transaction Date', default=fields.Datetime.now, index=True, required=True, )
-
     parent_pps = fields.Char(string='Parent PPS')
 
     @api.model
@@ -116,7 +113,6 @@ class MrpBom(models.Model):
     def _onchange_bom_line_variant_ids(self):
         for record in self:
             if record.product_tmpl_id:
-                record.bom_line_variant_ids = False
                 sql = f"""
                     select v.name as size_name
                     from product_attribute_value_product_template_attribute_line_rel m
@@ -136,26 +132,40 @@ class MrpBom(models.Model):
                         for t in line.bom_product_template_attribute_value_ids:
                             bom_product_template_attribute_value_ids.append((4, t.id, None))
                         for size in data:
+                            product_qty = record.bom_line_variant_ids.filtered(
+                                lambda l: l.product_id.id == line.product_id.id
+                                          and l.sizes == f"""({size['size_name']})""").product_qty
                             sizes.append((0, 0, {
-                                'product_id': line.product_id.id,  # 'product_qty' : line.product_qty,
-                                'product_uom_id': line.product_uom_id.id, 'supplier': line.supplier.id,
+                                'product_id': line.product_id.id,
+                                'product_qty': product_qty if product_qty else line.product_qty,
+                                'product_uom_id': line.product_uom_id.id,
+                                'supplier': line.supplier.id,
                                 'ratio': line.ratio,
-                                'sizes': '(' + size['size_name'] + ')',
+                                'sizes': f"""({size['size_name']})""",
                                 'bom_product_template_attribute_value_ids': bom_product_template_attribute_value_ids,
                                 'operation_id': line.operation_id.id
                             }))
                     else:
                         bom_product_template_attribute_value_ids = []
+                        product_qty = record.bom_line_variant_ids.filtered(
+                            lambda l: l.product_id.id == line.product_id.id
+                                      and l.sizes == line.sizes).product_qty
                         for t in line.bom_product_template_attribute_value_ids:
                             bom_product_template_attribute_value_ids.append((4, t.id, None))
                         sizes.append((0, 0, {
-                            'product_id': line.product_id.id,  # 'product_qty' : line.product_qty,
-                            'product_uom_id': line.product_uom_id.id, 'supplier': line.supplier.id,
-                            'ratio': line.ratio, 'sizes': line.sizes, 'color': line.color,
+                            'product_id': line.product_id.id,
+                            'product_qty': product_qty if product_qty else line.product_qty,
+                            'product_uom_id': line.product_uom_id.id,
+                            'supplier': line.supplier.id,
+                            'ratio': line.ratio,
+                            'sizes': line.sizes,
+                            'color': line.color,
                             'bom_product_template_attribute_value_ids': bom_product_template_attribute_value_ids,
                             'operation_id': line.operation_id.id
                         }))
-                record.bom_line_variant_ids = sizes
+
+                record.bom_line_variant_ids = [(5, 0, 0)]
+                record.update({'bom_line_variant_ids': sizes})
 
 
 class MrpBomLine(models.Model):
@@ -206,14 +216,6 @@ class MrpBomLineVariant(models.Model):
     _rec_name = 'product_id'
     _description = 'Bill of Material Line (Variant)'
 
-    def _get_default_product_uom_id(self):
-        return self.env['uom.uom'].search([], limit=1, order='id').id
-
-    @api.depends('product_qty', 'cost')
-    def _compute_total_material(self):
-        for line in self:
-            line.total_material = line.cost * line.product_qty
-
     product_id = fields.Many2one('product.product', 'Component', required=True, check_company=True)
     product_tmpl_id = fields.Many2one('product.template', 'Product Template', related='product_id.product_tmpl_id',
                                       store=True, index=True)
@@ -222,7 +224,7 @@ class MrpBomLineVariant(models.Model):
     product_uom_id = fields.Many2one(
         'uom.uom',
         'Product Unit of Measure',
-        default=_get_default_product_uom_id,
+        default='_get_default_product_uom_id',
         required=True,
         help='Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control',
         domain="[('category_id', '=', product_uom_category_id)]")
@@ -253,9 +255,17 @@ class MrpBomLineVariant(models.Model):
     sizes = fields.Char('Sizes')
     ratio = fields.Float(string='Ratio', default=1.00)
     cost = fields.Float(string='Cost', related='product_id.standard_price')
-    total_material = fields.Float(string='Total Material', compute=_compute_total_material)
+    total_material = fields.Float(string='Total Material', compute='_compute_total_material')
 
     # shrinkage = fields.Float(string='Shkg(%)')
+
+    def _get_default_product_uom_id(self):
+        return self.env['uom.uom'].search([], limit=1, order='id').id
+
+    @api.depends('product_qty', 'cost')
+    def _compute_total_material(self):
+        for line in self:
+            line.total_material = line.cost * line.product_qty
 
     @api.depends('product_id', 'bom_id')
     def _compute_child_bom_id(self):
