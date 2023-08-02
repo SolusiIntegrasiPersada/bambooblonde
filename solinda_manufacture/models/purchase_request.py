@@ -78,6 +78,7 @@ class PurchaseRequest(models.Model):
                 for label in record.label_hardware_ids:
                     label_hardware_ids.append(
                         (0, 0, {
+                            'label_id': label.label_id.id,
                             'description_name': label.description_name,
                             'print_color_id': label.print_color_id.id,
                             'label_qty': label.label_qty

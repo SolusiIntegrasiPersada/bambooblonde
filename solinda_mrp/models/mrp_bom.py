@@ -351,6 +351,7 @@ class MrpBomLabelHardware(models.Model):
     _description = 'Label Hardware'
 
     bom_id = fields.Many2one('mrp.bom', string='BoM')
+    label_id = fields.Many2one('data.label.hardware', string='Label')
     description_name = fields.Char('Description')
     print_color_id = fields.Many2one(comodel_name='print.color', string='Color')
     label_qty = fields.Float('Qty')
