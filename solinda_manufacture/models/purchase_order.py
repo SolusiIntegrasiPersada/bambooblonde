@@ -282,4 +282,10 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    meter_out = fields.Float(string='T. Meter Out') 
+    meter_out = fields.Float(string='T. Meter Out')
+
+    def _prepare_stock_moves(self, picking):
+        res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
+        for rec in res:
+            rec['price'] = self.price_unit
+        return res
