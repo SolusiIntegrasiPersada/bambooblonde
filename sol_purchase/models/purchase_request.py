@@ -183,7 +183,7 @@ class PurchaseRequest(models.Model):
         summary = self.env["data.prod.summary"].search([])
         for i in label:
             line_i = (0, 0, {
-                'description': i.id,
+                'label_id': i.id,
                 'description_name': i.name
             })
             updt_label.append(line_i)
