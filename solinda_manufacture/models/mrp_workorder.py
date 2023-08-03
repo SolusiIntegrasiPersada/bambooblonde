@@ -149,6 +149,9 @@ class MrpWorkorder(models.Model):
                 # 'fabric': i.fabric_id.product_id.name,
                 'product_qty': product_qty,
                 'comment_bool': True,
+                'color_mo': i.color_id.name,
+                'material_ids': i.fabric_id.ids,
+                'image': i.product_id.image_1920,
             }))
             for d in i.production_id.by_product_ids:
                 updt_variant.append([0,0,{
@@ -167,7 +170,8 @@ class MrpWorkorder(models.Model):
                 'sub_suplier': i.supplier.category_id.ids,
                 'sample_order_no': i.production_id.name,
                 'product_mo': i.production_id.product_tmpl_id.name,
-                'is_sample': i.production_id.is_sample, 
+                'is_sample': i.production_id.is_sample,
+                'hide_field': True,
                 })
             for pol in po.order_line:
                 product_lang = pol.product_id.with_context(
