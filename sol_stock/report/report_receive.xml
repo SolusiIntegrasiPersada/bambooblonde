@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="page">
+                <div class="body">
                     <table style="border-collapse: collapse; width: 100%; height: 85px; border: 1pt solid black;" border="1">
                         <tbody>
                             <tr style="height: 85px;">
@@ -306,15 +306,17 @@
                              <t t-foreach="o.consolidate_lines()" t-as="line">
                                  <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black;">
-    <!--                                        <t t-esc="line"/>-->
+                                        <t t-esc="line.default_code"/>
                                     </td>
                                     <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="line.colour"/>-->
+                                        <t t-esc="line['colour']"/>
                                     </td>
                                     <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="line['name']"/>
                                     </td>
-                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="line['amount_a']"/>
+                                    </td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="line['amount_b']"/>
                                     </td>

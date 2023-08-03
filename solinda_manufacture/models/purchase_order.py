@@ -22,6 +22,8 @@ class PurchaseOrder(models.Model):
     plan_receive_in_week = fields.Integer(string='Plan Receive In Week')
     is_sewing = fields.Boolean(string='Is Sewing', compute='_compute_is_sewing')
 
+
+
     @api.depends('sub_suplier')
     def _compute_is_sewing(self):
         for doc in self:
@@ -283,9 +285,15 @@ class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
     meter_out = fields.Float(string='T. Meter Out')
+    material_ids = fields.Many2many('mrp.bom.line', string="Material")
+    color_mo = fields.Char(string="Color")
+
 
     def _prepare_stock_moves(self, picking):
         res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
         for rec in res:
             rec['price'] = self.price_unit
+            rec['color_mo'] = self.color_mo
+            rec['image'] = self.image
+            rec['material_ids'] = self.material_ids.ids
         return res

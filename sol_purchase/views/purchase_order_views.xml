@@ -27,18 +27,21 @@
                 <!-- <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
                   <attribute name="readonly">1</attribute>
                 </xpath> -->
+                <xpath expr="//notebook/page/group/group/field[@name='fiscal_position_id']" position="after">
+                  <field name="hide_field" readonly="1"/>
+                </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
-                    <field name="image" widget="image" class="oe_avatar"/>
-                    <field name="fabric_por" optional="show"/>
-                    <field name="lining_por" optional="show"/>
+                    <field name="image" widget="image" class="oe_avatar" />
+                    <field name="fabric_por" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
+                    <field name="lining_por" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
                     <!-- <field name="color" optional="hide" /> -->
-                    <field name="colour" optional="show" style="font-weight:Bold;text-align:center"/>
-                    <field name="size" optional="show" style="font-weight:Bold;text-align:center"/>
-                    <field name="label" optional="show"/>
+                    <field name="colour" style="font-weight:Bold;text-align:center" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
+                    <field name="size" style="font-weight:Bold;text-align:center" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
+                    <field name="label" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
                     <!-- <field name="type" /> -->
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
-                    <field name="prod_comm" attrs="{'invisible': [('comment_bool', '=', True)]}"/>
+                    <field name="prod_comm" attrs="{'column_invisible': [('parent.hide_field', '=', True)]}"/>
                     <field name="comment_bool" invisible="1"/>
                 </xpath>
                 <xpath expr="//notebook//page[1]" position="after">
