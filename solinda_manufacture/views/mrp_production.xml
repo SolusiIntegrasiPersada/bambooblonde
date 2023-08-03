@@ -82,7 +82,7 @@
                                 <field name="company_id" invisible="1"/>
                                 <field name="sequence" invisible="1"/>
                                 <field name="product_id" readonly="1" force_save="1"/>
-                                <field name="supplier" readonly="1" force_save="1"/>
+                                <field name="supplier"/>
                                 <field name="color" readonly="1" force_save="1"/>
                                 <field name="sizes" readonly="1" force_save="1"/>
                                 <field name="ratio" readonly="1" force_save="1"/>
