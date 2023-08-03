@@ -1,16 +1,18 @@
 from odoo import _, api, fields, models
 from odoo.tools import float_compare, float_round, float_is_zero, OrderedSet
 
+
 class ServiceReturn(models.Model):
     _name = 'service.return'
     _description = 'Service Return'
 
     mrp_id = fields.Many2one('mrp.production', string="MRP")
 
+
 class ByProductDummy(models.Model):
     _name = 'by.product.dummy'
     _description = 'By Product Dummy'
-    
+
     product_id = fields.Many2one('product.product', string='Product')
     product_uom_id = fields.Many2one('uom.uom', string='UoM')
     product_uom_qty = fields.Float(string='Produce', default=1)
@@ -29,19 +31,22 @@ class ByProductDummy(models.Model):
     def _onchange_product_minus(self):
         for i in self:
             if i.product_minus > 0:
-                by_prod = self.env["stock.move"].search([('product_id', '=', self.product_id.id),('production_id', '=', self._origin.mrp_id.id)],limit=1)
+                by_prod = self.env["stock.move"].search(
+                    [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
                 if by_prod:
                     by_prod.product_uom_qty = self.product_uom_qty - i.product_minus
                 else:
                     self.mrp_id.product_qty = self.mrp_id.product_qty - i.product_minus
-                    
+
     @api.onchange('product_uom_qty')
     def _onchange_product_uom_qty(self):
-        by_prod = self.env["stock.move"].search([('product_id', '=', self.product_id.id),('production_id', '=', self._origin.mrp_id.id)],limit=1)
+        by_prod = self.env["stock.move"].search(
+            [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
         if by_prod:
             by_prod.product_uom_qty = self.product_uom_qty
         else:
             self.mrp_id.product_qty = self.product_uom_qty
+
 
 class MrpProductionBomVariant(models.Model):
     _name = 'mrp.production.bom.variant'
@@ -53,7 +58,6 @@ class MrpProductionBomVariant(models.Model):
     def _compute_total_material(self):
         for line in self:
             line.total_material = line.cost * line.product_qty
-
 
     company_id = fields.Many2one(
         related='production_id.company_id', store=True, index=True, readonly=True)
@@ -77,13 +81,14 @@ class MrpProductionBomVariant(models.Model):
     production_id = fields.Many2one(
         'mrp.production', 'MRP Production',
         index=True, ondelete='cascade', required=True)
-    supplier = fields.Many2one('res.partner',string='Supplier')
+    supplier = fields.Many2one('res.partner', string='Supplier')
     color = fields.Char('Color')
     sizes = fields.Char('Sizes')
     ratio = fields.Float(string='Ratio', default=1.00)
     cost = fields.Float(string="Cost", related='product_id.standard_price')
     total_material = fields.Float(string="Total Material", compute=_compute_total_material)
     shrinkage = fields.Float(string='Shkg(%)')
+
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -99,6 +104,7 @@ class MrpProduction(models.Model):
     service_ids = fields.One2many('service.return', 'mrp_id', string='Service')
     stock_picking_id = fields.Many2one('stock.picking', string="Stock")
     count_service = fields.Integer(string="Count", compute="_compute_count_service")
+
     # make_invisible = fields.Boolean(string="Invisible", default=False)
     # qty_po = fields.Float('Qty PO')
 
@@ -181,7 +187,6 @@ class MrpProduction(models.Model):
             move.quantity_done = move.product_uom_qty
             # self.qty_po = po_qty
 
-
     def update_qty_variant(self):
         if self.mrp_bom_variant_ids:
             self.mrp_bom_variant_ids.unlink()
@@ -191,26 +196,26 @@ class MrpProduction(models.Model):
             total_qty = 0
             dummy_obj = self.env['by.product.dummy']
             dummy_id = dummy_obj.search(['|',
-                ('size','ilike',b.sizes),
-                ('size','ilike',(b.sizes.strip('()'))),
-                ('mrp_id','=',self.id),
-                ],limit=1)
+                                         ('size', 'ilike', b.sizes),
+                                         ('size', 'ilike', (b.sizes.strip('()'))),
+                                         ('mrp_id', '=', self.id),
+                                         ], limit=1)
             if dummy_id:
                 qty_po = dummy_id.product_uom_qty
 
             # total_qty = (qty_po * b.product_qty) + (((qty_po * b.product_qty) * b.shrinkage) / 100)
 
-            variant_ids.append((0,0,{
-                'product_id' : b.product_id.id,
-                'product_qty' : b.product_qty,
-                'po_qty' : qty_po,
-                'product_uom_id' : b.product_uom_id.id,
-                'supplier' : b.supplier.id,
-                'ratio' : b.ratio,
-                'sizes' : b.sizes,
+            variant_ids.append((0, 0, {
+                'product_id': b.product_id.id,
+                'product_qty': b.product_qty,
+                'po_qty': qty_po,
+                'product_uom_id': b.product_uom_id.id,
+                'supplier': b.supplier.id,
+                'ratio': b.ratio,
+                'sizes': b.sizes,
                 # 'shrinkage' : b.shrinkage,
                 # 'total_qty' : total_qty,
-                    }))
+            }))
 
         self.mrp_bom_variant_ids = variant_ids
 
@@ -220,12 +225,16 @@ class MrpProduction(models.Model):
                 continue
             workorders_values = []
 
-            product_qty = production.product_uom_id._compute_quantity(production.product_qty, production.bom_id.product_uom_id)
-            exploded_boms, dummy = production.bom_id.explode(production.product_id, product_qty / production.bom_id.product_qty, picking_type=production.bom_id.picking_type_id)
+            product_qty = production.product_uom_id._compute_quantity(production.product_qty,
+                                                                      production.bom_id.product_uom_id)
+            exploded_boms, dummy = production.bom_id.explode(production.product_id,
+                                                             product_qty / production.bom_id.product_qty,
+                                                             picking_type=production.bom_id.picking_type_id)
 
             for bom, bom_data in exploded_boms:
                 # If the operations of the parent BoM and phantom BoM are the same, don't recreate work orders.
-                if not (bom.operation_ids and (not bom_data['parent_line'] or bom_data['parent_line'].bom_id.operation_ids != bom.operation_ids)):
+                if not (bom.operation_ids and (not bom_data['parent_line'] or bom_data[
+                    'parent_line'].bom_id.operation_ids != bom.operation_ids)):
                     continue
                 for operation in bom.operation_ids:
                     # accessories_ids = []
@@ -260,7 +269,7 @@ class MrpProduction(models.Model):
     #         for product in self.by_product_ids:
     #             product.product_id.update({'is_print': True})
     #     return super(MrpProduction, self).button_mark_done()
-    
+
     @api.depends('stock_picking_id')
     def _compute_count_service(self):
         self = self.sudo()
@@ -284,7 +293,7 @@ class MrpProduction(models.Model):
                 picking_type = self.env['stock.picking.type'].search([('name', '=', 'Service to Vendor')], limit=1).id
                 loc_dest = self.env['stock.location'].search([('complete_name', '=', 'Partner Locations/Vendors')]).id
                 for rec in self.by_product_ids:
-                    updt.append([0,0,{
+                    updt.append([0, 0, {
                         'product_id': rec.product_id.id,
                         'name': rec.product_id.name,
                         'product_uom': rec.product_uom_id,
@@ -311,8 +320,3 @@ class MrpProduction(models.Model):
                         'res_id': stock.id,
                         # 'context': {'default_mrp_prod_id':self.id},
                     }
-
-        
-
-       
-

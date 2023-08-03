@@ -67,7 +67,7 @@
                             <field name="company_id" invisible="1"/>
                             <field name="sequence" widget="handle"/>
                             <field name="product_id" readonly="1" force_save="1"/>
-                            <field name="supplier" readonly="1" force_save="1"/>
+                            <field name="supplier"/>
                             <field name="color" readonly="1" force_save="1"/>
                             <field name="sizes" readonly="1" force_save="1"/>
                             <field name="ratio" readonly="1" force_save="1"/>
@@ -115,7 +115,7 @@
             </xpath>
 
             <xpath expr="//notebook/page/field/tree/field[@name='product_id']" position="after">
-                <field name="supplier" attrs="{'readonly':['|',('is_sample','=', False),('state','=', 'done')]}"/>
+                <field name="supplier" attrs="{'readonly':[('state','=', 'done')]}"/>
                 <!-- <field name="payment" /> -->
                 <!-- <field name="total_mtr" /> -->
                 <field name="total_buy" />

@@ -1,7 +1,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from datetime import datetime, date
-from odoo.tools import float_compare, float_round, float_is_zero, OrderedSet
+from datetime import datetime
+from odoo.tools import float_round
 
 
 class StockMoveLine(models.Model):
@@ -11,19 +11,22 @@ class StockMoveLine(models.Model):
         for rec in self:
             workorder_list = []
             if rec.production_id:
-                sql = '''SELECT w.id as workorder_id FROM mrp_workorder w WHERE w.production_id=%s'''% (rec.production_id.id)
+                sql = """SELECT w.id as workorder_id FROM mrp_workorder w WHERE w.production_id=%s""" % (
+                    rec.production_id.id)
                 self.env.cr.execute(sql)
                 workorder_ids = self.env.cr.dictfetchall()
                 for w in workorder_ids:
                     workorder_list.append((4, w['workorder_id'], None))
             rec.workorder_ids = workorder_list
 
-    workorder_ids = fields.Many2many(comodel_name='mrp.workorder', string='Work Orders', compute='compute_mrp_workorders')
+    workorder_ids = fields.Many2many(comodel_name='mrp.workorder', string='Work Orders',
+                                     compute='compute_mrp_workorders')
+
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    total_cost = fields.Float(string="Total Cost", compute = "_compute_total_cost")
+    total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     # payment = fields.Many2one(comodel_name='account.payment.method', related='supplier.property_payment_method_id')
     color = fields.Many2one(comodel_name='dpt.color', string='Color')
@@ -44,10 +47,10 @@ class StockMove(models.Model):
             if not mo or not move.product_uom:
                 move.should_consume_qty = 0
                 continue
-            move.should_consume_qty = float_round((mo.qty_producing - mo.qty_produced) * move.unit_factor, precision_rounding=move.product_uom.rounding)
+            move.should_consume_qty = float_round((mo.qty_producing - mo.qty_produced) * move.unit_factor,
+                                                  precision_rounding=move.product_uom.rounding)
             if move.product_uom_qty > 0:
                 move.should_consume_qty = move.product_uom_qty
- 
 
     def button_done(self):
         self._action_done()
@@ -60,14 +63,14 @@ class StockMove(models.Model):
         if not self.purchase_id:
             raise ValidationError("PO is not defined!\nPlease create PO first")
         return {
-                'name': _("Purchase Order"),
-                'view_mode': 'form',
-                'view_type': 'form',
-                'res_model': 'purchase.order',
-                'type': 'ir.actions.act_window',
-                # 'target': 'new',
-                'res_id': self.purchase_id.id,
-            } 
+            'name': _("Purchase Order"),
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'purchase.order',
+            'type': 'ir.actions.act_window',
+            # 'target': 'new',
+            'res_id': self.purchase_id.id,
+        }
 
     def create_po(self):
         self = self.sudo()
@@ -80,7 +83,8 @@ class StockMove(models.Model):
 
             if not i.supplier:
                 raise ValidationError("Please input the supplier first")
-            po = i.env['purchase.order'].create({'partner_id': i.supplier.id,'state': 'draft','date_approve': datetime.now()})
+            po = i.env['purchase.order'].create(
+                {'partner_id': i.supplier.id, 'state': 'draft', 'date_approve': datetime.now()})
             picking = po._get_picking_type(self.env.context.get('company_id') or self.env.company.id)
             # picking = i.raw_material_production_id.picking_type_id.id
             # picking = i.env['stock.picking.type'].search([('barcode', '=', 'WHFG-RECEIPTS')],limit=1)
@@ -88,27 +92,26 @@ class StockMove(models.Model):
                 raise ValidationError("WHFG-RECEIPTS is not defined!")
             if po:
                 i.purchase_id = po.id
-            raw_po_line.append((0,0, {
+            raw_po_line.append((0, 0, {
                 'product_id': i.product_id.id,
                 # 'fabric': i.fabric_id.product_id.name,
                 # 'lining':'',
                 # 'color':'',
                 'product_qty': total_quant,
-            }))           
+            }))
             po.update({
                 "order_line": raw_po_line,
-                "picking_type_id":picking,
+                "picking_type_id": picking,
                 'sample_order_no': i.name,
                 'product_mo': i.raw_material_production_id.product_id.name,
                 'is_sample': i.raw_material_production_id.is_sample,
-                })
+            })
             po.button_confirm()
             for picking in po.picking_ids:
                 for move in picking.move_ids_without_package:
                     move.raw_material_production_id = False
-            
-            return i.show_po()
 
+            return i.show_po()
 
     @api.depends('product_id.standard_price', 'product_uom_qty', 'hk', 'total_buy')
     def _compute_total_cost(self):
