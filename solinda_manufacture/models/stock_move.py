@@ -23,11 +23,11 @@ class StockMoveLine(models.Model):
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    total_cost = fields.Float(string="Total Cost", compute = "_compute_total_cost")
+    total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     # payment = fields.Many2one(comodel_name='account.payment.method', related='supplier.property_payment_method_id')
     color = fields.Many2one(comodel_name='dpt.color', string='Color')
-    color_id = fields.Many2one(comodel_name='product.attribute.value', string='Color', related='bom_line_id.color')
+    color_id = fields.Many2one(comodel_name='product.attribute.value', string='Color', domain="[('attribute_id.name','=', 'COLOR')]", ondelete="cascade")
     service = fields.Char(string='Fabric', default='FABRIC', readonly=True)
     hk = fields.Float(string='HK', related='bom_line_id.product_qty')
     purchase_id = fields.Many2one('purchase.order', string='Purchase')
@@ -70,17 +70,20 @@ class StockMove(models.Model):
             } 
 
     def create_po(self):
-        self = self.sudo()
-        for i in self:
+        for i in self.sudo():
             raw_po_line = []
             # total_quant = i.product_qty
             total_quant = i.total_buy
-            if i.total_buy == 0:
+            if not total_quant:
                 raise ValidationError("Total buy cannot be 0")
 
             if not i.supplier:
                 raise ValidationError("Please input the supplier first")
-            po = i.env['purchase.order'].create({'partner_id': i.supplier.id,'state': 'draft','date_approve': datetime.now()})
+            po = i.env['purchase.order'].create({
+                'partner_id': i.supplier.id,
+                'state': 'draft',
+                'date_approve': datetime.now()
+            })
             picking = po._get_picking_type(self.env.context.get('company_id') or self.env.company.id)
             # picking = i.raw_material_production_id.picking_type_id.id
             # picking = i.env['stock.picking.type'].search([('barcode', '=', 'WHFG-RECEIPTS')],limit=1)
@@ -88,24 +91,29 @@ class StockMove(models.Model):
                 raise ValidationError("WHFG-RECEIPTS is not defined!")
             if po:
                 i.purchase_id = po.id
-            raw_po_line.append((0,0, {
+            raw_po_line.append((0, 0, {
                 'product_id': i.product_id.id,
                 # 'fabric': i.fabric_id.product_id.name,
                 # 'lining':'',
-                # 'color':'',
+                'color_mo': i.color_id.name,
                 'product_qty': total_quant,
-            }))           
+                'image': i.raw_material_production_id.product_tmpl_id.image_1920,
+                # 'material_ids': i.product_id.id,
+            }))
             po.update({
                 "order_line": raw_po_line,
-                "picking_type_id":picking,
+                "picking_type_id": picking,
                 'sample_order_no': i.name,
                 'product_mo': i.raw_material_production_id.product_id.name,
                 'is_sample': i.raw_material_production_id.is_sample,
-                })
+                'hide_field': True,
+            })
             po.button_confirm()
             for picking in po.picking_ids:
                 for move in picking.move_ids_without_package:
-                    move.raw_material_production_id = False
+                    move.update({
+                        'raw_material_production_id': None
+                    })
             
             return i.show_po()
 
