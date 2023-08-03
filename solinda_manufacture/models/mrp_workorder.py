@@ -9,7 +9,7 @@ class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
     order_id = fields.Many2one(comodel_name='purchase.order', string='PO')
-    supplier = fields.Many2one(comodel_name='res.partner', default="operation_id.supplier", string='Supplier')
+    supplier = fields.Many2one(comodel_name='res.partner', default="operation_id.supplier.id", string='Supplier')
     fabric_id = fields.Many2many(comodel_name='mrp.bom.line', string='Fabric', related='operation_id.fabric_id')
     # accessories_ids = fields.Many2many(comodel_name='product.product', string='Accessories', domain="""[('type', 'in', ['product', 'consu']),'|',('company_id', '=', False),('company_id', '=', company_id)]""", check_company=True)
     hk = fields.Float(string='HK', related='operation_id.hk')
