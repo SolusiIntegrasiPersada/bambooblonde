@@ -62,12 +62,12 @@ class StockMove(models.Model):
 
     fabric_width = fields.Float(string="Fabric Width", related='product_id.fabric_width')
     price = fields.Float(string="Cost")
-    image = fields.Image(string='Image', related='product_id.image_1920')
+    image = fields.Image(string='Image')
     color_ids = fields.Many2many('product.template.attribute.value', string="Size and Color")
     colour = fields.Char('Color', compute="_onchange_color_size")
     size = fields.Char('Size', compute="_onchange_color_size")
-    color_id = fields.Many2one('product.attribute.value', string="Color", domain="[('attribute_id.name','=','COLOR')]")
-    material = fields.Char('Material')
+    color_mo = fields.Char(string="Color")
+    material_ids = fields.Many2many('mrp.bom.line', string='Material')
 
     @api.depends('product_id')
     def _onchange_color_size(self):
