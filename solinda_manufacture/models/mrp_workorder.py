@@ -26,7 +26,7 @@ class MrpWorkorder(models.Model):
     out_date = fields.Date('Out Date')
     picking_ids = fields.Many2many('stock.picking', string='Receive',related="order_id.picking_ids")
     total_dyeing = fields.Float(string='Total Dyeing')
-    total_mtr = fields.Float(string='Total Mtr')
+    total_mtr = fields.Float(string='Total Mtr', compute="_compute_total_meter")
     total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost", store=True)
     cost_service = fields.Float(string='Cost Service', related='operation_id.cost_service', store=True)
     customer = fields.Char(string='Customer', related='production_id.seq_report', store=True)
@@ -40,10 +40,20 @@ class MrpWorkorder(models.Model):
     #     for line in self:
     #         line.total_mtr = line.production_id.qty_po * line.hk
 
-    # @api.depends('fabric_id')
-    # def _compute_total_meter(self):
-    #     qty_consumed = self.env['stock.move'].search([('product_id.id','=', self.fabric_id[0].id),('production_id.id','=',self.production_id.id)])
-    #     self.total_mtr = qty_consumed.product_uom_qty
+    @api.depends('production_id', 'fabric_id')
+    def _compute_total_meter(self):
+        for record in self:
+            product_ids = record.fabric_id.mapped('product_id.id')
+            product_meter = record.production_id.move_raw_ids.filtered(lambda l: l.product_id.id in product_ids)
+            total_meter = sum(product_meter.mapped('product_uom_qty'))
+            if record.workcenter_id.is_dyeing:
+                record.update({
+                    'total_mtr': total_meter if total_meter else 0
+                })
+            else:
+                record.update({
+                    'total_mtr': 0
+                })
 
 
     @api.depends('total_dyeing', 'hk', 'qty_production', 'cost_service', 'fabric_id', 'production_id.total_qty')
@@ -142,6 +152,7 @@ class MrpWorkorder(models.Model):
             product_qty = total_quant
             if i.workcenter_id.is_dyeing:
                 product_qty = i.total_dyeing
+
             raw_po_line.append((0,0, {
                 'product_id': i.workcenter_id.product_service_id.id,
                 'name': i.workcenter_id.product_service_id.name,
