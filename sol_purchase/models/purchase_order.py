@@ -58,7 +58,6 @@ class PurchaseOrder(models.Model):
 
     qty_pax = fields.Integer(string='Pax')
     order_type = fields.Selection([("new_order", "New Order"), ("re_order", "Re Order")], string='Order Type')
-    hide_field = fields.Boolean('Product from MO', default=False)
 
     def _compute_total_purchase_qty(self):
         for rec in self:
@@ -179,7 +178,7 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    product_id = fields.Many2one(string='Product')
+    product_id = fields.Many2one(string='Style Name')
     image = fields.Image(string='Image')
     fabric_por = fields.Many2one('product.product', string='Fabric')
     lining_por = fields.Many2one('product.product', string='Lining')
