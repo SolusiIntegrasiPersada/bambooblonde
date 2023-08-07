@@ -175,7 +175,7 @@ class PurchaseOrder(models.Model):
                             mp = self.env["mrp.production"].create({
                                 'name': _('New'),
                                 'product_id': l.product_id.id,
-                                'product_qty': l.product_qty,
+                                'product_qty': i.total_purchase_qty,
                                 'product_uom_id':l.product_uom.id,
                                 'bom_id':BoM.id,
                                 'date_planned_start':datetime.now(),
