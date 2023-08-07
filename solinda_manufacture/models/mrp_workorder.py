@@ -158,7 +158,8 @@ class MrpWorkorder(models.Model):
             product_qty = total_quant
             if i.workcenter_id.is_dyeing:
                 product_qty = i.total_dyeing
-
+            else:
+                product_qty = i.production_id.product_qty
             raw_po_line.append((0, 0, {
                 'product_id': i.workcenter_id.product_service_id.id,
                 'name': i.workcenter_id.product_service_id.name,
