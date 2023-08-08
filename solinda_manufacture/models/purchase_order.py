@@ -287,14 +287,19 @@ class PurchaseOrder(models.Model):
                         'res_id': breakdown.id,
                     }
 
-
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
     meter_out = fields.Float(string='T. Meter Out')
+    material_ids = fields.Many2many('mrp.bom.line', string="Material")
+    color_mo = fields.Char(string="Color")
+
 
     def _prepare_stock_moves(self, picking):
         res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
         for rec in res:
             rec['price'] = self.price_unit
+            rec['color_mo'] = self.color_mo
+            rec['image'] = self.image
+            rec['material_ids'] = self.material_ids.ids
         return res

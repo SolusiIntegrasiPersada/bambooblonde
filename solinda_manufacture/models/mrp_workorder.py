@@ -41,11 +41,6 @@ class MrpWorkorder(models.Model):
     product_tmpl_id = fields.Many2one('product.template', string='Product', related='product_id.product_tmpl_id')
     mrp_payment_id = fields.Many2one('mrp.payment', string="Payment")
 
-    # @api.depends('fabric_id', 'production_id.qty_po', 'hk')
-    # def _compute_total_mtr(self):
-    #     for line in self:
-    #         line.total_mtr = line.production_id.qty_po * line.hk
-
     @api.depends('production_id', 'fabric_id')
     def _compute_total_meter(self):
         for record in self:
@@ -147,8 +142,12 @@ class MrpWorkorder(models.Model):
             if not i.total_dyeing and (
                     i.workcenter_id.name == "DYEING" or i.workcenter_id.name == "WASHING" or i.workcenter_id.name == "PRINTING"):
                 raise ValidationError("Please input Total Dyeing in operation Dyeing, Washing, or Printing")
-            po = i.env['purchase.order'].create(
-                {'partner_id': i.supplier.id, 'state': 'draft', 'date_approve': datetime.now(), 'is_po_service': True})
+            po = i.env['purchase.order'].create({
+                'partner_id': i.supplier.id,
+                'state': 'draft',
+                'date_approve': datetime.now(),
+                'is_po_service': True
+            })
             if po:
                 i.order_id = po.id
             if not i.workcenter_id.product_service_id:
@@ -190,7 +189,7 @@ class MrpWorkorder(models.Model):
                 'product_mo': i.production_id.product_tmpl_id.name,
                 'is_sample': i.production_id.is_sample,
                 'hide_field': True,
-                })
+            })
             for pol in po.order_line:
                 product_lang = pol.product_id.with_context(
                     lang=get_lang(pol.env, pol.partner_id.lang).code,
