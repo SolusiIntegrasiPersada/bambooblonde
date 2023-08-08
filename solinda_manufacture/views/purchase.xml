@@ -37,8 +37,8 @@
                     </div>
                 </xpath>
                 <xpath expr="//notebook/page/field/tree/field[@name='image']" position="before">
-                    <field name="material_ids" widget="many2many_tags"
-                           attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
+<!--                    <field name="material_ids" widget="many2many_tags"-->
+<!--                           attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>-->
                     <field name="color_mo" attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
                 </xpath>
             </field>
