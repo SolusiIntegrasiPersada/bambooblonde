@@ -1,66 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-  <data>
-
-    <record id="purchase_order_form_breakdown" model="ir.ui.view">
-      <field name="name">purchase.order.form</field>
-      <field name="model">purchase.order</field>
-      <field name="inherit_id" ref="purchase.purchase_order_form" />
-      <field name="arch" type="xml">
-
-        <xpath expr="//div[@name='button_box']/button[@name='action_view_invoice']" position="after">
-          <button type="object" name="show_mrp_prod" class="oe_stat_button" icon="fa-solid fa-wrench" style="width:200px" attrs="{'invisible':[('mrp_count', '=', 0)]}">
-            <field name="mrp_id" widget="statinfo" string="Manufacture" attrs="{'invisible':[('mrp_count', '!=', 1)]}"/>
-            <field name="mrp_count" widget="statinfo" invisible="1" attrs="{'invisible':[('mrp_count', '&gt;', 1)]}"/>
-            <field name="mrp_ids" invisible="1"/>
-          </button>
-        </xpath>
-
-        <xpath expr="//header" position="inside">
-          <button string="Create Production Detail" name="create_mo_production" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/>
-          <!-- <button string="Create Production Detail" name="create_mo_production" attrs="{'invisible':['|',('mrp_count', '!=', 0),('state', '!=', 'draft')]}" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/> -->
-        </xpath>
-
-        <xpath expr="//field[@name='currency_id']" position="after">
-          <field name="breakdown_id" invisible="1"/>
-        </xpath>
-
-        <xpath expr="//label[@for='date_planned']" position="before">
-          <field name="is_sewing" invisible="1"/>
-          <label for="plan_receive_in_week" attrs="{'invisible': [('is_sewing', '!=', True)]}"/>
-          <div name="plan_receive_in_week_div" class="o_row" attrs="{'invisible': [('is_sewing', '!=', True)]}">
-            <field name="plan_receive_in_week" attrs="{'readonly': [('state', 'not in', ('draft', 'sent', 'to approve', 'purchase'))], 'invisible': [('is_sewing', '!=', True)]}"/>
-          </div>
-        </xpath>
-        <xpath expr="//notebook/page/field/tree/field[@name='image']" position="before">
-          <field name="material_ids" widget="many2many_tags" attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
-          <field name="color_mo" attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
-        </xpath>
-
-
-
-      </field>
-    </record>
-
-  </data>
-</odoo>
-<!-- 
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
     <data>
-        <record model="ir.ui.view" id="purchase_order_inherit_report_form">
-            <field name="name">purchase.order.inherit.report.form</field>
+        <record id="purchase_order_form_breakdown" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']/button[@name='action_view_invoice']" position="after">
+                    <button type="object" name="show_mrp_prod" class="oe_stat_button" icon="fa-solid fa-wrench"
+                            style="width:200px" attrs="{'invisible':[('mrp_count', '=', 0)]}">
+                        <field name="mrp_id" widget="statinfo" string="Manufacture"
+                               attrs="{'invisible':[('mrp_count', '!=', 1)]}"/>
+                        <field name="mrp_count" widget="statinfo" invisible="1"
+                               attrs="{'invisible':[('mrp_count', '&gt;', 1)]}"/>
+                        <field name="mrp_ids" invisible="1"/>
+                    </button>
+                </xpath>
+
+                <xpath expr="//header" position="inside">
+                    <button string="Create Production Detail" name="create_mo_production"
+                            groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/>
+                    <!-- <button string="Create Production Detail" name="create_mo_production" attrs="{'invisible':['|',('mrp_count', '!=', 0),('state', '!=', 'draft')]}" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight"/> -->
+                </xpath>
+
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="breakdown_id" invisible="1"/>
+                </xpath>
+
                 <xpath expr="//label[@for='date_planned']" position="before">
-                    <label for="plan_receive_in_week"/>
-                    <div name="plan_receive_in_week_div" class="o_row">
-                        <field name="plan_receive_in_week" attrs="{'readonly': [('state', 'not in', ('draft', 'sent', 'to approve', 'purchase')), 'invisible': [('Sewing', 'in', ['Sewing'])]]}"/>
+                    <field name="is_sewing" invisible="1"/>
+                    <label for="plan_receive_in_week" attrs="{'invisible': [('is_sewing', '!=', True)]}"/>
+                    <div name="plan_receive_in_week_div" class="o_row"
+                         attrs="{'invisible': [('is_sewing', '!=', True)]}">
+                        <field name="plan_receive_in_week"
+                               attrs="{'readonly': [('state', 'not in', ('draft', 'sent', 'to approve', 'purchase'))], 'invisible': [('is_sewing', '!=', True)]}"/>
                     </div>
+                </xpath>
+                <xpath expr="//notebook/page/field/tree/field[@name='image']" position="before">
+                    <field name="material_ids" widget="many2many_tags"
+                           attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
+                    <field name="color_mo" attrs="{'column_invisible': [('parent.hide_field', '=', False)]}"/>
                 </xpath>
             </field>
         </record>
     </data>
-</odoo> -->
+</odoo>
