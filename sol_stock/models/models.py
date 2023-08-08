@@ -69,6 +69,14 @@ class StockMove(models.Model):
     color_mo = fields.Char(string="Color")
     material_ids = fields.Many2many('mrp.bom.line', string='Material')
 
+    @api.onchange('product_id')
+    def _onchange_image(self):
+        if self.product_id:
+            image = ''
+            if self.product_id.image_1920:
+                self.image = self.product_id.image_1920
+            return image
+
     @api.depends('product_id')
     def _onchange_color_size(self):
         for i in self:
