@@ -157,5 +157,16 @@
                 </field>
             </field>
         </record>
+
+        <record id="purchase_stock_view_from_inherit" model="ir.ui.view">
+            <field name="name">purchase.stock.view.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="domain">[('code','=','incoming'), ('name','=','Receipts')]</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
