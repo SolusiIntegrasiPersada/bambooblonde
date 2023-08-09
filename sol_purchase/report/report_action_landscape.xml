@@ -27,6 +27,7 @@
             <field name="print_report_name">'PO SUPPLIER - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sol_purchase.group_report_po_supplier'))]"/>
         </record>
 
         <record id="action_report_sample_po" model="ir.actions.report">
@@ -39,6 +40,7 @@
             <field name="print_report_name">'PO SAMPLE - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sol_purchase.group_report_po_sample'))]"/>
         </record>
 
         <record id="action_report_production_po" model="ir.actions.report">
@@ -51,6 +53,7 @@
             <field name="print_report_name">'PO PRODUCTION - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sol_purchase.group_report_po_production'))]"/>
         </record>
 
         <record id="report_action_production_order_tb" model="ir.actions.report">
@@ -63,6 +66,7 @@
             <field name="print_report_name">'PO MATERIAL - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sol_purchase.group_report_po_material'))]"/>
         </record>
 
         <record id="report_action_production_order_sample_tb" model="ir.actions.report">
@@ -75,6 +79,7 @@
             <field name="print_report_name">'PO MATERIAL SAMPLE - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
+            <field name="groups_id" eval="[(4, ref('sol_purchase.group_report_po_material_sample'))]"/>
         </record>
     
     </data>

@@ -16,9 +16,9 @@
                     <field name="count" invisible="1"/>
                 </field>
                 <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
-                    <field name="material_ids" widget="many2many_tags"/>
-                    <field name="image" widget="image" class="oe_avatar"/>
-                    <field name="color_mo"/>
+                    <field name="material_ids" widget="many2many_tags" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'internal')]}"/>
+                    <field name="image" widget="image" class="oe_avatar" />
+                    <field name="color_mo" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'internal')]}"/>
                     <field name="fabric_width" optional="show"/>
                     <field name="price"/>
                 </xpath>
