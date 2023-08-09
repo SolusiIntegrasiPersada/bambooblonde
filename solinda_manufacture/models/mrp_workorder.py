@@ -8,7 +8,7 @@ from odoo.tools.misc import get_lang
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
-    order_id = fields.Many2one(comodel_name='purchase.order', string='PO')
+    order_id = fields.Many2one(comodel_name='purchase.order', string='PO', copy=False)
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     fabric_id = fields.Many2many(comodel_name='mrp.bom.line', string='Fabric', related='operation_id.fabric_id')
     hk = fields.Float(string='HK', related='operation_id.hk')
@@ -273,6 +273,8 @@ class MrpWorkorder(models.Model):
             location_id = virtual_location.id if finish else record.production_id.location_src_id.id
             location_dest_id = record.production_id.location_src_id.id if finish else virtual_location.id
             date = record.in_date if finish else record.out_date
+            qty_receive = sum(record.order_id.picking_ids.move_ids_without_package.mapped('quantity_done'))
+            qty = qty_receive if finish else record.total_dyeing
             for material in record.fabric_id:
                 move_raw = record.production_id.move_raw_ids.filtered(
                     lambda l: l.product_id.id == material.product_id.id)
@@ -284,7 +286,7 @@ class MrpWorkorder(models.Model):
                     'location_dest_id': location_dest_id,
                     'product_id': move_raw.product_id.id,
                     'product_uom': move_raw.product_uom.id,
-                    'product_uom_qty': move_raw.product_uom_qty,
+                    'product_uom_qty': qty,
                     'production_id': record.production_id.id,
                 })
                 move._action_confirm(merge=False)

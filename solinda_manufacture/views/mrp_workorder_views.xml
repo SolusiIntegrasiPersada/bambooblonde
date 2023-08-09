@@ -18,17 +18,18 @@
         <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
         <field name="arch" type="xml">
             <field name="workcenter_id" position="after">
-                <field name="order_id" />
-                <field name="supplier" />
-                <field name="fabric_id" />
-                <field name="color_id" />
-                <field name="hk" />
-                <field name="shrinkage" />
+                <field name="order_id"/>
+                <field name="supplier"/>
+                <field name="fabric_id"/>
+                <field name="color_id"/>
+                <field name="hk"/>
+                <field name="shrinkage" widget="percentage" readonly="1"/>
                 <field name="picking_ids" widget="many2many_tags" optional="hide"/>
                 <field name="out_date" optional="show"/>
                 <field name="in_date" optional="show"/>
-                <field name="total_mtr" optional="show" />
-                <field name="total_dyeing" optional="show" />
+                <field name="total_mtr" optional="show"/>
+                <field name="total_dyeing" optional="show"
+                       attrs="{'readonly': [('work_center_id.name', 'not in', ['DYEING', 'WASHING', 'PRINTING'])]}"/>
             </field>
 
             <xpath expr="//field[@name='duration']" position="attributes">
@@ -44,9 +45,13 @@
             </xpath>
 
             <xpath expr="//button[@name='button_start']" position="replace">
-                <button name="create_po" type="object" icon="fa-pencil-square-o" string="Create PO" class="oe_highlight btn-success" attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done', 'cancel')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
-                <button name="show_po" type="object" icon="fa-eye" string="Show PO" class="oe_highlight btn-success" attrs="{'invisible': [('order_id','=',False)]}"/>
-                <button name="show_receive_po" type="object" icon="fa-truck" string="Receive" class="oe_highlight btn-warning" attrs="{'invisible': [('order_id','=',False)]}"/>
+                <button name="create_po" type="object" icon="fa-pencil-square-o" string="Create PO"
+                        class="oe_highlight btn-success"
+                        attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done', 'cancel')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/>
+                <button name="show_po" type="object" icon="fa-eye" string="Show PO" class="oe_highlight btn-success"
+                        attrs="{'invisible': [('order_id','=',False)]}"/>
+                <button name="show_receive_po" type="object" icon="fa-truck" string="Receive"
+                        class="oe_highlight btn-warning" attrs="{'invisible': [('order_id','=',False)]}"/>
             </xpath>
             <!-- <xpath expr="//button[@name='action_open_wizard']" position="replace">
                 <attribute name="invisible">1</attribute>
