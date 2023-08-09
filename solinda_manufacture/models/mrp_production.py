@@ -2,94 +2,6 @@ from odoo import _, api, fields, models
 from odoo.tools import float_compare, float_round, float_is_zero, OrderedSet
 
 
-class ServiceReturn(models.Model):
-    _name = 'service.return'
-    _description = 'Service Return'
-
-    mrp_id = fields.Many2one('mrp.production', string="MRP")
-
-
-class ByProductDummy(models.Model):
-    _name = 'by.product.dummy'
-    _description = 'By Product Dummy'
-
-    product_id = fields.Many2one('product.product', string='Product')
-    product_uom_id = fields.Many2one('uom.uom', string='UoM')
-    product_uom_qty = fields.Float(string='Produce', default=1)
-    product_minus = fields.Float(string='Not Produce')
-    colour = fields.Char('Color')
-    size = fields.Char('Size')
-    remarks = fields.Text('Remarks')
-    mrp_id = fields.Many2one('mrp.production', string='MRP')
-    fabric_por_id = fields.Many2one('product.product', string='Fabric')
-    lining_por_id = fields.Many2one('product.product', string='Lining')
-
-    ###
-    total_value = fields.Float(string="Total Value")
-
-    @api.onchange('product_minus')
-    def _onchange_product_minus(self):
-        for i in self:
-            if i.product_minus > 0:
-                by_prod = self.env["stock.move"].search(
-                    [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
-                if by_prod:
-                    by_prod.product_uom_qty = self.product_uom_qty - i.product_minus
-                else:
-                    self.mrp_id.product_qty = self.mrp_id.product_qty - i.product_minus
-
-    @api.onchange('product_uom_qty')
-    def _onchange_product_uom_qty(self):
-        by_prod = self.env["stock.move"].search(
-            [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
-        if by_prod:
-            by_prod.product_uom_qty = self.product_uom_qty
-        else:
-            self.mrp_id.product_qty = self.product_uom_qty
-
-
-class MrpProductionBomVariant(models.Model):
-    _name = 'mrp.production.bom.variant'
-    _order = "sequence, id"
-    _rec_name = "product_id"
-    _description = 'Bill of Material MRP (Variant)'
-
-    @api.depends('product_qty', 'cost')
-    def _compute_total_material(self):
-        for line in self:
-            line.total_material = line.cost * line.product_qty
-
-    company_id = fields.Many2one(
-        related='production_id.company_id', store=True, index=True, readonly=True)
-    product_id = fields.Many2one('product.product', 'Component', required=True)
-    product_qty = fields.Float(
-        'Quantity', default=1.0,
-        digits='Product Unit of Measure', required=True)
-    po_qty = fields.Float(
-        'Qty PO', default=0.0,
-        digits='Product Unit of Measure', required=True)
-    total_qty = fields.Float(
-        'Total', default=0.0,
-        digits='Product Unit of Measure', required=True)
-    product_uom_id = fields.Many2one(
-        'uom.uom', 'Product Unit of Measure',
-        required=True,
-        help="Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control")
-    sequence = fields.Integer(
-        'Sequence', default=1,
-        help="Gives the sequence order when displaying.")
-    production_id = fields.Many2one(
-        'mrp.production', 'MRP Production',
-        index=True, ondelete='cascade', required=True)
-    supplier = fields.Many2one('res.partner', string='Supplier')
-    color = fields.Char('Color')
-    sizes = fields.Char('Sizes')
-    ratio = fields.Float(string='Ratio', default=1.00)
-    cost = fields.Float(string="Cost", related='product_id.standard_price')
-    total_material = fields.Float(string="Total Material", compute=_compute_total_material)
-    shrinkage = fields.Float(string='Shkg(%)')
-
-
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
@@ -104,9 +16,6 @@ class MrpProduction(models.Model):
     service_ids = fields.One2many('service.return', 'mrp_id', string='Service')
     stock_picking_id = fields.Many2one('stock.picking', string="Stock")
     count_service = fields.Integer(string="Count", compute="_compute_count_service")
-
-    # make_invisible = fields.Boolean(string="Invisible", default=False)
-    # qty_po = fields.Float('Qty PO')
 
     @api.depends('move_finished_ids')
     def _compute_move_byproduct_ids(self):
@@ -262,13 +171,6 @@ class MrpProduction(models.Model):
             for workorder in production.workorder_ids:
                 workorder.duration_expected = workorder._get_duration_expected()
 
-    # def button_mark_done(self):
-    #     print_wo = self.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'PRINTING')
-    #     if len(print_wo) > 0:
-    #         for product in self.by_product_ids:
-    #             product.product_id.update({'is_print': True})
-    #     return super(MrpProduction, self).button_mark_done()
-
     @api.depends('stock_picking_id')
     def _compute_count_service(self):
         self = self.sudo()
@@ -319,3 +221,91 @@ class MrpProduction(models.Model):
                         'res_id': stock.id,
                         # 'context': {'default_mrp_prod_id':self.id},
                     }
+
+
+class ServiceReturn(models.Model):
+    _name = 'service.return'
+    _description = 'Service Return'
+
+    mrp_id = fields.Many2one('mrp.production', string="MRP")
+
+
+class ByProductDummy(models.Model):
+    _name = 'by.product.dummy'
+    _description = 'By Product Dummy'
+
+    product_id = fields.Many2one('product.product', string='Product')
+    product_uom_id = fields.Many2one('uom.uom', string='UoM')
+    product_uom_qty = fields.Float(string='Produce', default=1)
+    product_minus = fields.Float(string='Not Produce')
+    colour = fields.Char('Color')
+    size = fields.Char('Size')
+    remarks = fields.Text('Remarks')
+    mrp_id = fields.Many2one('mrp.production', string='MRP')
+    fabric_por_id = fields.Many2one('product.product', string='Fabric')
+    lining_por_id = fields.Many2one('product.product', string='Lining')
+
+    ###
+    total_value = fields.Float(string="Total Value")
+
+    @api.onchange('product_minus')
+    def _onchange_product_minus(self):
+        for i in self:
+            if i.product_minus > 0:
+                by_prod = self.env["stock.move"].search(
+                    [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
+                if by_prod:
+                    by_prod.product_uom_qty = self.product_uom_qty - i.product_minus
+                else:
+                    self.mrp_id.product_qty = self.mrp_id.product_qty - i.product_minus
+
+    @api.onchange('product_uom_qty')
+    def _onchange_product_uom_qty(self):
+        by_prod = self.env["stock.move"].search(
+            [('product_id', '=', self.product_id.id), ('production_id', '=', self._origin.mrp_id.id)], limit=1)
+        if by_prod:
+            by_prod.product_uom_qty = self.product_uom_qty
+        else:
+            self.mrp_id.product_qty = self.product_uom_qty
+
+
+class MrpProductionBomVariant(models.Model):
+    _name = 'mrp.production.bom.variant'
+    _order = "sequence, id"
+    _rec_name = "product_id"
+    _description = 'Bill of Material MRP (Variant)'
+
+    @api.depends('product_qty', 'cost')
+    def _compute_total_material(self):
+        for line in self:
+            line.total_material = line.cost * line.product_qty
+
+    company_id = fields.Many2one(
+        related='production_id.company_id', store=True, index=True, readonly=True)
+    product_id = fields.Many2one('product.product', 'Component', required=True)
+    product_qty = fields.Float(
+        'Quantity', default=1.0,
+        digits='Product Unit of Measure', required=True)
+    po_qty = fields.Float(
+        'Qty PO', default=0.0,
+        digits='Product Unit of Measure', required=True)
+    total_qty = fields.Float(
+        'Total', default=0.0,
+        digits='Product Unit of Measure', required=True)
+    product_uom_id = fields.Many2one(
+        'uom.uom', 'Product Unit of Measure',
+        required=True,
+        help="Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control")
+    sequence = fields.Integer(
+        'Sequence', default=1,
+        help="Gives the sequence order when displaying.")
+    production_id = fields.Many2one(
+        'mrp.production', 'MRP Production',
+        index=True, ondelete='cascade', required=True)
+    supplier = fields.Many2one('res.partner', string='Supplier')
+    color = fields.Char('Color')
+    sizes = fields.Char('Sizes')
+    ratio = fields.Float(string='Ratio', default=1.00)
+    cost = fields.Float(string="Cost", related='product_id.standard_price')
+    total_material = fields.Float(string="Total Material", compute=_compute_total_material)
+    shrinkage = fields.Float(string='Shkg(%)')
