@@ -32,14 +32,14 @@ class StockPicking(models.Model):
         for (name, colour), sizes in consolidated_lines.items():
             # amount_a = sum(1 for size in sizes if size in column0)
             # if any(item in consolidated_lines.items() for item in column):
-            amount_b = sum(1 for size in sizes if size in column_b) or ' '
-            amount_c = sum(1 for size in sizes if size in column_c) or ' '
-            amount_d = sum(1 for size in sizes if size in column_d) or ' '
-            amount_e = sum(1 for size in sizes if size in column_e) or ' '
-            amount_f = sum(1 for size in sizes if size in column_f) or ' '
-            amount_g = sum(1 for size in sizes if size in column_g) or ' '
-            amount_h = sum(1 for size in sizes if size in column_h) or ' '
-            amount_i = sum(1 for size in sizes if size in column_i) or ' '
+            amount_b = sum(1 for size in sizes if size in column_b) or None
+            amount_c = sum(1 for size in sizes if size in column_c) or None
+            amount_d = sum(1 for size in sizes if size in column_d) or None
+            amount_e = sum(1 for size in sizes if size in column_e) or None
+            amount_f = sum(1 for size in sizes if size in column_f) or None
+            amount_g = sum(1 for size in sizes if size in column_g) or None
+            amount_h = sum(1 for size in sizes if size in column_h) or None
+            amount_i = sum(1 for size in sizes if size in column_i) or None
             amount_total = amount_i + amount_g + amount_h + amount_f + amount_e + amount_d + amount_b
 
             # print(f"Sizes: {sizes}")
