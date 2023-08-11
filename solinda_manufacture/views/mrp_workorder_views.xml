@@ -29,7 +29,7 @@
                 <field name="in_date" optional="show"/>
                 <field name="total_mtr" optional="show"/>
                 <field name="total_dyeing" optional="show"
-                       attrs="{'readonly': [('work_center_id.name', 'not in', ['DYEING', 'WASHING', 'PRINTING'])]}"/>
+                       attrs="{'readonly': [('workcenter_id.name', 'not in', ['DYEING', 'WASHING', 'PRINTING'])]}"/>
             </field>
 
             <xpath expr="//field[@name='duration']" position="attributes">
