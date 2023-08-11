@@ -3,7 +3,7 @@
 
 {
     'name': 'Copy Sale and Purchase Order Line',
-    'version': '15.0.0.0',
+    'version': '1.0',
     'category': 'Sales',
     'license': 'OPL-1',
     'summary': 'Copy sale order line copy purchase order line duplicate sale order line duplicate purchase order line Copy sale line copy purchase line duplicate sale line duplicate purchase line Copy sales order line duplicate sales order line copy sales line',

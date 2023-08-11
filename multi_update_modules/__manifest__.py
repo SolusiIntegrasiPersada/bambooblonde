@@ -8,7 +8,7 @@
     'website': "http://www.arxi.pt",
 
     'category': 'Extra Tools',
-    'version': '14.0.0.0.2',
+    'version': '1.0',
     'license': 'OPL-1',
 
     'installable': True,

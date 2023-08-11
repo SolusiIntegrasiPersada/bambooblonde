@@ -2,7 +2,7 @@
 {
     "name": "Chatter Position",
     "summary": "Chatter Position",
-    "version": "15.0.1.0.2",
+    "version": "1.0",
     'author': "Odoo Being, Odoo Community Association (OCA)",
     'website': "https://www.odoobeing.com",
     'license': "LGPL-3",

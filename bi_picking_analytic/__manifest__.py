@@ -3,8 +3,7 @@
 
 {
     "name": "Analytic Account on Stock Picking with Analytic Tags in Odoo",
-    # "version": "13.0.0.1",
-    "version": "15.1.0.0.2",
+    "version": "1.0",
     "category": "Warehouse",
     "summary": "App Analytic Account on Picking Analytic Tags on stock picking Analytic Account on delivery Analytic Tag on picking analytic costing on picking analytic tag on delivery analytic costing on delivery order analytic tag on receipt analytic account on receipt",
     "description": """Adds an 

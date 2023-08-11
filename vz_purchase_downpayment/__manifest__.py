@@ -3,7 +3,7 @@
     'description': '''Advance Payment in Purchase Order''',
     'summary': 'Advance Payment in purchase',
     'author': 'Veuz Concepts',
-    "version": "15.0",
+    "version": "1.0",
     "category": "Accounting",
     'website': "www.veuzconcepts.com",
     'license': 'LGPL-3',

@@ -13,7 +13,7 @@
     'website': "http://https://www.linkedin.com/in/luthfi-nizar-388a89195/",
 
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '1.0',
 
     'depends': ['base', 'account','report_xlsx'],
 

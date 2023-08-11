@@ -11,7 +11,7 @@
 
 {
     'name': 'Simplify Access Management | Manage - Hide Menu, Submenu, Fields, Action, Reports, Views, | Restrict/Read-Only User, Apps,  Fields, Export, Archive, Actions, Views, Reports, Delete items | Manage Access rights from one place | Hide Tabs and buttons | Multi Company supported.',
-    'version': '15.0.6.0.0',
+    'version': '1.0',
     'sequence': 5,
     'author': 'Ashish Hirpara',
     'license': 'OPL-1',
