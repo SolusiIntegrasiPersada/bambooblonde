@@ -27,7 +27,9 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="mrp_payment_menu" name="Payment" action="mrp_payment_action" parent="mrp.menu_mrp_configuration"/>
+        <menuitem id="mrp_payment_menu"
+                  name="Payment"
+                  action="mrp_payment_action"
+                  parent="mrp.menu_mrp_configuration"/>
     </data>
-
 </odoo>
