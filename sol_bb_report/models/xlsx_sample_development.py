@@ -116,8 +116,8 @@ class XlsxSampleDevelopment(models.Model):
                             ('product_id', 'in', product_ids.mapped('id')),
                         ]).mapped('fabric_por.name')))
                     sizes = ', '.join(
-                        prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_size).value_ids.mapped(
-                            'name')) or ''
+                        prl.attribute_line_ids.filtered(
+                            lambda x: x.attribute_id.name in list_size).value_ids.mapped('name')) or ''
                     formula = ''
                     breakdown_sizes = ''
                     flag_formula = 0
@@ -150,7 +150,8 @@ class XlsxSampleDevelopment(models.Model):
                         breakdown_sizes = f'{str(2 * pax)}.{str(3 * pax)}.{str(1 * pax)}'
                         order_qty = 6 * pax
 
-                    taboo_cost = prl.standard_price or 0.0
+                    taboo_company_id = self.env['res.company'].sudo().search([('id', '!=', self.env.company.id)]).id
+                    taboo_cost = self.env['product.template'].browse(prl.id).with_context(force_company=taboo_company_id).standard_price
                     minimum_retail = (taboo_cost + (taboo_cost * 45 / 100)) * 2 or 0.0
                     total = order_qty * taboo_cost
                     delivery_date = '' if len(pw_2_ids) < 1 else pw_2_ids[0].order_id.effective_date.strftime(
