@@ -1,7 +1,5 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
+from odoo import models, fields
 from odoo.tools import html2plaintext
-from datetime import datetime, timedelta
 
 import io
 import base64
@@ -98,7 +96,7 @@ class XlsxSampleDevelopment(models.Model):
                             ('order_id.date_order', '<=', datas.get('to_date')),
                             # ('order_id.state', '=', 'draft'),
                             ('product_id', '=', product.id),
-                            ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS'),
+                            # ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS'),
                             # ('order_id.partner_id', '=', po_id.company_id.partner_id.id),
                         ])
                         order_qty += sum(pw_2_ids.mapped('product_qty')) if len(pw_2_ids) > 0 else 0 or 0
@@ -112,8 +110,11 @@ class XlsxSampleDevelopment(models.Model):
                     color = ', '.join(
                         prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped(
                             'name')) or ''
-                    # fabric = pw_2_ids[0].fabric.name or '' if len(pw_2_ids) > 0 else ''
-                    fabric = pw_2_ids[0].fabric_por.name or '' if len(pw_2_ids) > 0 else ''
+                    fabric = list(set(prl.env['purchase.order.line'].sudo().search([
+                            ('order_id.date_order', '>=', datas.get('from_date')),
+                            ('order_id.date_order', '<=', datas.get('to_date')),
+                            ('product_id', 'in', product_ids.mapped('id')),
+                        ]).mapped('fabric_por.name')))
                     sizes = ', '.join(
                         prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_size).value_ids.mapped(
                             'name')) or ''
@@ -149,17 +150,9 @@ class XlsxSampleDevelopment(models.Model):
                         breakdown_sizes = f'{str(2 * pax)}.{str(3 * pax)}.{str(1 * pax)}'
                         order_qty = 6 * pax
 
-                    # breakdown_sizes = ''
-                    # if flag_formula == 0:
-                    #     order_qty = 0
-                    # elif flag_formula == 1:
-                    #     order_qty = 
-
-                    # order_qty = sum(prl_2_ids.mapped('product_qty')) or 0
                     taboo_cost = prl.standard_price or 0.0
                     minimum_retail = (taboo_cost + (taboo_cost * 45 / 100)) * 2 or 0.0
                     total = order_qty * taboo_cost
-                    # delivery_date = '' if len(pw_2_ids) < 1 else pw_2_ids[0].purchase_pw.effective_date.strftime('%d/%m/%Y') if pw_2_ids[0].purchase_pw.effective_date else ''
                     delivery_date = '' if len(pw_2_ids) < 1 else pw_2_ids[0].order_id.effective_date.strftime(
                         '%d/%m/%Y') if pw_2_ids[0].order_id.effective_date else ''
                     notes = html2plaintext(pw_2_ids[0].order_id.notes or '').strip() if len(pw_2_ids) > 0 else ''
@@ -184,7 +177,7 @@ class XlsxSampleDevelopment(models.Model):
                         sheet.write(row, column, '', formatDetailTableReOrder)
                     sheet.write(row, column + 1, name, formatDetailTable)
                     sheet.write(row, column + 2, color, formatDetailTable)
-                    sheet.write(row, column + 3, fabric, formatDetailTable)
+                    sheet.write(row, column + 3, str(fabric[0]), formatDetailTable)
                     sheet.write(row, column + 4, sizes, formatDetailTable)
                     sheet.write(row, column + 5, formula, formatDetailTable)
                     sheet.write(row, column + 6, breakdown_sizes, formatDetailTable)
@@ -210,9 +203,9 @@ class XlsxSampleDevelopment(models.Model):
                 pw_ids = self.env['purchase.order.line'].sudo().search([
                     ('order_id.date_order', '>=', datas.get('from_date')),
                     ('order_id.date_order', '<=', datas.get('to_date')),
-                    ('order_id.state', '=', 'draft'),
+                    # ('order_id.state', '=', 'draft'),
                     ('order_id.order_type', '=', 're_order'),
-                    ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
+                    # ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
                 ])
                 # pw_ids = self.env['purchase.order.line'].sudo().search([
                 #     ('order_id.date_approve', '>=', datas.get('from_date')),
@@ -262,8 +255,8 @@ class XlsxSampleDevelopment(models.Model):
                         ('product_id.product_tmpl_id', '=', product_tmpl.id),
                         ('product_id.variant_seller_ids', '!=', False)
                     ], order='date asc', limit=1)
-                    diff_date_in_week = int(round((fields.Date.today() - stock_move_ids.date.date()).days / 7,
-                                                  0)) if stock_move_ids.date else 0
+                    diff_date_in_week = int(round(
+                        (fields.Date.today() - stock_move_ids.date.date()).days / 7,0)) if stock_move_ids.date else 0
                     if diff_date_in_week < 1:
                         continue
 
@@ -309,7 +302,7 @@ class XlsxSampleDevelopment(models.Model):
                             ('product_id', '=', product.id),
                             # ('product_id.variant_seller_ids', '!=', False),
                             ('order_id.order_type', '=', 're_order'),
-                            ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
+                            # ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
                         ])
                         # pw_2_ids = self.env['purchase.order.line'].sudo().search([
                         #     ('order_id.date_approve', '>=', datas.get('from_date')),
