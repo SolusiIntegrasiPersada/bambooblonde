@@ -40,7 +40,7 @@ class StockPicking(models.Model):
             amount_g = sum(1 for size in sizes if size in column_g) or None
             amount_h = sum(1 for size in sizes if size in column_h) or None
             amount_i = sum(1 for size in sizes if size in column_i) or None
-            amount_total = amount_i + amount_g + amount_h + amount_f + amount_e + amount_d + amount_b
+            # amount_total = amount_i + amount_g + amount_h + amount_f + amount_e + amount_d + amount_b
 
             # print(f"Sizes: {sizes}")
             # print(f"Amounts: B={amount_b}, C={amount_c}, D={amount_d}, E={amount_e}, F={amount_f}, G={amount_g}, H={amount_h}, I={amount_i}")
@@ -58,7 +58,7 @@ class StockPicking(models.Model):
                 'amount_g': amount_g,
                 'amount_h': amount_h,
                 'amount_i': amount_i,
-                'amount_total': amount_total,
+                # 'amount_total': amount_total,
             })
         return consolidated_data
 
