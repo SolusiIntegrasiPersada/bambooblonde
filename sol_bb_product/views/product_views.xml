@@ -18,6 +18,7 @@
                         <field name="is_print" readonly="1"/>
                     </group>
                 </xpath>
+
             </field>
         </record>
 
@@ -39,6 +40,9 @@
                 <!-- <xpath expr="//tree" position="attributes">
                   <attribute name="editable">top</attribute>
                 </xpath> -->
+<!--                <xpath expr="//field[@name='name']" position="after">-->
+<!--                    <field name="location_id" />-->
+<!--                </xpath>-->
             </field>
         </record>
 
@@ -56,7 +60,18 @@
                     <field name="is_print" readonly="1"/>
                     <field name="types"/>
                 </field>
+                <xpath expr="//group[@name='inventory']" position="after">
+                    <separator string="Stock Balance By Locations" attrs="{'invisible':[('type', '!=', 'product')]}"/>
+                    <field name="internal_location" attrs="{'invisible':[('type', '!=', 'product')]}">
+                        <tree>
+                            <field name="stock_location"/>
+                            <field name="qty_on_hand"/>
+                        </tree>
+                    </field>
+                </xpath>
             </field>
         </record>
+
+
     </data>
 </odoo>

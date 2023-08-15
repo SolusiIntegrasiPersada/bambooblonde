@@ -6,4 +6,5 @@ sol_bb_product.access_class_product,access_class_product,sol_bb_product.model_cl
 sol_bb_product.access_data_fabric_lining,sol_bb_product.data_fabric_lining,model_data_fabric_lining,base.group_user,1,1,1,1
 sol_bb_product.access_main_color,access_main_color,sol_bb_product.model_main_color,base.group_user,1,1,1,1
 sol_bb_product.access_size_label,access_size_label,sol_bb_product.model_size_label,base.group_user,1,1,1,1
+sol_bb_product.access_stock_quantity,access_stock_quantity,sol_bb_product.model_stock_quantity,base.group_user,1,1,1,1
 

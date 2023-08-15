@@ -25,6 +25,16 @@
                        position="attributes">
                     <attribute name="attrs">{}</attribute>
                 </xpath>
+<!--                <xpath expr="//group[@name='inventory']" position="after">-->
+<!--                    <separator string="Stock Balance By Locations" attrs="{'invisible':[('type', '!=', 'product')]}"/>-->
+<!--                    <field name="internal_location" attrs="{'invisible':[('type', '!=', 'product')]}">-->
+<!--                        <tree>-->
+<!--                            <field name="product_id"/>-->
+<!--                            <field name="stock_location"/>-->
+<!--                            <field name="qty_on_hand"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                </xpath>-->
             </field>
         </record>
 

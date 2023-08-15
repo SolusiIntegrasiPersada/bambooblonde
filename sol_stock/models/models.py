@@ -68,14 +68,22 @@ class StockMove(models.Model):
     size = fields.Char('Size', compute="_onchange_color_size")
     color_mo = fields.Char(string="Color")
     material_ids = fields.Many2many('mrp.bom.line', string='Material')
+    qty_available = fields.Float(string='Qty Available', compute='_onchange_product')
 
     @api.onchange('product_id')
     def _onchange_product(self):
-        if self.product_id:
-            if self.product_id.image_1920:
-                self.image = self.product_id.image_1920
-            if self.product_id.standard_price:
-                self.price = self.product_id.standard_price
+        for record in self:
+            if record.product_id:
+                record.update({
+                    'image': record.product_id.image_1920,
+                    'price': record.product_id.standard_price
+                })
+                if record.picking_id and record.location_id:
+                    record.update({
+                        'qty_available': sum(self.env['stock.quant'].search(
+                            [('product_id', '=', record.product_id.id), ('location_id', '=', record.location_id.id)]
+                        ).mapped('available_quantity'))
+                    })
 
     @api.depends('product_id')
     def _onchange_color_size(self):
