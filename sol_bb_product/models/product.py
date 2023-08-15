@@ -18,7 +18,7 @@ class ProductProduct(models.Model):
                                                           relation='product_variant_combination',
                                                           domain=[('attribute_line_id.value_count', '>', 0)],
                                                           string="Variant Values", ondelete='restrict')
-    internal_location = fields.One2many('stock.quantity', 'product_id', compute='get_product_qty')
+    internal_location = fields.One2many('stock.quantity', 'product_id', compute='get_product_qty', store=True)
 
     def get_product_qty(self):
         location_list = []
@@ -37,6 +37,8 @@ class ProductProduct(models.Model):
         for i in product_list:
             if i['qty_on_hand'] > 0:
                 self.internal_location |= self.env['stock.quantity'].create(i)
+            else:
+                return i
 
 class InternalLocation(models.Model):
     _name = 'stock.quantity'
