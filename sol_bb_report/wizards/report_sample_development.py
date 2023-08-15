@@ -11,6 +11,7 @@ class ReportSampleDevelopmentWizard(models.TransientModel):
     sales_to_date = fields.Date(string='Sales To Date')
     incoming_date = fields.Date(string='Incoming Date')
 
+    @api.depends_context('company')
     def button_generate_excel(self):
         context = self._context
         datas = {'ids': context.get('active_ids', [])}
