@@ -17,11 +17,11 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    "version": "1.1",
+    "version": "1.0",
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['report_xlsx', 'sol_purchase', 'sol_sale', 'sol_pos', 'sol_stock'],
+    'depends': ['report_xlsx', 'sol_purchase', 'sol_sale', 'sol_pos'],
 
     # always loaded
     'data': [
