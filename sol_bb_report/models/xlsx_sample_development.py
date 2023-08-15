@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.tools import html2plaintext
 
 import io
@@ -17,7 +17,6 @@ class XlsxSampleDevelopment(models.Model):
     _name = 'report.sol_bb_report.sample_development.xlsx'
     _inherit = 'report.report_xlsx.abstract'
 
-    @api.depends_context('company')
     def generate_xlsx_report(self, workbook, data, objs):
         formatHeaderCompany = workbook.add_format(
             {'font_size': 14, 'valign': 'vcenter', 'align': 'center', 'bold': True})
@@ -151,7 +150,7 @@ class XlsxSampleDevelopment(models.Model):
                         breakdown_sizes = f'{str(2 * pax)}.{str(3 * pax)}.{str(1 * pax)}'
                         order_qty = 6 * pax
 
-                    taboo_company_id = self.env['res.company'].sudo().search([('is_manufacture', '=', True)]).id
+                    taboo_company_id = self.env['res.company'].sudo().search([('id', '!=', self.env.company.id)]).id
                     taboo_product = self.env['product.product'].search(
                         [('product_tmpl_id', '=', prl.id)]).with_context(force_company=taboo_company_id)
                     taboo_cost = taboo_product.mapped('standard_price')[0]
