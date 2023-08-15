@@ -151,7 +151,9 @@ class XlsxSampleDevelopment(models.Model):
                         order_qty = 6 * pax
 
                     taboo_company_id = self.env['res.company'].sudo().search([('id', '!=', self.env.company.id)]).id
-                    taboo_cost = self.env['product.template'].browse(prl.id).with_context(force_company=taboo_company_id).standard_price
+                    taboo_product = self.env['product.product'].search(
+                        [('product_tmpl_id', '=', prl.id)]).with_context(force_company=taboo_company_id)
+                    taboo_cost = taboo_product.mapped('standard_price')[0]
                     minimum_retail = (taboo_cost + (taboo_cost * 45 / 100)) * 2 or 0.0
                     total = order_qty * taboo_cost
                     delivery_date = '' if len(pw_2_ids) < 1 else pw_2_ids[0].order_id.effective_date.strftime(
