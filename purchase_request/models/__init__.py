@@ -7,5 +7,6 @@ from . import purchase_request_line
 from . import stock_rule
 from . import product_template
 from . import purchase_order
+from . import purchase_budget
 from . import stock_move
 from . import stock_move_line
