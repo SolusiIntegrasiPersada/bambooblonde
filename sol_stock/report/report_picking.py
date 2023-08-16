@@ -16,6 +16,17 @@ class StockPicking(models.Model):
         column_h = ['38-39','XL']
         column_i = ['OS','ALL']
 
+        tot_b = 0
+        tot_c = 0
+        tot_d = 0
+        tot_e = 0
+        tot_f = 0
+        tot_g = 0
+        tot_h = 0
+        tot_i = 0
+        grand_total_amount = 0
+        grand_total_retail = 0
+
         for line in self.move_ids_without_package:
             name = line.product_id.name
             colour = line.colour.strip()
@@ -33,48 +44,76 @@ class StockPicking(models.Model):
             model = ''.join(model_rec)
             category = ''.join(category_rec)
 
-            key = (name, colour, model, category)
-            if key in consolidated_lines:
-                consolidated_lines[key].append(size)
+            key_model = (model)
+            key = (name, colour, category)
+            if key_model in consolidated_lines:
+                if key in consolidated_lines[key_model]:
+                    consolidated_lines[key_model][key].append(size)
+                else:
+                    consolidated_lines[key_model][key] = [size]
             else:
-                consolidated_lines[key] = [size]
+                consolidated_lines[key_model] = {key: [size]}
 
         consolidated_data = []
-        for (name, colour, model, category), sizes in consolidated_lines.items():
+        # for (name, colour, model, category), sizes in consolidated_lines.items():
+        for model_key, model_lines in consolidated_lines.items():
+            for key, sizes in model_lines.items():
             # amount_a = sum(1 for size in sizes if size in column0)
             # if any(item in consolidated_lines.items() for item in column):
-            amounts = {
-                'amount_b': sum(1 for size in sizes if size in column_b) or None,
-                'amount_c': sum(1 for size in sizes if size in column_c) or None,
-                'amount_d': sum(1 for size in sizes if size in column_d) or None,
-                'amount_e': sum(1 for size in sizes if size in column_e) or None,
-                'amount_f': sum(1 for size in sizes if size in column_f) or None,
-                'amount_g': sum(1 for size in sizes if size in column_g) or None,
-                'amount_h': sum(1 for size in sizes if size in column_h) or None,
-                'amount_i': sum(1 for size in sizes if size in column_i) or None,
-            }
-            amount_total = sum(amount for amount in amounts.values() if amount is not None)
+                amounts = {
+                    'amount_b': sum(1 for size in sizes if size in column_b),
+                    'amount_c': sum(1 for size in sizes if size in column_c),
+                    'amount_d': sum(1 for size in sizes if size in column_d),
+                    'amount_e': sum(1 for size in sizes if size in column_e),
+                    'amount_f': sum(1 for size in sizes if size in column_f),
+                    'amount_g': sum(1 for size in sizes if size in column_g),
+                    'amount_h': sum(1 for size in sizes if size in column_h),
+                    'amount_i': sum(1 for size in sizes if size in column_i),
+                }
+                amount_total = sum(amount for amount in amounts.values() if amount is not None)
+                tot_b += amounts['amount_b']
+                tot_c += amounts['amount_c']
+                tot_d += amounts['amount_d']
+                tot_e += amounts['amount_e']
+                tot_f += amounts['amount_f']
+                tot_g += amounts['amount_g']
+                tot_h += amounts['amount_h']
+                tot_i += amounts['amount_i']
+                grand_total_amount += amount_total
+                grand_total_retail += retail
 
-            consolidated_data.append({
-                'name': name,
-                'colour': colour,
-                'model': model,
-                'category': category,
-                # 'amount_a': amount_a,
-                'amount_b': amounts['amount_b'],
-                'amount_c': amounts['amount_c'],
-                'amount_d': amounts['amount_d'],
-                'amount_e': amounts['amount_e'],
-                'amount_f': amounts['amount_f'],
-                'amount_g': amounts['amount_g'],
-                'amount_h': amounts['amount_h'],
-                'amount_i': amounts['amount_i'],
-                'amount_total': amount_total,
-                'retail': retail,
-                'code': code,
-            })
+                name, colour, category = key
+                model = model_key
+
+                consolidated_data.append({
+                    'name': name,
+                    'colour': colour,
+                    'model': model,
+                    'category': category,
+                    # 'amount_a': amount_a,
+                    'amount_b': amounts['amount_b'],
+                    'amount_c': amounts['amount_c'],
+                    'amount_d': amounts['amount_d'],
+                    'amount_e': amounts['amount_e'],
+                    'amount_f': amounts['amount_f'],
+                    'amount_g': amounts['amount_g'],
+                    'amount_h': amounts['amount_h'],
+                    'amount_i': amounts['amount_i'],
+                    'tot_b': tot_b,
+                    'tot_c': tot_c,
+                    'tot_d': tot_d,
+                    'tot_e': tot_e,
+                    'tot_f': tot_f,
+                    'tot_g': tot_g,
+                    'tot_h': tot_h,
+                    'tot_i': tot_i,
+                    'amount_total': amount_total,
+                    'grand_total_amount': grand_total_amount,
+                    'grand_total_retail': grand_total_retail,
+                    'retail': retail,
+                    'code': code,
+                })
         return consolidated_data
-
 
 
 class StockMove(models.Model):

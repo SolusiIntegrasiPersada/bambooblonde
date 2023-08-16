@@ -22,28 +22,18 @@ class StockPicking(models.Model):
     # analytic_account_id = fields.Many2one('account.analytic.account',string='Analytic Account')
     mrp_id = fields.Many2one('mrp.production', string="MRP")
     count = fields.Integer(string="Count Service")
-    # location_dest_id_internal = fields.Many2one(
-    #   'stock.location', "Destination Location Transit",
-    #   # default=lambda self: self.env['stock.picking.type'].browse(
-    #   #   self._context.get('default_picking_type_id')).default_location_dest_id,
-    #   domain=[('is_transit', '=', True)],
-    #   check_company=True, readonly=True,
-    #   states={'draft': [('readonly', False)]})
     is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
     hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
     is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
 
-    # @api.onchange("location_dest_id_internal")
-    # def _onchange_location_transfer(self):
-    #   for i in self:
-    #     if i.location_dest_id_internal:
-    #       location = ''
-    #       if i.location_dest_id:
-    #         i.location_dest_id = i.location_dest_id_internal
-    #       return location
-
     def action_print_quotation_receive(self):
-        return self.env.ref('sol_stock.action_report_picking_action').report_action(self)
+        return self.env.ref('sol_stock.action_report_receive_action').report_action(self)
+
+    def action_print_quotation_internal(self):
+        return self.env.ref('sol_stock.action_report_internal_action').report_action(self)
+    # def action_print_quotation_receive(self):
+    #     return self.env.ref('sol_stock.action_report_return_action').report_action(self)
+
     @api.onchange('is_foc_type')
     def _onchange_location(self):
         for rec in self:
