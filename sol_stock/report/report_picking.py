@@ -21,15 +21,16 @@ class StockPicking(models.Model):
             name = line.product_id.name
             colour = line.colour.strip()
             size = line.size.strip()
+            category = line.product_id.categ_id
 
-            key = (name, colour)
+            key = (name, colour, category)
             if key in consolidated_lines:
                 consolidated_lines[key].append(size)
             else:
                 consolidated_lines[key] = [size]
 
         consolidated_data = []
-        for (name, colour), sizes in consolidated_lines.items():
+        for (name, colour, category), sizes in consolidated_lines.items():
             # amount_a = sum(1 for size in sizes if size in column0)
             # if any(item in consolidated_lines.items() for item in column):
             amount_b = sum(1 for size in sizes if size in column_b) or None
@@ -49,6 +50,7 @@ class StockPicking(models.Model):
             consolidated_data.append({
                 'name': name,
                 'colour': colour,
+                'category': category.name,
                 # 'amount_a': amount_a,
                 'amount_b': amount_b,
                 'amount_c': amount_c,
