@@ -44,20 +44,19 @@ class StockPicking(models.Model):
             model = ''.join(model_rec)
             category = ''.join(category_rec)
 
-            key_model = (model)
-            key = (name, colour, category)
-            if key_model in consolidated_lines:
-                if key in consolidated_lines[key_model]:
-                    consolidated_lines[key_model][key].append(size)
+            key = (model, category)
+            subkey = (name, colour)
+            if key in consolidated_lines:
+                if subkey in consolidated_lines[key]:
+                    consolidated_lines[key][subkey].append(size)
                 else:
-                    consolidated_lines[key_model][key] = [size]
+                    consolidated_lines[key][subkey] = [size]
             else:
-                consolidated_lines[key_model] = {key: [size]}
+                consolidated_lines[key] = {subkey: [size]}
 
         consolidated_data = []
-        # for (name, colour, model, category), sizes in consolidated_lines.items():
-        for model_key, model_lines in consolidated_lines.items():
-            for key, sizes in model_lines.items():
+        for (model, category), sub_lines in consolidated_lines.items():
+            for (name, colour), sizes in sub_lines.items():
             # amount_a = sum(1 for size in sizes if size in column0)
             # if any(item in consolidated_lines.items() for item in column):
                 amounts = {
@@ -82,8 +81,8 @@ class StockPicking(models.Model):
                 grand_total_amount += amount_total
                 grand_total_retail += retail
 
-                name, colour, category = key
-                model = model_key
+                # name, colour, category = key
+                # model = model_key
 
                 consolidated_data.append({
                     'name': name,
