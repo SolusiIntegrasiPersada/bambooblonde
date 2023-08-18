@@ -10,21 +10,21 @@
                     <button name="action_print_quotation_internal" string="Print Report Internal Transfer" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'internal')]}"/>
 <!--                    <button name="action_print_quotation_return" string="Print Report Return" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'internal')]}"/>-->
                 </xpath>
-                <xpath expr="//header/button[@name='%(act_stock_return_picking)d']" position="attributes">
+                <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', ('hide_return', '=', True)]}</attribute>
                 </xpath>
                 <field name="origin" position="after">
-                    <field name="style_name" attrs="{'invisible': ['&amp;', ('is_manufacture', '=', False), ('picking_type_code', 'in', 'internal')]}"/>
+                    <field name="style_name" attrs="{'invisible': ['&amp;', ('is_manufacture', '=', True), ('picking_type_code', 'in', 'internal')]}"/>
                     <field name="origin_pr" invisible="1" attrs="{'required': [('mandatory_source', '=', True)]}"/>
                     <field name="mandatory_source" invisible="1"/>
                     <field name="mrp_id" invisible="1"/>
                     <field name="count" invisible="1"/>
-                    <field name="is_manufacture" invisible="1"/>
-                    <field name="hide_return" invisible="1"/>
-                    <field name="is_foc_type" invisible="1"/>
+                    <field name="is_manufacture" invisible="0"/>
+                    <field name="hide_return" invisible="0"/>
+                    <field name="is_foc_type" invisible="0"/>
                 </field>
-                <xpath expr="//field[@name='partner_id']" position="attributes">
-                    <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', False)]}</attribute>
+                <xpath expr="//div[@class='o_td_label']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['&amp;', ('picking_type_code', 'in', 'internal'), ('is_manufacture', '=', True)]}</attribute>
                 </xpath>
                 <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
                     <field name="material_ids" widget="many2many_tags" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'internal')]}"/>
@@ -44,8 +44,8 @@
             <field name="arch" type="xml">
                 <field name="show_operations" position="after">
                     <field name="mandatory_source"/>
-                    <field name="hide_return" invisible="1"/>
-                    <field name="is_foc_type" invisible="1"/>
+                    <field name="hide_return" />
+                    <field name="is_foc_type" />
                 </field>
             </field>
         </record>
