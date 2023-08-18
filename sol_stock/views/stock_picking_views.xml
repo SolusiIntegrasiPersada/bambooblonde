@@ -11,7 +11,7 @@
 <!--                    <button name="action_print_quotation_return" string="Print Report Return" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'internal')]}"/>-->
                 </xpath>
                 <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
-                    <attribute name="attrs">{'invisible': ['|', ('hide_return', '=', True)]}</attribute>
+                    <attribute name="attrs">{'invisible': [('hide_return', '=', True)]}</attribute>
                 </xpath>
                 <field name="origin" position="after">
                     <field name="style_name" attrs="{'invisible': ['&amp;', ('is_manufacture', '=', True), ('picking_type_code', 'in', 'internal')]}"/>
