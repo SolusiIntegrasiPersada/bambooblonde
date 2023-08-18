@@ -33,18 +33,18 @@ class StockPicking(models.Model):
             size = line.size.strip()
             retail = line.product_id.lst_price
             code = line.product_id.default_code
-            model_rec = self.env['product.category'].search([
-                '&', ('category_product', '=', 'department'),
-                ('id', 'parent_of', line.product_id.categ_id.id)
-            ]).mapped('name')
+            # model_rec = self.env['product.category'].search([
+            #     '&', ('category_product', '=', 'department'),
+            #     ('id', 'parent_of', line.product_id.categ_id.id)
+            # ]).mapped('name')
             category_rec = self.env['product.category'].search([
                 '&', ('category_product', '=', 'category'),
                 ('id', 'parent_of', line.product_id.categ_id.id)
             ]).mapped('name')
-            model = ''.join(model_rec)
+            # model = ''.join(model_rec)
             category = ''.join(category_rec)
 
-            key = (model, category)
+            key = (category)
             subkey = (name, colour)
             if key in consolidated_lines:
                 if subkey in consolidated_lines[key]:
@@ -55,7 +55,7 @@ class StockPicking(models.Model):
                 consolidated_lines[key] = {subkey: [size]}
 
         consolidated_data = []
-        for (model, category), sub_lines in consolidated_lines.items():
+        for (category), sub_lines in consolidated_lines.items():
             for (name, colour), sizes in sub_lines.items():
             # amount_a = sum(1 for size in sizes if size in column0)
             # if any(item in consolidated_lines.items() for item in column):
@@ -87,7 +87,7 @@ class StockPicking(models.Model):
                 consolidated_data.append({
                     'name': name,
                     'colour': colour,
-                    'model': model,
+                    # 'model': model,
                     'category': category,
                     # 'amount_a': amount_a,
                     'amount_b': amounts['amount_b'],
