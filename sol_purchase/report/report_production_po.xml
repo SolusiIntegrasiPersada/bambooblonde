@@ -286,37 +286,37 @@
                                     <t t-esc="l['item_type']"/>
                                 </td>
                                 <td style="width: 3.83604%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_b']"/>
+                                    <t t-esc="int(line['amount_b'])"/>
                                 </td>
                                 <td style="width: 3.41462%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_c']"/>
+                                    <t t-esc="int(line['amount_c'])"/>
                                 </td>
                                 <td style="width: 4.16412%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_d']"/>
+                                    <t t-esc="int(line['amount_d'])"/>
                                 </td>
                                 <td style="width: 3.43273%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_e']"/>
+                                    <t t-esc="int(line['amount_e'])"/>
                                 </td>
                                 <td style="width: 3.68686%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_f']"/>
+                                    <t t-esc="int(line['amount_f'])"/>
                                 </td>
                                 <td style="width: 3.87201%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_g']"/>
+                                    <t t-esc="int(line['amount_g'])"/>
                                 </td>
                                 <td style="width: 3.19872%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_h']"/>
+                                    <t t-esc="int(line['amount_h'])"/>
                                 </td>
                                 <td style="width: 2.86069%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_i']"/>
+                                    <t t-esc="int(line['amount_i'])"/>
                                 </td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['amount_total']"/>
+                                    <t t-esc="int(l['amount_total'])"/>
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['price']"/>
+                                    <t t-esc="'{:,.0f}'.format(line['price']).replace(',', '.')"/>
                                 </td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;">
-                                    <t t-esc="l['total']"/>
+                                    <t t-esc="'{:,.0f}'.format(line['total']).replace(',', '.')"/>
                                 </td>
                             </tr>
                         </t>
