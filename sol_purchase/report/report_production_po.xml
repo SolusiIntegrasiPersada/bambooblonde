@@ -312,18 +312,22 @@
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
                                     <t t-esc="l['amount_total']"/>
                                 </td>
-                                <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
+                                <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['price']"/>
+                                </td>
+                                <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['total']"/>
+                                </td>
                             </tr>
                         </t>
 
-                        <tr style="height: 18px; border: 1pt solid black;">
-                            <td style="text-align: right; height: 18px; border: 1pt solid black; width: 36.1542%;" colspan="4"><strong>Total -</strong></td>
-                            <td style="width: 2.86162%; text-align: center; height: 18px; border: 1pt solid black;" colspan="9"></td>
-                            <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
-                            <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
-                            <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
-                        </tr>
+<!--                        <tr style="height: 18px; border: 1pt solid black;">-->
+<!--                            <td style="text-align: right; height: 18px; border: 1pt solid black; width: 36.1542%;" colspan="4"><strong>Total -</strong></td>-->
+<!--                            <td style="width: 2.86162%; text-align: center; height: 18px; border: 1pt solid black;" colspan="9"></td>-->
+<!--                            <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>-->
+<!--                            <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>-->
+<!--                            <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>-->
+<!--                        </tr>-->
                         </tbody>
                     </table>
                 </div>

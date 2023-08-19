@@ -28,7 +28,7 @@ class PurchaseOrder(models.Model):
 
         total = 0
         type = []
-
+        price_tot = 0
         for line in self.order_line:
             name = line.product_id.name
             colour = line.colour.strip()
@@ -41,26 +41,23 @@ class PurchaseOrder(models.Model):
             key = (name, colour)
             if key in consolidated_lines:
                 consolidated_lines[key]['sizes'].append(size)
+                consolidated_lines[key]['qtyy'].append(qty)
             else:
                 consolidated_lines[key] = {
                     'sizes': [size],
                     'fabric': fabric,
                     'lining': lining,
-                    'qty': qty,
+                    'qtyy': [qty],
                     'price': price
                 }
 
         consolidated_data = []
         for (name, colour), item_data in consolidated_lines.items():
             sizes = item_data['sizes']
-            qty = item_data['qty']
+            qtyy = item_data['qtyy']
             price = item_data['price']
             item_type = None
 
-            # Check if the same name and color exist in column and type
-            # if name in column and colour in type:
-            # consolidated_lines[key]['sizes'].extend(sizes)
-            # item_type = None
             # Determine item_type based on matching types
             if all(size in type_a for size in sizes):
                 item_type = 'A'
@@ -84,16 +81,17 @@ class PurchaseOrder(models.Model):
                 item_type = None
 
             amounts = {
-                'amount_b': sum(1 for size in sizes if size in column_b),
-                'amount_c': sum(1 for size in sizes if size in column_c),
-                'amount_d': sum(1 for size in sizes if size in column_d),
-                'amount_e': sum(1 for size in sizes if size in column_e),
-                'amount_f': sum(1 for size in sizes if size in column_f),
-                'amount_g': sum(1 for size in sizes if size in column_g),
-                'amount_h': sum(1 for size in sizes if size in column_h),
-                'amount_i': sum(1 for size in sizes if size in column_i),
+                'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b),
+                'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c),
+                'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d),
+                'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e),
+                'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f),
+                'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g),
+                'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h),
+                'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i),
             }
             amount_total = sum(amount for amount in amounts.values() if amount is not None)
+            total = amount_total * price
 
             consolidated_data.append({
                 'name': name,
@@ -101,7 +99,7 @@ class PurchaseOrder(models.Model):
                 'fabric': item_data['fabric'],
                 'lining': item_data['lining'],
                 'sizes': sizes,
-                'qty': qty,
+                'qty': qtyy,
                 'price': price,
                 'item_type': item_type,
                 'amount_b': amounts['amount_b'],
@@ -113,7 +111,7 @@ class PurchaseOrder(models.Model):
                 'amount_h': amounts['amount_h'],
                 'amount_i': amounts['amount_i'],
                 'amount_total': amount_total,
-
+                'total': total,
             })
 
 
