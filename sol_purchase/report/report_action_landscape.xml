@@ -36,7 +36,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">sol_purchase.report_sample_po</field>
             <field name="report_file">sol_purchase.report_sample_po</field>
-            <field name="paperformat_id" ref="sol_purchase." />
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_landscape_quotation_gls" />
             <field name="print_report_name">'PO SAMPLE - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
@@ -47,8 +47,8 @@
             <field name="name">Report - PO Production</field>
             <field name="model">purchase.order</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">sol_purchase.report_production_po</field>
-            <field name="report_file">sol_purchase.report_production_po</field>
+            <field name="report_name">sol_purchase.report_production</field>
+            <field name="report_file">sol_purchase.report_production</field>
             <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_portrait" />
             <field name="print_report_name">'PO PRODUCTION - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>

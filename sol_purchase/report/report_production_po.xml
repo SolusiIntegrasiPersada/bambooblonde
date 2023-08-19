@@ -13,7 +13,7 @@
     </template>
 
 
-    <template id="report_production_po">
+    <template id="report_production">
         <t t-foreach="docs" t-as="o">
             <t t-call="web.basic_layout">
                 <div class="header" t-att-style="report_header_style">
