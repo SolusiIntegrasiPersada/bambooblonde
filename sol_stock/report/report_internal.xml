@@ -314,40 +314,40 @@
     <!--                                        <t t-esc="line['amount_a']"/>-->
                                     </td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_b'] if line['amount_b'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_b']) if l.get('amount_b') is not None else ''"/>
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_c'] if line['amount_c'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_c']) if l.get('amount_c') is not None else ''"/>
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_d'] if line['amount_d'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_d']) if l.get('amount_d') is not None else ''"/>
                                     </td>
                                     <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_e'] if line['amount_e'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_e']) if l.get('amount_e') is not None else ''"/>
                                     </td>
                                     <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_f'] if line['amount_f'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_f']) if l.get('amount_f') is not None else ''"/>
                                     </td>
                                     <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_g'] if line['amount_g'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_g']) if l.get('amount_g') is not None else ''"/>
                                     </td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_h'] if line['amount_h'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_h']) if l.get('amount_h') is not None else ''"/>
                                     </td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_i'] if line['amount_i'] != 0 else ''"/>
+                                        <t t-esc="int(l['amount_i']) if l.get('amount_i') is not None else ''"/>
                                     </td>
                                     <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_total']"/>
+                                        <t t-esc="int(l['amount_total'])"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-
+                                        <t t-esc="'{:,.0f}'.format(l['price']).replace(',', '.')"/>
                                     </td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>
+                                        <t t-esc="'{:,.0f}'.format(l['retail']).replace(',', '.')"/>
                                     </td>
                                 </tr>
 
