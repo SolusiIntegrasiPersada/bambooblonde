@@ -285,14 +285,30 @@
                                 <td style="width: 2.86162%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
                                     <t t-esc="l['item_type']"/>
                                 </td>
-                                <td style="width: 3.83604%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 3.41462%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 4.16412%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 3.43273%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 3.68686%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 3.87201%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 3.19872%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
-                                <td style="width: 2.86069%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;"></td>
+                                <td style="width: 3.83604%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_b']"/>
+                                </td>
+                                <td style="width: 3.41462%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_c']"/>
+                                </td>
+                                <td style="width: 4.16412%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_d']"/>
+                                </td>
+                                <td style="width: 3.43273%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_e']"/>
+                                </td>
+                                <td style="width: 3.68686%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_f']"/>
+                                </td>
+                                <td style="width: 3.87201%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_g']"/>
+                                </td>
+                                <td style="width: 3.19872%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_h']"/>
+                                </td>
+                                <td style="width: 2.86069%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                    <t t-esc="l['amount_i']"/>
+                                </td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
                                     <t t-esc="l['amount_total']"/>
                                 </td>
