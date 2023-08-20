@@ -304,3 +304,21 @@ class PurchaseRequest(models.Model):
             ]
             action['res_id'] = purchase_pattern_ids.id
         return action
+
+    def get_last_record_pattern(self):
+        for record in self:
+            last_record_pattern = record.purchase_custom_ids.sorted(lambda l: l.id, reverse=True)[:1]
+
+            if last_record_pattern:
+                last_record = last_record_pattern[0]
+                last_record_data = {
+                    'no_ptr': last_record.no_ptr,
+                    'pattern_marker': last_record.pattern_marker,
+                    'size_approve': last_record.size_approve,
+                    'sample_size': last_record.sample_size,
+                    'fabric_width': last_record.fabric_width,
+                    'pattern_time': last_record.pattern_time,
+                    'consumption': last_record.consumption,
+                    'pattern_cost': last_record.pattern_cost,
+                }
+                return last_record_data
