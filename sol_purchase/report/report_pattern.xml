@@ -16,7 +16,7 @@
     <t t-call="web.basic_layout">
       <div class="page">
         <t t-foreach="docs" t-as="doc">
-          <header>
+            <header>
             <div class="row">
               <div class="col-xs-2">
                 <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 125px;" alt="Logo"/>
@@ -24,76 +24,77 @@
               <div class="col-xs-2">
               </div>
             </div>
-          </header>
+            </header>
 
-          <div class="container">
+
             <h2 style="text-align:left"><strong>PATTERN ALTERATION</strong></h2>
-
-            <table border="1" cellpadding="1" cellspacing="1" style="width:1313px">
+            <br/>
+            <br/>
+            <table border="1" cellpadding="1" cellspacing="1" style="border: 1pt solid black;">
                 <tbody>
                     <t t-foreach="doc.line_ids" t-as="line">
-                          <tr>
-                              <td style="width:229px"><strong>Trans No.</strong></td>
-                              <td style="width:403px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"><strong>Trans No.</strong></td>
+                              <td style="width:403px; border: 1pt solid black;">
                                   <t t-esc="doc.name"/>
                               </td>
-                              <td style="width:245px"><strong>Print Date</strong></td>
-                              <td style="width:411px">
+                              <td style="width:245px; border: 1pt solid black;"><strong>Print Date</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <t t-esc="datetime.date.today().strftime('%b %d, %Y')"/>
                               </td>
                           </tr>
-                          <tr>
-                              <td style="width:229px"><strong>Trans Date</strong></td>
-                              <td style="width:403px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"><strong>Trans Date</strong></td>
+                              <td style="width:403px; border: 1pt solid black;">
                                   <t t-esc="doc.date_start"/>
                               </td>
-                              <td style="width:245px"><strong>Style Name</strong></td>
-                              <td style="width:411px">
+                              <td style="width:245px; border: 1pt solid black;"><strong>Style Name</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <span t-field="line.product_id.name"/>
                               </td>
                           </tr>
-                          <tr>
-                              <td style="width:229px"><strong>Model</strong></td>
-                              <td style="width:403px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"><strong>Model</strong></td>
+                              <td style="width:403px; border: 1pt solid black;">
                                   <span t-field="line.product_id.categ_id"/>
                               </td>
-                              <td style="width:245px"><strong>Size</strong></td>
-                              <td style="width:411px">
+                              <td style="width:245px; border: 1pt solid black;"><strong>Size</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <span t-field="line.size"/>
                               </td>
                           </tr>
-                          <tr>
-                              <td style="width:229px"><strong>Color</strong></td>
-                              <td style="width:403px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"><strong>Color</strong></td>
+                              <td style="width:403px; border: 1pt solid black;">
                                   <span t-field="line.colour"/>
                               </td>
-                              <td style="width:245px"><strong>Fabric</strong></td>
-                              <td style="width:411px">
+                              <td style="width:245px; border: 1pt solid black;"><strong>Fabric</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <span t-field="line.fabric_smp"/>
                               </td>
                           </tr>
-                          <tr>
-                              <td style="width:229px"></td>
-                              <td style="width:403px"></td>
-                              <td style="width:245px"><strong>Approved</strong></td>
-                              <td style="width:411px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"></td>
+                              <td style="width:403px; border: 1pt solid black;"></td>
+                              <td style="width:245px; border: 1pt solid black;"><strong>Approved</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <span t-field="doc.assigned_to"/>
                               </td>
                           </tr>
-                          <tr>
-                              <td style="width:229px"></td>
-                              <td style="width:403px"></td>
-                              <td style="width:245px"><strong>User</strong></td>
-                              <td style="width:411px">
+                          <tr style="border: 1pt solid black;">
+                              <td style="width:229px; border: 1pt solid black;"></td>
+                              <td style="width:403px; border: 1pt solid black;"></td>
+                              <td style="width:245px; border: 1pt solid black;"><strong>User</strong></td>
+                              <td style="width:411px; border: 1pt solid black;">
                                   <span t-field="doc.requested_by"/>
                               </td>
                           </tr>
                     </t>
-                    <tr>
-                      <td colspan="4" style="width:229px"><strong>Alteration Comments :</strong></td>
+                    <tr style="border: 1pt solid black;">
+                      <td colspan="4" style="width:229px; border: 1pt solid black;"><strong>Alteration Comments :</strong></td>
                     </tr>
-                    <tr>
-                      <td colspan="2" rowspan="1" style="width:229px">
+                    <tr style="border: 1pt solid black;">
+                      <td colspan="2" rowspan="1" style="width:229px; border: 1pt solid black;">
                           <br />
                           <t t-esc='doc.alt_cmnt'/>
                           <br />
@@ -102,7 +103,7 @@
                           <br />
                           <br />
                       </td>
-                      <td colspan="2" rowspan="1" style="text-align:center; width:245px">
+                      <td colspan="2" rowspan="1" style="text-align:center; width:245px; border: 1pt solid black;">
                           <br />
                           <img t-if="line.product_id.image_1920" t-att-src="image_data_uri(line.product_id.image_1920)" style="max-height:220px; max-width:225px;"/>
                           <br />
@@ -112,52 +113,52 @@
                           <br />
                       </td>
                     </tr>
-                    <tr>
-                      <td colspan="4" style="width:229px"><strong>Pattern Maker To Fill Out :</strong></td>
+                    <tr style="border: 1pt solid black;">
+                      <td colspan="4" style="width:229px; border: 1pt solid black;"><strong>Pattern Maker To Fill Out :</strong></td>
                     </tr>
                     <t t-foreach="doc.get_last_record_pattern()" t-as="rec">
-                        <tr>
-                          <td style="width:229px"><strong>Pattern Marker</strong></td>
-                          <td style="width:403px">
+                        <tr style="border: 1pt solid black;">
+                          <td style="width:229px; border: 1pt solid black;"><strong>Pattern Marker</strong></td>
+                          <td style="width:403px; border: 1pt solid black;">
                               <t t-esc="rec.pattern_marker"/>
                           </td>
-                          <td style="width:245px"><strong>Size Approve</strong></td>
-                          <td style="width:411px">
+                          <td style="width:245px; border: 1pt solid black;"><strong>Size Approve</strong></td>
+                          <td style="width:411px; border: 1pt solid black;">
                               <t t-esc="rec['size_approve']"/>
                           </td>
                         </tr>
-                        <tr>
-                          <td style="width:229px"><strong>Sample Size</strong></td>
-                          <td style="width:403px">
+                        <tr style="border: 1pt solid black;">
+                          <td style="width:229px; border: 1pt solid black;"><strong>Sample Size</strong></td>
+                          <td style="width:403px; border: 1pt solid black;">
                               <t t-esc="rec['sample_size']"/>
                           </td>
-                          <td style="width:245px"><strong>Fabric Width</strong></td>
-                          <td style="width:411px">
+                          <td style="width:245px; border: 1pt solid black;"><strong>Fabric Width</strong></td>
+                          <td style="width:411px; border: 1pt solid black;">
                               <t t-esc="rec['fabric_width']"/>
                           </td>
                         </tr>
-                        <tr>
-                          <td style="width:229px"><strong>Pattern Time</strong></td>
-                          <td style="width:403px">
+                        <tr style="border: 1pt solid black;">
+                          <td style="width:229px; border: 1pt solid black;"><strong>Pattern Time</strong></td>
+                          <td style="width:403px; border: 1pt solid black;">
                               <t t-esc="rec['pattern_time']"/>
                           </td>
-                          <td style="width:245px"><strong>Costing Order</strong></td>
-                          <td style="width:411px">
+                          <td style="width:245px; border: 1pt solid black;"><strong>Costing Order</strong></td>
+                          <td style="width:411px; border: 1pt solid black;">
                               <t t-esc="rec['pattern_cost']"/>
                           </td>
                         </tr>
-                        <tr>
-                          <td style="width:229px"><strong>Consumption</strong></td>
-                          <td style="width:403px">
+                        <tr style="border: 1pt solid black;">
+                          <td style="width:229px; border: 1pt solid black;"><strong>Consumption</strong></td>
+                          <td style="width:403px; border: 1pt solid black;">
                               <t t-esc="rec['consumption']"/>
                           </td>
-                          <td style="width:245px"></td>
-                          <td style="width:411px"></td>
+                          <td style="width:245px; border: 1pt solid black;"></td>
+                          <td style="width:411px; border: 1pt solid black;"></td>
                         </tr>
                     </t>
                 </tbody>
             </table>
-          </div>
+
         </t>
       </div>
     </t>
