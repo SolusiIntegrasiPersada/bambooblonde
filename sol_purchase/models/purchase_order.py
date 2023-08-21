@@ -118,7 +118,7 @@ class PurchaseOrder(models.Model):
         res = super()._prepare_picking()
         res.update({
             'style_name': self.product_mo,
-            'location_dest_id': self.picking_type_id.id,
+            'location_dest_id': self.picking_type_id.default_location_src_id.id,
         })
         return res
 
