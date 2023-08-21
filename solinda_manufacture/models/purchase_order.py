@@ -303,5 +303,6 @@ class PurchaseOrderLine(models.Model):
                 rec['color_mo'] = self.color_mo
                 rec['image'] = self.image
                 rec['material_ids'] = self.material_ids.ids
-            return res
-
+        else:
+            res = res or []
+        return res
