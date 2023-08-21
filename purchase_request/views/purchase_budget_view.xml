@@ -9,25 +9,28 @@
             <form string="Purchase Budget">
                 <sheet>
                     <h1>
-                        <field name="name" class="oe_inline"/>
+                        <field name="name" class="oe_inline" readonly="1"/>
                     </h1>
                     <group>
                         <group>
-                            <field name="remaining_amount"/>
-                            <field name="usage_amount"/>
+                            <field name="remaining_amount" widget="monetary"/>
+                            <field name="usage_amount" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="month"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Budget">
                             <field name="budget_ids">
-                                <tree decoration-muted="cancelled == True" editable="bottom">
-                                    <field name="category_id"/>
-                                    <field name="budget_guide"/>
-                                    <field name="budget_amount"/>
-                                    <field name="actual_percentage"/>
-                                    <field name="stock_percentage"/>
+                                <tree editable="bottom">
+                                    <field name="category_id" options="{'no_show':True,'no_create':True,'no_open':True}"/>
+                                    <field name="budget_guide" widget="monetary"/>
+                                    <field name="budget_amount" widget="monetary"/>
+                                    <field name="actual_percentage" widget="percentage"/>
+                                    <field name="stock_percentage" widget="percentage"/>
                                     <field name="purchase_qty"/>
-                                    <field name="total_value"/>
+                                    <field name="total_value" widget="monetary"/>
                                 </tree>
                             </field>
                         </page>
@@ -47,6 +50,7 @@
         <field name="model">purchase.budget</field>
         <field name="arch" type="xml">
             <tree name="Purchase Budget">
+                <field name="name"/>
                 <field name="remaining_amount"/>
                 <field name="usage_amount"/>
             </tree>
@@ -71,6 +75,7 @@
     <menuitem id="menu_purchase_budget"
               name="Budgeting"
               parent="parent_menu_purchase_request"
+              sequence="11"
               groups="group_purchase_request_user,group_purchase_request_manager"/>
     <menuitem id="menu_purchase_budget_act"
               sequence="1"
