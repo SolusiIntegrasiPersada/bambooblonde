@@ -35,7 +35,7 @@ class AccountMove(models.Model):
                 '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
             ]
             if not move.reversed_entry_id:
-                domain.append(('reversed_entry_id', '=', move.id))
+                domain.append(('move_id.reversed_entry_id', '=', move.id))
 
             payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
 
