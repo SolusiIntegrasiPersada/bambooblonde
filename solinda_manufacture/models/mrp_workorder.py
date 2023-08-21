@@ -183,7 +183,7 @@ class MrpWorkorder(models.Model):
                 'product_mo': record.production_id.product_tmpl_id.name,
                 'is_sample': record.production_id.is_sample,
                 'hide_field': True,
-                'picking_type_id': record.picking_type_id.id
+                'picking_type_id': record.production_id.picking_type_id.id,
             })
             for pol in po.order_line:
                 product_lang = pol.product_id.with_context(
