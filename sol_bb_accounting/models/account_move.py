@@ -16,7 +16,8 @@ class AccountMove(models.Model):
     def _compute_payments_widget_to_reconcile_info(self):
         res = super(AccountMove, self)._compute_payments_widget_to_reconcile_info()
         for move in self:
-            move.invoice_outstanding_credits_debits_widget_inherit = json.dumps(False)
+            move.invoice_outstanding_credits_debits_widget = json.dumps(False)
+            move.invoice_has_outstanding = False
 
             if move.state != 'posted' \
                     or move.payment_state not in ('not_paid', 'partial') \
@@ -77,5 +78,6 @@ class AccountMove(models.Model):
             if not payments_widget_vals['content']:
                 continue
 
-            move.invoice_outstanding_credits_debits_widget_inherit = json.dumps(payments_widget_vals)
+            move.invoice_outstanding_credits_debits_widget = json.dumps(payments_widget_vals)
+            move.invoice_has_outstanding = True
         return res
