@@ -32,8 +32,9 @@ class AccountMove(models.Model):
                 ('partner_id', '=', move.commercial_partner_id.id),
                 ('reconciled', '=', False),
                 '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0),
-                ('reversed_entry_id', '=', move.id)
             ]
+            if not move.reversed_entry_id:
+                domain.append(('reversed_entry_id', '=', move.id))
 
             payments_widget_vals = {'outstanding': True, 'content': [], 'move_id': move.id}
 
