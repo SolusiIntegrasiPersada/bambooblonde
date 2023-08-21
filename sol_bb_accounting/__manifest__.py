@@ -21,12 +21,11 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account'],
+    'depends': ['base', 'account'],
 
     # always loaded
     'data': [
         'views/sequence_data.xml',
-        'views/views.xml',
         'views/templates.xml',
     ],
 }
