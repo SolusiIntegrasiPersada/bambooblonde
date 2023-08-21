@@ -136,6 +136,8 @@ class PurchaseOrder(models.Model):
                     'product_id': None,
                     'image': None,
                     'product_qty': product_line.product_qty,
+                    'lining_por': product_line.lining_por.id,
+                    'fabric_por': product_line.fabric_por.id,
                     'product_uom': product_line.product_uom.id,
                     'price_unit': product_line.price_unit
                 }
