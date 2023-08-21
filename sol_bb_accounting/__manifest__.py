@@ -26,6 +26,5 @@
     # always loaded
     'data': [
         'views/sequence_data.xml',
-        'views/templates.xml',
     ],
 }
