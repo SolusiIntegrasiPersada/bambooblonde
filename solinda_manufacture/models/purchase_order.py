@@ -298,8 +298,9 @@ class PurchaseOrderLine(models.Model):
     def _prepare_stock_moves(self, picking):
         res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
         for rec in res:
-            rec['price_mo'] = self.price_unit
-            rec['color_mo'] = self.color_mo
-            rec['image'] = self.image
-            rec['material_ids'] = self.material_ids.ids
+            if rec.order_id.hide_field:
+                rec['price_mo'] = self.price_unit
+                rec['color_mo'] = self.color_mo
+                rec['image'] = self.image
+                rec['material_ids'] = self.material_ids.ids
         return res
