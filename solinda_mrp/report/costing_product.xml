@@ -136,7 +136,7 @@
                                             <!-- <t t-esc="bom.total_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/> -->
                                             <t t-esc="sub_tot"
                                                t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
-                                            <t t-set="total_material" t-value="total_material + bom.total_material"/>
+                                            <t t-set="total_material" t-value="total_material + sub_tot"/>
                                         </td>
                                     </tr>
                                 </t>
