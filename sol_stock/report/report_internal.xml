@@ -314,40 +314,40 @@
     <!--                                        <t t-esc="line['amount_a']"/>-->
                                     </td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_b']) if l.get('amount_b') is not None else ''"/>
+                                        <t t-esc="line['amount_b'] if line['tot_b'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_c']) if l.get('amount_c') is not None else ''"/>
+                                        <t t-esc="line['amount_c'] if line['tot_c'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_d']) if l.get('amount_d') is not None else ''"/>
+                                        <t t-esc="line['amount_d'] if line['tot_d'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_e']) if l.get('amount_e') is not None else ''"/>
+                                        <t t-esc="line['amount_e'] if line['tot_e'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_f']) if l.get('amount_f') is not None else ''"/>
+                                        <t t-esc="line['amount_f'] if line['tot_f'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_g']) if l.get('amount_g') is not None else ''"/>
+                                        <t t-esc="line['amount_g'] if line['tot_g'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_h']) if l.get('amount_h') is not None else ''"/>
+                                        <t t-esc="line['amount_h'] if line['tot_h'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_i']) if l.get('amount_i') is not None else ''"/>
+                                        <t t-esc="line['amount_i'] if line['tot_i'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(l['amount_total'])"/>
+                                        <t t-esc="line['amount_total']"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="'{:,.0f}'.format(l['price']).replace(',', '.')"/>
+<!--                                        <t t-esc="'{:,.0f}'.format(line['price']).replace(',', '.')"/>-->
                                     </td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="'{:,.0f}'.format(l['retail']).replace(',', '.')"/>
+                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>
                                     </td>
                                 </tr>
 
@@ -359,78 +359,94 @@
                                         </strong>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_b'] if line['tot_b'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_c'] if line['tot_c'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_d'] if line['tot_d'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_e'] if line['tot_e'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_f'] if line['tot_f'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_g'] if line['tot_g'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_h'] if line['tot_h'] != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;">
+                                        <t t-esc="line['tot_i'] if line['tot_i'] != 0 else ''"/>
+                                    </td>
                                     <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
+                                    <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;">
+
+                                    </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                 </tr>
                             </t>
 
-                            <t t-foreach="docs.consolidate_lines()" t-as="l">
 
-                                <tr style="height: 18px; border: 1pt solid black;">
-                                    <td style="width: 32.9896%; text-align: right; border: 1pt solid black;" colspan="3">
-                                        <strong>
-                                            GRAND TOTAL
-                                        </strong>
-                                    </td>
-                                    <td style="width: 2.54517%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.75692%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_b']]"/>-->
-                                        <t t-esc="l['tot_b'] if l['tot_b'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 3.81019%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_c']]"/>-->
-                                        <t t-esc="l['tot_c'] if l['tot_c'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 3.76856%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_d']]"/>-->
-                                        <t t-esc="l['tot_d'] if l['tot_d'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 3.90741%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_e']]"/>-->
-                                        <t t-esc="l['tot_e'] if l['tot_e'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 3.37041%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_f']]"/>-->
-                                        <t t-esc="l['tot_f'] if l['tot_f'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 3.55555%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_g']]"/>-->
-                                        <t t-esc="l['tot_g'] if l['tot_g'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 4.14809%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_h']]"/>-->
-                                        <t t-esc="l['tot_h'] if l['tot_h'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 5.62967%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_i']]"/>-->
-                                        <t t-esc="l['tot_i'] if l['tot_i'] != 0 else ''"/>
-                                    </td>
-                                    <td style="width: 4.66663%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
-                                    <td style="width: 2.51857%; text-align: center; font-size: 10px; border: 1pt solid black;">
-        <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['grand_total_amount']]"/>-->
-                                        <t t-esc="l['grand_total_amount']"/>
-                                    </td>
-                                    <td style="width: 7.4815%; text-align: right; font-size: 10px; border: 1pt solid black;"></td>
-                                    <td style="width: 8.37037%; text-align: right; font-size: 10px; border: 1pt solid black;">
-        <!--                                        <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_c']]"/>-->
-                                        <t t-esc="'{:,.0f}'.format(l['grand_total_retail']).replace(',', '.')"/>
-                                    </td>
-                                </tr>
-                            </t>
+                            <tr style="height: 18px; border: 1pt solid black;">
+                                <td style="width: 32.9896%; text-align: right; border: 1pt solid black;" colspan="3">
+                                    <strong>
+                                        GRAND TOTAL
+                                    </strong>
+                                </td>
+                                <td style="width: 2.54517%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 3.75692%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_b']]"/>-->
+<!--                                    <t t-esc="line['tot_b'] if line['tot_b'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 3.81019%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_c']]"/>-->
+<!--                                    <t t-esc="line['tot_c'] if line['tot_c'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 3.76856%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_d']]"/>-->
+<!--                                    <t t-esc="line['tot_d'] if line['tot_d'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 3.90741%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_e']]"/>-->
+<!--                                    <t t-esc="line['tot_e'] if line['tot_e'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 3.37041%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_f']]"/>-->
+<!--                                    <t t-esc="line['tot_f'] if line['tot_f'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 3.55555%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_g']]"/>-->
+<!--                                    <t t-esc="line['tot_g'] if line['tot_g'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 4.14809%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_h']]"/>-->
+<!--                                    <t t-esc="line['tot_h'] if line['tot_h'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 5.62967%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_i']]"/>-->
+<!--                                    <t t-esc="line['tot_i'] if line['tot_i'] != 0 else ''"/>-->
+                                </td>
+                                <td style="width: 4.66663%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74072%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 4.74078%; text-align: center; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: center; font-size: 10px; border: 1pt solid black;">
+    <!--                                    <t t-call="sol-stock.consolidate_lines" t-args="[line['grand_total_amount']]"/>-->
+<!--                                        <t t-esc="line['grand_total_amount']"/>-->
+                                </td>
+                                <td style="width: 7.4815%; text-align: right; font-size: 10px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; font-size: 10px; border: 1pt solid black;">
+    <!--                                        <t t-call="sol-stock.consolidate_lines" t-args="[line['tot_c']]"/>-->
+<!--                                        <t t-esc="'{:,.0f}'.format(line['grand_total_retail']).replace(',', '.')"/>-->
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>
@@ -450,7 +466,7 @@
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................... )
+                                        ( ...................................... )
                                         <br/>
                                     </strong>
                                 </td>
@@ -459,7 +475,7 @@
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................... )
+                                        ( ...................................... )
                                         <br/>
                                     </strong>
                                 </td>
@@ -468,7 +484,7 @@
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................... )
+                                        ( ...................................... )
                                         <br/>
                                     </strong>
                                 </td>

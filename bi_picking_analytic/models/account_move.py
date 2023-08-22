@@ -9,4 +9,5 @@ class AccountMove(models.Model):
         analytic_account = self.env["account.analytic.account"].search(
             [("partner_id", "=", self.partner_id.id)]
         )
-        self.analytic_account_id = analytic_account.id
+        for line in self.invoice_line_ids:
+            line.analytic_account_id = analytic_account.id

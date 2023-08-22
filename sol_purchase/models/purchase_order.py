@@ -116,7 +116,10 @@ class PurchaseOrder(models.Model):
 
     def _prepare_picking(self):
         res = super()._prepare_picking()
-        res.update({'style_name': self.product_mo})
+        res.update({
+            'style_name': self.product_mo,
+            'location_dest_id': self.picking_type_id.default_location_src_id.id,
+        })
         return res
 
     @api.depends('order_line', 'label_id')

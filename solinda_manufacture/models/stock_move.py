@@ -90,11 +90,12 @@ class StockMove(models.Model):
             }))
             po.update({
                 'order_line': raw_po_line,
-                'picking_type_id': picking,
+                # 'picking_type_id': picking,
                 'sample_order_no': i.name,
                 'product_mo': i.raw_material_production_id.product_id.name,
                 'is_sample': i.raw_material_production_id.is_sample,
                 'hide_field': True,
+                'picking_type_id': i.raw_material_production_id.picking_type_id.id,
             })
             po.button_confirm()
             for picking in po.picking_ids:

@@ -28,8 +28,7 @@
                 <field name="out_date" optional="show"/>
                 <field name="in_date" optional="show"/>
                 <field name="total_mtr" optional="show"/>
-                <field name="total_dyeing" optional="show"
-                       attrs="{'readonly': [('workcenter_id', 'not in', ['DYEING', 'WASHING', 'PRINTING'])]}"/>
+                <field name="total_dyeing" optional="show" readonly="0"/>
             </field>
 
             <xpath expr="//field[@name='duration']" position="attributes">

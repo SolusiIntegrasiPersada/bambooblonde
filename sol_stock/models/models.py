@@ -52,6 +52,7 @@ class StockMove(models.Model):
 
     fabric_width = fields.Float(string="Fabric Width", related='product_id.fabric_width')
     price = fields.Float(string="Cost")
+    price_mo = fields.Float(string="Cost")
     image = fields.Image(string='Image')
     color_ids = fields.Many2many('product.template.attribute.value', string="Size and Color")
     colour = fields.Char('Color', compute="_onchange_color_size")

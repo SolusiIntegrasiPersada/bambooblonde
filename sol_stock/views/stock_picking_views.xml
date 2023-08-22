@@ -34,7 +34,8 @@
                     <field name="image" widget="image" class="oe_avatar" />
                     <field name="color_mo" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'internal')]}"/>
                     <field name="fabric_width" optional="show"/>
-                    <field name="price"/>
+                    <field name="price" attrs="{'column_invisible': [('parent.picking_type_code', 'in', 'mrp_operation')]}"/>
+                    <field name="price_mo" attrs="{'column_invisible': [('parent.picking_type_code', 'not in', 'mrp_operation')]}"/>
                     <field name="qty_available" attrs="{'column_invisible': [('parent.picking_type_code', '!=', 'internal')]}"/>
                 </xpath>
             </field>
