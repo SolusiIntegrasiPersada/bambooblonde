@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <data>
-
         <record id="additional_group_approval_bill" model="res.groups">
             <field name="name">Additional Approval Vendor Bill</field>
         </record>
@@ -14,6 +12,5 @@
         <record id="payment_approval_group" model="res.groups">
             <field name="name">Payment Approver</field>
         </record>
-
     </data>
 </odoo>

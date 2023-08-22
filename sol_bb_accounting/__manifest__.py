@@ -27,4 +27,9 @@
     'data': [
         'views/sequence_data.xml',
     ],
+    'assets': {
+        'web.assets_qweb': [
+            '/sol_bb_accounting/static/src/xml/account_payment.xml',
+        ],
+    }
 }
