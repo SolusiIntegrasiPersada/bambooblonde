@@ -1,0 +1,8 @@
+<templates id="template" xml:space="preserve">
+<!--    Chrome-->
+    <t t-name="ShowPaymentInfo" t-inherit="account.ShowPaymentInfo" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t/div/table/t/tr/t/td/i" position="replace">
+            <i class="o_field_widget text-right o_payment_label">Return on <t t-esc="line.date"/></i>
+        </xpath>
+    </t>
+</templates>

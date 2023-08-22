@@ -23,14 +23,9 @@
         # 'security/ir.model.access.csv',
         "security/security.xml",
         "views/account_move.xml",
-        "views/templates.xml",
         "views/journal_views.xml",
         "views/account_payment_views.xml",
         "report/action_report.xml",
         "report/report_invoice_views.xml",
-    ],
-    # only loaded in demonstration mode
-    "demo": [
-        "demo/demo.xml",
     ],
 }
