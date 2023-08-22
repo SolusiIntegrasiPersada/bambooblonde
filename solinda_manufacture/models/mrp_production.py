@@ -85,6 +85,7 @@ class MrpProduction(models.Model):
             # move.quantity_done = move.product_uom_qty
             move.supplier = move.bom_line_id.supplier
             move.color_id = move.bom_line_id.color
+            move.cost_material = move.bom_line_id.cost_material
 
     def update_qty_consume_with_variant_wo(self):
         for move in self.move_raw_ids:

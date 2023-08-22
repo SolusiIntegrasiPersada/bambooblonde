@@ -125,6 +125,7 @@
                 <field name="supplier" attrs="{'readonly':[('state','=', 'done')]}"/>
                 <!-- <field name="payment" /> -->
                 <!-- <field name="total_mtr" /> -->
+                <field name="cost_material"/>
                 <field name="total_buy"/>
                 <field name="color" invisible="1"/>
                 <field name="color_id"/>

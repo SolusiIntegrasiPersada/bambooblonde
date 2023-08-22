@@ -203,6 +203,7 @@ class MrpBomLine(models.Model):
     qty_available = fields.Float(string='Quantity On Hand', related='product_id.qty_available')
     shrinkage = fields.Float(string='Shkg(%)')
     total_qty_variant = fields.Float(string='Quantity')
+    cost_material = fields.Float(string='Cost')
 
     @api.onchange('shrinkage', 'total_qty_variant')
     def _onchange_product_qty(self):

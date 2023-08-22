@@ -140,7 +140,7 @@ class MrpWorkorder(models.Model):
             total_quant = sum(record.production_id.purchase_id.order_line.mapped('product_qty'))
             record.button_start()
 
-            po = record.env['purchase.order'].create({
+            po = record.env['purchase.orderA'].create({
                 'partner_id': record.supplier.id,
                 'state': 'draft',
                 'date_approve': datetime.now(),

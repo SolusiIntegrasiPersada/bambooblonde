@@ -128,11 +128,11 @@
                                             <t t-esc="bom.product_qty"/>
                                         </td>
                                         <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="bom.product_id.lst_price"
+                                            <t t-esc="bom.cost_material"
                                                t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                         </td>
                                         <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-set="sub_tot" t-value="bom.product_qty * bom.product_id.lst_price"/>
+                                            <t t-set="sub_tot" t-value="bom.product_qty * bom.cost_material"/>
                                             <!-- <t t-esc="bom.total_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/> -->
                                             <t t-esc="sub_tot"
                                                t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
