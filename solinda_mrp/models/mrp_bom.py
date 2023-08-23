@@ -27,8 +27,10 @@ class MrpBom(models.Model):
         for line in self:
             total_material = 0
             total_operation = 0
-            for bom in line.bom_line_ids:
-                total_material += bom.total_material
+            # for bom in line.bom_line_ids:
+            #     total_material += bom.total_material
+            for ma in line.bom_line_ids:
+                total_material += ma.cost_material
             for op in line.operation_ids:
                 total_operation += op.total_services
             total = total_operation + total_material + line.over_packaging
