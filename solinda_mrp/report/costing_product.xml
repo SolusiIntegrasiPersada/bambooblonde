@@ -329,8 +329,8 @@
                                                     <td style="width: 5.98955%; text-align: center; height: 18px;">:
                                                     </td>
                                                     <td style="width: 40.3645%; text-align: right; height: 18px;">
-                                                        <!-- <t t-set="total" t-value="cost_before_over + doc.over_packaging"/> -->
-                                                        <t t-esc="doc.total_cost"
+                                                        <t t-set="total" t-value="total_material + total_services + doc.over_packaging"/>
+                                                        <t t-esc="total"
                                                            t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
