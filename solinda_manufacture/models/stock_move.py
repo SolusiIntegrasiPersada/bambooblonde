@@ -124,6 +124,7 @@ class StockMoveLine(models.Model):
         string='Work Orders',
         compute='compute_mrp_workorders'
     )
+    workorder_notes = fields.Char(string='Workorder')
 
     def compute_mrp_workorders(self):
         for rec in self:

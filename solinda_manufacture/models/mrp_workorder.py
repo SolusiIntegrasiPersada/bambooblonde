@@ -263,7 +263,7 @@ class MrpWorkorder(models.Model):
                 vals['date_planned_finished'] = start_date
             return self.with_context(bypass_duration_calculation=True).write(vals)
 
-    def create_workorder_moves(self, finish=None):
+    def create_workorder_moves(self, finish):
         """
         Sub function to create moves based on status of the workorder
         If it triggered from create PO, then finish = false
@@ -289,6 +289,7 @@ class MrpWorkorder(models.Model):
                     'product_uom': move_raw.product_uom.id,
                     'product_uom_qty': qty,
                     'production_id': record.production_id.id,
+                    'workorder_notest': f'{record.name} - {record.production_id.name}'
                 })
                 move._action_confirm(merge=False)
                 move._action_assign()
