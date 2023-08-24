@@ -289,7 +289,7 @@ class MrpWorkorder(models.Model):
                     'product_uom': move_raw.product_uom.id,
                     'product_uom_qty': qty,
                     'production_id': record.production_id.id,
-                    'workorder_notest': f'{record.name} - {record.production_id.name}'
+                    'workorder_notes': f'{record.name} - {record.production_id.name}'
                 })
                 move._action_confirm(merge=False)
                 move._action_assign()
