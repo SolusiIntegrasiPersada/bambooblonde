@@ -23,6 +23,7 @@ class StockMove(models.Model):
     is_sample = fields.Boolean(string='Is Sample', related='raw_material_production_id.is_sample')
     mrp_payment_id = fields.Many2one('mrp.payment', string='Payment')
     cost_material = fields.Float(string='Cost')
+    workorder_notes = fields.Char(string='Workorder')
 
     @api.depends('raw_material_production_id.qty_producing', 'product_uom_qty', 'product_uom')
     def _compute_should_consume_qty(self):
@@ -124,7 +125,7 @@ class StockMoveLine(models.Model):
         string='Work Orders',
         compute='compute_mrp_workorders'
     )
-    workorder_notes = fields.Char(string='Workorder')
+    workorder_notes = fields.Char(string='Workorder', related='move_id.workorder_notes')
 
     def compute_mrp_workorders(self):
         for rec in self:
