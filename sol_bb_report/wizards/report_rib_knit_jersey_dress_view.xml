@@ -7,18 +7,18 @@
                 <form>
                     <group>
                         <field name="product_model_id" required="1"/>
-                        <field name="product_category_id" />
-                        <field name="stock_type" />
+                        <field name="product_category_id"/>
+                        <field name="stock_type"/>
                         <field name="from_date" required="1"/>
                         <field name="to_date" required="1"/>
                         <field name="pos_config_id" invisible="1"/>
                         <field name="aging_from" invisible="1"/>
                         <field name="aging_to" invisible="1"/>
-                    </group>        
+                    </group>
                     <footer>
                         <button name="button_generate_excel" type="object" default_focus="1"
-                            string="Excel Report" class="oe_highlight" icon="fa-download"/>
-                        <button string="Cancel" class="oe_link" special="cancel" />
+                                string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
             </field>
@@ -33,19 +33,21 @@
         </record>
 
         <menuitem name="Report Rib Knit Jersey Dress"
-            parent="point_of_sale.menu_point_rep"
-            id="menu_rib_knit_jersey_dress_clothes_wizard"
-            action="report_rib_knit_jersey_dress_wizard_action"
-            sequence="5"/>
+                  parent="point_of_sale.menu_point_rep"
+                  id="menu_rib_knit_jersey_dress_clothes_wizard"
+                  action="report_rib_knit_jersey_dress_wizard_action"
+                  sequence="5"
+                  groups="point_of_sale.group_pos_manager"
+        />
 
         <report
-            id="report_rib_knit_jersey_dress_wizard_xlsx"
-            model="report.rib.knit.jersey.dress.wizard"
-            string="Report Rib Knit Jersey Dress"
-            report_type="xlsx"
-            name="sol_bb_report.rib_knit_jersey_dress.xlsx"
-            file="Report Rib Knit Jersey Dress.xlsx"
-            menu="False"
-            attachment_use="False"/>
+                id="report_rib_knit_jersey_dress_wizard_xlsx"
+                model="report.rib.knit.jersey.dress.wizard"
+                string="Report Rib Knit Jersey Dress"
+                report_type="xlsx"
+                name="sol_bb_report.rib_knit_jersey_dress.xlsx"
+                file="Report Rib Knit Jersey Dress.xlsx"
+                menu="False"
+                attachment_use="False"/>
     </data>
 </odoo>

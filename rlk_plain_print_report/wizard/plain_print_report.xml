@@ -33,7 +33,11 @@
 			<field name="target">new</field>
 	    </record>
 		
-		<menuitem id="menu_plain_print_report_xlsx" action="action_plain_print_report_xlsx" parent="point_of_sale.menu_point_rep" sequence="10"/>
-	
+		<menuitem id="menu_plain_print_report_xlsx"
+				  action="action_plain_print_report_xlsx"
+				  parent="point_of_sale.menu_point_rep"
+				  sequence="10"
+				  groups="point_of_sale.group_pos_manager"
+		/>
 	</data>
 </odoo>
