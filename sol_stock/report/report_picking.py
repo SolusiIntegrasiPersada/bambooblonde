@@ -34,6 +34,9 @@ class StockPicking(models.Model):
         tot_h = 0
         tot_i = 0
 
+        total_qty = 0
+        total_retail = 0
+
         for line in self.move_ids_without_package:
             name = line.product_id.name
             colour = line.colour.strip()
@@ -60,7 +63,7 @@ class StockPicking(models.Model):
             #         consolidated_lines[key][subkey] = [size]
             # else:
             #     consolidated_lines[key] = {subkey: [size]}
-            key = (name, colour)
+            key = (name, colour, category)
             if key in consolidated_lines:
                 consolidated_lines[key]['sizes'].append(size)
             else:
@@ -72,16 +75,16 @@ class StockPicking(models.Model):
         model_list = []
         category_list = []
         consolidated_data = []
-        for (name, colour), tipe_data in consolidated_lines.items():
+        for (name, colour, category), tipe_data in consolidated_lines.items():
             sizes = tipe_data['sizes']
             model = tipe_data['model']
             category = tipe_data['category']
             item_type = None
 
-            if model not in model_list:
-                model_list.append(model)
-            if category not in category_list:
-                category_list.append(category)
+            # if model not in model_list:
+            #     model_list.append(model)
+            # if category not in category_list:
+            #     category_list.append(category)
 
             # Determine item_type based on matching types
             if all(size in type_a for size in sizes):
@@ -116,14 +119,16 @@ class StockPicking(models.Model):
                 'amount_i': sum(1 for size in sizes if size in column_i),
             }
             amount_total = sum(amount for amount in amounts.values() if amount is not None)
-            tot_b += amounts['amount_b']
-            tot_c += amounts['amount_c']
-            tot_d += amounts['amount_d']
-            tot_e += amounts['amount_e']
-            tot_f += amounts['amount_f']
-            tot_g += amounts['amount_g']
-            tot_h += amounts['amount_h']
-            tot_i += amounts['amount_i']
+            total_qty += amount_total
+            total_retail += retail
+            # tot_b += amounts['amount_b']
+            # tot_c += amounts['amount_c']
+            # tot_d += amounts['amount_d']
+            # tot_e += amounts['amount_e']
+            # tot_f += amounts['amount_f']
+            # tot_g += amounts['amount_g']
+            # tot_h += amounts['amount_h']
+            # tot_i += amounts['amount_i']
 
             consolidated_data.append({
                 'name': name,
@@ -131,6 +136,7 @@ class StockPicking(models.Model):
                 'model': model,
                 'category': category,
                 'item_type': item_type,
+                'total_qty': total_qty,
                 'amount_b': amounts['amount_b'],
                 'amount_c': amounts['amount_c'],
                 'amount_d': amounts['amount_d'],
@@ -139,14 +145,15 @@ class StockPicking(models.Model):
                 'amount_g': amounts['amount_g'],
                 'amount_h': amounts['amount_h'],
                 'amount_i': amounts['amount_i'],
-                'tot_b': tot_b,
-                'tot_c': tot_c,
-                'tot_d': tot_d,
-                'tot_e': tot_e,
-                'tot_f': tot_f,
-                'tot_g': tot_g,
-                'tot_h': tot_h,
-                'tot_i': tot_i,
+                # 'tot_b': tot_b,
+                # 'tot_c': tot_c,
+                # 'tot_d': tot_d,
+                # 'tot_e': tot_e,
+                # 'tot_f': tot_f,
+                # 'tot_g': tot_g,
+                # 'tot_h': tot_h,
+                # 'tot_i': tot_i,
+                'total_retail': total_retail,
                 'amount_total': amount_total,
                 'retail': retail,
                 'code': code,
