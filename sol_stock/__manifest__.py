@@ -36,7 +36,7 @@
         'views/stock_move_line.xml',
         'views/res_users.xml',
         'report/report_internal.xml',
-        # 'report/report_receive.xml',
-        # 'report/report_return.xml',
+        'report/report_receipt.xml',
+        'report/report_return.xml',
     ],
 }

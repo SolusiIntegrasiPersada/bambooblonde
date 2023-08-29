@@ -9,6 +9,12 @@
                 <field name="is_transit"/>
                 <field name="is_foc"/>
             </field>
+            <xpath expr="//group/group[@name='additional_info']" position="before">
+                <label for="address"/>
+                <field name="address" placeholder="e.g. Address"/>
+                <label for="phone"/>
+                <field name="phone" placeholder="e.g. Phone"/>
+            </xpath>
         </field>
 
     </record>

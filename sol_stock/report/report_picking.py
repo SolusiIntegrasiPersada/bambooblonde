@@ -43,6 +43,7 @@ class StockPicking(models.Model):
             colour = line.colour.strip()
             size = line.size.strip()
             retail = line.product_id.lst_price
+            price = line.product_id.standard_price
             code = line.product_id.default_code
             model_rec = self.env['product.category'].search([
                 '&', ('category_product', '=', 'department'),
@@ -122,65 +123,37 @@ class StockPicking(models.Model):
             tot_i += amounts['amount_i']
             total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
 
-            if model_category_pair in model_category_dict:
-                consolidated_data.append({
-                    'name': name,
-                    'colour': colour,
-                    'model': model,
-                    'category': category,
-                    'item_type': item_type,
-                    'total_qty': total_qty,
-                    'amount_b': amounts['amount_b'],
-                    'amount_c': amounts['amount_c'],
-                    'amount_d': amounts['amount_d'],
-                    'amount_e': amounts['amount_e'],
-                    'amount_f': amounts['amount_f'],
-                    'amount_g': amounts['amount_g'],
-                    'amount_h': amounts['amount_h'],
-                    'amount_i': amounts['amount_i'],
-                    # 'tot_b': tot_b,
-                    # 'tot_c': tot_c,
-                    # 'tot_d': tot_d,
-                    # 'tot_e': tot_e,
-                    # 'tot_f': tot_f,
-                    # 'tot_g': tot_g,
-                    # 'tot_h': tot_h,
-                    # 'tot_i': tot_i,
-                    'total_retail': total_retail,
-                    'amount_total': amount_total,
-                    'retail': retail,
-                    'code': code,
-                })
+            # if model_category_pair in model_category_dict:
+            consolidated_data.append({
+                'name': name,
+                'colour': colour,
+                'model': model,
+                'category': category,
+                'item_type': item_type,
+                'total_qty': total_qty,
+                'amount_b': amounts['amount_b'],
+                'amount_c': amounts['amount_c'],
+                'amount_d': amounts['amount_d'],
+                'amount_e': amounts['amount_e'],
+                'amount_f': amounts['amount_f'],
+                'amount_g': amounts['amount_g'],
+                'amount_h': amounts['amount_h'],
+                'amount_i': amounts['amount_i'],
+                # 'tot_b': tot_b,
+                # 'tot_c': tot_c,
+                # 'tot_d': tot_d,
+                # 'tot_e': tot_e,
+                # 'tot_f': tot_f,
+                # 'tot_g': tot_g,
+                # 'tot_h': tot_h,
+                # 'tot_i': tot_i,
+                'total_retail': total_retail,
+                'amount_total': amount_total,
+                'retail': retail,
+                'price': price,
+                'code': code,
+            })
 
-            else:
-                consolidated_data.append({
-                    'name': name,
-                    'colour': colour,
-                    # 'model': model,
-                    # 'category': category,
-                    'item_type': item_type,
-                    'total_qty': total_qty,
-                    'amount_b': amounts['amount_b'],
-                    'amount_c': amounts['amount_c'],
-                    'amount_d': amounts['amount_d'],
-                    'amount_e': amounts['amount_e'],
-                    'amount_f': amounts['amount_f'],
-                    'amount_g': amounts['amount_g'],
-                    'amount_h': amounts['amount_h'],
-                    'amount_i': amounts['amount_i'],
-                    # 'tot_b': tot_b,
-                    # 'tot_c': tot_c,
-                    # 'tot_d': tot_d,
-                    # 'tot_e': tot_e,
-                    # 'tot_f': tot_f,
-                    # 'tot_g': tot_g,
-                    # 'tot_h': tot_h,
-                    # 'tot_i': tot_i,
-                    'total_retail': total_retail,
-                    'amount_total': amount_total,
-                    'retail': retail,
-                    'code': code,
-                })
         return consolidated_data
 
 

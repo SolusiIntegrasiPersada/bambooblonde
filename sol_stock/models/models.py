@@ -25,13 +25,15 @@ class StockPicking(models.Model):
     is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
     hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
     is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
+    # source_so = fields.Char(string='SO No')
 
-    def action_print_quotation_receive(self):
-        return self.env.ref('sol_stock.action_report_receive_action').report_action(self)
-
-    def action_print_quotation_internal(self):
-        return self.env.ref('sol_stock.action_report_internal_action').report_action(self)
     # def action_print_quotation_receive(self):
+    #     return self.env.ref('sol_stock.action_report_receive_action').report_action(self)
+    #
+    # def action_print_quotation_internal(self):
+    #     return self.env.ref('sol_stock.action_report_internal_action').report_action(self)
+    #
+    # def action_print_quotation_return(self):
     #     return self.env.ref('sol_stock.action_report_return_action').report_action(self)
 
     @api.onchange('is_foc_type')

@@ -2,13 +2,13 @@
 <odoo>
     <data>
 
-        <template id="report_return_type">
+        <template id="report_receive_type">
             <t t-foreach="docs" t-as="o">
-                <t t-call="sol_stock.report_picking_return" t-lang="o.partner_id.lang"/>
+                <t t-call="sol_stock.report_picking_receipt" t-lang="o.partner_id.lang"/>
             </t>
         </template>
 
-        <template id="report_picking_return">
+        <template id="report_picking_receipt">
             <t t-call="web.basic_layout">
                 <div class="header" t-att-style="report_header_style">
                     <t t-set="company" t-value="res_company"></t>
@@ -41,7 +41,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 37.8615%; text-align: right;"><strong>Supplier</strong></td>
+                                                <td style="width: 37.8615%; text-align: right;"><strong>PO No</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
                                                     <span t-field="o.partner_id"/>
@@ -49,7 +49,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="width: 37.8615%; text-align: right;"><strong></strong></td>
-                                                <td style="width: 4.50983%;">:</td>
+                                                <td style="width: 4.50983%;"></td>
                                                 <td style="width: 57.6286%;">
 <!--                                                    <span t-field="o.note"/>-->
                                                 </td>
@@ -61,7 +61,7 @@
                                     <table style="border-collapse: collapse; width: 100%; height: 73px;">
                                         <tbody>
                                             <tr style="height: 19px;">
-                                                <td style="width: 18.1034%; height: 19px; text-align: right;"><strong>Destination</strong></td>
+                                                <td style="width: 18.1034%; height: 19px; text-align: right;"><strong>Location IN</strong></td>
                                                 <td style="width: 4.74141%; height: 19px;">:</td>
                                                 <td style="width: 77.1552%; height: 19px;">
                                                     <strong>
@@ -70,17 +70,17 @@
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
+                                                <td style="width: 18.1034%; height: 18px;">Supplier</td>
+                                                <td style="width: 4.74141%; height: 18px;">:</td>
+                                                <td style="width: 77.1552%; height: 18px;">
+                                                    <span t-field="o.partner_id"/>
+                                                </td>
+                                            </tr>
+                                            <tr style="height: 18px;">
                                                 <td style="width: 18.1034%; height: 18px;">Note</td>
                                                 <td style="width: 4.74141%; height: 18px;">:</td>
                                                 <td style="width: 77.1552%; height: 18px;">
                                                     <span t-field="o.note"/>
-                                                </td>
-                                            </tr>
-                                            <tr style="height: 18px;">
-                                                <td style="width: 18.1034%; height: 18px;"></td>
-                                                <td style="width: 4.74141%; height: 18px;"></td>
-                                                <td style="width: 77.1552%; height: 18px;">
-<!--                                                    <span t-field="o.location_dest_id.phone"/>-->
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
@@ -273,6 +273,7 @@
                             <t t-set="tot_i" t-value="0"/>
                             <t t-foreach="docs.consolidate_lines()" t-as="line">
                                 <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>
+                                <t t-set="subtotal" t-value="line['amount_total'] * line['price']"/>
                                 <t t-set="subtotal_total" t-value="subtotal_total + subtotal"/>
                                 <t t-set="tot_b" t-value="tot_b + line['amount_b']"/>
                                 <t t-set="tot_c" t-value="tot_c + line['amount_c']"/>

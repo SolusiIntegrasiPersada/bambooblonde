@@ -58,7 +58,7 @@
                                     </table>
                                 </td>
                                 <td style="width: 45.9064%; height: 85px;">
-                                    <table style="border-collapse: collapse; width: 100%; height: 73px; border: 0pt solid black;" border="0">
+                                    <table style="border-collapse: collapse; width: 100%; height: 73px;">
                                         <tbody>
                                             <tr style="height: 19px;">
                                                 <td style="width: 18.1034%; height: 19px; text-align: right;"><strong>To</strong></td>
@@ -72,12 +72,16 @@
                                             <tr style="height: 18px;">
                                                 <td style="width: 18.1034%; height: 18px;"></td>
                                                 <td style="width: 4.74141%; height: 18px;"></td>
-                                                <td style="width: 77.1552%; height: 18px;"></td>
+                                                <td style="width: 77.1552%; height: 18px;">
+                                                    <span t-field="o.location_dest_id.address"/>
+                                                </td>
                                             </tr>
                                             <tr style="height: 18px;">
                                                 <td style="width: 18.1034%; height: 18px;"></td>
                                                 <td style="width: 4.74141%; height: 18px;"></td>
-                                                <td style="width: 77.1552%; height: 18px;"></td>
+                                                <td style="width: 77.1552%; height: 18px;">
+                                                    <span t-field="o.location_dest_id.phone"/>
+                                                </td>
                                             </tr>
                                             <tr style="height: 18px;">
                                                 <td style="width: 18.1034%; height: 18px;"></td>
@@ -257,7 +261,26 @@
                             </tr>
 
                             <t t-set="total_qty" t-value="0"/>
+                            <t t-set="total_retail" t-value="0"/>
+                            <t t-set="tot_b" t-value="0"/>
+                            <t t-set="tot_c" t-value="0"/>
+                            <t t-set="tot_d" t-value="0"/>
+                            <t t-set="tot_e" t-value="0"/>
+                            <t t-set="tot_f" t-value="0"/>
+                            <t t-set="tot_g" t-value="0"/>
+                            <t t-set="tot_h" t-value="0"/>
+                            <t t-set="tot_i" t-value="0"/>
                             <t t-foreach="docs.consolidate_lines()" t-as="line">
+                                <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>
+                                <t t-set="total_retail" t-value="total_retail + line['retail']"/>
+                                <t t-set="tot_b" t-value="tot_b + line['amount_b']"/>
+                                <t t-set="tot_c" t-value="tot_c + line['amount_c']"/>
+                                <t t-set="tot_d" t-value="tot_d + line['amount_d']"/>
+                                <t t-set="tot_e" t-value="tot_e + line['amount_e']"/>
+                                <t t-set="tot_f" t-value="tot_f + line['amount_f']"/>
+                                <t t-set="tot_g" t-value="tot_g + line['amount_g']"/>
+                                <t t-set="tot_h" t-value="tot_h + line['amount_h']"/>
+                                <t t-set="tot_i" t-value="tot_i + line['amount_i']"/>
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 32.9896%; height: 18px; border: 1pt solid black;" colspan="3">
                                         <strong t-esc="line['model']"/>
@@ -372,7 +395,6 @@
                                     <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>
                                         <t t-esc="total_qty"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
@@ -390,20 +412,40 @@
                                     </strong>
                                 </td>
                                 <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
+                                <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_b"/>
+                                </td>
+                                <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_c"/>
+                                </td>
+                                <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_d"/>
+                                </td>
+                                <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_e"/>
+                                </td>
+                                <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_f"/>
+                                </td>
+                                <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_g"/>
+                                </td>
+                                <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_h"/>
+                                </td>
+                                <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="tot_i"/>
+                                </td>
                                 <td style="width: 4.66663%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 4.74072%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 4.74078%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
+                                <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="total_qty"/>
+                                </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
+                                <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black;">
+                                    <t t-esc="'{:,.0f}'.format(total_retail).replace(',', '.')"/>
+                                </td>
                             </tr>
 
                         </tbody>
