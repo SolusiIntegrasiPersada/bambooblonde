@@ -25,6 +25,11 @@
           <button string="Costing Product" name="create_pps" groups="solinda_manufacture.group_potomo_access" type="object" class="oe_highlight" attrs="{'invisible':[('state', 'not in', ('done'))]}"/>
         </xpath>
 
+        <xpath expr="//page" position="inside">
+            <br/>
+            <label for="total_purchase_qty" string="Total Quantity: "/>
+            <field name="total_purchase_qty" nolabel="1"/>
+        </xpath>
 
       </field>
     </record>

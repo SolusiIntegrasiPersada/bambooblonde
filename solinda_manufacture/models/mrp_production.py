@@ -87,6 +87,22 @@ class MrpProduction(models.Model):
             move.color_id = move.bom_line_id.color
             move.cost_material = move.bom_line_id.cost_material
 
+    def update_qty_consume_with_variant_pr(self):
+        for move in self.move_raw_ids:
+            qty_consume = 0
+            qty_po = 0
+            qty_pr = 0
+            po_qty = 0
+            # for var in self.mrp_bom_variant_ids:
+            #     if move.product_id.id == var.product_id.id:
+            #         po_qty += var.po_qty
+            move.po_qty = self.purchase_request_id.total_purchase_qty
+            move.product_uom_qty = move.po_qty * move.hk
+            # move.quantity_done = move.product_uom_qty
+            move.supplier = move.bom_line_id.supplier
+            move.color_id = move.bom_line_id.color
+            move.cost_material = move.bom_line_id.cost_material
+
     def update_qty_consume_with_variant_wo(self):
         for move in self.move_raw_ids:
             qty_consume = 0

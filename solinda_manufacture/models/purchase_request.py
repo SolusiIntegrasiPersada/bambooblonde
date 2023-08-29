@@ -11,6 +11,15 @@ class PurchaseRequest(models.Model):
     mrp_ids = fields.Many2many('mrp.production', string='MO', copy=False)
     mrp_count = fields.Integer('Mrp Count', compute='_compute_mrp_count')
     is_create_pps = fields.Boolean('Is Create Pre-Production Sample')
+    total_purchase_qty = fields.Integer(string="Total Quantity", compute="_compute_total_purchase_qty")
+
+    def _compute_total_purchase_qty(self):
+        for rec in self:
+            if rec.line_ids:
+                for line in rec.line_ids:
+                    rec.total_purchase_qty += line.product_qty
+            else:
+                rec.total_purchase_qty = 0
 
     @api.depends('mrp_ids')
     def _compute_mrp_count(self):
@@ -235,6 +244,6 @@ class PurchaseRequest(models.Model):
                                 mp._onchange_workorder_ids()
                                 mp.update({'move_byproduct_ids': mo_line, 'by_product_ids': by_prod_temp})
                                 mp.update_qty_variant()
-                                mp.update_qty_consume_with_variant()
+                                mp.update_qty_consume_with_variant_pr()
                 i.write({'mrp_ids': [(6, 0, mrp)], 'mrp_id': mp.id})
                 return i.show_mrp_prod()
