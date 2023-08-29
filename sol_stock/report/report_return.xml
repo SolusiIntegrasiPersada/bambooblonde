@@ -70,7 +70,7 @@
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
-                                                <td style="width: 18.1034%; height: 18px;">Note</td>
+                                                <td style="width: 18.1034%; height: 18px;"><strong>Note</strong></td>
                                                 <td style="width: 4.74141%; height: 18px;">:</td>
                                                 <td style="width: 77.1552%; height: 18px;">
                                                     <span t-field="o.note"/>

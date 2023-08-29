@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <data>
+<!--        PO Company Only-->
+        <record id="group_company_report_stock_only" model="res.groups">
+            <field name="name">Company's Report Stock</field>
+        </record>
+
+        <record id="company_stock_picking" model="ir.rule">
+            <field name="name">Show Company Report Stock</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('sol_stock.group_company_report_stock_only'))]"/>
+        </record>
+
+<!--        Access report BB-->
+        <record id="group_access_report_stock" model="ir.module.category">
+            <field name="name">Access Report Stock</field>
+            <field name="parent_id" ref="base.module_category_purchase_management" />
+            <field name="sequence">12</field>
+        </record>
+
+        <record id="group_report_internal" model="res.groups">
+            <field name="name">Internal To Supplier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="group_access_report_stock" />
+        </record>
+        <record id="group_report_receipts" model="res.groups">
+            <field name="name">Receive From Supplier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="group_access_report_stock" />
+        </record>
+        <record id="group_report_return" model="res.groups">
+            <field name="name">Return To Supplier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="group_access_report_stock" />
+        </record>
+
+    </data>
+
+    <!--        Access to Report TB-->
+<!--        <record id="group_purchase_order_rule" model="res.groups">-->
+<!--            <field name="name">Access Report TB</field>-->
+<!--            <field name="category_id" ref="base.module_category_inventory_purchase"/>-->
+<!--        </record>-->
+
+<!--        <record id="group_report_tb" model="res.groups">-->
+<!--            <field name="name">Report Action TB</field>-->
+<!--            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>-->
+<!--            <field name="category_id" ref="group_purchase_order_rule"/>-->
+<!--        </record>-->
+</odoo>

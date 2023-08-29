@@ -28,6 +28,7 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'security/security_stock.xml',
+        'security/record_rule.xml',
         'views/stock_picking_views.xml',
         'views/stock_quant.xml',
         'report/action_report.xml',

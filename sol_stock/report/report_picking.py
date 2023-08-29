@@ -37,7 +37,7 @@ class StockPicking(models.Model):
 
         total_qty = 0
         total_retail = 0
-
+        total_price = 0
         for line in self.move_ids_without_package:
             name = line.product_id.name
             colour = line.colour.strip()
@@ -66,17 +66,21 @@ class StockPicking(models.Model):
             else:
                 consolidated_lines[key] = {
                     'sizes': [size],
-                    # 'model': model,
-                    # 'category': category,
+                    'model': model,
+                    'category': category,
+                    'price': price,
+                    'code': code,
                 }
         category_list = []
         consolidated_data = []
         for (name, colour), type_data in consolidated_lines.items():
 
             sizes = type_data['sizes']
-            # model = type_data['model']
-            # category = type_data['category']
+            model = type_data['model']
+            category = type_data['category']
             item_type = None
+            price = type_data['price']
+            code = type_data['code']
 
             # Determine item_type based on matching types
             if all(size in type_a for size in sizes):
@@ -139,14 +143,14 @@ class StockPicking(models.Model):
                 'amount_g': amounts['amount_g'],
                 'amount_h': amounts['amount_h'],
                 'amount_i': amounts['amount_i'],
-                # 'tot_b': tot_b,
-                # 'tot_c': tot_c,
-                # 'tot_d': tot_d,
-                # 'tot_e': tot_e,
-                # 'tot_f': tot_f,
-                # 'tot_g': tot_g,
-                # 'tot_h': tot_h,
-                # 'tot_i': tot_i,
+                'tot_b': tot_b,
+                'tot_c': tot_c,
+                'tot_d': tot_d,
+                'tot_e': tot_e,
+                'tot_f': tot_f,
+                'tot_g': tot_g,
+                'tot_h': tot_h,
+                'tot_i': tot_i,
                 'total_retail': total_retail,
                 'amount_total': amount_total,
                 'retail': retail,
