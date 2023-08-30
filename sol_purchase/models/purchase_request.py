@@ -217,6 +217,7 @@ class PurchaseRequest(models.Model):
     purchase_revision_id = fields.Many2one('purchase.request', string='Pattern Alteration')
     pattern_count = fields.Integer(string='Pattern', compute='_find_len')
     test = fields.Boolean(string="Test", default=False)
+    get_last_costing = fields.Float(string="Get Costing", compute="get_last_costing_pattern")
 
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')
@@ -269,8 +270,6 @@ class PurchaseRequest(models.Model):
         pattern.write({
             'name': "%s - PTR %s" % (new_name, self.count + 1),
         })
-        # if self.test:
-        # pattern.name = self.name + ' - PTR ' + str(self.count)
 
         uid_id = self.env.user.id
         self.env['pattern.alteration'].create({
@@ -279,7 +278,6 @@ class PurchaseRequest(models.Model):
             'parent_purchase_id': self.ids[0],
         })
         pattern.recompute()
-        # pattern.name = self.name + ' - PTR ' + str(len(self.purchase_pattern_ids.ids))
 
         return {
             # "name": _("Pattern Alteration"),
@@ -308,3 +306,14 @@ class PurchaseRequest(models.Model):
     def get_last_record_pattern(self):
         for record in self:
             return record.purchase_custom_ids.sorted(lambda l: l.id, reverse=True)[0]
+
+    @api.depends('test', 'purchase_custom_ids.pattern_cost')
+    def get_last_costing_pattern(self):
+        for record in self:
+            if record.test is True:
+                sorted_custom_ids = record.purchase_custom_ids.sorted(key=lambda l: l.id, reverse=True)
+                if sorted_custom_ids:
+                    last_custom_id = sorted_custom_ids[0]
+                    record.get_last_costing = last_custom_id.pattern_cost
+            else:
+                record.get_last_costing = 0.0
