@@ -152,7 +152,7 @@ class MrpWorkorder(models.Model):
                 raise ValidationError(
                     'Default product in Workcenter is not defined!\nPlease input product in workcenter as default when create PO from Work Order')
 
-            product_qty = record.total_dyeing if record.workcenter_id.is_dyeing else record.production_id.product_qty
+            product_qty = record.total_dyeing if record.workcenter_id.is_dyeing else sum(record.production_id.by_product_ids.mapped('product_uom_qty'))
             raw_po_line.append((0, 0, {
                 'product_id': record.workcenter_id.product_service_id.id,
                 'name': record.workcenter_id.product_service_id.name,
