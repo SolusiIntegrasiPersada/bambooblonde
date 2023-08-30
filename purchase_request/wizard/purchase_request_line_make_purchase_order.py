@@ -34,7 +34,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
     sync_data_planned = fields.Boolean(
         string="Merge on PO lines with equal Scheduled Date"
     )
-    
+
     @api.model
     def _prepare_item(self, line):
         return {
@@ -44,6 +44,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
             "name": line.name or line.product_id.name,
             "product_qty": line.pending_qty_to_receive,
             "product_uom_id": line.product_uom_id.id,
+            "costing_order": line.request_id.get_last_costing
         }
 
     @api.model
@@ -121,7 +122,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
         return res
 
     @api.model
-    def _prepare_purchase_order(self, picking_type, group_id, company, origin, name_source, name):
+    def _prepare_purchase_order(self, picking_type, group_id, company, origin, name_source, name,):
         if not self.supplier_id:
             raise UserError(_("Enter a supplier."))
         supplier = self.supplier_id
@@ -142,7 +143,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
 
     @api.model
     def _get_purchase_line_onchange_fields(self):
-        return ["product_uom", "price_unit", "name", "taxes_id"]
+        return ["product_uom", "name", "taxes_id"]
 
     @api.model
     def _execute_purchase_line_onchange(self, vals):
@@ -171,7 +172,6 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
         if not item.product_id:
             raise UserError(_("Please select a product for all lines"))
         product = item.product_id
-
         # Keep the standard product UOM for purchase order so we should
         # convert the product quantity to this UOM
         qty = item.product_uom_id._compute_quantity(
@@ -186,7 +186,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
             "order_id": po.id,
             "product_id": product.id,
             "product_uom": product.uom_po_id.id or product.uom_id.id,
-            "price_unit": 0.0,
+            "price_unit": item.costing_order,
             "product_qty": qty,
             "account_analytic_id": item.line_id.analytic_account_id.id,
             "purchase_request_lines": [(4, item.line_id.id)],
@@ -294,8 +294,8 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
                 self.create_allocation(po_line, line, all_qty, alloc_uom)
             else:
                 po_line_data = self._prepare_purchase_order_line(purchase, item)
-                if item.keep_description:
-                    po_line_data["name"] = item.name
+                # if item.keep_description:
+                #     po_line_data["name"] = item.name
                 po_line = po_line_obj.create(po_line_data)
                 po_line_product_uom_qty = po_line.product_uom._compute_quantity(
                     po_line.product_uom_qty, alloc_uom
@@ -306,11 +306,11 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
                 all_qty = min(po_line_product_uom_qty, wizard_product_uom_qty)
                 self.create_allocation(po_line, line, all_qty, alloc_uom)
             # TODO: Check propagate_uom compatibility:
-            new_qty = pr_line_obj._calc_new_qty(
-                line, po_line=po_line, new_pr_line=new_pr_line
-            )
-            po_line.product_qty = new_qty
-            po_line._onchange_quantity()
+            # new_qty = pr_line_obj._calc_new_qty(
+            #     line, po_line=po_line, new_pr_line=new_pr_line
+            # )
+            # po_line.product_qty = new_qty
+            # po_line._onchange_quantity()
             # The onchange quantity is altering the scheduled date of the PO
             # lines. We do not want that:
             date_required = item.line_id.date_required
@@ -360,6 +360,7 @@ class PurchaseRequestLineMakePurchaseOrderItem(models.TransientModel):
     product_qty = fields.Float(
         string="Quantity to purchase", digits="Product Unit of Measure"
     )
+    costing_order = fields.Float(string="Costing Order", store=True)
     product_uom_id = fields.Many2one(
         comodel_name="uom.uom", string="UoM", required=True
     )

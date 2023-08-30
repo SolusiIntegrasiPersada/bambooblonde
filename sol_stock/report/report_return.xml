@@ -274,6 +274,7 @@
                             <t t-foreach="docs.consolidate_lines()" t-as="line">
                                 <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>
                                 <t t-set="subtotal_total" t-value="subtotal_total + subtotal"/>
+                                <t t-set="subtotal" t-value="line['amount_total'] * line['price']"/>
                                 <t t-set="tot_b" t-value="tot_b + line['amount_b']"/>
                                 <t t-set="tot_c" t-value="tot_c + line['amount_c']"/>
                                 <t t-set="tot_d" t-value="tot_d + line['amount_d']"/>
