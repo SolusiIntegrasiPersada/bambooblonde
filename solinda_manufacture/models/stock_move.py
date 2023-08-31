@@ -7,7 +7,7 @@ from odoo.tools import float_round
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    total_cost = fields.Float(string='Total Cost', compute='_compute_total_cost')
+    total_cost = fields.Float(string='Total Cost', compute='move.cost_material')
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     color = fields.Many2one(comodel_name='dpt.color', string='Color')
     color_id = fields.Many2one(
@@ -112,7 +112,7 @@ class StockMove(models.Model):
     def _compute_total_cost(self):
         for line in self:
             line.update({
-                'total_cost': line.product_id.standard_price * (
+                'total_cost': line.cost_material * (
                     line.total_buy if line.total_buy else line.product_uom_qty)
             })
 

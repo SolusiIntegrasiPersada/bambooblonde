@@ -114,14 +114,14 @@
                                             <t t-esc="move.supplier.name"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
-                                            <t t-esc="move.supplier.property_supplier_payment_term_id.name"/>
+                                            <span t-field="move.mrp_payment_id"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
                                             <t t-esc="move.product_id.name"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">FABRIC</td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
-                                            <t t-esc="move.color.name"/>
+                                            <span t-field="move.color_id"/>
                                         </td>
                                         <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">
                                             <t t-esc="move.hk"/>
@@ -130,7 +130,7 @@
                                             <t t-esc="'%.0f'% move.po_qty"/>
                                         </td>
                                         <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <span t-esc="move.product_id.standard_price" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                            <span t-esc="move.cost_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                         </td>
                                         <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">
                                             <t t-esc="move.product_uom.name"/>
@@ -154,7 +154,7 @@
                                             <t t-esc="work.supplier.name"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
-                                            <t t-esc="work.supplier.property_supplier_payment_term_id.name"/>
+                                            <span t-field="work.mrp_payment_id"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
                                             <t t-foreach="work.fabric_id" t-as="line">
@@ -165,7 +165,7 @@
                                             <t t-esc="work.workcenter_id.name"/>
                                         </td>
                                         <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
-                                            <t t-esc="work.color_id.name"/>
+                                            <span t-field="work.color_id"/>
                                         </td>
                                         <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">
                                             <t t-esc="work.hk"/>
