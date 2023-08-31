@@ -47,13 +47,13 @@
                         <td style="width:286px; border:1pt solid black"><strong>Style Name</strong></td>
                         <td style="width:251px; border:1pt solid black"><span t-field="order.product_id.name"/></td>
                         <td style="width:223px; border:1pt solid black"><strong>Sample Size</strong></td>
-                        <td style="width:396px; border:1pt solid black"><t t-esc="order.size"/></td>
+                        <td style="width:396px; border:1pt solid black"><span t-field="doc.thread_type"/></td>
                     </tr>
                     <tr style="border:1pt solid black">
                         <td style="width:286px; border:1pt solid black"><strong>Story</strong></td>
                         <td style="width:251px; border:1pt solid black"><span t-field="doc.story_id"/></td>
                         <td style="width:223px; border:1pt solid black"><strong>Sample Approved Size</strong></td>
-                        <td style="width:396px; border:1pt solid black"><t t-esc="order.size"/></td>
+                        <td style="width:396px; border:1pt solid black"><span t-field="doc.thread_color"/></td>
                     </tr>
                     <tr style="border:1pt solid black">
                         <td style="width:286px; border:1pt solid black"><strong>User</strong></td>
