@@ -99,7 +99,7 @@
                                 </td>
                                 <td>
                                     <t t-set="total_cost" t-value="move.price_mo * move.product_uom_qty" />
-                                    <t t-esc="total_cost"/>
+                                    <t t-esc="'{:,.0f}'.format(move.total_cost).replace(',', '.')"/>
                                 </td>
                             </tr>
                         </tbody>
