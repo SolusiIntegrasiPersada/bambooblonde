@@ -311,7 +311,7 @@ class PurchaseRequest(models.Model):
     def get_last_costing_pattern(self):
         for record in self:
             if record.test is True:
-                sorted_custom_ids = record.purchase_custom_ids.sorted(key=lambda l: l.id, reverse=True)
+                sorted_custom_ids = record.purchase_custom_ids.sorted(key=lambda l: l.pattern_cost, reverse=True)
                 if sorted_custom_ids:
                     last_custom_id = sorted_custom_ids[0]
                     record.get_last_costing = last_custom_id.pattern_cost
