@@ -155,9 +155,14 @@ class PurchaseOrder(models.Model):
                 if color_list:
                     for color in color_list:
                         products = product_list.filtered(lambda p: str(color) in p.display_name)
-                        for product in products:
-                            if any(size in product.display_name.split('(')[1] for size in size_label):
-                                product_duplicate_list.append(product)
+                        if products:
+                            for product in products:
+                                if any(size in product.display_name.split('(')[1] for size in size_label):
+                                    product_duplicate_list.append(product)
+                        else:
+                            for product in product_list:
+                                if any(size in product.display_name.split('(')[1] for size in size_label):
+                                    product_duplicate_list.append(product)
                 else:
                     for product in product_list:
                         if any(size in product.display_name.split('(')[1] for size in size_label):
