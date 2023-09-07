@@ -48,27 +48,27 @@ class SalesOrder(models.Model):
             else:
                 rec.total_sale_qty = 0
 
-    @api.depends("partner_id", "date_order")
-    def _compute_analytic_account_id(self):
-        for order in self:
-            analytic_account = order.env["account.analytic.account"].search(
-                [("partner_id", "=", order.partner_id.id)]
-            )
-            if analytic_account:
-                order.analytic_account_id = analytic_account
-            else:
-                if not order.analytic_account_id:
-                    default_analytic_account = (
-                        order.env["account.analytic.default"]
-                        .sudo()
-                        .account_get(
-                            partner_id=order.partner_id.id,
-                            user_id=order.env.uid,
-                            date=order.date_order,
-                            company_id=order.company_id.id,
-                        )
-                    )
-                    order.analytic_account_id = default_analytic_account.analytic_id
+    # @api.depends("partner_id", "date_order")
+    # def _compute_analytic_account_id(self):
+    #     for order in self:
+    #         analytic_account = order.env["account.analytic.account"].search(
+    #             [("partner_id", "=", order.partner_id.id)]
+    #         )
+    #         if analytic_account:
+    #             order.analytic_account_id = analytic_account
+    #         else:
+    #             if not order.analytic_account_id:
+    #                 default_analytic_account = (
+    #                     order.env["account.analytic.default"]
+    #                     .sudo()
+    #                     .account_get(
+    #                         partner_id=order.partner_id.id,
+    #                         user_id=order.env.uid,
+    #                         date=order.date_order,
+    #                         company_id=order.company_id.id,
+    #                     )
+    #                 )
+    #                 order.analytic_account_id = default_analytic_account.analytic_id
 
 
 class SaleOrderLine(models.Model):
