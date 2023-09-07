@@ -6,6 +6,7 @@ from . import pos_order
 from . import pos_receipt
 from . import pos_session
 from . import promotions
+from . import product_template
 from . import res_users
 from . import stock_comment
 from . import ir_qweb_fields
