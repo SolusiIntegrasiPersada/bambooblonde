@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="inherit_field_product_template" model="ir.ui.view">
+            <field name="name">product.template.add.field.view.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='options']/field[@name='purchase_ok']" position="after">
+                    <span class="d-inline-block">
+                        <field name="is_voucher"/>
+                        <label for="is_voucher"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

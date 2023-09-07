@@ -36,18 +36,24 @@
                         </tr>
 
                         <t t-set="total_qty" t-value="0"/>
+                        <t t-set="total_voucher" t-value="0"/>
                         <t t-foreach="receipt.orderlines" t-as="line">
                             <t t-set="total_qty" t-value="total_qty + line.quantity"/>
-                            <t t-set="total_price" t-value="line.quantity * line.price"/>
-                            <tr>
-                                <td t-esc="line.product_name_wrapped[0]"/>
-                                <td t-esc="line.quantity"/>
-                                <td style="text-align: right;" t-esc="pos.format_currency(total_price)"/>
-                                <td style="text-align: center;" t-esc="line.discount">
-                                    <span>%</span>
-                                </td>
-                                <td style="text-align: right;" t-esc="pos.format_currency(line.price_display)"/>
-                            </tr>
+                            <t t-set="total_price" t-value="line.quantity * (line.price / (1 - (line.discount / 100)))"/>
+                            <t t-if="not line.is_voucher">
+                                <tr>
+                                    <td t-esc="line.product_name_wrapped[0]"/>
+                                    <td t-esc="line.quantity"/>
+                                    <td style="text-align: right;" t-esc="pos.format_currency(total_price)"/>
+                                    <td style="text-align: center;" t-esc="line.discount">
+                                        <span>%</span>
+                                    </td>
+                                    <td style="text-align: right;" t-esc="pos.format_currency(line.price_display)"/>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <t t-set="total_voucher" t-value="total_voucher + line.price"/>
+                            </t>
                         </t>
 
                         <tr style="border-top: 2px solid black;">
@@ -75,6 +81,14 @@
                                 <td/>
                                 <td t-esc="payment.name"/>
                                 <td style="text-align: right;" t-esc="pos.format_currency(payment.amount)"/>
+                            </tr>
+                        </t>
+
+                        <t t-if="total_voucher > 0">
+                            <tr>
+                                <td/>
+                                <td t-esc="Voucher"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(total_voucher)"/>
                             </tr>
                         </t>
 
