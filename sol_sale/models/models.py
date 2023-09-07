@@ -55,7 +55,7 @@ class SalesOrder(models.Model):
                 [("partner_id", "=", order.partner_id.id)]
             )
             if analytic_account:
-                order.analytic_account_id = analytic_account.id
+                order.analytic_account_id = analytic_account
             else:
                 if not order.analytic_account_id:
                     default_analytic_account = (
