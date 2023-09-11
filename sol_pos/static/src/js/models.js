@@ -254,6 +254,8 @@ odoo.define("sol_pos.models", function (require) {
         // Used to create a json of the ticket, to be sent to the printer
         export_for_printing: function () {
             var loaded = SuperOrderLine.export_for_printing.call(this);
+            // this.get_product() => you can have here all the product data [barcode/default_code/ etc.]
+            loaded.is_voucher = this.get_product().is_voucher
             loaded.data = this.wk_offer_tag()
             return loaded
         },

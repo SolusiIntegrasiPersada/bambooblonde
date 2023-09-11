@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="coupon_program_view_form_common_inherit" model="ir.ui.view">
+        <field name="name">coupon.program.common.form.inherit</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_form_common" />
+        <field name="arch" type="xml">
+            <xpath expr="///group[@name='reward']/field[@name='discount_line_product_id']" position="attributes">
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
