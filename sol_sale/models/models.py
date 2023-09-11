@@ -47,7 +47,7 @@ class SalesOrder(models.Model):
                     rec.total_sale_qty += line.product_uom_qty
             else:
                 rec.total_sale_qty = 0
-
+ 
     # @api.depends("partner_id", "date_order")
     # def _compute_analytic_account_id(self):
     #     for order in self:
@@ -55,7 +55,7 @@ class SalesOrder(models.Model):
     #             [("partner_id", "=", order.partner_id.id)]
     #         )
     #         if analytic_account:
-    #             order.analytic_account_id = analytic_account
+    #             order.analytic_account_id = analytic_account.id
     #         else:
     #             if not order.analytic_account_id:
     #                 default_analytic_account = (
