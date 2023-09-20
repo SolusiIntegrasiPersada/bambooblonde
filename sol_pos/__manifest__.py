@@ -19,7 +19,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale', 'pos_sale', 'pos_discount', 'product', 'report_xlsx'],
+    'depends': ['base', 'point_of_sale', 'pos_sale', 'pos_discount', 'product', 'report_xlsx','pos_coupon'],
 
     # always loaded
     'data': [

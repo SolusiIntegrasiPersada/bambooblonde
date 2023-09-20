@@ -9,6 +9,7 @@ odoo.define("pos_absolute_discount.screens", function (require) {
     const PaymentScreen = require('point_of_sale.PaymentScreen');
     const ProductScreen = require("point_of_sale.ProductScreen");
     const Registries = require("point_of_sale.Registries");
+	const RegionControlButton = require('sol_region_pos.RegionControlButton');
 
     const PosChrome = (Chrome) =>
 		class extends Chrome {
@@ -290,6 +291,24 @@ odoo.define("pos_absolute_discount.screens", function (require) {
                     this.change_discount_type();
                 }
             }
+
+			async _onClickPay() {
+				var region_data = this.env.pos.get_order().get_region();
+				// console.log(region_data);
+				// console.log(!region_data);
+				// console.log('Custom _onClickPay function called.');
+				// Memeriksa apakah region tidak kosong
+				if (!region_data) {
+					// Menampilkan pesan kesalahan jika region kosongs
+					await this.showPopup('ErrorPopup', {
+						title: 'Region Cannot be Empty',
+						body: 'Please select Region',
+					});
+				} else {
+					// Melanjutkan dengan operasi _super() jika region tidak kosong
+					super._onClickPay();
+				}
+						}
         };
 
     Registries.Component.extend(Chrome, PosChrome);

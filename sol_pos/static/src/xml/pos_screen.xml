@@ -88,6 +88,9 @@
                 </table>
             </div>
         </xpath>
+        <xpath expr="//div[hasclass('section-financials')]" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
     </t>
 
     <!--    ClientListScreen-->
@@ -147,6 +150,16 @@
         </xpath>
     </t>
 
+    <!-- pos coupon -->
+    <t t-name="PromoCodeButton2" t-inherit="pos_coupon.PromoCodeButton" t-inherit-mode="extension" owl="1">
+        <xpath expr="//span[hasclass('control-button')]" position="replace">
+            <span class="control-button">
+                <i class="fa fa-barcode"></i>
+                <span> </span>
+                <span>Enter No Voucher</span>
+            </span>
+        </xpath>
+    </t>
     <!--    Payment Scren-->
     <t t-name="PaymentScreen" t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('payment-controls')]" position="after">
