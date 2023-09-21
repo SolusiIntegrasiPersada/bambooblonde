@@ -10,3 +10,4 @@ from . import product_template
 from . import res_users
 from . import stock_comment
 from . import ir_qweb_fields
+from . import res_partner

@@ -10,7 +10,7 @@ odoo.define("sol_pos.models", function (require) {
     var _t = core._t;
     var round_pr = utils.round_precision;
 
-    models.load_fields('res.partner', ['pos_order_count', 'ref']);
+    models.load_fields('res.partner', ['pos_order_count', 'ref','coupon_promo']);
     models.load_fields('pos.session', ['customer_count', 'order_count']);
     models.load_fields('product.product', 'class_product');
 

@@ -224,3 +224,17 @@ class BuyXGetDiscountOnY(models.Model):
                 raise ValidationError('Max Sale Amount should be greater than Min Sale Amount')
             if(data.discount < 0):
                 raise ValidationError('Discount should be greater than 0')
+            
+            
+class CouponProgram(models.Model):
+    _inherit = "coupon.program"
+    
+    @api.depends("rule_partners_domain")
+    def _compute_valid_partner_ids(self):
+        
+        res = super(CouponProgram, self)._compute_valid_partner_ids()
+        
+        for program in self.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
+            program.valid_partner_ids._compute_promo_coupon()
+            
+        return res
