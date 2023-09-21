@@ -181,7 +181,7 @@
                         <field name="name" string="Operation"/>
                         <!-- additional -->
                         <field name="order_id"/>
-                        <field name="supplier"/>
+                        <field name="supplier" attrs="{'readonly': [('state', 'in', ('done', 'progress'))]}"/>
                         <field name="mrp_payment_id"/>
                         <field name="cost_service" optional="hide"/>
                         <field name="fabric_id" widget="many2many_tags"
