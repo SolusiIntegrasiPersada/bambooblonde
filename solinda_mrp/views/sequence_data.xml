@@ -13,7 +13,7 @@
             <field name="name">Manufacture Order Sequence</field>
             <field name="code">mrp.production</field>
             <field name="padding">5</field>
-            <field name="prefix">PRD/%(day)s/%(month)s%(y)s/</field>
+            <field name="prefix">Production Detail/%(day)s/%(month)s%(y)s/</field>
         </record>
 
 
