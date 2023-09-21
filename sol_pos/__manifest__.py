@@ -37,7 +37,7 @@
         'views/product_template_views.xml',
         'views/res_users_view.xml',
         'views/sequence_data.xml',
-        'wizard/sale_coupon_apply_code_views.xml',
+        'views/sale_coupon_apply_code_views.xml',
         'report/action_report.xml',
     ],
     'assets': {
