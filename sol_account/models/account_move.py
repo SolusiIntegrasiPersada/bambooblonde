@@ -82,3 +82,7 @@ class AccountMove(models.Model):
         })
 
         return result
+
+
+    def button_process_edi_web_services(self):
+        print('Example')

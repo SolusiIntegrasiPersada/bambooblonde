@@ -28,3 +28,13 @@ class AccountPayment(models.Model):
                 lambda pay: pay.is_internal_transfer
                 and not pay.paired_internal_transfer_payment_id
             )._create_paired_internal_transfer_payment()
+
+
+
+    def button_cancel_posted_payments(self):
+        print('Example')
+
+
+
+    def button_abandon_cancel_posted_payments(self):
+        print("Example")
