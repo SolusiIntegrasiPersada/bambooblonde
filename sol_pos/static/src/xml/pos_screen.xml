@@ -195,6 +195,9 @@
                 </div>
             </t>
         </xpath>
+        <xpath expr="//div[hasclass('js_invoice')]" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
     </t>
 
     <!--    OfferDetails-->
