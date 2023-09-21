@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_coupon.sale_coupon_apply_code_action" model="ir.actions.act_window">
+        <field name="name">Enter No Voucher</field>
+     </record>
+</odoo>
