@@ -10,6 +10,14 @@
                         <field name="is_voucher"/>
                         <label for="is_voucher"/>
                     </span>
+                    <span class="d-inline-block">
+                        <field name="is_price_pos_editable"/>
+                        <label for="is_price_pos_editable"/>
+                    </span>
+                    <span class="d-inline-block">
+                        <field name="is_shooping_bag"/>
+                        <label for="is_shooping_bag"/>
+                    </span>
                 </xpath>
             </field>
         </record>

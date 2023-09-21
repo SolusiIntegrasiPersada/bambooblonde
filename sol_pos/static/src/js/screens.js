@@ -2,6 +2,7 @@ odoo.define("pos_absolute_discount.screens", function (require) {
     "use strict";
     var core = require('web.core');
 	var QWeb = core.qweb;
+	var models = require("point_of_sale.models");
     const Chrome = require('point_of_sale.Chrome');
     const NumpadWidget = require("point_of_sale.NumpadWidget");
     const Orderline = require('point_of_sale.Orderline');
@@ -10,6 +11,7 @@ odoo.define("pos_absolute_discount.screens", function (require) {
     const ProductScreen = require("point_of_sale.ProductScreen");
     const Registries = require("point_of_sale.Registries");
 	const RegionControlButton = require('sol_region_pos.RegionControlButton');
+	models.load_fields("product.product", ["is_shooping_bag", "is_price_pos_editable"]);
 
     const PosChrome = (Chrome) =>
 		class extends Chrome {
@@ -90,7 +92,18 @@ odoo.define("pos_absolute_discount.screens", function (require) {
 
     const PosNumpadWidget = (_NumpadWidget) =>
         class extends _NumpadWidget {
-            changeMode(mode) {
+            async changeMode(mode) {
+				if (mode === "price") {
+					var order = this.env.pos.get_order();
+					const selectedOrderLine = order.orderlines.models.find(orderLine => orderLine.selected);
+					if (!selectedOrderLine.product.is_price_pos_editable) {
+						await this.showPopup('ErrorPopup', {
+							title: 'Cannot Price',
+							body: 'Produk not Editable Price',
+						});
+						return ; 
+					}
+				} 
                 super.changeMode(mode);
                 if (mode === "discount") {
                     $(".mode-button:eq(1)").addClass("selected-mode");
@@ -100,7 +113,10 @@ odoo.define("pos_absolute_discount.screens", function (require) {
                     );
                     $(".mode-button:eq(1)").removeClass("selected-mode");
                 }
+					
+
             }
+			
         };
 
     const PosOrderline = (Orderline) => class extends Orderline {
