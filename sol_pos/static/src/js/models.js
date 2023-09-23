@@ -12,7 +12,7 @@ odoo.define("sol_pos.models", function (require) {
 
     models.load_fields('res.partner', ['pos_order_count', 'ref','coupon_promo']);
     models.load_fields('pos.session', ['customer_count', 'order_count']);
-    models.load_fields('product.product', 'class_product');
+    models.load_fields('product.product', ['class_product', 'product_model_categ_id']);
 
     // -------load promo_message mode and ir_sequence model-------
     models.load_models([{
@@ -266,6 +266,7 @@ odoo.define("sol_pos.models", function (require) {
             var order = self.pos.get_order();
             var res = SuperOrderLine.set_quantity.call(this, quantity, keep_price);
             var offers = null;
+            
             if (order && order.is_offer_applied) {
                 offers = self.get_all_promotions(order)
                 if (!self.is_offer_product) {
@@ -273,12 +274,15 @@ odoo.define("sol_pos.models", function (require) {
                         var product = self.product
                         var options = {}
                         var apply_offer = self.apply_offer(offers, product);
-                        // console.log("set_quantity=====apply_offer=========",apply_offer)
+                        
+                        console.log("set_quantity=====apply_offer=========",apply_offer)
                         if (apply_offer) {
                             if (apply_offer == 'discount_on_products') {
                                 self.is_discounted_product = true;
                                 self.is_offer_product = true
                                 var discount_val = self.get_discount_val(offers, product);
+                                console.log("discount_val")
+                                console.log(discount_val)
                                 if (discount_val) {
                                     setTimeout(function () {
                                         self.set_discount(discount_val);
@@ -410,12 +414,15 @@ odoo.define("sol_pos.models", function (require) {
         },
         get_discount_val: function (offers, product) {
             var self = this;
+
             if (product && product.class_product[1] != 'SALE') {
                 var discount_val = 0
                 var flag = false
                 _.each(self.pos.db.promotions_by_sequence_id, function (promotions) {
                     if (promotions.offer_type == 'discount_on_products') {
                         _.each(self.pos.db.discount_items, function (item) {
+                            console.log(item)
+                            debugger ; 
                             if (promotions.discounted_ids.includes(item.id)) {
                                 if (!flag && item.apply_on == "1_products") {
                                     if (item.product_id[0] == product.id) {
@@ -433,10 +440,21 @@ odoo.define("sol_pos.models", function (require) {
                                     discount_val = item.percent_discount
                                     flag = true
                                 }
+                                if (!flag && item.apply_on == "4_class_model") {
+                                    if ((item.models_id && !item.class_product_id && item.product_ids.length === 0 && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                        (item.class_product_id && !item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0]) ||
+                                        (item.class_product_id && item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0] && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                        (item.product_ids && item.product_ids.includes(product.id))) {
+                                        discount_val = item.percent_discount;
+                                        flag = true;
+                                    }
+                                    
+                                }
                             }
                         })
                     }
                 });
+                console.log("get_discount_val", discount_val)
                 return discount_val
             }
         },
@@ -457,6 +475,8 @@ odoo.define("sol_pos.models", function (require) {
                         apply_offer = 'discount_on_products'
                     }
                 }
+
+                
                 var dis_id = _.find(self.pos.db.discount_product, function (val) { return val });
                 // if (!apply_offer && self.pos.db.discount_product_by_id.length && (dis_id.product_id[0]==product.id)){
                 if (!apply_offer && self.pos.db.discount_product_by_id.length) {
@@ -475,6 +495,9 @@ odoo.define("sol_pos.models", function (require) {
                                     }
                                 }
                                 if (!flag && item.apply_on == "3_all") {
+                                    flag = true
+                                }
+                                if (!flag && item.apply_on == "4_class_model") {
                                     flag = true
                                 }
                             }
@@ -589,7 +612,7 @@ odoo.define("sol_pos.models", function (require) {
                                         }
                                     }
                                     if (!flag && item.apply_on == "2_categories") {
-                                        if (item.categ_id[0] == product.categ_id[0]) {
+                                        if (item.categ_id[0] == x.categ_id[0]) {
                                             discount_val = item.percent_discount
                                             flag = true
                                         }
@@ -598,6 +621,17 @@ odoo.define("sol_pos.models", function (require) {
                                         discount_val = item.percent_discount
                                         flag = true
                                     }
+                                    if (!flag && item.apply_on == "4_class_model") {
+                                        if ((item.models_id && !item.class_product_id && item.product_ids.length === 0 && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                            (item.class_product_id && !item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0]) ||
+                                            (item.class_product_id && item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0] && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                            (item.product_ids && item.product_ids.includes(product.id))) {
+                                            discount_val = item.percent_discount;
+                                            flag = true;
+                                        }
+                                        
+                                    }
+                                    
                                     if (flag) {
                                         exist = true
                                     }
@@ -621,6 +655,16 @@ odoo.define("sol_pos.models", function (require) {
                                         discount_val = item.percent_discount
                                         flag = true
                                     }
+                                    if (!flag && item.apply_on == "4_class_model") {
+                                        if ((item.models_id && !item.class_product_id && item.product_ids.length === 0 && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                            (item.class_product_id && !item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0]) ||
+                                            (item.class_product_id && item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0] && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                            (item.product_ids && item.product_ids.includes(product.id))) {
+                                            discount_val = item.percent_discount;
+                                            flag = true;
+                                        }
+                                        // debugger;
+                                    }
                                     if (flag) {
                                         exist = true
                                     }
@@ -643,6 +687,16 @@ odoo.define("sol_pos.models", function (require) {
                                     discount_val = item.percent_discount
                                     flag = true
                                 }
+                                if (!flag && item.apply_on == "4_class_model") {
+                                    if ((item.models_id && !item.class_product_id && item.product_ids.length === 0 && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                        (item.class_product_id && !item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0]) ||
+                                        (item.class_product_id && item.models_id && item.product_ids.length === 0 && item.class_product_id[0] === product.class_product[0] && item.models_id[0] === product.product_model_categ_id[0]) ||
+                                        (item.product_ids && item.product_ids.includes(product.id))) {
+                                        discount_val = item.percent_discount;
+                                        flag = true;
+                                    }
+                                    // debugger;
+                                    }
                                 if (flag) {
                                     exist = true
                                 }

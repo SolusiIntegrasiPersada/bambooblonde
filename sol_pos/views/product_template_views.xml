@@ -27,6 +27,9 @@
                         <label for="is_produk_promotion"/>
                     </span> -->
                 </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="product_model_categ_id" string="Model Category"/>
+                </xpath>
             </field>
         </record>
     </data>

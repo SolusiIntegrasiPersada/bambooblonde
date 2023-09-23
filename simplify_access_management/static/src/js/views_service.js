@@ -37,7 +37,7 @@ viewService.start = function(env, { orm }){
                     }; // for legacy purpose, keys in result are left in viewDescriptions
 
                     // Remove restricted views //
-                    debugger
+                    // debugger
                     let views_to_load = params.views ;
 
                     params.views.forEach(element => {

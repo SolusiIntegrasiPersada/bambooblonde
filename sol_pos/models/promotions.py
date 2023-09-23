@@ -136,7 +136,9 @@ class DiscountProducts(models.Model):
     apply_on = fields.Selection([
         ('3_all', 'All Products'),
         ('2_categories', 'Categories'),
-        ('1_products', 'Products')],
+        ('1_products', 'Products'),
+        ('4_class_model', 'Class and Model'),
+        ],
         default='3_all', string='Apply On')
     categ_id = fields.Many2one('product.category', 'Product Category')
     product_id = fields.Many2one('product.product', 'Product Variant', domain=[('available_in_pos', '=', True)])
@@ -144,13 +146,18 @@ class DiscountProducts(models.Model):
     percent_discount = fields.Float('Percentage Discount')
     discount = fields.Char('Discount', compute='_get_sale_discount_line_name_discount')
 
-    @api.depends('apply_on', 'categ_id', 'product_id', 'percent_discount')
+    @api.depends('apply_on', 'categ_id', 'product_id', 'percent_discount','class_product_id','models_id','product_ids')
     def _get_discount_line_name(self):
         for item in self:
             if item.categ_id and item.apply_on == '2_categories':
                 item.name = _("Category: %s") % (item.categ_id.display_name)
             elif item.product_id and item.apply_on == '1_products':
                 item.name = _("Variant: %s") % (item.product_id.with_context(display_default_code=False).display_name)
+            elif item.apply_on == '4_class_model':
+                name = _("Class: %s , Model: %s") % (item.class_product_id.name, item.models_id.name)
+                if item.product_ids :
+                    name += ", Product: %s" % (len(item.product_ids))
+                item.name = name
             else:
                 item.name = _("All Products")
 
@@ -158,6 +165,32 @@ class DiscountProducts(models.Model):
     def _get_sale_discount_line_name_discount(self):
         for value in self:
             value.discount = _("%s %%") % (value.percent_discount)
+            
+    class_product_id = fields.Many2one("class.product", string="Class")
+    models_id = fields.Many2one("product.category", string="Model",domain=[('category_product', '=', 'department')])
+    product_ids = fields.Many2many(
+        comodel_name='product.product', 
+        string='Products'
+        )
+    
+    @api.onchange('class_product_id','models_id')
+    def ganti_domain_product_ids(self):
+        domain = []
+    
+        # Sesuaikan domain berdasarkan 'class_product_id' dan 'models_id'
+        if self.class_product_id and self.models_id:
+            domain = [('class_product', '=', self.class_product_id.id),
+                    ('product_model_categ_id', '=', self.models_id.id)]
+        elif self.class_product_id:
+            domain = [('class_product', '=', self.class_product_id.id)]
+        elif self.models_id:
+            domain = [('product_model_categ_id', '=', self.models_id.id)]
+            
+        domain += [('available_in_pos', '=', True)]
+        
+        return {'domain': {'product_ids': domain}}
+    
+    
 
 class BuyXGetY(models.Model):
     _name = "buy_x.get_y"
