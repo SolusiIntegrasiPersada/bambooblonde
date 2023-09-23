@@ -4,6 +4,7 @@ odoo.define("sol_pos.OrderWidget", function (require) {
     const models = require("point_of_sale.models");
     const OrderWidget = require("point_of_sale.OrderWidget");
     const Registries = require("point_of_sale.Registries");
+    models.load_fields("product.product", ["is_shooping_bag", "is_price_pos_editable","is_produk_diskon","is_produk_promotion","is_voucher"]);
 
     const OrderLineCount = OrderWidget => class extends OrderWidget {
         _updateSummary() {
@@ -19,7 +20,15 @@ odoo.define("sol_pos.OrderWidget", function (require) {
             const lines = order.get_orderlines();
             
             lines.map(function (line) {
-                total_qty += line.quantity;
+                // Memeriksa apakah produk adalah produk diskon atau voucher
+                const diskon_coupon_shopping_bag = line.product.is_produk_diskon || line.product.is_voucher || line.product.is_shooping_bag;
+                // console.log('product name ===================', line.product.name)
+                // console.log('product is_produk_diskon', line.product.is_produk_diskon)
+                // console.log('product is_voucher', line.product.is_voucher)
+                // console.log('product is_shooping_bag', line.product.is_shooping_bag)
+                if (!diskon_coupon_shopping_bag) {
+                    total_qty += line.quantity;
+                } 
             });
             order.set_total_qty(total_qty)
 

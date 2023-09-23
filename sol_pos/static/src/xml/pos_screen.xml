@@ -29,7 +29,13 @@
                 <div class='item-count' style="padding-bottom: 10px; padding-left: 126px;padding-right: 15px; font-weight: bold; font-size: 20px;">
 				   Total Quantity:
                     <span class="tot-qty">
-                        <t t-esc="total_qty"/>
+                        <t t-if="total_qty">
+                            <t t-esc="total_qty"/>
+                        </t>
+
+                        <t t-else="">
+                            <span>1</span>
+                        </t>
                     </span>
                 </div>
             </div>
@@ -129,7 +135,7 @@
         </xpath>
         <xpath expr="//td[7]" position="after">
             <td class="client-line-promotoin-persen">
-            <t t-esc="props.partner.coupon_promo" />
+                <t t-esc="props.partner.coupon_promo" />
             </td>
         </xpath>
     </t>

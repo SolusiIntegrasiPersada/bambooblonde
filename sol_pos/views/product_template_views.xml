@@ -18,8 +18,16 @@
                         <field name="is_shooping_bag"/>
                         <label for="is_shooping_bag"/>
                     </span>
+                    <span class="d-inline-block">
+                        <field name="is_produk_diskon"/>
+                        <label for="is_produk_diskon"/>
+                    </span>
+                    <!-- <span class="d-inline-block">
+                        <field name="is_produk_promotion"/>
+                        <label for="is_produk_promotion"/>
+                    </span> -->
                 </xpath>
             </field>
-        </record>
+        </record
     </data>
 </odoo>
