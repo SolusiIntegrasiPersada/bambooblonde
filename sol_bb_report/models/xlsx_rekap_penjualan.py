@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import io
 import base64
 
-header_table = ['No', 'Tanggal', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total', 'Total Sold', 'Margin', 'Payment']
+header_table = ['No', 'Tanggal','Toko','Shift','Payment', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total', 'Total Sold', 'Margin']
 
 class XlsxRekapPenjualan(models.Model):
     _name = 'report.sol_bb_report.rekap_penjualan.xlsx'
@@ -82,6 +82,8 @@ class XlsxRekapPenjualan(models.Model):
                 if any(v.display_name.upper().startswith(word) for word in list_size):
                     size += v.name
             stock_name = pol.product_id.name or ''
+            toko = pol.order_id.session_id.config_id.name or " "
+            shift = pol.order_id.session_id.shift or " "
             last_cost = pol.product_id.standard_price
             last_price = pol.price_unit
             qty_sold = pol.qty
@@ -98,27 +100,29 @@ class XlsxRekapPenjualan(models.Model):
 
             sheet.write(row, 0, no, formatDetailTableReOrder)
             sheet.write(row, 1, tanggal, formatDetailTableReOrder)
-            sheet.write(row, 2, brand, formatDetailTableReOrder)
-            sheet.write(row, 3, category, formatDetailTableReOrder)
-            sheet.write(row, 4, barcode, formatDetailTableReOrder)
-            sheet.write(row, 5, style_code, formatDetailTableReOrder)
-            sheet.write(row, 6, size, formatDetailTableReOrder)
-            sheet.write(row, 7, stock_name, formatDetailTableReOrder)
-            sheet.write(row, 8, last_cost, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 9, last_price, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 10, qty_sold, formatDetailTableReOrder)
-            sheet.write(row, 11, total, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 12, total_sold, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 13, margin, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 14, payment, formatDetailTableReOrder)
+            sheet.write(row, 2, toko, formatDetailTableReOrder)
+            sheet.write(row, 3, shift, formatDetailTableReOrder)
+            sheet.write(row, 4, payment, formatDetailTableReOrder)
+            sheet.write(row, 5, brand, formatDetailTableReOrder)
+            sheet.write(row, 6, category, formatDetailTableReOrder)
+            sheet.write(row, 7, barcode, formatDetailTableReOrder)
+            sheet.write(row, 8, style_code, formatDetailTableReOrder)
+            sheet.write(row, 7, size, formatDetailTableReOrder)
+            sheet.write(row, 8, stock_name, formatDetailTableReOrder)
+            sheet.write(row, 9, last_cost, formatDetailCurrencyTableReOrder)
+            sheet.write(row, 10, last_price, formatDetailCurrencyTableReOrder)
+            sheet.write(row, 11, qty_sold, formatDetailTableReOrder)
+            sheet.write(row, 12, total, formatDetailCurrencyTableReOrder)
+            sheet.write(row, 13, total_sold, formatDetailCurrencyTableReOrder)
+            sheet.write(row, 14, margin, formatDetailCurrencyTableReOrder)
 
             row += 1
             no += 1
         row += 1
-        sheet.write(row, 6, 'Grand Total', formatNormalCenter)
-        sheet.write(row, 8, sum_last_cost, formatNormalCurrencyCenter)
-        sheet.write(row, 9, sum_last_price, formatNormalCurrencyCenter)
-        sheet.write(row, 10, sum_qty_sold, formatNormalCenter)
-        sheet.write(row, 11, sum_total, formatNormalCurrencyCenter)
-        sheet.write(row, 12, sum_total_sold, formatNormalCurrencyCenter)
+        sheet.write(row, 7, 'Grand Total', formatNormalCenter)
+        sheet.write(row, 9, sum_last_cost, formatNormalCurrencyCenter)
+        sheet.write(row, 10, sum_last_price, formatNormalCurrencyCenter)
+        sheet.write(row, 11, sum_qty_sold, formatNormalCenter)
+        sheet.write(row, 12, sum_total, formatNormalCurrencyCenter)
+        sheet.write(row, 13, sum_total_sold, formatNormalCurrencyCenter)
                         
