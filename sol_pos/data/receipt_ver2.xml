@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<odoo noupdate="1">
-    <record id="default_receipt" model="pos.receipt">
-        <field name="name">Default Receipt</field>
+<odoo>
+    <record id="default_receipt3" model="pos.receipt">
+        <field name="name">New Receipt</field>
         <field name="design_receipt">
             <![CDATA[
              <div class="pos-receipt" style="font-size: 12px;">
@@ -36,16 +36,18 @@
                         </tr>
 
                         <t t-set="total_qty" t-value="0"/>
-                        <t t-foreach="receipt.orderlines" t-as="line">
+                        <t t-set="subtotal_price" t-value="0"/>
+                        <t t-foreach="filterorderlines" t-as="line">
                             <t t-set="total_qty" t-value="total_qty + line.quantity"/>
+                            <t t-set="subtotal_price" t-value="subtotal_price + (line.price * line.quantity)"/>
                             <tr>
-                                <td t-esc="line.product_name_wrapped[0]"/>
+                                <td t-esc="line.product_name"/>
                                 <td t-esc="line.quantity"/>
                                 <td style="text-align: right;" t-esc="pos.format_currency(line.price)"/>
                                 <td style="text-align: center;" t-esc="line.discount">
                                     <span>%</span>
                                 </td>
-                                <td style="text-align: right;" t-esc="pos.format_currency(line.price_display)"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(line.price * line.quantity)"/>
                             </tr>
                         </t>
 
@@ -53,7 +55,7 @@
                             <td>Total Qty</td>
                             <td t-esc="total_qty"/>
                             <td colspan="2">Subtotal</td>
-                            <td style="text-align: right;" t-esc="pos.format_currency(receipt.total_with_tax)"/>
+                            <td style="text-align: right;" t-esc="pos.format_currency(subtotal_price)"/>
                         </tr>
                     </table>
                 </div>
@@ -76,7 +78,14 @@
                                 <td style="text-align: right;" t-esc="pos.format_currency(payment.amount)"/>
                             </tr>
                         </t>
-
+                        <t t-if="vouchers > 0">
+                               
+                            <tr>
+                                <td/>
+                                <td>Voucher</td>
+                                <td style="text-align: right;" t-esc="pos.format_currency(vouchers)"/>
+                            </tr>
+                            </t>
                         <tr>
                             <td/>
                             <td>Change</td>
@@ -124,7 +133,7 @@
                             <td>Promo</td>
                             <td>:</td>
                             <t t-if="promo">
-                                <td style="text-align: right;" t-esc="promo"/>
+                                <td style="text-align: right;" t-esc="promo.name"/>
                             </t>
                         </tr>
                     </table>

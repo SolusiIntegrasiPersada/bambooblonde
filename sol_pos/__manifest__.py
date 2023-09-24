@@ -24,6 +24,7 @@
     # always loaded
     'data': [
         'data/receipt.xml',
+        'data/receipt_ver2.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
         'views/coupon_program_views.xml',

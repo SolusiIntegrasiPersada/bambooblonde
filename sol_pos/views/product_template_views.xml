@@ -22,10 +22,10 @@
                         <field name="is_produk_diskon"/>
                         <label for="is_produk_diskon"/>
                     </span>
-                    <!-- <span class="d-inline-block">
+                    <span class="d-inline-block">
                         <field name="is_produk_promotion"/>
                         <label for="is_produk_promotion"/>
-                    </span> -->
+                    </span>
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
                     <field name="product_model_categ_id" string="Model Category"/>

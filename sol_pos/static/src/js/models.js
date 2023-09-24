@@ -10,9 +10,10 @@ odoo.define("sol_pos.models", function (require) {
     var _t = core._t;
     var round_pr = utils.round_precision;
 
-    models.load_fields('res.partner', ['pos_order_count', 'ref','coupon_promo']);
+    models.load_fields('res.partner', ['pos_order_count', 'ref','coupon_promo','coupon_promo_id']);
     models.load_fields('pos.session', ['customer_count', 'order_count']);
     models.load_fields('product.product', ['class_product', 'product_model_categ_id']);
+   
 
     // -------load promo_message mode and ir_sequence model-------
     models.load_models([{
@@ -157,6 +158,7 @@ odoo.define("sol_pos.models", function (require) {
     }
     ]);
     
+
     models.PosModel = models.PosModel.extend({
         set_order: function (order) {
             SuperPosModel.set_order.call(this, order);
@@ -422,7 +424,7 @@ odoo.define("sol_pos.models", function (require) {
                     if (promotions.offer_type == 'discount_on_products') {
                         _.each(self.pos.db.discount_items, function (item) {
                             console.log(item)
-                            debugger ; 
+                            // debugger ; 
                             if (promotions.discounted_ids.includes(item.id)) {
                                 if (!flag && item.apply_on == "1_products") {
                                     if (item.product_id[0] == product.id) {
@@ -741,6 +743,8 @@ odoo.define("sol_pos.models", function (require) {
             var self = this;
             SuperOrder.initialize.call(this, attributes, options);
             self.is_offer_applied = options.is_offer_applied || true
+            var name_custom = this.name.replace("Order ", "") ; 
+            self.name = name_custom ;
         },
         add_product: function (product, options) {
             var self = this;

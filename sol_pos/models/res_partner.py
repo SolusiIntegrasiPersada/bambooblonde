@@ -3,9 +3,9 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     
-    coupon_promo = fields.Char(string='Promo', compute='_compute_promo_coupon', store=True)
+    coupon_promo = fields.Char(string='Promo char', compute='_compute_promo_coupon', store=True)
+    coupon_promo_id = fields.Many2one('coupon.program', string='Promo', compute='_compute_promo_coupon',store=True )
     
-    @api.depends('name')
     def _compute_promo_coupon(self):
         for record in self:
             print('_compute_promo_coupon')
@@ -13,5 +13,6 @@ class ResPartner(models.Model):
             if coupon_program:
                 persen = coupon_program[0].discount_percentage or 0.0
                 record.coupon_promo = str(persen) + ' %'
+                record.coupon_promo_id = coupon_program[0].id
             else:
                 record.coupon_promo = ""
