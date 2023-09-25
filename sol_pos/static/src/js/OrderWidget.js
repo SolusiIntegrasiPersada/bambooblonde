@@ -21,7 +21,7 @@ odoo.define("sol_pos.OrderWidget", function (require) {
             
             lines.map(function (line) {
                 // Memeriksa apakah produk adalah produk diskon atau voucher
-                const diskon_coupon_shopping_bag = line.product.is_produk_diskon || line.product.is_voucher || line.product.is_shooping_bag;
+                const diskon_coupon_shopping_bag = line.product.is_produk_diskon || line.product.is_voucher || line.product.is_shooping_bag || line.product.is_produk_promotion;
                 // console.log('product name ===================', line.product.name)
                 // console.log('product is_produk_diskon', line.product.is_produk_diskon)
                 // console.log('product is_voucher', line.product.is_voucher)
