@@ -43,7 +43,7 @@
                             <tr>
                                 <td t-esc="line.product_name"/>
                                 <td t-esc="line.quantity"/>
-                                <td style="text-align: right;" t-esc="pos.format_currency(line.price)"/>
+                                <td style="text-align: right;" t-esc="pos.format_currency(line.price_real)"/>
                                 <td style="text-align: center;" t-esc="line.discount">
                                     <span>%</span>
                                 </td>
@@ -130,10 +130,17 @@
                             </t>
                         </tr>
                         <tr>
-                            <td>Promo</td>
-                            <td>:</td>
                             <t t-if="promo">
+                            <td>Promo Member</td>
+                            <td>:</td>
                                 <td style="text-align: right;" t-esc="promo.name"/>
+                            </t>
+                        </tr>
+                        <tr>
+                            <t t-if="promo_promotion">
+                            <td>Promotion</td>
+                            <td>:</td>
+                                <td style="text-align: right;" t-esc="promo_promotion[0].name"/>
                             </t>
                         </tr>
                     </table>

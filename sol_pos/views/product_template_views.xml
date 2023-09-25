@@ -5,8 +5,18 @@
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='purchase_ok']" position="after">
-                    <span class="d-inline-block">
+
+                <xpath expr="//notebook" position="inside">
+                    <page name="pos" string="Point of Sale">
+                        <group>
+                            <field name="is_voucher"/>
+                            <field name="is_price_pos_editable"/>
+                            <field name="is_shooping_bag"/>
+                            <field name="is_produk_diskon"/>
+                            <field name="is_produk_promotion"/>
+                        </group>
+                    </page>
+                    <!-- <span class="d-inline-block">
                         <field name="is_voucher"/>
                         <label for="is_voucher"/>
                     </span>
@@ -25,7 +35,7 @@
                     <span class="d-inline-block">
                         <field name="is_produk_promotion"/>
                         <label for="is_produk_promotion"/>
-                    </span>
+                    </span> -->
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
                     <field name="product_model_categ_id" string="Model Category"/>

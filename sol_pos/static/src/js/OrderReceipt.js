@@ -3,11 +3,10 @@ odoo.define('sol_pos.receipt', function (require) {
     const Registries = require('point_of_sale.Registries');
     const OrderReceipt = require('point_of_sale.OrderReceipt');
     const models = require("point_of_sale.models");
-    
+
     models.load_fields("product.product", ["is_shooping_bag", "is_price_pos_editable", "is_produk_diskon", "is_produk_promotion", "is_voucher"]);
 
-    // extending the pos receipt screen
-    const PosResOrderReceipt = OrderReceipt =>
+    const PosResOrderReceipt = (OrderReceipt) =>
         class extends OrderReceipt {
             get receiptEnv() {
                 const receipt_render_env = super.receiptEnv;
@@ -19,12 +18,16 @@ odoo.define('sol_pos.receipt', function (require) {
                 const receipt_design = this.env.pos.config.design_receipt;
                 const order = this.env.pos.get_order();
                 const receipts = order.export_for_printing();
+                let promo_member = null;
+                let promo_promotion = this.env.pos.db.all_promo_message;
                 const code = receipts.client?.coupon_promo_id;
-                const promo = code && this.env.pos.coupon_programs_by_id[code];
+
+                if (code) {
+                    promo_member = this.env.pos.coupon_programs_by_id[code[0]];
+                }
 
                 const order_line = order.get_orderlines();
-
-                // Filter order line
+                debugger ; 
                 const filteredOrderLine = order_line.filter((line) => !(
                     line.product.is_shooping_bag ||
                     line.product.is_produk_promotion ||
@@ -43,19 +46,45 @@ odoo.define('sol_pos.receipt', function (require) {
                         product_name: line.product.display_name,
                         quantity: line.get_quantity(),
                         price: line.get_price_with_tax(),
+                        price_real: line.get_price_with_tax(),
                         discount: line.get_discount(),
+                        is_diskon_promotion : line.check_if_offer_can_be_applied()
                     };
                 });
 
-                if (promo) {
-                    const validProductIds = promo.valid_product_ids;
+                
+                if (promo_member) {
+                    const validProductIds = promo_member.valid_product_ids;
+                    promo_promotion = null ;
                     filteredOrderLineAsArray.forEach((line) => {
                         if (validProductIds.has(line.product_id)) {
-                            line.price = (line.price - (line.price * promo.discount_percentage / 100));
+                            if (line.discount <= 0) {
+                                const discountedPrice = line.price - (line.price * promo_member.discount_percentage / 100);
+                                line.price = Math.max(discountedPrice, 0);
+                                line.discount = promo_member.discount_percentage;
+                            } else {
+                                const discountedPriceReal = line.price_real + (line.price_real * promo_member.discount_percentage / 100);
+                                line.price_real = discountedPriceReal;
+                            }
                         }
-                        line.discount = promo.discount_percentage;
                     });
                 }
+
+                const hasDiskonPromotion = filteredOrderLineAsArray.some((line) => line.is_diskon_promotion);
+
+                if (!hasDiskonPromotion) {
+                    promo_promotion = null;
+                }
+                    
+                const pos_promotion_diskon = this.env.pos.db.discount_product;
+                filteredOrderLineAsArray.forEach((line) => {
+                    if (line.discount >= 0 && line.is_diskon_promotion) {
+                        promo_member = null ;
+                        const discountedPriceReal = line.price_real / (1 - (pos_promotion_diskon[0].percent_discount / 100));
+                        line.price_real = discountedPriceReal;
+                    }
+
+                });
 
                 const data = {
                     widget: this.env,
@@ -66,7 +95,8 @@ odoo.define('sol_pos.receipt', function (require) {
                     filterorderlines: filteredOrderLineAsArray,
                     paymentlines: order.get_paymentlines(),
                     moment: moment,
-                    promo: promo,
+                    promo: promo_member ? promo_member : null,
+                    promo_promotion: promo_promotion ? promo_promotion : null,
                     vouchers: Math.abs(totalPrice_voucher),
                 };
 
