@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <odoo>
-    <template id="gls_reportingexternal_layout_standard_printout">
-        <div class="header">
-            <div class="col-xs-2">
-                <image src="/ati_srf_report/static/src/img/logo2.png" style="display: inline;width: 120px;height: 75px;margin: 10px;"/>
-            </div>
-        </div>
-        <div class="article o_report_layout_standard">
-            <t t-raw="0" />
-        </div>
-    </template>
-
 
     <template id="report_production">
         <t t-foreach="docs" t-as="o">
-            <t t-call="web.basic_layout">
-                <div class="header" t-att-style="report_header_style">
-                    <t t-set="company" t-value="res_company"></t>
-                    <div class="row">
-                        <div class="col-3 mb4">
-                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 60px;" alt="Logo"/>
-                        </div>
+            <t t-call="sol_purchase.document_report_production" t-lang="o.partner_id.lang"/>
+        </t>
+    </template>
+
+
+    <template id="document_report_production">
+        <t t-call="web.basic_layout">
+            <div class="header" t-att-style="report_header_style">
+                <t t-set="company" t-value="res_company"></t>
+                <div class="row">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 60px;" alt="Logo"/>
                     </div>
                 </div>
-                <h2>PRODUCTION PO</h2>
-                <div class="body">
+            </div>
+            <h2>PRODUCTION PO</h2>
+            <div class="body">
                 <table style="border-collapse: collapse; width: 100%; height: 85px; border: 1pt solid black;" border="1">
                     <tbody>
                         <tr style="height: 85px;">
@@ -249,10 +244,10 @@
                             <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                         </tr>
                         <tr style="height: 18px; border: 1pt solid black;">
-                            <td style="width: 8.0183%; height: 18px; font-size: 11px; border: 1pt solid black;"><strong>Style Name</strong></td>
-                            <td style="width: 9.01017%; font-size: 11px; border: 1pt solid black; height: 18px;"><strong>Fabric</strong></td>
-                            <td style="width: 8.77284%; height: 18px; font-size: 11px; border: 1pt solid black;"><strong>Lining</strong></td>
-                            <td style="width: 10.3529%; height: 18px; font-size: 11px; border: 1pt solid black;"><strong>Color</strong></td>
+                            <td style="width: 8.0183%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;"><strong>Style Name</strong></td>
+                            <td style="width: 9.01017%; font-size: 11px; border: 1pt solid black; height: 18px; padding: 5px;"><strong>Fabric</strong></td>
+                            <td style="width: 8.77284%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;"><strong>Lining</strong></td>
+                            <td style="width: 10.3529%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;"><strong>Color</strong></td>
                             <td style="width: 2.86162%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                             <td style="width: 3.83604%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                             <td style="width: 3.41462%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
@@ -270,16 +265,16 @@
 
                         <t t-foreach="docs.consolidate_lines()" t-as="l">
                             <tr style="height: 14px;">
-                                <td style="width: 8.0183%; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                <td style="width: 8.0183%; font-size: 11px; border: 1pt solid black; height: 14px; padding: 5px;">
                                     <t t-esc="l['name']"/>
                                 </td>
-                                <td style="width: 9.01017%; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                <td style="width: 9.01017%; font-size: 11px; border: 1pt solid black; height: 14px; padding: 5px;">
                                     <t t-esc="l['fabric']"/>
                                 </td>
-                                <td style="width: 8.77284%; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                <td style="width: 8.77284%; font-size: 11px; border: 1pt solid black; height: 14px; padding: 5px;">
                                     <t t-esc="l['lining']"/>
                                 </td>
-                                <td style="width: 10.3529%; font-size: 11px; border: 1pt solid black; height: 14px;">
+                                <td style="width: 10.3529%; font-size: 11px; border: 1pt solid black; height: 14px; padding: 5px;">
                                     <t t-esc="l['colour']"/>
                                 </td>
                                 <td style="width: 2.86162%; text-align: center; font-size: 11px; border: 1pt solid black; height: 14px;">
@@ -328,11 +323,10 @@
 <!--                            <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>-->
 <!--                            <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>-->
 <!--                        </tr>-->
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
 
-            </t>
         </t>
   </template>
 </odoo>

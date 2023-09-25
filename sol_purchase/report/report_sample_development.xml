@@ -1,173 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  
-  <template id="external_layout_standard_printout">
-    <div class="header">
-      <div class="col-xs-2">
-        <image src="/ati_srf_report/static/src/img/logo2.png" style="display: inline;width: 120px;height: 75px;margin: 10px;"/>
-      </div>
-    </div>
-    <div class="article o_report_layout_standard">
-      <t t-raw="0" />
-    </div>
-  </template>
 
-  <template id="report_sdv">
-    <t t-call="web.basic_layout">
-      <div class="page">
-        <t t-foreach="docs" t-as="doc">
-            <header>
-              <div class="row">
-                <div class="col-xs-2">
-                  <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 125px;" alt="Logo"/>
+    <template id="report_sdv">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="sol_purchase.report_document_sdv" t-lang="doc.partner_id.lang"/>
+            </t>
+    </template>
+
+    <template id="report_document_sdv">
+        <t t-call="web.basic_layout">
+            <div class="header" t-att-style="report_header_style">
+                <t t-set="company" t-value="res_company"></t>
+                <div class="row">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 60px;" alt="Logo"/>
+                    </div>
                 </div>
-                <div class="col-xs-2">
-                </div>
-              </div>
-            </header>
+            </div>
             <h2 style="text-align:left"><strong>SAMPLE DEVELOPMENT</strong></h2>
             <br/>
-            <br/>
-            <table border="1" cellpadding="1" cellspacing="1" style="border:1pt solid black">
-                <tbody>
-                  <t t-foreach="doc.line_ids" t-as="order">
+            <div class="body">
+                <table border="1" cellpadding="1" cellspacing="1" style="border:1pt solid black">
+                    <tbody>
+                      <t t-foreach="doc.line_ids" t-as="order">
+                          <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Trans No.</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><t t-esc="doc.name"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Original Sample</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><t t-esc="doc.name_source"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Trans Date</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><t t-esc="doc.date_start"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Status of Sample</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><t t-esc="doc.status_of_sample"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Style Name</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><span t-field="order.product_id.name"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Sample Size</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><span t-field="doc.thread_type"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Story</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><span t-field="doc.story_id"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Sample Approved Size</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><span t-field="doc.thread_color"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>User</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><span t-field="doc.requested_by"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Hanging Tape</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><t t-esc="doc.hanging_tape"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Src Document</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><t t-esc="doc.source"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Fabric</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><span t-field="order.fabric_smp"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Departement / Category / Sub Category</strong></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><span t-field="order.department"/></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"><strong>Lining</strong></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"><span t-field="order.lining_smp"/></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"></td>
+                            <td style="width:223px; border:1pt solid black; padding: 5px;"></td>
+                            <td style="width:396px; border:1pt solid black; padding: 5px;"></td>
+                        </tr>
+
+                        <tr style="border:1pt solid black">
+                            <td colspan="2" rowspan="1" style="width:550px; border:1pt solid black; padding: 5px;"><strong>FIT NOTES :</strong></td>
+                            <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black; padding: 5px;"><strong>FABRIC SWATCH :</strong></td>
+                        </tr>
+                        <tr style="border:1pt solid black">
+                            <td colspan="2" rowspan="1" style="width:550px; border:1pt solid black; padding: 5px;"><br />
+                            <span t-field="doc.notes"/>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            </td>
+                            <td colspan="2" rowspan="1" style="text-align:center; width:617px; border:1pt solid black"><br />
+                            <img t-if="order.product_id.image_1920" t-att-src="image_data_uri(order.product_id.image_1920)" style="max-height:220px; max-width:225px;"/>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            </td>
+                        </tr>
+                      </t>
                       <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Trans No.</strong></td>
-                        <td style="width:251px; border:1pt solid black"><t t-esc="doc.name"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Original Sample</strong></td>
-                        <td style="width:396px; border:1pt solid black"><t t-esc="doc.name_source"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Trans Date</strong></td>
-                        <td style="width:251px; border:1pt solid black"><t t-esc="doc.date_start"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Status of Sample</strong></td>
-                        <td style="width:396px; border:1pt solid black"><t t-esc="doc.status_of_sample"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Style Name</strong></td>
-                        <td style="width:251px; border:1pt solid black"><span t-field="order.product_id.name"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Sample Size</strong></td>
-                        <td style="width:396px; border:1pt solid black"><span t-field="doc.thread_type"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Story</strong></td>
-                        <td style="width:251px; border:1pt solid black"><span t-field="doc.story_id"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Sample Approved Size</strong></td>
-                        <td style="width:396px; border:1pt solid black"><span t-field="doc.thread_color"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>User</strong></td>
-                        <td style="width:251px; border:1pt solid black"><span t-field="doc.requested_by"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Hanging Tape</strong></td>
-                        <td style="width:396px; border:1pt solid black"><t t-esc="doc.hanging_tape"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Src Document</strong></td>
-                        <td style="width:251px; border:1pt solid black"><t t-esc="doc.source"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Fabric</strong></td>
-                        <td style="width:396px; border:1pt solid black"><span t-field="order.fabric_smp"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><strong>Departement / Category / Sub Category</strong></td>
-                        <td style="width:251px; border:1pt solid black"><span t-field="order.department"/></td>
-                        <td style="width:223px; border:1pt solid black"><strong>Lining</strong></td>
-                        <td style="width:396px; border:1pt solid black"><span t-field="order.lining_smp"/></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"></td>
-                        <td style="width:251px; border:1pt solid black"></td>
-                        <td style="width:223px; border:1pt solid black"></td>
-                        <td style="width:396px; border:1pt solid black"></td>
-                    </tr>
-
-                    <tr style="border:1pt solid black">
-                        <td colspan="2" rowspan="1" style="width:550px; border:1pt solid black"><strong>FIT NOTES :</strong></td>
-                        <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black"><strong>FABRIC SWATCH :</strong></td>
-                    </tr>
-                    <tr style="border:1pt solid black">
-                        <td colspan="2" rowspan="1" style="width:550px; border:1pt solid black"><br />
-                        <span t-field="doc.notes"/>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        </td>
-                        <td colspan="2" rowspan="1" style="text-align:center; width:617px; border:1pt solid black"><br />
-                        <img t-if="order.product_id.image_1920" t-att-src="image_data_uri(order.product_id.image_1920)" style="max-height:220px; max-width:225px;"/>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        </td>
-                    </tr>
-                  </t>
-                  <tr style="border:1pt solid black">
-                      <td colspan="4" style="width:229px; border:1pt solid black"><strong>SEAMS AND GRADING :</strong></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px; border:1pt solid black"><strong>Seams</strong></td>
-                      <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black"><t t-esc="doc.seams"/></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px; border:1pt solid black"><strong>Grading Intructions</strong></td>
-                      <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black"><t t-esc="doc.grading_intructions"/></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px"><strong>Fit Changes</strong></td>
-                      <td colspan="3" style="width:881px; border:1pt solid black"><t t-esc="doc.fit_changes"/></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td colspan="4" style="width:229px; border:1pt solid black"><strong>LABEL HARDWARE :</strong></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px; border:1pt solid black"><strong>Description</strong></td>
-                      <td style="width:251px; border:1pt solid black"><strong>Color</strong></td>
-                      <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black"><strong>Qty</strong></td>
-                  </tr>
-                  <t t-foreach="doc.label_hardware_ids" t-as="label">
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><t t-esc="label.description_name"/></td>
-                        <td style="width:251px; border:1pt solid black"><span t-field="label.print_color_id"/></td>
-                        <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black"><t t-esc="label.label_qty"/></td>
-                    </tr>
-                  </t>
-                  <tr style="border:1pt solid black">
-                      <td colspan="4" style="width:229px; border:1pt solid black"><strong>LABEL DRESS :</strong></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px; border:1pt solid black"><strong>Brand</strong></td>
-                      <td style="width:251px; border:1pt solid black"><strong>Comment</strong></td>
-                      <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black"><strong>Label Pict</strong></td>
-                  </tr>
-                  <t t-foreach="doc.label_dress_ids" t-as="dress">
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><span t-field="dress.brand"/></td>
-                        <td style="width:251px; border:1pt solid black"><t t-esc="dress.comment"/></td>
-                        <td colspan="2" rowspan="1" style="width:223px; border:1pt solid black"><img t-if="dress.image" t-att-src="image_data_uri(dress.image)" style="max-height:120px; max-width:125px;"/></td>
-                    </tr>
-                  </t>
-                  <tr style="border:1pt solid black">
-                      <td colspan="4" style="width:229px; border:1pt solid black"><strong>PRODUCTION SUMMARY :</strong></td>
-                  </tr>
-                  <tr style="border:1pt solid black">
-                      <td style="width:286px; border:1pt solid black"><strong>Summary</strong></td>
-                      <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black"><strong>Description</strong></td>
-                  </tr>
-                  <t t-foreach="doc.prod_summ_ids" t-as="summ">
-                    <tr style="border:1pt solid black">
-                        <td style="width:286px; border:1pt solid black"><t t-esc="summ.summary_name"/>;</td>
-                        <td colspan="3" rowspan="1" style="width:251px; border:1pt solid black"><t t-esc="summ.description"/></td>
-                    </tr>
-                  </t>
-                </tbody>
-            </table>
-
-
-
+                          <td colspan="4" style="width:229px; border:1pt solid black; padding: 5px;"><strong>SEAMS AND GRADING :</strong></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Seams</strong></td>
+                          <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black; padding: 5px;"><t t-esc="doc.seams"/></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Grading Intructions</strong></td>
+                          <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black; padding: 5px;"><t t-esc="doc.grading_intructions"/></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; padding: 5px;"><strong>Fit Changes</strong></td>
+                          <td colspan="3" style="width:881px; border:1pt solid black; padding: 5px;"><t t-esc="doc.fit_changes"/></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td colspan="4" style="width:229px; border:1pt solid black; padding: 5px;"><strong>LABEL HARDWARE :</strong></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Description</strong></td>
+                          <td style="width:251px; border:1pt solid black; padding: 5px;"><strong>Color</strong></td>
+                          <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black; padding: 5px;"><strong>Qty</strong></td>
+                      </tr>
+                      <t t-foreach="doc.label_hardware_ids" t-as="label">
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><t t-esc="label.description_name"/></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><span t-field="label.print_color_id"/></td>
+                            <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black; padding: 5px;"><t t-esc="label.label_qty"/></td>
+                        </tr>
+                      </t>
+                      <tr style="border:1pt solid black">
+                          <td colspan="4" style="width:229px; border:1pt solid black; padding: 5px;"><strong>LABEL DRESS :</strong></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Brand</strong></td>
+                          <td style="width:251px; border:1pt solid black; padding: 5px;"><strong>Comment</strong></td>
+                          <td colspan="2" rowspan="1" style="width:617px; border:1pt solid black; padding: 5px;"><strong>Label Pict</strong></td>
+                      </tr>
+                      <t t-foreach="doc.label_dress_ids" t-as="dress">
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><span t-field="dress.brand"/></td>
+                            <td style="width:251px; border:1pt solid black; padding: 5px;"><t t-esc="dress.comment"/></td>
+                            <td colspan="2" rowspan="1" style="width:223px; border:1pt solid black; padding: 5px;"><img t-if="dress.image" t-att-src="image_data_uri(dress.image)" style="max-height:120px; max-width:125px;"/></td>
+                        </tr>
+                      </t>
+                      <tr style="border:1pt solid black">
+                          <td colspan="4" style="width:229px; border:1pt solid black; padding: 5px;"><strong>PRODUCTION SUMMARY :</strong></td>
+                      </tr>
+                      <tr style="border:1pt solid black">
+                          <td style="width:286px; border:1pt solid black; padding: 5px;"><strong>Summary</strong></td>
+                          <td colspan="3" rowspan="1" style="width:881px; border:1pt solid black; padding: 5px;"><strong>Description</strong></td>
+                      </tr>
+                      <t t-foreach="doc.prod_summ_ids" t-as="summ">
+                        <tr style="border:1pt solid black">
+                            <td style="width:286px; border:1pt solid black; padding: 5px;"><t t-esc="summ.summary_name"/>;</td>
+                            <td colspan="3" rowspan="1" style="width:251px; border:1pt solid black; padding: 5px;"><t t-esc="summ.description"/></td>
+                        </tr>
+                      </t>
+                    </tbody>
+                </table>
+            </div>
         </t>
-      </div>
-    </t>
-  </template>
+    </template>
 
 
 </odoo>
