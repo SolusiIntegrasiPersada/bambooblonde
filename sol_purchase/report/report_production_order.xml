@@ -12,10 +12,16 @@
         <t t-call="web.basic_layout">
             <div class="header" t-att-style="report_header_style">
                 <t t-set="company" t-value="res_company"></t>
-                <div class="row">
+                <div class="text-center">
+                  <div class="row">
                     <div class="col-3 mb4">
-                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 60px;" alt="Logo"/>
+                      <img alt="img" t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 60px;"/>
                     </div>
+                    <div class="col-3"></div>
+                    <div class="col-6 text-right">
+                      <span t-if="company.company_details" t-field="company.company_details"/>
+                    </div>
+                  </div>
                 </div>
             </div>
             <h2 style="text-align: left; text-decoration: underline;">PRODUCTION ORDER</h2>
