@@ -131,14 +131,14 @@
                         </tr>
                         <tr>
                             <t t-if="promo">
-                            <td>Promo Member</td>
+                            <td>Promo</td>
                             <td>:</td>
                                 <td style="text-align: right;" t-esc="promo.name"/>
                             </t>
                         </tr>
                         <tr>
                             <t t-if="promo_promotion">
-                            <td>Promotion</td>
+                            <td>Promo</td>
                             <td>:</td>
                                 <td style="text-align: right;" t-esc="promo_promotion[0].name"/>
                             </t>
