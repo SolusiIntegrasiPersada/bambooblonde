@@ -66,7 +66,7 @@
       <field name="model">visitor.region</field>
       <field name="arch" type="xml">
         <tree string="Nationality" editable='top'>
-          <field name="sequence" widget="handle"/>
+          <field name="sequence" string="Region ID"/>
           <field name="name"/>
         </tree>
       </field>

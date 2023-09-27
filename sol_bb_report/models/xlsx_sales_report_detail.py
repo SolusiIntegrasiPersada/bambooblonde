@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import io
 import base64
 
-header_table = ['Sales ID', 'Sales Date', 'Sales Time', 'Client No', 'Member Name', 'Outlet ID', 'Outlet Name', 'Staff', 'Staff Name', 'Credit Card Type', 'Credit Card No', 'Credit Card Name', 'Credit Card Expired Date', 'Credit Card Charge', 'Credit Card Authorisation', 'Credit Card Amount', 'Bank Name', 'Notes', 'Cash Amount', 'Voucher', 'Void', 'Void Date', 'Void Staff', 'Void Staff Name', 'Change', 'Shift Code', 'Card Bank', 'Nation ID', 'Nation Desc', 'Sale SP', 'Sales Person', 'Void Note', 'Barcode', 'Qty', 'Total Price', 'Total Cost', 'Stock Name', 'Stock ID', 'Color', 'Size Num', 'Model', 'Category', 'Stock Type', 'Stock Class']
+header_table = ['Sales ID', 'Sales Date', 'Sales Time', 'Client No', 'Member Name', 'Outlet ID', 'Outlet Name', 'Staff Name', 'Credit Card Amount', 'Bank Name', 'Notes', 'Cash Amount', 'Voucher', 'Void', 'Void Date', 'Void Staff Name', 'Change', 'Shift Code', 'Card Bank', 'Nation ID', 'Nation Desc', 'Void Note', 'Barcode', 'Qty', 'Total Price', 'Total Cost', 'Stock Name', 'Stock ID', 'Color', 'Size Num', 'Model', 'Category', 'Stock Type', 'Stock Class']
 
 class XlsxSalesReportDetail(models.Model):
     _name = 'report.sol_bb_report.sales_report_detail.xlsx'
@@ -29,8 +29,37 @@ class XlsxSalesReportDetail(models.Model):
             ('order_id.date_order', '>=', datas.get('from_date')),
             ('order_id.date_order', '<=', datas.get('to_date')),
             ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
-            ('price_subtotal_incl', '>', 0),
         ])
+        
+        # function
+        
+        def compute_amount_payment(order, payment_method):
+            amount = 0
+            if payment_method == "bank" :
+                amount = sum(order.payment_ids.filtered(lambda x: x.payment_method_id.journal_id.type == 'bank').mapped('amount'))
+            if payment_method == "bank_name" :
+                bank_name = order.payment_ids.filtered(lambda x: x.payment_method_id.journal_id.type == 'bank')
+                if bank_name :
+                    return bank_name[0].payment_method_id.name
+                else :
+                    return ""
+            if payment_method == "cash" :
+                amount = sum(order.payment_ids.filtered(lambda x: x.payment_method_id.journal_id.type == 'cash' and x.amount > 0).mapped('amount'))
+            if payment_method == "change" :
+                amount = abs(sum(order.payment_ids.filtered(lambda x: x.amount < 0 ).mapped('amount')))
+            if payment_method == "voucher" :
+                amount = abs(sum(order.lines.filtered(lambda x: x.product_id.is_produk_promotion).mapped('price_subtotal_incl')))
+                
+            if payment_method == "void" :
+                if order.amount_total > 0 :
+                    return "False"
+                else :
+                    return "True"
+                
+            if amount > 0 :
+                return amount
+            else :
+                return ""
 
 
         sheet = workbook.add_worksheet(f'Sales DetailS')
@@ -47,42 +76,33 @@ class XlsxSalesReportDetail(models.Model):
 
         row += 1
         no = 1
-        for pol in pos_order_line:
-            sales_id = pol.order_id.pos_reference
+        for pol in pos_order_line.filtered(lambda x: not x.product_id.is_shooping_bag and not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion):
+            sales_id = pol.order_id.pos_reference.replace("Order ","")
             sales_date = pol.order_id.date_order.strftime('%d/%m/%Y') if pol.order_id.date_order else ''
             sales_time = pol.order_id.date_order.strftime('%H:%M:%S') if pol.order_id.date_order else ''
-            client_no = f'HO0{str(int(pol.discount))}' if pol.discount else 'Cash'
-            member_name = f'HO0{str(int(pol.discount))}' if pol.discount else 'Cash'
-            outlet_id = pol.order_id.session_id.config_id.id
+            # client_no = f'HO0{str(int(pol.discount))}' if pol.discount else 'Cash'
+            client_no = pol.order_id.partner_id.ref if pol.order_id.partner_id else ''
+            member_name = pol.order_id.partner_id.name if pol.order_id.partner_id else ''
+            outlet_id = pol.order_id.session_id.config_id.outlet_id or ''
             outlet_name = pol.order_id.session_id.config_id.name or ''
-            staff_id = pol.order_id.session_id.id
-            staff_name = pol.order_id.session_id.name or ''
-            credit_card_type = ''
-            credit_card_no = ''
-            credit_card_name = ''
-            credit_card_exp_date = ''
-            credit_card_charge = 0
-            credit_card_authorisation = ''
-            credit_card_amount = 0
-            bank_name = ''
-            notes = pol.order_id.note or ''
-            cash_amount = 0
-            voucher = ''
-            void = ''
-            void_date = ''
-            void_staff = ''
-            void_staff_name = ''
-            change = 0
-            shift_code = ''
-            card_bank = ''
-            nation_id = ''
-            nation_desc = ''
-            sale_sp = ''
-            sales_person = ''
-            void_notes = ''
+            staff_name = pol.order_id.note if pol.order_id.note else ''
+            credit_card_amount = compute_amount_payment(pol.order_id, "bank")
+            bank_name = compute_amount_payment(pol.order_id, "bank_name") or ''
+            notes = pol.customer_note or ''
+            cash_amount = compute_amount_payment(pol.order_id, "cash")
+            voucher = compute_amount_payment(pol.order_id, "voucher")
+            void = compute_amount_payment(pol.order_id, "void")
+            void_date = sales_date if void == "True" else ""
+            void_staff_name = staff_name if void == "True" else ""
+            change = compute_amount_payment(pol.order_id, "change")
+            shift_code = pol.order_id.session_id.shift or ''
+            card_bank = bank_name or ''
+            nation_id = pol.order_id.region_id.sequence or ''
+            nation_desc = pol.order_id.region_id.name or ''
+            void_notes = notes if void == "True" else ""
             barcode = pol.product_id.barcode or ''
             qty = pol.qty or 0
-            total_price = pol.price_subtotal_incl
+            total_price = pol.price_subtotal_incl or ''
             total_cost = pol.product_id.standard_price * qty
             stock_name = pol.product_id.name or ''
             stock_id = pol.product_id.default_code or ''
@@ -97,25 +117,11 @@ class XlsxSalesReportDetail(models.Model):
                 if any(v.display_name.upper().startswith(word) for word in list_color):
                     color += v.name
             
-            model = ''
+            model = pol.product_id.product_model_categ_id.name or ""
             category = pol.product_id.categ_id.name or ''
             stock_type = pol.product_id.stock_type.name or ''
             stock_class = pol.product_id.class_product.name or ''
 
-            # brand = pol.company_id.name or ''
-            # category = pol.product_id.categ_id.name or ''
-            # barcode = pol.product_id.barcode or ''
-            # style_code = pol.product_id.default_code or ''
-            # stock_class = pol.product_id.class_product.name or ''
-
-            # stock_name = pol.product_id.name or ''
-            # last_cost = pol.product_id.standard_price
-            # last_price = pol.price_unit
-            # qty_sold = pol.qty
-            # total = last_cost * qty_sold
-            # total_sold = last_price * qty_sold
-            # margin = 0
-            # payment = pol.order_id.payment_ids[0].payment_method_id.name or '' if len(pol.order_id.payment_ids) > 0 else ''
 
             sheet.write(row, 0, sales_id, formatDetailTableReOrder)
             sheet.write(row, 1, sales_date, formatDetailTableReOrder)
@@ -124,43 +130,36 @@ class XlsxSalesReportDetail(models.Model):
             sheet.write(row, 4, member_name, formatDetailTableReOrder)
             sheet.write(row, 5, outlet_id, formatDetailTableReOrder)
             sheet.write(row, 6, outlet_name, formatDetailTableReOrder)
-            sheet.write(row, 7, staff_id, formatDetailTableReOrder)
-            sheet.write(row, 8, staff_name, formatDetailTableReOrder)
-            sheet.write(row, 9, credit_card_type, formatDetailTableReOrder)
-            sheet.write(row, 10, credit_card_no, formatDetailTableReOrder)
-            sheet.write(row, 11, credit_card_name, formatDetailTableReOrder)
-            sheet.write(row, 12, credit_card_exp_date, formatDetailTableReOrder)
-            sheet.write(row, 13, credit_card_charge, formatDetailTableReOrder)
-            sheet.write(row, 14, credit_card_authorisation, formatDetailTableReOrder)
-            sheet.write(row, 15, credit_card_amount, formatDetailTableReOrder)
-            sheet.write(row, 16, bank_name, formatDetailTableReOrder)
-            sheet.write(row, 17, notes, formatDetailTableReOrder)
-            sheet.write(row, 18, cash_amount, formatDetailTableReOrder)
-            sheet.write(row, 19, voucher, formatDetailTableReOrder)
-            sheet.write(row, 20, void, formatDetailTableReOrder)
-            sheet.write(row, 21, void_date, formatDetailTableReOrder)
-            sheet.write(row, 22, void_staff, formatDetailTableReOrder)
-            sheet.write(row, 23, void_staff_name, formatDetailTableReOrder)
-            sheet.write(row, 24, change, formatDetailTableReOrder)
-            sheet.write(row, 25, shift_code, formatDetailTableReOrder)
-            sheet.write(row, 26, card_bank, formatDetailTableReOrder)
-            sheet.write(row, 27, nation_id, formatDetailTableReOrder)
-            sheet.write(row, 28, nation_desc, formatDetailTableReOrder)
-            sheet.write(row, 29, sale_sp, formatDetailTableReOrder)
-            sheet.write(row, 30, sales_person, formatDetailTableReOrder)
-            sheet.write(row, 31, void_notes, formatDetailTableReOrder)
-            sheet.write(row, 32, barcode, formatDetailTableReOrder)
-            sheet.write(row, 33, qty, formatDetailTableReOrder)
-            sheet.write(row, 34, total_price, formatDetailCurrencyTable)
-            sheet.write(row, 35, total_cost, formatDetailCurrencyTable)
-            sheet.write(row, 36, stock_name, formatDetailTableReOrder)
-            sheet.write(row, 37, stock_id, formatDetailTableReOrder)
-            sheet.write(row, 38, color, formatDetailTableReOrder)
-            sheet.write(row, 39, size_num, formatDetailTableReOrder)
-            sheet.write(row, 40, model, formatDetailTableReOrder)
-            sheet.write(row, 41, category, formatDetailTableReOrder)
-            sheet.write(row, 42, stock_type, formatDetailTableReOrder)
-            sheet.write(row, 43, stock_class, formatDetailTableReOrder)
+            sheet.write(row, 7, staff_name, formatDetailTableReOrder)
+            sheet.write(row, 8, credit_card_amount, formatDetailCurrencyTable)
+            sheet.write(row, 9, bank_name, formatDetailTableReOrder)
+            sheet.write(row, 10, notes, formatDetailTableReOrder)
+            sheet.write(row, 11, cash_amount, formatDetailCurrencyTable)
+            sheet.write(row, 12, voucher, formatDetailCurrencyTable)
+            sheet.write(row, 13, void, formatDetailTableReOrder)
+            sheet.write(row, 14, void_date, formatDetailTableReOrder)
+            sheet.write(row, 15, void_staff_name, formatDetailTableReOrder)
+            sheet.write(row, 16, change, formatDetailCurrencyTable)
+            sheet.write(row, 17, shift_code, formatDetailTableReOrder)
+            sheet.write(row, 18, card_bank, formatDetailTableReOrder)
+            sheet.write(row, 19, nation_id, formatDetailTableReOrder)
+            sheet.write(row, 20, nation_desc, formatDetailTableReOrder)
+            sheet.write(row, 21, void_notes, formatDetailTableReOrder)
+            sheet.write(row, 22, barcode, formatDetailTableReOrder)
+            sheet.write(row, 23, qty, formatDetailTableReOrder)
+            sheet.write(row, 24, total_price, formatDetailCurrencyTable)
+            sheet.write(row, 25, total_cost, formatDetailCurrencyTable)
+            sheet.write(row, 26, stock_name, formatDetailTableReOrder)
+            sheet.write(row, 27, stock_id, formatDetailTableReOrder)
+            sheet.write(row, 28, color, formatDetailTableReOrder)
+            sheet.write(row, 29, size_num, formatDetailTableReOrder)
+            sheet.write(row, 30, model, formatDetailTableReOrder)
+            sheet.write(row, 31, category, formatDetailTableReOrder)
+            sheet.write(row, 32, stock_type, formatDetailTableReOrder)
+            sheet.write(row, 33, stock_class, formatDetailTableReOrder)
+
+
+
 
             row += 1
             no += 1
