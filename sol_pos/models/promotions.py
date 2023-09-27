@@ -264,6 +264,19 @@ class CouponProgram(models.Model):
     
     qty_generate = fields.Float(string='QTY to generate pos')
     
+    sold_in_pos_id = fields.Many2one(
+        string='Sold on Order',
+        comodel_name='pos.order',
+    )
+    
+    sold_in_pos_confiq_id = fields.Many2one(
+        string='Sold on Pos',
+        comodel_name='pos.config',
+        related='sold_in_pos_id.config_id'
+    )
+    
+    
+    
     @api.depends("rule_partners_domain")
     def _compute_valid_partner_ids(self):
         
@@ -302,6 +315,17 @@ from uuid import uuid4
 class Coupon(models.Model):
     _inherit = "coupon.coupon"
     
+    sold_in_pos_id = fields.Many2one(
+        string='Sold on Order',
+        comodel_name='pos.order',
+        related='program_id.sold_in_pos_id'
+    )
+    
+    sold_in_pos_confiq_id = fields.Many2one(
+        string='Sold on Pos',
+        comodel_name='pos.config',
+        related='sold_in_pos_id.config_id'
+    )
     
     @api.model
     def create(self, values):

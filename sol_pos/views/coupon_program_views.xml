@@ -11,10 +11,52 @@
             <xpath expr="//group[@name='validity']" position="inside">
                 <label for="is_generate_pos" string="Is Generate Pos"/>
                 <div>
-                    
+
                     <field name="is_generate_pos" class="oe_inline"/>
+                </div>
+                <label for="sold_in_pos_id"/>
+                <div>
+
+                    <field name="sold_in_pos_id" class="oe_inline"/>
+                </div>
+                <label for="sold_in_pos_confiq_id"/>
+                <div>
+
+                    <field name="sold_in_pos_confiq_id" class="oe_inline"/>
                 </div>
             </xpath>
         </field>
     </record>
+    <record id="coupon_view_form2" model="ir.ui.view">
+        <field name="name">coupon_view_form2</field>
+        <field name="model">coupon.coupon</field>
+        <field name="inherit_id" ref="coupon.coupon_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="sold_in_pos_id" readonly="1"/>
+                <field name="sold_in_pos_confiq_id" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="coupon_program_view_tree2" model="ir.ui.view">
+        <field name="name">coupon_program_view_tree2</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="id" readonly="1" invisible="1"/>
+                <field name="sold_in_pos_id" readonly="1" />
+                <field name="sold_in_pos_confiq_id" readonly="1" />
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">id desc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
 </odoo>

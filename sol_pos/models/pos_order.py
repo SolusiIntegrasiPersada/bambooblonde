@@ -59,6 +59,7 @@ class PosOrder(models.Model):
                         'is_generate_pos': True,
                         'qty_generate': line.qty,
                         'discount_fixed_amount': line.price_unit,
+                        'sold_in_pos_id': order.id,
                     })
                      
                     # vals = {'program_id': coupon_program.id}
