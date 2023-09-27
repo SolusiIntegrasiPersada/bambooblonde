@@ -40,6 +40,35 @@ class PosOrder(models.Model):
         order_fields = super(PosOrder, self)._order_fields(ui_order)
         order_fields['note'] = ui_order.get('note')
         return order_fields
+    
+    @api.model
+    def create_from_ui(self, orders, draft=False):
+        order_ids = super(PosOrder, self).create_from_ui(orders, draft)
+        
+        for order in self.sudo().browse([o["id"] for o in order_ids]):
+            for line in order.lines:
+                if line.product_id.is_voucher:
+                    coupon_program = self.env['coupon.program']
+                    coupon_program.create({
+                        'name': 'Voucher Discount ' + str(line.price_unit),
+                        'program_type': 'coupon_program',
+                        'rule_products_domain': '[["available_in_pos","=",True]]',
+                        'reward_type': 'discount',
+                        'discount_type': 'fixed_amount',
+                        'active': True,
+                        'is_generate_pos': True,
+                        'qty_generate': line.qty,
+                        'discount_fixed_amount': line.price_unit,
+                    })
+                     
+                    # vals = {'program_id': coupon_program.id}
+                    # if  line.qty > 0:
+                    #     for count in range(0, int(line.qty)):
+                    #         coupon = self.env['coupon.coupon'].create(vals)
+
+        return order_ids
+
+
 
 
 class PosOrderLine(models.Model):

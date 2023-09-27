@@ -46,3 +46,44 @@ class PosConfig(models.Model):
         help="Enable this option to Show Offers in Orderline.",
         default=True
     )
+    
+    def use_coupon_code(self, code, creation_date, partner_id, reserved_program_ids):
+        coupon_to_check = self.env["coupon.coupon"].search(
+            [("code", "=", code), ("program_id", "in", self.program_ids.ids)]
+        )
+        if not coupon_to_check :
+            program_generate_pos = self.env["coupon.program"].search(
+            [("is_generate_pos", "=", True)])
+            coupon_to_check = self.env["coupon.coupon"].search(
+                [("code", "=", code), ("program_id", "in", program_generate_pos.ids)]
+            )
+           
+        # If not unique, we only check the first coupon.
+        coupon_to_check = coupon_to_check[:1]
+        if not coupon_to_check:
+            return {
+                "successful": False,
+                "payload": {
+                    "error_message": _("This coupon is invalid (%s).") % (code)
+                },
+            }
+        message = coupon_to_check._check_coupon_code(
+            fields.Date.from_string(creation_date[:11]),
+            partner_id,
+            reserved_program_ids=reserved_program_ids,
+        )
+        error_message = message.get("error", False)
+        if error_message:
+            return {
+                "successful": False,
+                "payload": {"error_message": error_message},
+            }
+
+        coupon_to_check.sudo().write({"state": "used"})
+        return {
+            "successful": True,
+            "payload": {
+                "program_id": coupon_to_check.program_id.id,
+                "coupon_id": coupon_to_check.id,
+            },
+        }

@@ -262,6 +262,8 @@ class BuyXGetDiscountOnY(models.Model):
 class CouponProgram(models.Model):
     _inherit = "coupon.program"
     
+    qty_generate = fields.Float(string='QTY to generate pos')
+    
     @api.depends("rule_partners_domain")
     def _compute_valid_partner_ids(self):
         
@@ -270,4 +272,53 @@ class CouponProgram(models.Model):
         for program in self.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
             program.valid_partner_ids._compute_promo_coupon()
             
+        return res
+    
+    is_generate_pos = fields.Boolean(string='Is Generate Pos', default=False, readonly=True)
+    
+    
+    @api.model
+    def create(self, values):
+        res = super(CouponProgram, self).create(values)
+        for coupon in res :
+            if  coupon.qty_generate > 0 and coupon.is_generate_pos:
+                vals = {'program_id': coupon.id}
+                for count in range(0, int(coupon.qty_generate)):
+                    coupon_voucher = self.env['coupon.coupon'].create(vals)
+                    
+                # push to all pos.config
+                pos_config = self.env["pos.config"].search([("use_coupon_programs", "=", True)])
+                
+                for pos in pos_config :
+                    pos.coupon_program_ids = [(4, coupon.id)]
+                    
+            if coupon.discount_line_product_id :
+                coupon.discount_line_product_id.is_produk_promotion = True
+        return res
+
+from uuid import uuid4
+
+    
+class Coupon(models.Model):
+    _inherit = "coupon.coupon"
+    
+    
+    @api.model
+    def create(self, values):
+        res = super(Coupon, self).create(values)
+        for x in res :
+            number = self.env['ir.sequence'].next_by_code('coupon.sequence')
+            
+            if not number:
+                # Jika sequence tidak ada, maka buat sequence baru
+                sequence_values = {
+                    'name': "Coupon Sequence",
+                    'code': "coupon.sequence",
+                    'padding': 4,
+                    'suffix': "/%(y)s",
+                }
+                self.env['ir.sequence'].create(sequence_values)
+                number = self.env['ir.sequence'].next_by_code('coupon.sequence')
+            
+            x.code = number
         return res

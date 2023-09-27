@@ -8,6 +8,13 @@
             <xpath expr="///group[@name='reward']/field[@name='discount_line_product_id']" position="attributes">
                 <attribute name="readonly">0</attribute>
             </xpath>
+            <xpath expr="//group[@name='validity']" position="inside">
+                <label for="is_generate_pos" string="Is Generate Pos"/>
+                <div>
+                    
+                    <field name="is_generate_pos" class="oe_inline"/>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

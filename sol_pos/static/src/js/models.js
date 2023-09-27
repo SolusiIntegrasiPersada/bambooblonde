@@ -91,6 +91,37 @@ odoo.define("sol_pos.models", function (require) {
             })
         },
     }, {
+        model: 'coupon.program',
+        fields: [],
+        'domain': function (self) {
+            return [
+                '|',
+                ['id', 'in', self.config.program_ids],
+                ['is_generate_pos', '=', true],
+            ];
+        },
+        loaded: function (self, programs) {
+            self.programs = programs;
+            self.coupon_programs_by_id = {};
+            self.coupon_programs = [];
+            self.promo_programs = [];
+            for (let program of self.programs) {
+                // index by id
+                self.coupon_programs_by_id[program.id] = program;
+                // separate coupon programs from promo programs
+                if (program.program_type === 'coupon_program') {
+                    self.coupon_programs.push(program);
+                } else {
+                    self.promo_programs.push(program);
+                }
+                // cast some arrays to Set for faster membership checking
+                program.valid_product_ids = new Set(program.valid_product_ids);
+                program.valid_partner_ids = new Set(program.valid_partner_ids);
+                program.discount_specific_product_ids = new Set(program.discount_specific_product_ids);
+            }
+            // debugger ;
+        },
+    },{
         model: 'buy_x.get_y_qty',
         fields: [],
         domain: function (self) {
