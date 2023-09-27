@@ -17,7 +17,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    "depends": ["base", "account","sale"],
+    "depends": ["base", "account", "sale", "account_reports"],
     # always loaded
     "data": [
         # 'security/ir.model.access.csv',
@@ -27,6 +27,7 @@
         "views/journal_views.xml",
         "views/res_partner_views.xml",
         "views/account_payment_views.xml",
+        "views/account_bank_statement_views.xml",
         "report/action_report.xml",
         "report/report_invoice_views.xml",
     ],
