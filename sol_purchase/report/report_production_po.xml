@@ -108,7 +108,7 @@
                             <td style="width: 8.37037%; height: 36px; font-size: 10px; border: 1pt solid black; text-align: center;"><strong>Total</strong></td>
                             <td style="width:8.37037%; height: 36px; font-size: 10px; border: 1pt solid black; text-align: center;"><strong>Comment</strong></td>
                         </tr>
-                        <t t-foreach="doc.get_last_record_order()" t-as="rec">
+                        <t t-foreach="o.get_last_record_order()" t-as="rec">
                             <tr style="height: 18px; border: 1pt solid black;">
                                 <td style="width: 36.1542%; height: 162px; font-size: 13px; border: 1pt solid black; text-align: center;" colspan="4" rowspan="1">
                                     <img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/>
