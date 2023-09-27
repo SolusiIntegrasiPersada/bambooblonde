@@ -23,9 +23,9 @@ class RegisterDetailReport(models.TransientModel):
     config_id = fields.Many2one('pos.config', 'Point of Sale')
     shift = fields.Selection([('ALL','ALL'), ('Shift A','Shift A'), ('Shift B', 'Shift B')], 'Shift', default='ALL')
 
-    @api.onchange('start_period')
-    def onchange_end_period(self):
-        self.end_period = self.start_period
+    # @api.onchange('start_period')
+    # def onchange_end_period(self):
+    #     self.end_period = self.start_period
 
         
     def print_excel_report(self):
@@ -386,7 +386,7 @@ class RegisterDetailReport(models.TransientModel):
             grand_total_return = total_return_per_date
             grand_total_netsales = total_netsales_per_date
 
-            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period), wbf['total_smoke'])
+            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period) + " s/d " + str(self.end_period), wbf['total_smoke'])
             worksheet.write(row2-1, 3, total_sales_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 4, total_paymentcash_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 5, '-', wbf['total_float_smoke2'])
@@ -572,7 +572,7 @@ class RegisterDetailReport(models.TransientModel):
             grand_total_netsales = total_netsales_per_date
 
             row2=row1
-            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period), wbf['total_smoke'])
+            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period) + " s/d " + str(self.end_period), wbf['total_smoke'])
             worksheet.write(row2-1, 3, total_sales_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 4, total_paymentcash_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 5, '-', wbf['total_float_smoke2'])
@@ -760,7 +760,7 @@ class RegisterDetailReport(models.TransientModel):
             grand_total_return = total_return_per_date
             grand_total_netsales = total_netsales_per_date
 
-            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period), wbf['total_smoke'])
+            worksheet.merge_range('A%s:C%s'%(row2,row2), 'Total Per ' + str(self.start_period) + " s/d " + str(self.end_period), wbf['total_smoke'])
             worksheet.write(row2-1, 3, total_sales_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 4, total_paymentcash_per_date, wbf['total_float_smoke'])
             worksheet.write(row2-1, 5, '-', wbf['total_float_smoke2'])

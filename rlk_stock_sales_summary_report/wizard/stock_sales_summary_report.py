@@ -24,9 +24,9 @@ class StockSalesSummaryReport(models.TransientModel):
     config_id = fields.Many2one('pos.config', 'Point of Sale')
     shift = fields.Selection([('ALL', 'ALL'), ('Shift A', 'Shift A'), ('Shift B', 'Shift B')], 'Shift', default='ALL')
 
-    @api.onchange('start_period')
-    def onchange_end_period(self):
-        self.end_period = self.start_period
+    # @api.onchange('start_period')
+    # def onchange_end_period(self):
+    #     self.end_period = self.start_period
 
     def print_excel_report(self):
         data = self.read()[0]
@@ -263,7 +263,7 @@ class StockSalesSummaryReport(models.TransientModel):
 
         # Membuat daftar kategori, produk, deskripsi, ukuran, warna
         data = {}
-        for line in docs:
+        for line in docs.filtered(lambda x: not x.product_id.is_shooping_bag and not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion):
             product = line.product_id
             color = line.color
             size = line.size

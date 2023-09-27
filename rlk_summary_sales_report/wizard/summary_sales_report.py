@@ -22,9 +22,9 @@ class SummarySalesReport(models.TransientModel):
     config_id = fields.Many2one('pos.config', 'Point of Sale')
     shift = fields.Selection([('ALL', 'ALL'), ('Shift A', 'Shift A'), ('Shift B', 'Shift B')], 'Shift', default='ALL')
 
-    @api.onchange('start_period')
-    def onchange_end_period(self):
-        self.end_period = self.start_period
+    # @api.onchange('start_period')
+    # def onchange_end_period(self):
+    #     self.end_period = self.start_period
 
     def print_excel_report(self):
         data = self.read()[0]
@@ -39,6 +39,11 @@ class SummarySalesReport(models.TransientModel):
         d_day = str(date.strftime("%d"))
         d_month = str(date.strftime("%B"))
         d_year = str(date.strftime("%y"))
+        
+        enddate = datetime.strptime(str(self.end_period), '%Y-%m-%d')
+        endd_day = str(enddate.strftime("%d"))
+        endd_month = str(enddate.strftime("%B"))
+        endd_year = str(enddate.strftime("%y"))
 
         # where_ids = " and 1=1 "
         # if user_id :
@@ -173,8 +178,9 @@ class SummarySalesReport(models.TransientModel):
         worksheet.set_column('G:G', 8)
 
         period = self.start_period
+        period_end = self.end_period
         start_datetime = datetime(period.year, period.month, period.day, 0, 0, 0) - timedelta(hours=7)
-        end_datetime = datetime(period.year, period.month, period.day, 23, 59, 59) - timedelta(hours=7)
+        end_datetime = datetime(period_end.year, period_end.month, period_end.day, 23, 59, 59) - timedelta(hours=7)
         if self.shift == 'ALL':
             pos_session_ids = self.env['pos.session'].sudo().search(
                 [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
@@ -218,7 +224,7 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('D5:G5', '', wbf['content'])
             worksheet.merge_range('D6:G6', '-', wbf['content'])
             worksheet.merge_range('D7:G7', pos_name or '', wbf['content'])
-            worksheet.merge_range('D8:G8', str(d_day) + ' ' + str(d_month) + ' ' + str(d_year) or '', wbf['content'])
+            worksheet.merge_range('D8:G8', str(d_day) + ' ' + str(d_month) + ' ' + str(d_year) + ' - ' + str(endd_day) + ' ' + str(endd_month) + ' ' + str(endd_year), wbf['content'])
             worksheet.merge_range('D9:G9', shift or '', wbf['content'])
             worksheet.merge_range('D10:G10', res['qty_sold'] or '', wbf['content_number'])
             worksheet.merge_range('D11:G11', res['before_discount'] or '', wbf['content_float'])

@@ -14,8 +14,8 @@
 		        			<field name="shift" required="1"/>
 		                </group>
 		                <group>
-		                	<field name="start_period" required="1" string="Date"/>
-		                    <field name="end_period" required="1" invisible="1"/>
+		                	<field name="start_period" required="1" string="Start Date"/>
+		                    <field name="end_period" required="1" string="End Date"/>
 		                </group>
 		        	</group>
 
