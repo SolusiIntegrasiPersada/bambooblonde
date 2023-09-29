@@ -138,6 +138,8 @@ class PurchaseOrder(models.Model):
                 vals = {
                     'product_id': None,
                     'image': None,
+                    'is_varian_label': True,
+                    'varian_amount': product_line.price_unit,
                     'product_qty': product_line.product_qty,
                     'lining_por': product_line.lining_por.id,
                     'fabric_por': product_line.fabric_por.id,
@@ -199,6 +201,8 @@ class PurchaseOrderLine(models.Model):
     label = fields.Many2one(comodel_name='label.comp', string='Label')
     prod_comm = fields.Html(string='Comment')
     comment_bool = fields.Boolean(default=False)
+    is_varian_label = fields.Boolean("Is Variant Label", default=False)
+    varian_amount = fields.Float("Variant Amount", default=False)
 
     @api.onchange('product_id')
     def _onchange_image(self):
@@ -207,6 +211,21 @@ class PurchaseOrderLine(models.Model):
             if self.product_id.image_1920:
                 self.image = self.product_id.image_1920
             return image
+
+
+    @api.onchange('product_qty')
+    def is_variant_label(self):
+        for line in self:
+            if line.is_varian_label:
+                line.price_unit = line.varian_amount
+
+
+    @api.onchange('price_unit')
+    def variant_amount(self):
+        for line in self:
+            if line.is_varian_label:
+                line.varian_amount = line.price_unit
+
 
     @api.depends('product_id')
     def _onchange_color_size(self):
