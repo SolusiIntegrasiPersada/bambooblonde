@@ -24,7 +24,7 @@
         </record>
 
         <record model='ir.actions.act_window' id='report_sample_development_wizard_action'>
-            <field name="name">Report Sample Development</field>
+            <field name="name">Order Suggest Report</field>
             <field name="res_model">report.sample.development.wizard</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="report_sample_development_wizard_form"/>
@@ -36,8 +36,8 @@
             id="menu_report_sample_development"
             sequence="5"/>
 
-        <menuitem name="Report Sample Development"
-            parent="sol_bb_report.menu_report_sample_development"
+        <menuitem name="Order Suggest Report"
+            parent="purchase_request.menu_purchase_budget"
             id="menu_report_sample_development_wizard"
             action="report_sample_development_wizard_action"
             sequence="5"/>
@@ -48,7 +48,7 @@
             string="Report Sample Development"
             report_type="xlsx"
             name="sol_bb_report.sample_development.xlsx"
-            file="Report Sample Development.xlsx"
+            file="Order Suggest Report.xlsx"
             menu="False"
             attachment_use="False"/>
     </data>
