@@ -35,7 +35,7 @@ class RlkPlainPrintReport(models.TransientModel):
         
         datetime_string = self.get_default_date_model().strftime("%Y-%m-%d %H:%M:%S")
         date_string = self.get_default_date_model().strftime("%Y-%m-%d")
-        report_name = 'Plain Print Report'
+        report_name = 'Main Color Sales Stock Report'
         filename = '%s %s'%(report_name,date_string)
       
         fp = BytesIO()
@@ -103,7 +103,7 @@ class RlkPlainPrintReport(models.TransientModel):
             ('order_id.date_order', '>=', self.start_period),
             ('order_id.date_order', '<=', self.end_period),
             ('order_id.state', 'not in', ['draft','cancel']),
-            ('product_id.categ_id.display_name', 'ilike', 'WOMEN CLOTHES')
+            ('product_id.product_model_categ_id.name', '=', 'WOMENS WEAR')
         ])
         
         groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name))
@@ -121,7 +121,7 @@ class RlkPlainPrintReport(models.TransientModel):
             data[main_color]['qty_print_sold'] += qty_sold
             
         quants = self.env['stock.quant'].search([
-            ('product_id.categ_id.display_name', 'ilike', 'WOMEN CLOTHES'),
+            ('product_id.product_model_categ_id.name', '=', 'WOMENS WEAR'),
             ('location_id.usage', '=', 'internal'),
             # ('quantity', '>', 0),
             # ('create_date', '>=', self.start_period),
@@ -155,16 +155,16 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold != 0:
-                percent_print_sold = round(values['qty_print_sold'] / total_qty_print_sold, 2) or 0
+                percent_print_sold = round((values['qty_print_sold'] / total_qty_print_sold)*100, 2) or 0
             if total_qty_print_stock != 0:
-                percent_print_stock = round(values['qty_print_stock'] / total_qty_print_stock, 2) or 0
+                percent_print_stock = round((values['qty_print_stock'] / total_qty_print_stock)*100, 2) or 0
 
 
             print_sold_stock = values['qty_print_sold'] + values['qty_print_stock']
 
             if print_sold_stock != 0:
                 sell_thru_print = values['qty_print_sold']/print_sold_stock
-            sell_thru_print = round(sell_thru_print, 2) or 0
+            sell_thru_print = round((sell_thru_print)*100, 2) or 0
 
             worksheet.write('A%s:B%s' %(row, row), main_color or '', wbf['content'])
             worksheet.write('B%s:C%s' %(row, row), values['qty_print_sold'] or '', wbf['content_float'])
@@ -180,9 +180,9 @@ class RlkPlainPrintReport(models.TransientModel):
             total_sell_thru_print += sell_thru_print
 
 
-        total_percent_print_sold = round(total_percent_print_sold, 2) or 0
-        total_percent_print_stock = round(total_percent_print_stock, 2) or 0
-        total_sell_thru_print = round(total_sell_thru_print, 2) or 0
+        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100)
+        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
+        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
 
         worksheet.write('A%s:B%s' %(row, row), 'Grand Total', wbf['total_content'])
         worksheet.write('B%s:C%s' %(row, row), total_qty_print_sold or '', wbf['total_content_float'])
@@ -191,7 +191,7 @@ class RlkPlainPrintReport(models.TransientModel):
         worksheet.write('E%s:F%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
         worksheet.write('F%s:G%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
         
-        groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name, x.product_id.categ_id.parent_id.name))
+        groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name, x.product_id.product_category_categ_id.name))
         data_main_categ = {}
         
         
@@ -213,7 +213,7 @@ class RlkPlainPrintReport(models.TransientModel):
 
         for quant in quants:
             main_color = quant.product_id.main_color_id.name
-            category = quant.product_id.categ_id.parent_id.name
+            category = quant.product_id.product_category_categ_id.name
             main_color_plus_categ = f"{str(main_color)}/{str(category)}"
             if main_color_plus_categ not in data_main_categ:
                 data_main_categ[main_color_plus_categ] = {
@@ -258,16 +258,16 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold_b != 0:
-                percent_print_sold = round(colorxcateg['qty_print_sold'] / total_qty_print_sold_b, 2) or 0
+                percent_print_sold = round((colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100, 2) or 0
             if total_qty_print_stock_b != 0:
-                percent_print_stock = round(colorxcateg['qty_print_stock'] / total_qty_print_stock_b, 2) or 0
+                percent_print_stock = round((colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100, 2) or 0
 
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
 
             if print_sold_stock != 0:
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
-            sell_thru_print = round(sell_thru_print, 2) or 0
+            sell_thru_print = round((sell_thru_print)*100, 2) or 0
             
             
             if warna_old == 'new' :
@@ -315,9 +315,9 @@ class RlkPlainPrintReport(models.TransientModel):
             
         
 
-        total_percent_print_sold = round(total_percent_print_sold, 2) or 0
-        total_percent_print_stock = round(total_percent_print_stock, 2) or 0
-        total_sell_thru_print = round(total_sell_thru_print, 2) or 0
+        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100)
+        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
+        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
         
         if warna_old == colorxcateg['warna'] :
                 
@@ -342,14 +342,7 @@ class RlkPlainPrintReport(models.TransientModel):
         worksheet.write('M%s:N%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
         worksheet.write('N%s:O%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
         
-        
-        
-        
-        
-        
-        
-        
-        
+
         groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name, x.product_id.product_template_variant_value_ids.filtered(lambda x: x.attribute_id.name.upper() in ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']).name
 ))
         data_main_sub_color = {}
@@ -418,16 +411,16 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold_b != 0:
-                percent_print_sold = round(colorxcateg['qty_print_sold'] / total_qty_print_sold_b, 2) or 0
+                percent_print_sold = round((colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100, 2) or 0
             if total_qty_print_stock_b != 0:
-                percent_print_stock = round(colorxcateg['qty_print_stock'] / total_qty_print_stock_b, 2) or 0
+                percent_print_stock = round((colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100, 2) or 0
 
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
 
             if print_sold_stock != 0:
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
-            sell_thru_print = round(sell_thru_print, 2) or 0
+            sell_thru_print = round((sell_thru_print)*100, 2) or 0
             
             
             if warna_old == 'new' :
@@ -475,9 +468,10 @@ class RlkPlainPrintReport(models.TransientModel):
             
         
 
-        total_percent_print_sold = round(total_percent_print_sold, 2) or 0
-        total_percent_print_stock = round(total_percent_print_stock, 2) or 0
-        total_sell_thru_print = round(total_sell_thru_print, 2) or 0
+        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100) 
+        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
+        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
+            
         
         if warna_old == colorxcateg['warna'] :
                 
@@ -502,11 +496,7 @@ class RlkPlainPrintReport(models.TransientModel):
         worksheet.write('U%s:V%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
         worksheet.write('V%s:W%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
         
-        
-        
-    
-        
-     
+
 
         workbook.close()
         out=base64.encodestring(fp.getvalue())

@@ -38,7 +38,8 @@
                     </span> -->
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
-                    <field name="product_model_categ_id" string="Model Category"/>
+                    <field name="product_model_categ_id" string="Model Department"/>
+                    <field name="product_category_categ_id" string="Model Category"/>
                 </xpath>
             </field>
         </record>

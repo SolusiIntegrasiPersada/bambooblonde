@@ -7,7 +7,7 @@
 			<field name="type">form</field>
 			<field name="arch" type="xml">
 				
-		        <form string="Main Color Size &amp; Stock Report">
+		        <form string="Main Color Sales &amp; Stock Report">
 	                <group>
 		                <group>
 		                	<field name="start_period" required="1"/>
@@ -25,7 +25,7 @@
 	    </record>
 		
 	    <record id="action_plain_print_report_xlsx" model="ir.actions.act_window">
-			<field name="name">Main Color Size &amp; Stock Report</field>
+			<field name="name">Main Color Sales &amp; Stock Report</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">rlk.plain.print.report</field>
 			<field name="view_mode">form</field>
