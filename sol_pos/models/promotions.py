@@ -275,6 +275,24 @@ class CouponProgram(models.Model):
         related='sold_in_pos_id.config_id'
     )
     
+    code_coupon_generate = fields.Char(string='Code Coupon', 
+        compute='_compute_coupon_code_and_state' )
+    state_coupon_generate = fields.Char(string='State Coupon', 
+        compute='_compute_coupon_code_and_state' )
+    
+    @api.depends('is_generate_pos','coupon_ids','coupon_ids.state')
+    def _compute_coupon_code_and_state(self):
+        for record in self:
+            code_coupon_generate = False
+            state_coupon_generate = False
+            if record.is_generate_pos and record.coupon_ids :
+                code_coupon_generate = record.coupon_ids[0].code
+                state_coupon_generate = record.coupon_ids[0].state
+                
+            record.code_coupon_generate = code_coupon_generate
+            record.state_coupon_generate = state_coupon_generate
+    
+    
     
     
     @api.depends("rule_partners_domain")

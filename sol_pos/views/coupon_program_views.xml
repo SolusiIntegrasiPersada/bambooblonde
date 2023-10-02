@@ -14,16 +14,29 @@
 
                     <field name="is_generate_pos" class="oe_inline"/>
                 </div>
-                <label for="sold_in_pos_id"/>
-                <div>
+                <group attrs="{'invisible':[('is_generate_pos', '=', False)]}">
+                    <label for="sold_in_pos_id"/>
+                    <div>
 
-                    <field name="sold_in_pos_id" class="oe_inline"/>
-                </div>
-                <label for="sold_in_pos_confiq_id"/>
-                <div>
+                        <field name="sold_in_pos_id" class="oe_inline"/>
+                    </div>
+                    <label for="sold_in_pos_confiq_id"/>
+                    <div>
 
-                    <field name="sold_in_pos_confiq_id" class="oe_inline"/>
-                </div>
+                        <field name="sold_in_pos_confiq_id" class="oe_inline"/>
+                    </div>
+                    <label for="code_coupon_generate"/>
+                    <div>
+
+                        <field name="code_coupon_generate" class="oe_inline"/>
+                    </div>
+                    <label for="state_coupon_generate"/>
+                    <div>
+
+                        <field name="state_coupon_generate" class="oe_inline"/>
+                    </div>
+
+                </group>
             </xpath>
         </field>
     </record>
@@ -35,6 +48,7 @@
             <xpath expr="//field[@name='partner_id']" position="before">
                 <field name="sold_in_pos_id" readonly="1"/>
                 <field name="sold_in_pos_confiq_id" readonly="1"/>
+
             </xpath>
         </field>
     </record>
@@ -48,6 +62,8 @@
                 <field name="id" readonly="1" invisible="1"/>
                 <field name="sold_in_pos_id" readonly="1" />
                 <field name="sold_in_pos_confiq_id" readonly="1" />
+                <field name="code_coupon_generate" readonly="1"/>
+                <field name="state_coupon_generate" readonly="1"/>
             </xpath>
             <xpath expr="//tree" position="attributes">
                 <attribute name="default_order">id desc</attribute>
