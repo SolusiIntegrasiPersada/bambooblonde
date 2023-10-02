@@ -162,7 +162,7 @@ class RlkPlainPrintReport(models.TransientModel):
 
             print_sold_stock = values['qty_print_sold'] + values['qty_print_stock']
 
-            if print_sold_stock != 0:
+            if print_sold_stock != 0 and values['qty_print_sold'] != 0 and values['qty_print_stock'] != 0 : 
                 sell_thru_print = values['qty_print_sold']/print_sold_stock
             sell_thru_print = round((sell_thru_print)*100, 2) or 0
 
@@ -265,7 +265,7 @@ class RlkPlainPrintReport(models.TransientModel):
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
 
-            if print_sold_stock != 0:
+            if print_sold_stock != 0 and colorxcateg['qty_print_sold'] != 0 and colorxcateg['qty_print_stock'] != 0:
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
             sell_thru_print = round((sell_thru_print)*100, 2) or 0
             
@@ -418,8 +418,10 @@ class RlkPlainPrintReport(models.TransientModel):
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
 
-            if print_sold_stock != 0:
+            if print_sold_stock != 0 and colorxcateg['qty_print_sold'] != 0 and colorxcateg['qty_print_stock']:
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
+                
+        
             sell_thru_print = round((sell_thru_print)*100, 2) or 0
             
             
