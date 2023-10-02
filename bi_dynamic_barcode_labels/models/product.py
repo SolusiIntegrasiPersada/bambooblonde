@@ -44,13 +44,36 @@ class Product(models.Model):
 
     def get_barcode_dynamic(self):
         for doc in self:
-            barcode_model = self.get_no_model(doc)
+            print("get_barcode_dynamic")
+            barcode_model = doc.product_model_categ_id.code
+            if not barcode_model :
+                barcode_model = self.get_no_model(doc)
+                
+            barcode_categ = doc.categ_id.code
+            if not barcode_categ :
+                barcode_categ = self.get_no_categ(doc)
+            barcode_categ = barcode_categ.zfill(2)
 
-            barcode_categ = self.get_no_categ(doc)
-
-            barcode_color = self.get_no_color(doc)
-            barcode_size = self.get_no_size(doc)
-            barcode_sequence = self.get_no_sequence(doc)
+            
+            color = doc.product_template_variant_value_ids.filtered(
+            lambda x: str(x.attribute_id.name).upper() == "COLOR")
+            barcode_color = color.product_attribute_value_id.code
+            if not barcode_color :
+                barcode_color = self.get_no_color(doc)
+            
+            barcode_color = barcode_color.zfill(4)
+            
+            size = doc.product_template_variant_value_ids.filtered(
+            lambda x: str(x.attribute_id.name).upper() == "SIZE")
+            barcode_size = size.product_attribute_value_id.code
+            if not barcode_size :
+                barcode_size = self.get_no_size(doc)
+                
+            barcode_size = barcode_size.zfill(2)
+            
+            params = f"{barcode_model}{barcode_categ}{barcode_color}{barcode_size}"
+                
+            barcode_sequence = self.get_no_sequence(doc,params)
 
             barcode = f"{barcode_model}{barcode_categ}{barcode_color}{barcode_size}{barcode_sequence}"
             
@@ -64,7 +87,7 @@ class Product(models.Model):
 
 
     def get_no_categ(self, doc):
-        categ_name = doc.categ_id.name.upper()
+        categ_name = str(doc.categ_id.name).upper()
 
         # Dictionary untuk memetakan nama kategori ke nomor kategori
         categ_mapping = {
@@ -104,7 +127,7 @@ class Product(models.Model):
         return barcode_categ
 
     def get_no_model(self, doc):
-        model_categ = doc.product_model_categ_id.name.upper()
+        model_categ = str(doc.product_model_categ_id.name).upper()
 
     # Dictionary untuk memetakan nama model ke nomor model
         model_mapping = {
@@ -123,7 +146,7 @@ class Product(models.Model):
         return barcode_model
     def get_no_size(self, doc):
         attribute_size = doc.product_template_variant_value_ids.filtered(
-            lambda x: x.attribute_id.name.upper() == "SIZE")
+            lambda x: str(x.attribute_id.name).upper() == "SIZE")
         value_size = attribute_size.name.upper() if attribute_size else ""
 
         # Dictionary untuk memetakan nama model ke nomor model
@@ -171,7 +194,7 @@ class Product(models.Model):
 
     def get_no_color(self, doc):
         attribute_color = doc.product_template_variant_value_ids.filtered(
-            lambda x: x.attribute_id.name.upper() == "COLOR")
+            lambda x: str(x.attribute_id.name).upper() == "COLOR")
         value_color = attribute_color.name.upper() if attribute_color else ""
         # Dictionary untuk memetakan nama model ke nomor model
         color_mapping = {
@@ -762,20 +785,6 @@ class Product(models.Model):
 
         return barcode_color
 
-    def get_barcode_dynamic(self):
-        for doc in self:
-            barcode_model = self.get_no_model(doc)
-
-            barcode_categ = self.get_no_categ(doc)
-
-            barcode_color = self.get_no_color(doc)
-            barcode_size = self.get_no_size(doc)
-            params = f"{barcode_model}{barcode_categ}{barcode_color}{barcode_size}"
-            barcode_sequence = self.get_no_sequence(doc,params)
-
-            barcode = f"{barcode_model}{barcode_categ}{barcode_color}{barcode_size}{barcode_sequence}"
-            
-            doc.barcode = barcode
             
     
 
