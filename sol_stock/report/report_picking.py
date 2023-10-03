@@ -74,6 +74,7 @@ class StockPicking(models.Model):
                     'price': price,
                     'code': code,
                     'qtyy': [qty],
+                    'price_receipt': price_receipt
                 }
         category_list = []
         consolidated_data = []
@@ -86,6 +87,7 @@ class StockPicking(models.Model):
             price = type_data['price']
             code = type_data['code']
             qtyy = type_data['qtyy']
+            price_receipt = type_data['price_receipt']
 
             # Determine item_type based on matching types
             if all(size in type_a for size in sizes):
@@ -172,12 +174,22 @@ class StockPicking(models.Model):
                 'tot_g': tot_g,
                 'tot_h': tot_h,
                 'tot_i': tot_i,
+                'receipt_amount_b': amounts_receipt['amount_b'],
+                'receipt_amount_c': amounts_receipt['amount_c'],
+                'receipt_amount_d': amounts_receipt['amount_d'],
+                'receipt_amount_e': amounts_receipt['amount_e'],
+                'receipt_amount_f': amounts_receipt['amount_f'],
+                'receipt_amount_g': amounts_receipt['amount_g'],
+                'receipt_amount_h': amounts_receipt['amount_h'],
+                'receipt_amount_i': amounts_receipt['amount_i'],
                 'total_retail': total_retail,
                 'amount_total': amount_total,
                 'retail': retail,
                 'price': price,
+                'price_receipt': price_receipt,
                 'code': code,
                 'total_receipt': total_receipt,
+                'amount_total_receipt': amount_total_receipt,
             })
 
         return consolidated_data
