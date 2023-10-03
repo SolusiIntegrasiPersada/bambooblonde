@@ -252,6 +252,10 @@
                     </tbody>
                 </table>
             </div>
+            <p><strong>Picture :</strong></p>
+            <t t-foreach="o.get_last_record_order()" t-as="rec">
+                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:220px; max-width:225px;"/></p>
+            </t>
         </t>
     </template>
 </odoo>
