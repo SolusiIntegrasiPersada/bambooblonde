@@ -155,41 +155,46 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold != 0:
-                percent_print_sold = round((values['qty_print_sold'] / total_qty_print_sold)*100, 2) or 0
+                percent_print_sold = (values['qty_print_sold'] / total_qty_print_sold)*100 or 0
             if total_qty_print_stock != 0:
-                percent_print_stock = round((values['qty_print_stock'] / total_qty_print_stock)*100, 2) or 0
+                percent_print_stock = (values['qty_print_stock'] / total_qty_print_stock)*100 or 0
 
 
             print_sold_stock = values['qty_print_sold'] + values['qty_print_stock']
 
             if print_sold_stock != 0 and values['qty_print_sold'] != 0 and values['qty_print_stock'] != 0 : 
                 sell_thru_print = values['qty_print_sold']/print_sold_stock
-            sell_thru_print = round((sell_thru_print)*100, 2) or 0
+            sell_thru_print = (sell_thru_print)*100 or 0
 
             worksheet.write('A%s:B%s' %(row, row), main_color or '', wbf['content'])
             worksheet.write('B%s:C%s' %(row, row), values['qty_print_sold'] or '', wbf['content_float'])
-            worksheet.write('C%s:D%s' %(row, row), str(percent_print_sold) + '%' or '', wbf['content_float'])
+            worksheet.write('C%s:D%s' %(row, row), f"{percent_print_sold:.2f}" + '%' or '', wbf['content_float'])
             worksheet.write('D%s:E%s' %(row, row), values['qty_print_stock'] or '', wbf['content_float'])
-            worksheet.write('E%s:F%s' %(row, row), str(percent_print_stock) + '%' or '', wbf['content_float'])
-            worksheet.write('F%s:G%s' %(row, row), str(sell_thru_print) + '%' or '', wbf['content_float'])
+            worksheet.write('E%s:F%s' %(row, row),  f"{percent_print_stock:.2f}" + '%' or '', wbf['content_float'])
+            worksheet.write('F%s:G%s' %(row, row), f"{sell_thru_print:.2f}" + '%' or '', wbf['content_float'])
             row +=1
 
           
             total_percent_print_sold += percent_print_sold
             total_percent_print_stock += percent_print_stock
-            total_sell_thru_print += sell_thru_print
 
 
-        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100)
-        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
-        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
+        total_percent_print_sold = min(total_percent_print_sold, 100)
+        total_percent_print_stock = min(total_percent_print_stock, 100)
+        total_sell_thru_print = min(total_sell_thru_print, 100)
+        
+        sell_thru_print_x = 0
+        soldplusstock = total_qty_print_sold + total_qty_print_stock
+        if soldplusstock != 0 and total_qty_print_sold != 0 and total_qty_print_stock != 0 : 
+            sell_thru_print_x = total_qty_print_sold/soldplusstock
+        total_sell_thru_print = (sell_thru_print_x)*100 or 0
 
         worksheet.write('A%s:B%s' %(row, row), 'Grand Total', wbf['total_content'])
         worksheet.write('B%s:C%s' %(row, row), total_qty_print_sold or '', wbf['total_content_float'])
         worksheet.write('C%s:D%s' %(row, row), str(total_percent_print_sold) + '%' or '', wbf['total_content_float'])
         worksheet.write('D%s:E%s' %(row, row), total_qty_print_stock or '', wbf['total_content_float'])
         worksheet.write('E%s:F%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
-        worksheet.write('F%s:G%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
+        worksheet.write('F%s:G%s' %(row, row), f"{total_sell_thru_print:.2f}" + '%' or '', wbf['total_content_float'])
         
         groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name, x.product_id.product_category_categ_id.name))
         data_main_categ = {}
@@ -258,16 +263,16 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold_b != 0:
-                percent_print_sold = round((colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100, 2) or 0
+                percent_print_sold = (colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100 or 0
             if total_qty_print_stock_b != 0:
-                percent_print_stock = round((colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100, 2) or 0
+                percent_print_stock = (colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100 or 0
 
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
 
             if print_sold_stock != 0 and colorxcateg['qty_print_sold'] != 0 and colorxcateg['qty_print_stock'] != 0:
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
-            sell_thru_print = round((sell_thru_print)*100, 2) or 0
+            sell_thru_print = (sell_thru_print)*100 or 0
             
             
             if warna_old == 'new' :
@@ -275,16 +280,23 @@ class RlkPlainPrintReport(models.TransientModel):
                 
             if warna_old != colorxcateg['warna'] :
                 
-                total_percent_print_sold_per_warna = round(total_percent_print_sold_per_warna, 2) or 0
-                total_percent_print_stock_per_warna = round(total_percent_print_stock_per_warna, 2) or 0
-                total_sell_thru_print_per_warna = round(total_sell_thru_print_per_warna, 2) or 0
+                total_percent_print_sold_per_warna = total_percent_print_sold_per_warna or 0
+                total_percent_print_stock_per_warna = total_percent_print_stock_per_warna or 0
+                
+                
+                sell_thru_print_a = 0
+                soldplusstock_a = total_sold_per_warna + total_stock_per_warna
+                if soldplusstock_a != 0 and total_sold_per_warna != 0 and total_stock_per_warna != 0 : 
+                    sell_thru_print_a = total_sold_per_warna/soldplusstock_a
+                total_sell_thru_print_per_warna = (sell_thru_print_a)*100 or 0
+                
                 worksheet.write('H%s:I%s' %(row, row), f'{warna_old} Total', wbf['total_content'])
                 worksheet.write('I%s:J%s' %(row, row), '', wbf['total_content'])
                 worksheet.write('J%s:K%s' %(row, row), total_sold_per_warna or '0', wbf['total_content_float'])
-                worksheet.write('K%s:L%s' %(row, row), str(total_percent_print_sold_per_warna) + '%' or '', wbf['total_content_float'])
+                worksheet.write('K%s:L%s' %(row, row), f"{total_percent_print_sold_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
                 worksheet.write('L%s:M%s' %(row, row), total_stock_per_warna or '0', wbf['total_content_float'])
-                worksheet.write('M%s:N%s' %(row, row), str(total_percent_print_stock_per_warna) + '%' or '', wbf['total_content_float'])
-                worksheet.write('N%s:O%s' %(row, row), str(total_sell_thru_print_per_warna) + '%' or '', wbf['total_content_float'])
+                worksheet.write('M%s:N%s' %(row, row), f"{total_percent_print_stock_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
+                worksheet.write('N%s:O%s' %(row, row), f"{total_sell_thru_print_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
                 row +=1
                 warna_old = colorxcateg['warna']
                 total_sold_per_warna = 0
@@ -296,10 +308,10 @@ class RlkPlainPrintReport(models.TransientModel):
             worksheet.write('H%s:I%s' %(row, row), colorxcateg['warna'] or '', wbf['content'])
             worksheet.write('I%s:J%s' %(row, row), colorxcateg['categ'] or '', wbf['content'])
             worksheet.write('J%s:K%s' %(row, row), colorxcateg['qty_print_sold'] or '0', wbf['content_float'])
-            worksheet.write('K%s:L%s' %(row, row), str(percent_print_sold) + '%' or '', wbf['content_float'])
+            worksheet.write('K%s:L%s' %(row, row), f"{percent_print_sold:.2f}" + '%' or '', wbf['content_float'])
             worksheet.write('L%s:M%s' %(row, row), colorxcateg['qty_print_stock'] or '0', wbf['content_float'])
-            worksheet.write('M%s:N%s' %(row, row), str(percent_print_stock) + '%' or '', wbf['content_float'])
-            worksheet.write('N%s:O%s' %(row, row), str(sell_thru_print) + '%' or '', wbf['content_float'])
+            worksheet.write('M%s:N%s' %(row, row), f"{percent_print_stock:.2f}" + '%' or '', wbf['content_float'])
+            worksheet.write('N%s:O%s' %(row, row), f"{sell_thru_print:.2f}"+ '%' or '', wbf['content_float'])
             row +=1
             
 
@@ -307,40 +319,50 @@ class RlkPlainPrintReport(models.TransientModel):
             total_stock_per_warna += colorxcateg['qty_print_stock']
             total_percent_print_sold_per_warna += percent_print_sold
             total_percent_print_stock_per_warna += percent_print_stock
-            total_sell_thru_print_per_warna += sell_thru_print
           
             total_percent_print_sold += percent_print_sold
             total_percent_print_stock += percent_print_stock
-            total_sell_thru_print += sell_thru_print
             
         
 
-        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100)
-        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
-        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
+        total_percent_print_sold = min(total_percent_print_sold, 100)
+        total_percent_print_stock = min(total_percent_print_stock, 100)
+        
         
         if warna_old == colorxcateg['warna'] :
                 
-            total_percent_print_sold_per_warna = round(total_percent_print_sold_per_warna, 2) or 0
-            total_percent_print_stock_per_warna = round(total_percent_print_stock_per_warna, 2) or 0
-            total_sell_thru_print_per_warna = round(total_sell_thru_print_per_warna, 2) or 0
+            total_percent_print_sold_per_warna = total_percent_print_sold_per_warna or 0
+            total_percent_print_stock_per_warna = total_percent_print_stock_per_warna or 0
+            
+            sell_thru_print_b = 0
+            soldplusstock_b = total_sold_per_warna + total_stock_per_warna
+            if soldplusstock_b != 0 and total_sold_per_warna != 0 and total_stock_per_warna != 0 : 
+                sell_thru_print_b = total_sold_per_warna/soldplusstock_b
+            total_sell_thru_print_per_warna = (sell_thru_print_b)*100 or 0
+            
             worksheet.write('H%s:I%s' %(row, row), f'{warna_old} Total', wbf['total_content'])
             worksheet.write('I%s:J%s' %(row, row), '', wbf['total_content'])
             worksheet.write('J%s:K%s' %(row, row), total_sold_per_warna or '0', wbf['total_content_float'])
-            worksheet.write('K%s:L%s' %(row, row), str(total_percent_print_sold_per_warna) + '%' or '', wbf['total_content_float'])
+            worksheet.write('K%s:L%s' %(row, row), f"{total_percent_print_sold_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
             worksheet.write('L%s:M%s' %(row, row), total_stock_per_warna or '0', wbf['total_content_float'])
-            worksheet.write('M%s:N%s' %(row, row), str(total_percent_print_stock_per_warna) + '%' or '', wbf['total_content_float'])
-            worksheet.write('N%s:O%s' %(row, row), str(total_sell_thru_print_per_warna) + '%' or '', wbf['total_content_float'])
+            worksheet.write('M%s:N%s' %(row, row), f"{total_percent_print_stock_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
+            worksheet.write('N%s:O%s' %(row, row), f"{total_sell_thru_print_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
             row +=1
 
 
+        sell_thru_print_c = 0
+        soldplusstock_c = total_qty_print_sold + total_qty_print_stock
+        if soldplusstock_c != 0 and total_qty_print_sold != 0 and total_qty_print_stock != 0 : 
+            sell_thru_print_c = total_qty_print_sold/soldplusstock_c
+        total_sell_thru_print = (sell_thru_print_c)*100 or 0
+        
         worksheet.write('H%s:I%s' %(row, row), 'Grand Total', wbf['total_content'])
         worksheet.write('I%s:J%s' %(row, row), '', wbf['total_content'])
         worksheet.write('J%s:K%s' %(row, row), total_qty_print_sold or '', wbf['total_content_float'])
-        worksheet.write('K%s:L%s' %(row, row), str(total_percent_print_sold) + '%' or '', wbf['total_content_float'])
+        worksheet.write('K%s:L%s' %(row, row), f"{total_percent_print_sold:.2f}" + '%' or '', wbf['total_content_float'])
         worksheet.write('L%s:M%s' %(row, row), total_qty_print_stock or '', wbf['total_content_float'])
-        worksheet.write('M%s:N%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
-        worksheet.write('N%s:O%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
+        worksheet.write('M%s:N%s' %(row, row), f"{total_percent_print_stock:.2f}" + '%' or '', wbf['total_content_float'])
+        worksheet.write('N%s:O%s' %(row, row), f"{total_sell_thru_print:.2f}" + '%' or '', wbf['total_content_float'])
         
 
         groups = groupby(pos_order_lines, key=lambda x: (x.product_id.main_color_id.name, x.product_id.product_template_variant_value_ids.filtered(lambda x: x.attribute_id.name.upper() in ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']).name
@@ -411,9 +433,9 @@ class RlkPlainPrintReport(models.TransientModel):
 
           
             if total_qty_print_sold_b != 0:
-                percent_print_sold = round((colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100, 2) or 0
+                percent_print_sold = (colorxcateg['qty_print_sold'] / total_qty_print_sold_b)*100 or 0
             if total_qty_print_stock_b != 0:
-                percent_print_stock = round((colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100, 2) or 0
+                percent_print_stock = (colorxcateg['qty_print_stock'] / total_qty_print_stock_b)*100 or 0
 
 
             print_sold_stock = colorxcateg['qty_print_sold'] + colorxcateg['qty_print_stock']
@@ -422,7 +444,7 @@ class RlkPlainPrintReport(models.TransientModel):
                 sell_thru_print = colorxcateg['qty_print_sold']/print_sold_stock
                 
         
-            sell_thru_print = round((sell_thru_print)*100, 2) or 0
+            sell_thru_print = (sell_thru_print)*100 or 0
             
             
             if warna_old == 'new' :
@@ -430,16 +452,22 @@ class RlkPlainPrintReport(models.TransientModel):
                 
             if warna_old != colorxcateg['warna'] :
                 
-                total_percent_print_sold_per_warna = round(total_percent_print_sold_per_warna, 2) or 0
-                total_percent_print_stock_per_warna = round(total_percent_print_stock_per_warna, 2) or 0
-                total_sell_thru_print_per_warna = round(total_sell_thru_print_per_warna, 2) or 0
+                total_percent_print_sold_per_warna = total_percent_print_sold_per_warna or 0
+                total_percent_print_stock_per_warna = total_percent_print_stock_per_warna or 0
+                
+                sell_thru_print_b = 0
+                soldplusstock_b = total_sold_per_warna + total_stock_per_warna
+                if soldplusstock_b != 0 and total_sold_per_warna != 0 and total_stock_per_warna != 0 : 
+                    sell_thru_print_b = total_sold_per_warna/soldplusstock_b
+                total_sell_thru_print_per_warna = (sell_thru_print_b)*100 or 0
+                
                 worksheet.write('P%s:Q%s' %(row, row), f'{warna_old} Total', wbf['total_content'])
                 worksheet.write('Q%s:R%s' %(row, row), '', wbf['total_content'])
                 worksheet.write('R%s:S%s' %(row, row), total_sold_per_warna or '0', wbf['total_content_float'])
-                worksheet.write('S%s:T%s' %(row, row), str(total_percent_print_sold_per_warna) + '%' or '', wbf['total_content_float'])
+                worksheet.write('S%s:T%s' %(row, row), f"{total_percent_print_sold_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
                 worksheet.write('T%s:U%s' %(row, row), total_stock_per_warna or '0', wbf['total_content_float'])
-                worksheet.write('U%s:V%s' %(row, row), str(total_percent_print_stock_per_warna) + '%' or '', wbf['total_content_float'])
-                worksheet.write('V%s:W%s' %(row, row), str(total_sell_thru_print_per_warna) + '%' or '', wbf['total_content_float'])
+                worksheet.write('U%s:V%s' %(row, row), f"{total_percent_print_stock_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
+                worksheet.write('V%s:W%s' %(row, row), f"{total_sell_thru_print_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
                 row +=1
                 warna_old = colorxcateg['warna']
                 total_sold_per_warna = 0
@@ -451,10 +479,10 @@ class RlkPlainPrintReport(models.TransientModel):
             worksheet.write('P%s:Q%s' %(row, row), colorxcateg['warna'] or '', wbf['content'])
             worksheet.write('Q%s:R%s' %(row, row), colorxcateg['categ'] or '', wbf['content'])
             worksheet.write('R%s:S%s' %(row, row), colorxcateg['qty_print_sold'] or '0', wbf['content_float'])
-            worksheet.write('S%s:T%s' %(row, row), str(percent_print_sold) + '%' or '', wbf['content_float'])
+            worksheet.write('S%s:T%s' %(row, row), f"{percent_print_sold:.2f}" + '%' or '', wbf['content_float'])
             worksheet.write('T%s:U%s' %(row, row), colorxcateg['qty_print_stock'] or '0', wbf['content_float'])
-            worksheet.write('U%s:V%s' %(row, row), str(percent_print_stock) + '%' or '', wbf['content_float'])
-            worksheet.write('V%s:W%s' %(row, row), str(sell_thru_print) + '%' or '', wbf['content_float'])
+            worksheet.write('U%s:V%s' %(row, row), f"{percent_print_stock:.2f}" + '%' or '', wbf['content_float'])
+            worksheet.write('V%s:W%s' %(row, row), f"{sell_thru_print:.2f}" + '%' or '', wbf['content_float'])
             row +=1
             
 
@@ -462,41 +490,51 @@ class RlkPlainPrintReport(models.TransientModel):
             total_stock_per_warna += colorxcateg['qty_print_stock']
             total_percent_print_sold_per_warna += percent_print_sold
             total_percent_print_stock_per_warna += percent_print_stock
-            total_sell_thru_print_per_warna += sell_thru_print
           
             total_percent_print_sold += percent_print_sold
             total_percent_print_stock += percent_print_stock
-            total_sell_thru_print += sell_thru_print
             
         
 
-        total_percent_print_sold = min(round(total_percent_print_sold, 2), 100) 
-        total_percent_print_stock = min(round(total_percent_print_stock, 2), 100)
-        total_sell_thru_print = min(round(total_sell_thru_print, 2), 100)
+        total_percent_print_sold = min(total_percent_print_sold, 100) 
+        total_percent_print_stock = min(total_percent_print_stock, 100)
+        
             
         
         if warna_old == colorxcateg['warna'] :
                 
-            total_percent_print_sold_per_warna = round(total_percent_print_sold_per_warna, 2) or 0
-            total_percent_print_stock_per_warna = round(total_percent_print_stock_per_warna, 2) or 0
-            total_sell_thru_print_per_warna = round(total_sell_thru_print_per_warna, 2) or 0
+            total_percent_print_sold_per_warna = total_percent_print_sold_per_warna or 0
+            total_percent_print_stock_per_warna = total_percent_print_stock_per_warna or 0
+            
+            
+            sell_thru_print_e = 0
+            soldplusstock_e = total_sold_per_warna + total_stock_per_warna
+            if soldplusstock_e != 0 and total_sold_per_warna != 0 and total_stock_per_warna != 0 : 
+                sell_thru_print_e = total_sold_per_warna/soldplusstock_e
+            total_sell_thru_print_per_warna = (sell_thru_print_e)*100 or 0
+        
             worksheet.write('P%s:Q%s' %(row, row), f'{warna_old} Total', wbf['total_content'])
             worksheet.write('Q%s:R%s' %(row, row), '', wbf['total_content'])
             worksheet.write('R%s:S%s' %(row, row), total_sold_per_warna or '0', wbf['total_content_float'])
-            worksheet.write('S%s:T%s' %(row, row), str(total_percent_print_sold_per_warna) + '%' or '', wbf['total_content_float'])
+            worksheet.write('S%s:T%s' %(row, row), f"{total_percent_print_sold_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
             worksheet.write('T%s:U%s' %(row, row), total_stock_per_warna or '0', wbf['total_content_float'])
-            worksheet.write('U%s:V%s' %(row, row), str(total_percent_print_stock_per_warna) + '%' or '', wbf['total_content_float'])
-            worksheet.write('V%s:W%s' %(row, row), str(total_sell_thru_print_per_warna) + '%' or '', wbf['total_content_float'])
+            worksheet.write('U%s:V%s' %(row, row), f"{total_percent_print_stock_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
+            worksheet.write('V%s:W%s' %(row, row), f"{total_sell_thru_print_per_warna:.2f}" + '%' or '', wbf['total_content_float'])
             row +=1
 
-
+        sell_thru_print_f = 0
+        soldplusstock_f = total_qty_print_sold + total_qty_print_stock
+        if soldplusstock_f != 0 and total_qty_print_sold != 0 and total_qty_print_stock != 0 : 
+            sell_thru_print_f = total_qty_print_sold/soldplusstock_f
+        total_sell_thru_print = (sell_thru_print_f)*100 or 0
+        
         worksheet.write('P%s:Q%s' %(row, row), 'Grand Total', wbf['total_content'])
         worksheet.write('Q%s:R%s' %(row, row), '', wbf['total_content'])
         worksheet.write('R%s:S%s' %(row, row), total_qty_print_sold or '', wbf['total_content_float'])
-        worksheet.write('S%s:T%s' %(row, row), str(total_percent_print_sold) + '%' or '', wbf['total_content_float'])
+        worksheet.write('S%s:T%s' %(row, row), f"{total_percent_print_sold:.2f}" + '%' or '', wbf['total_content_float'])
         worksheet.write('T%s:U%s' %(row, row), total_qty_print_stock or '', wbf['total_content_float'])
-        worksheet.write('U%s:V%s' %(row, row), str(total_percent_print_stock) + '%' or '', wbf['total_content_float'])
-        worksheet.write('V%s:W%s' %(row, row), str(total_sell_thru_print) + '%' or '', wbf['total_content_float'])
+        worksheet.write('U%s:V%s' %(row, row), f"{total_percent_print_stock:.2f}" + '%' or '', wbf['total_content_float'])
+        worksheet.write('V%s:W%s' %(row, row), f"{total_sell_thru_print:.2f}" + '%' or '', wbf['total_content_float'])
         
 
 
