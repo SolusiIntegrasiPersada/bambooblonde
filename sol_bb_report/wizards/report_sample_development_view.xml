@@ -45,7 +45,7 @@
         <report
             id="report_sample_development_wizard_xlsx"
             model="report.sample.development.wizard"
-            string="Report Sample Development"
+            string="Order Suggest Report"
             report_type="xlsx"
             name="sol_bb_report.sample_development.xlsx"
             file="Order Suggest Report.xlsx"

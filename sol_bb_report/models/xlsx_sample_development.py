@@ -178,22 +178,39 @@ class XlsxSampleDevelopment(models.Model):
                         # sheet.insert_image(row, 1, "image.png", {'image_data': picture, 'object_position': 1, 'x_scale': 0.3, 'y_scale': 0.3, 'x_offset': 10, 'y_offset': 5}, formatImage)
                     else:
                         sheet.write(row, column, '', formatDetailTableReOrder)
+                #     sheet.write(row, column + 1, name, formatDetailTable)
+                #     sheet.write(row, column + 2, color, formatDetailTable)
+                #     sheet.write(row, column + 3, str(fabric[0]) if fabric else ' ', formatDetailTable)
+                #     sheet.write(row, column + 4, sizes, formatDetailTable)
+                #     sheet.write(row, column + 5, formula, formatDetailTable)
+                #     sheet.write(row, column + 6, breakdown_sizes, formatDetailTable)
+                #     sheet.write(row, column + 7, order_qty, formatDetailTable)
+                #     sheet.write(row, column + 8, taboo_cost, formatDetailCurrencyTable)
+                #     sheet.write(row, column + 9, minimum_retail, formatDetailCurrencyTable)
+                #     sheet.write(row, column + 10, total, formatDetailCurrencyTable)
+                #     sheet.write(row, column + 11, delivery_date, formatDetailTable)
+                #     sheet.write(row, column + 12, notes, formatDetailTable)
+                #     sheet.set_row(row, 70)
+                #     row += 1
+                #     sum_total += total
+                # sheet.write(row, 10, sum_total, formatDetailCurrencyTableReOrderNoBorder)
+
                     sheet.write(row, column + 1, name, formatDetailTable)
-                    # sheet.write(row, column + 2, color, formatDetailTable)
-                    # sheet.write(row, column + 3, str(fabric[0]) if fabric else ' ', formatDetailTable)
-                    # sheet.write(row, column + 4, sizes, formatDetailTable)
-                    # sheet.write(row, column + 5, formula, formatDetailTable)
-                    # sheet.write(row, column + 6, breakdown_sizes, formatDetailTable)
-                    # sheet.write(row, column + 7, order_qty, formatDetailTable)
+                    sheet.write(row, column + 2, '', formatDetailTable)
+                    sheet.write(row, column + 3, '', formatDetailTable)
+                    sheet.write(row, column + 4, '', formatDetailTable)
+                    sheet.write(row, column + 5, '', formatDetailTable)
+                    sheet.write(row, column + 6, '', formatDetailTable)
+                    sheet.write(row, column + 7, '', formatDetailTable)
                     sheet.write(row, column + 8, taboo_cost, formatDetailCurrencyTable)
-                    # sheet.write(row, column + 9, minimum_retail, formatDetailCurrencyTable)
-                    # sheet.write(row, column + 10, total, formatDetailCurrencyTable)
-                    # sheet.write(row, column + 11, delivery_date, formatDetailTable)
-                    # sheet.write(row, column + 12, notes, formatDetailTable)
+                    sheet.write(row, column + 9, ' ', formatDetailCurrencyTable)
+                    sheet.write(row, column + 10, ' ', formatDetailCurrencyTable)
+                    sheet.write(row, column + 11, ' ', formatDetailTable)
+                    sheet.write(row, column + 12, ' ', formatDetailTable)
                     sheet.set_row(row, 70)
                     row += 1
                     sum_total += total
-                # sheet.write(row, 10, sum_total, formatDetailCurrencyTableReOrderNoBorder)
+                sheet.write(row, 10, ' ', formatDetailCurrencyTableReOrderNoBorder)
 
             if i == 2:
                 for x in [0, 1, 2, 3, 7, 8]:
