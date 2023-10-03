@@ -24,8 +24,7 @@ class XlsxMensClothes(models.Model):
             ratios = (float(bound_width) / original_width, float(bound_height) / original_height)
             return min(ratios)
         
-        header_table_real = ['Model', 'Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Aging', 'Barcode', 'Size', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
-        header_table_real_with_stock_type = ['Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Stock Type', 'Aging', 'Barcode', 'Size', 'Photo', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
+        
 
         formatHeaderCompany = workbook.add_format({'font_size': 14, 'valign':'vcenter', 'align': 'center', 'bold': True})
         formatHeaderTable = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bold': True, 'bg_color':'#8db4e2', 'color':'black', 'text_wrap': True, 'border': 1})
@@ -64,31 +63,19 @@ class XlsxMensClothes(models.Model):
                 ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
                 ('order_id.session_id.config_id', '=', dt_pos_config_id),
             ])
+            header_table_real = ['Model', 'Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Aging', 'Barcode', 'Size', 'Order Notes', 'Cost Price', 'Retail Price', 'In Stock']
+            header_table_real_with_stock_type = ['Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Stock Type', 'Aging', 'Barcode', 'Size', 'Photo', 'Order Notes', 'Cost Price', 'Retail Price', 'In Stock']
+            warehouse_select = True
         else:
             pos_order_line = self.env['pos.order.line'].sudo().search([
                 ('order_id.date_order', '>=', datas.get('from_date')),
                 ('order_id.date_order', '<=', datas.get('to_date')),
                 ('order_id.state', 'in', ['paid', 'done', 'invoiced']),
             ])
+            header_table_real = ['Model', 'Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Aging', 'Barcode', 'Size', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
+            header_table_real_with_stock_type = ['Category', 'Style', 'Stock Name', 'Stock ID', 'Color', 'Stock Type', 'Aging', 'Barcode', 'Size', 'Photo', 'Order Notes', 'Cost Price', 'Retail Price', 'Qty Sold', 'In Stock', 'In Stock']
+            warehouse_select = False
 
-        # if dt_product_category_id:
-        #     product_tmpl_ids = self.env['product.template'].sudo().search([
-        #         ('active', '=', True),
-        #         ('types', '=', dt_types),
-        #         '|',
-        #         ('categ_id', '=', dt_product_category_id),
-        #         ('categ_id.parent_id', '=', dt_product_category_id)
-        #     ])
-        # else:
-        #     product_tmpl_ids = self.env['product.template'].sudo().search([
-        #         ('active', '=', True),
-        #         ('types', '=', dt_types),
-        #         '|',
-        #         '|',
-        #         ('categ_id', '=', dt_product_model_id),
-        #         ('categ_id.parent_id', '=', dt_product_model_id),
-        #         ('categ_id.parent_id.parent_id', '=', dt_product_model_id)
-        #     ])
 
         if dt_product_category_id:
             categ_ids = self.env['product.category'].sudo().browse(dt_product_category_id)
@@ -132,28 +119,7 @@ class XlsxMensClothes(models.Model):
                 ('active', '=', True),
                 ('active', '!=', True)
             ])
-            # header_table = []
-            # header_table = header_table_real.copy()
-            # row += 1
-            # column = len(header_table)
-            # grand_column = len(header_table)
-            # sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
-            # sheet.write(row, column-1, 'WH', formatHeaderTableSand)
-            # for warehouse in warehouse_name_ids:
-            #     sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
-            #     column += 2
-            #     header_table += ['Qty Sold', 'In Stock']
-
-            # row += 1
-            # column = 0
-            # for header in header_table:
-            #     sheet.write(row, column, header.upper(), formatHeaderTable)
-            #     column += 1
-
-            # for x in range(0, len(header_table)):
-            #     sheet.set_column(x, x, 15)
-            
-            # row += 1
+         
             pt_temp = False
             wh_temp = False
             grand_total_qty_sale_retail = 0
@@ -216,21 +182,6 @@ class XlsxMensClothes(models.Model):
                                 raw_data_dict['all_qty_stock_retail'] = all_qty_stock_retail
                                 raw_data_dict['all_qty_stock_warehouse'] = all_qty_stock_warehouse
 
-                                # sheet.write(row, 0, model, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 1, category, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 2, f'{style} - Total', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 3, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 4, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 5, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 6, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 7, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 8, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 9, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 10, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 11, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 12, all_qty_sale_retail, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 13, all_qty_stock_retail, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 14, all_qty_stock_warehouse, formatDetailTableReOrderBlue)
 
                                 grand_total_qty_sale_retail += all_qty_sale_retail
                                 grand_total_qty_stock_retail += all_qty_stock_retail
@@ -268,21 +219,7 @@ class XlsxMensClothes(models.Model):
                                 raw_data_dict['all_qty_stock_retail'] = all_qty_stock_retail
                                 raw_data_dict['all_qty_stock_warehouse'] = all_qty_stock_warehouse
 
-                                # sheet.write(row, 0, model, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 1, category, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 2, f'{style} - Total', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 3, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 4, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 5, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 6, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 7, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 8, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 9, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 10, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 11, '', formatDetailTableReOrderBlue)
-                                # sheet.write(row, 12, all_qty_sale_retail, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 13, all_qty_stock_retail, formatDetailTableReOrderBlue)
-                                # sheet.write(row, 14, all_qty_stock_warehouse, formatDetailTableReOrderBlue)
+     
 
                                 grand_total_qty_sale_retail += all_qty_sale_retail
                                 grand_total_qty_stock_retail += all_qty_stock_retail
@@ -368,18 +305,7 @@ class XlsxMensClothes(models.Model):
                             'sale_price': sale_price,
                         }
 
-                        # sheet.write(row, 0, model, formatDetailTableReOrder)
-                        # sheet.write(row, 1, category, formatDetailTableReOrder)
-                        # sheet.write(row, 2, style, formatDetailTableReOrder)
-                        # sheet.write(row, 3, stockname, formatDetailTableReOrder)
-                        # sheet.write(row, 4, stockid, formatDetailTableReOrder)
-                        # sheet.write(row, 5, color, formatDetailTableReOrder)
-                        # sheet.write(row, 6, aging, formatDetailTableReOrder)
-                        # sheet.write(row, 7, barcode, formatDetailTableReOrder)
-                        # sheet.write(row, 8, size, formatDetailTableReOrder)
-                        # sheet.write(row, 9, order_notes, formatDetailTableReOrder)
-                        # sheet.write(row, 10, cost, formatDetailCurrencyTableReOrder)
-                        # sheet.write(row, 11, sale_price, formatDetailCurrencyTableReOrder)
+
 
                         column_2 = 14
                         for wh in self.env['stock.warehouse'].sudo().browse(warehouse_ids):
@@ -424,13 +350,7 @@ class XlsxMensClothes(models.Model):
                             all_stock_retail['grand_total'][wh.id] += qty_stock_retail
                             all_sale_retail['grand_total'][wh.id] += qty_sale_retail
 
-                            # if pt.id != pt_temp or wh.id != wh_temp:
-                            #     all_stock_retail[wh.id] = {'qty': 0}
-                            #     all_sale_retail[wh.id] = {'qty': 0}
-                            #     pt_temp = pt.id
-                            #     wh_temp = wh.id
-                            # all_stock_retail[wh.id]['qty'] += qty_stock_retail
-                            # all_sale_retail[wh.id]['qty'] += qty_sale_retail
+                          
                         
                         # Column Summary Total dan WH
                         # Develop Baru
@@ -438,9 +358,7 @@ class XlsxMensClothes(models.Model):
                         raw_data_order_line_dict['total_qty_stock_retail'] = total_qty_stock_retail
                         raw_data_order_line_dict['total_qty_stock_warehouse'] = total_qty_stock_warehouse
 
-                        # sheet.write(row, 12, total_qty_sale_retail, formatDetailTableReOrderSand)
-                        # sheet.write(row, 13, total_qty_stock_retail, formatDetailTableReOrder)
-                        # sheet.write(row, 14, total_qty_stock_warehouse, formatDetailTableReOrder)
+                   
                         
                         all_qty_stock_retail += total_qty_stock_retail
                         all_qty_sale_retail += total_qty_sale_retail
@@ -461,21 +379,7 @@ class XlsxMensClothes(models.Model):
                             raw_data_dict['all_qty_stock_retail'] = all_qty_stock_retail
                             raw_data_dict['all_qty_stock_warehouse'] = all_qty_stock_warehouse
 
-                            # sheet.write(row, 0, model, formatDetailTableReOrderBlue)
-                            # sheet.write(row, 1, category, formatDetailTableReOrderBlue)
-                            # sheet.write(row, 2, f'{style} - Total', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 3, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 4, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 5, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 6, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 7, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 8, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 9, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 10, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 11, '', formatDetailTableReOrderBlue)
-                            # sheet.write(row, 12, all_qty_sale_retail, formatDetailTableReOrderBlue)
-                            # sheet.write(row, 13, all_qty_stock_retail, formatDetailTableReOrderBlue)
-                            # sheet.write(row, 14, all_qty_stock_warehouse, formatDetailTableReOrderBlue)
+                          
 
                             grand_total_qty_sale_retail += all_qty_sale_retail
                             grand_total_qty_stock_retail += all_qty_stock_retail
@@ -513,7 +417,9 @@ class XlsxMensClothes(models.Model):
                     row += 1
                     column = len(header_table)
                     grand_column = len(header_table)
-                    sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
+                    
+                    if not warehouse_select :
+                        sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
                     sheet.write(row, column-1, 'WH', formatHeaderTableSand)
                     for warehouse in warehouse_name_ids:
                         sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
@@ -524,8 +430,13 @@ class XlsxMensClothes(models.Model):
                     for header in header_table:
                         sheet.write(row, column, header.upper(), formatHeaderTable)
                         column += 1
+                    
+                    if not warehouse_select :
+                        param1 = 15
+                    else :
+                        param1 = 13
                     for x in range(0, len(header_table)):
-                        sheet.set_column(x, x, 15)
+                        sheet.set_column(x, x, param1)
                     row += 1
 
                     # Detail
@@ -569,10 +480,16 @@ class XlsxMensClothes(models.Model):
                             sheet.write(row, 10, xx['order_notes'], formatDetailTableReOrder)
                             sheet.write(row, 11, xx['cost'], formatDetailCurrencyTableReOrder)
                             sheet.write(row, 12, xx['sale_price'], formatDetailCurrencyTableReOrder)
-                            sheet.write(row, 13, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
-                            sheet.write(row, 14, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
-                            sheet.write(row, 15, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
-                            column_2 = 15
+                            if not warehouse_select :
+                                sheet.write(row, 13, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                                sheet.write(row, 14, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
+                                sheet.write(row, 15, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                                column_2 = 15
+                            else :
+                                sheet.write(row, 13, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                                column_2 = 13
+                            
+                            
                             if warehouse_ids:
                                 for ww in warehouse_ids:
                                     column_2 += 1
@@ -594,10 +511,15 @@ class XlsxMensClothes(models.Model):
                         sheet.write(row, 10, '', formatDetailTableReOrderBlue)
                         sheet.write(row, 11, '', formatDetailTableReOrderBlue)
                         sheet.write(row, 12, '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 13, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 14, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 15, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                        column_3 = 15
+                        if not warehouse_select :
+                            sheet.write(row, 13, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                            sheet.write(row, 14, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                            sheet.write(row, 15, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                            column_3 = 15
+                        else :
+                            sheet.write(row, 13, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                            column_3 = 13
+                            
                         if warehouse_ids:
                             for ww in warehouse_ids:
                                 if ww not in data_grand_total['gt_sale_retail']:
@@ -617,11 +539,19 @@ class XlsxMensClothes(models.Model):
                         row += 1
 
                     # Footer
-                    sheet.merge_range(row, 0, row, grand_column-4, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
-                    sheet.write(row, 13, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 14, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 15, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                    column_3 = 15
+                    if not warehouse_select :
+                        param_a = 4
+                    else :
+                        param_a = 2
+                    sheet.merge_range(row, 0, row, grand_column-param_a, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
+                    if not warehouse_select :
+                        sheet.write(row, 13, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 14, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 15, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 15
+                    else :
+                        sheet.write(row, 13, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 13
                     for wh in warehouse_ids:
                         column_3 += 1
                         if wh in data_grand_total['gt_sale_retail']:
@@ -644,7 +574,8 @@ class XlsxMensClothes(models.Model):
                     row += 1
                     column = len(header_table)
                     grand_column = len(header_table)
-                    sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
+                    if not warehouse_select :
+                        sheet.merge_range(row, column-3, row, column-2, 'SUMMARY TOTAL', formatHeaderTableSand)
                     sheet.write(row, column-1, 'WH', formatHeaderTableSand)
                     for warehouse in warehouse_name_ids:
                         sheet.merge_range(row, column, row, column+1, warehouse.upper(), formatHeaderTableSand)
@@ -682,10 +613,15 @@ class XlsxMensClothes(models.Model):
                             sheet.write(row, 9, xx['order_notes'], formatDetailTableReOrder)
                             sheet.write(row, 10, xx['cost'], formatDetailCurrencyTableReOrder)
                             sheet.write(row, 11, xx['sale_price'], formatDetailCurrencyTableReOrder)
-                            sheet.write(row, 12, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
-                            sheet.write(row, 13, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
-                            sheet.write(row, 14, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
-                            column_2 = 14
+                            if not warehouse_select :
+                                sheet.write(row, 12, xx['total_qty_sale_retail'] or '', formatDetailTableReOrderSand)
+                                sheet.write(row, 13, xx['total_qty_stock_retail'] or '', formatDetailTableReOrder)
+                                sheet.write(row, 14, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                                column_2 = 14
+                            else :
+                                sheet.write(row, 12, xx['total_qty_stock_warehouse'] or '', formatDetailTableReOrder)
+                                column_2 = 12
+                                
                             if warehouse_ids:
                                 for ww in warehouse_ids:
                                     column_2 += 1
@@ -705,10 +641,15 @@ class XlsxMensClothes(models.Model):
                         sheet.write(row, 9, '', formatDetailTableReOrderBlue)
                         sheet.write(row, 10, '', formatDetailTableReOrderBlue)
                         sheet.write(row, 11, '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 12, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 13, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                        sheet.write(row, 14, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                        column_3 = 14
+                        if not warehouse_select :
+                            sheet.write(row, 12, zz['all_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                            sheet.write(row, 13, zz['all_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                            sheet.write(row, 14, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                            column_3 = 14
+                        else :
+                            sheet.write(row, 12, zz['all_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                            column_3 = 12
+                            
                         if warehouse_ids:
                             for ww in warehouse_ids:
                                 if ww not in data_grand_total['gt_sale_retail']:
@@ -728,11 +669,20 @@ class XlsxMensClothes(models.Model):
                         row += 1
 
                     # Footer
-                    sheet.merge_range(row, 0, row, grand_column-4, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
-                    sheet.write(row, 12, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 13, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
-                    sheet.write(row, 14, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
-                    column_3 = 14
+                    if not warehouse_select :
+                        param_a = 4
+                    else :
+                        param_a = 2
+                    sheet.merge_range(row, 0, row, grand_column-param_a, f'Grand Total {categ.name}', formatDetailTableReOrderBlue)
+                    if not warehouse_select :
+                        sheet.write(row, 12, data_grand_total['grand_total_qty_sale_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 13, data_grand_total['grand_total_qty_stock_retail'] or '', formatDetailTableReOrderBlue)
+                        sheet.write(row, 14, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 14
+                    else :
+                        sheet.write(row, 12, data_grand_total['grand_total_qty_stock_warehouse'] or '', formatDetailTableReOrderBlue)
+                        column_3 = 12
+                        
                     for wh in warehouse_ids:
                         column_3 += 1
                         if wh in data_grand_total['gt_sale_retail']:
