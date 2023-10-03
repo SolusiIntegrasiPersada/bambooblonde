@@ -55,6 +55,8 @@ class StockPicking(models.Model):
             ]).mapped('name')
             model = ''.join(model_rec)
             category = ''.join(category_rec)
+            qty = line.quantity_done
+            price_receipt = line.price
 
             model_category_pair = (model, category)
             if model_category_pair not in model_category_dict:
@@ -63,6 +65,7 @@ class StockPicking(models.Model):
             key = (name, colour)
             if key in consolidated_lines:
                 consolidated_lines[key]['sizes'].append(size)
+                consolidated_lines[key]['qtyy'].append(qty)
             else:
                 consolidated_lines[key] = {
                     'sizes': [size],
@@ -70,6 +73,7 @@ class StockPicking(models.Model):
                     'category': category,
                     'price': price,
                     'code': code,
+                    'qtyy': [qty],
                 }
         category_list = []
         consolidated_data = []
@@ -81,6 +85,7 @@ class StockPicking(models.Model):
             item_type = None
             price = type_data['price']
             code = type_data['code']
+            qtyy = type_data['qtyy']
 
             # Determine item_type based on matching types
             if all(size in type_a for size in sizes):
@@ -114,8 +119,23 @@ class StockPicking(models.Model):
                 'amount_h': sum(1 for size in sizes if size in column_h),
                 'amount_i': sum(1 for size in sizes if size in column_i),
             }
+
             amount_total = sum(amount for amount in amounts.values() if amount is not None)
             total_retail += retail
+
+            amounts_receipt = {
+                'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b) or None,
+                'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c) or None,
+                'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d) or None,
+                'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e) or None,
+                'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f) or None,
+                'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g) or None,
+                'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h) or None,
+                'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i) or None,
+            }
+
+            amount_total_receipt = sum(amounts_receipt for amounts_receipt in amounts_receipt.values() if amounts_receipt is not None)
+            total_receipt = amount_total_receipt * price_receipt
 
             tot_b += amounts['amount_b']
             tot_c += amounts['amount_c']
@@ -135,6 +155,7 @@ class StockPicking(models.Model):
                 'category': category,
                 'item_type': item_type,
                 'total_qty': total_qty,
+                'qty': qtyy,
                 'amount_b': amounts['amount_b'],
                 'amount_c': amounts['amount_c'],
                 'amount_d': amounts['amount_d'],
@@ -156,6 +177,7 @@ class StockPicking(models.Model):
                 'retail': retail,
                 'price': price,
                 'code': code,
+                'total_receipt': total_receipt,
             })
 
         return consolidated_data

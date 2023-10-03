@@ -50,7 +50,7 @@
                                                 <td style="width: 37.8615%; text-align: right;"><strong>PO No</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
-                                                    <span t-field="o.partner_id"/>
+                                                    <t t-esc="o.origin"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -74,10 +74,10 @@
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
-                                                <td style="width: 18.1034%; height: 18px;"><strong>Note</strong></td>
-                                                <td style="width: 4.74141%; height: 18px;">:</td>
+                                                <td style="width: 18.1034%; height: 18px;"><strong></strong></td>
+                                                <td style="width: 4.74141%; height: 18px;"></td>
                                                 <td style="width: 77.1552%; height: 18px;">
-                                                    <span t-field="o.note"/>
+
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
@@ -104,7 +104,7 @@
                             <tr style="height: 36px; border: 1pt solid black;">
                                 <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black;" colspan="3">Code / Descriptions</td>
                                 <td style="width: 2.54517%; height: 36px; font-size: 10px; border: 1pt solid black;">Size Type</td>
-                                <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black;" colspan="11">Quantity</td>
+                                <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black;" colspan="8">Quantity</td>
                                 <td style="width: 2.51857%; height: 36px; font-size: 10px; border: 1pt solid black;">TTL QTY</td>
                                 <td style="width: 7.4815%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black;">Price</td>
                                 <td style="width: 8.37037%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black;">Sub Total</td>
@@ -116,13 +116,10 @@
                                 <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">8</td>
                                 <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">10</td>
                                 <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">12</td>
-                                <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">14</td>
+                                <td style="width: 3.90041%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">14</td>
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">4</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -137,9 +134,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -154,9 +148,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">42</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -171,9 +162,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">43</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -188,9 +176,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">37-38</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">38-39</td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -205,9 +190,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
@@ -222,9 +204,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">L</td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">XL</td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">OS</td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -239,9 +218,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;">ALL</td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -256,9 +232,6 @@
                                 <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 10px; border: 1pt solid black;"></td>
@@ -300,9 +273,6 @@
                                     <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
@@ -322,9 +292,6 @@
                                     <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black;"></td>
@@ -335,10 +302,10 @@
                                         <t t-esc="line['code']"/>
                                     </td>
                                     <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['colour']"/>
+                                        <t t-esc="line['name']"/>
                                     </td>
                                     <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['name']"/>
+                                        <t t-esc="line['colour']"/>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
                                             <t t-esc="line['item_type']"/>
@@ -367,9 +334,6 @@
                                     <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="line['amount_i'] if line['amount_i'] != 0 else ''"/>
                                     </td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="line['amount_total']"/>
                                     </td>
@@ -398,9 +362,6 @@
                                     <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.66663%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74072%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.74078%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="total_qty"/>
                                     </td>
@@ -443,9 +404,6 @@
                                 <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
                                     <t t-esc="tot_i"/>
                                 </td>
-                                <td style="width: 4.66663%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74072%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 4.74078%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black;">
                                     <t t-esc="total_qty"/>
                                 </td>
@@ -458,6 +416,10 @@
                         </tbody>
                     </table>
                 </div>
+                <p><strong>NOTE :</strong></p>
+                <p style="font-size: 11px;"><span t-field="o.note"/></p>
+                <br/>
+                <br/>
                 <div class="container">
                     <table style="border-collapse: collapse; width: 100%; background-color: transparent;">
                         <tbody style="font-size: 15px;background-color: transparent;">
