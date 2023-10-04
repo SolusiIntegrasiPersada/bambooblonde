@@ -1,10 +1,9 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import html2plaintext
-from datetime import datetime, timedelta
 
-import io
-import base64
+from datetime import datetime
+
+from odoo import models
+from pytz import timezone
+import pytz
 
 header_table = ['Sales ID', 'Sales Date', 'Sales Time', 'Client No', 'Member Name', 'Outlet ID', 'Outlet Name', 'Staff Name', 'Credit Card Amount', 'Bank Name', 'Notes', 'Cash Amount', 'Voucher', 'Void', 'Void Date', 'Void Staff Name', 'Change', 'Shift Code', 'Card Bank', 'Nation ID', 'Nation Desc', 'Void Note', 'Barcode', 'Qty', 'Total Price', 'Total Cost', 'Stock Name', 'Stock ID', 'Color', 'Size Num', 'Model', 'Category', 'Stock Type', 'Stock Class']
 
@@ -78,8 +77,10 @@ class XlsxSalesReportDetail(models.Model):
         no = 1
         for pol in pos_order_line.filtered(lambda x: not x.product_id.is_shooping_bag and not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion):
             sales_id = pol.order_id.pos_reference.replace("Order ","")
-            sales_date = pol.order_id.date_order.strftime('%d/%m/%Y') if pol.order_id.date_order else ''
-            sales_time = pol.order_id.date_order.strftime('%H:%M:%S') if pol.order_id.date_order else ''
+            date_orders = pytz.UTC.localize(pol.order_id.date_order).astimezone(
+                    timezone(self.env.user.tz or 'UTC'))
+            sales_date = date_orders.strftime('%d/%m/%Y') if date_orders else ''
+            sales_time = date_orders.strftime('%H:%M:%S') if date_orders else ''
             # client_no = f'HO0{str(int(pol.discount))}' if pol.discount else 'Cash'
             client_no = pol.order_id.partner_id.ref if pol.order_id.partner_id else ''
             member_name = pol.order_id.partner_id.name if pol.order_id.partner_id else ''
