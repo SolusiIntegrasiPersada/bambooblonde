@@ -126,14 +126,14 @@ class StockPicking(models.Model):
             total_retail += retail
 
             amounts_receipt = {
-                'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b) or None,
-                'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c) or None,
-                'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d) or None,
-                'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e) or None,
-                'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f) or None,
-                'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g) or None,
-                'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h) or None,
-                'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i) or None,
+                'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b),
+                'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c),
+                'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d),
+                'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e),
+                'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f),
+                'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g),
+                'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h),
+                'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i),
             }
 
             amount_total_receipt = sum(amounts_receipt for amounts_receipt in amounts_receipt.values() if amounts_receipt is not None)

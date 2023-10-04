@@ -24,7 +24,7 @@
                   </div>
                 </div>
             </div>
-            <h2 style="text-align: left; text-decoration: underline;">PRODUCTION ORDER</h2>
+            <h2 style="text-align: left; text-decoration: underline;">PO SUPPLIER</h2>
             <div class="body">
                 <table
                     style="table-layout: fixed; border-collapse: collapse; width: 100%; height: 144px;">
@@ -42,7 +42,7 @@
                               <t t-esc="doc.date_planned"/>
                             </td>
                         </tr>
-                        <tr style="height: 36px;">
+                        <tr style="height: 18px;">
                             <td style="width: 14.1115%; height: 36px;">Trans Date</td>
                             <td style="width: 2.08768%; height: 36px;">:</td>
                             <td style="width: 28.7268%; height: 36px;">
@@ -55,7 +55,7 @@
                               <t t-esc="doc.partner_id.name"/>
                             </td>
                         </tr>
-                        <tr style="height: 36px;">
+                        <tr style="height: 18px;">
                             <td style="width: 14.1115%; height: 36px;">Division</td>
                             <td style="width: 2.08768%; height: 36px;">:</td>
                             <td style="width: 28.7268%; height: 36px;">
@@ -69,52 +69,7 @@
                               <!-- <span t-esc="datetime.date.today().strftime('%b %d, %Y')"/> -->
                             </td>
                         </tr>
-                        <tr>
-                            <td style="width: 14.1115%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 28.7268%;">
-                            </td>
-                            <td style="width: 6.01553%;"></td>
-                            <td style="width: 22.2605%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 32.0241%;">
-                                <!-- <span t-esc="doc.ordering_date" t-field-options='{"format": "d/MMMM/y"}'/>
-                                - <t t-esc="doc.delivery_date" t-field-options='{"format": "d/MMMM/y"}'/> -->
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 14.1115%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 28.7268%;">
-                            </td>
-                            <td style="width: 6.01553%;"></td>
-                            <td style="width: 22.2605%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 32.0241%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 14.1115%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 28.7268%;">
-                            </td>
-                            <td style="width: 6.01553%;"></td>
-                            <td style="width: 22.2605%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 32.0241%;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 14.1115%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 28.7268%;">
-                            </td>
-                            <td style="width: 6.01553%;"></td>
-                            <td style="width: 22.2605%;"></td>
-                            <td style="width: 2.08768%;"></td>
-                            <td style="width: 32.0241%;"></td>
-                        </tr>
-                        <tr style="height: 18px;">
-                            <td style="text-align: center; height: 18px; width: 107.314%;" colspan="7"></td>
-                        </tr>
+
                     </tbody>
                 </table>
                 <table
@@ -174,11 +129,11 @@
                                     <span t-field="pw.name"/>
                                   </td>
                               <td
-                                  style="width: 8.26295%; height: 20px; border: 1px solid black; text-align: left;">
+                                  style="width: 8.26295%; height: 20px; border: 1px solid black; text-align: left; padding-left: 5px;">
                                     <span t-field="pw.fabric"/>
                                   </td>
                               <td
-                                  style="width: 8.91838%; height: 20px; border: 1px solid black; padding-right: 3px; text-align: left;">
+                                  style="width: 8.91838%; height: 20px; border: 1px solid black; padding-right: 3px; text-align: left; padding-left: 5px;">
                                     <span t-field="pw.lining"/>
                                   </td>
                               <td
@@ -254,7 +209,7 @@
             </div>
             <p><strong>Picture :</strong></p>
             <t t-foreach="doc.get_last_record_order()" t-as="rec">
-                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:220px; max-width:225px;"/></p>
+                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/></p>
             </t>
         </t>
     </template>
