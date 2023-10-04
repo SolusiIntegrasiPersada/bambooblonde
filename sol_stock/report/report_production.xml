@@ -9,7 +9,7 @@
                 <t t-set="address">
                     <div name="div_outgoing_address">
                         <div t-if="o.should_print_delivery_address()">
-                            <span><strong>Delivery Address:</strong></span>
+                            <span><strong>Supplier Address:</strong></span>
                             <div t-field="o.move_lines[0].partner_id"
                                 t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                         </div>
@@ -33,6 +33,7 @@
                                 <span><strong>Supplier Address:</strong></span>
                             </div>
                             <div t-if="partner" name="partner_header">
+                                <span><strong>Supplier:</strong></span>
                                 <div t-field="partner.commercial_partner_id"
                                     t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                                 <p t-if="partner.sudo().commercial_partner_id.vat"><t t-esc="o.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="partner.sudo().commercial_partner_id.vat"/></p>
@@ -98,7 +99,7 @@
                                     <t t-esc="'{:,.0f}'.format(move.price_mo).replace(',', '.')"/>
                                 </td>
                                 <td>
-                                    <t t-set="total_cost" t-value="move.price_mo * move.product_uom_qty" />
+                                    <t t-set="total_cost" t-value="move.price_mo * move.quantity_done" />
                                     <t t-esc="'{:,.0f}'.format(total_cost).replace(',', '.')"/>
                                 </td>
                             </tr>
