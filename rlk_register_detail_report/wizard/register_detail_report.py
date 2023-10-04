@@ -89,8 +89,10 @@ class RegisterDetailReport(models.TransientModel):
             date_order = order.date_order
             invoice = order.pos_reference
             lineplus = order.lines.filtered(lambda x: x.price_subtotal_incl > 0)
-            pricexqty = sum(lineplus.mapped('price_unit')) * \
-                sum(lineplus.mapped('qty'))
+            # pricexqty = 0
+            # for plus in lineplus :s
+            #     pricexqty += plus.price_unit * plus.qty
+            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)
             total_sales = pricexqty
             price_inc = sum(lineplus.mapped('price_subtotal_incl'))
             discount = pricexqty - price_inc
