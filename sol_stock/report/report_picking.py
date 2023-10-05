@@ -68,7 +68,7 @@ class StockPicking(models.Model):
                 consolidated_lines[key]['qtyy'].append(qty)
             else:
                 consolidated_lines[key] = {
-                    'sizes': [size],
+                    'sizes': [size], 
                     'model': model,
                     'category': category,
                     'price': price,
