@@ -39,7 +39,7 @@
                             <td style="width: 22.2605%; height: 18px;">Delivery Date</td>
                             <td style="width: 2.08768%; height: 18px;">:</td>
                             <td style="width: 32.0241%; height: 18px;">
-                              <t t-esc="doc.date_planned"/>
+                              <t t-esc="doc.effective_date" t-options="{'widget': 'date'}"/>
                             </td>
                         </tr>
                         <tr style="height: 18px;">
@@ -65,7 +65,7 @@
                             <td style="width: 22.2605%;">Order Date</td>
                             <td style="width: 2.08768%;">:</td>
                             <td style="width: 32.0241%;">
-                              <t t-esc="doc.date_order" />
+                              <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
                               <!-- <span t-esc="datetime.date.today().strftime('%b %d, %Y')"/> -->
                             </td>
                         </tr>
