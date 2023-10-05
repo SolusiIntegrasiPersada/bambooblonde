@@ -60,7 +60,7 @@
                             <td style="width: 15%; height: 18px;">Trans Date</td>
                             <td style="width: 2%; height: 18px; text-align: center;">:</td>
                             <td style="width: 25%; height: 18px;">
-                              <t t-esc="doc.date_order"/>
+                              <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
                             </td>
                             <td style="width: 2.08768%; height: 18px;"></td>
                             <td style="width: 23.0878%; height: 18px;">Production No.</td>

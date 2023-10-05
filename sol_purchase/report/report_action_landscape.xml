@@ -62,7 +62,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">sol_purchase.production_order_tb</field>
             <field name="report_file">sol_purchase.production_order_tb</field>
-            <field name="paperformat_id" ref="solinda_mrp.report_paperformat_a4_portrait_costing_product_tb" />
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_portrait" />
             <field name="print_report_name">'PO MATERIAL - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
@@ -75,7 +75,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">sol_purchase.production_order_sample_tb</field>
             <field name="report_file">sol_purchase.production_order_sample_tb</field>
-            <field name="paperformat_id" ref="solinda_mrp.report_paperformat_a4_portrait_costing_product_tb" />
+            <field name="paperformat_id" ref="sol_purchase.report_paperformat_a4_portrait" />
             <field name="print_report_name">'PO MATERIAL SAMPLE - %s' % object.name</field>
             <field name="binding_model_id" ref="purchase.model_purchase_order"/>
             <field name="binding_type">report</field>
