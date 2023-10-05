@@ -301,41 +301,41 @@
                                     <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="line['code']"/>
                                     </td>
-                                    <td style="width: 7.33994%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                    <td style="width: 10.9763%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="line['name']"/>
                                     </td>
-                                    <td style="width: 18.9763%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                    <td style="width: 10.33994%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="line['colour']"/>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="line['item_type']"/>
+                                        <t t-esc="line['item_type']"/>
                                     </td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_b'] if line['receipt_amount_b'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_b']) if line['receipt_amount_b'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_c'] if line['receipt_amount_c'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_c']) if line['receipt_amount_c'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_d'] if line['receipt_amount_d'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_d']) if line['receipt_amount_d'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_e'] if line['receipt_amount_e'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_e']) if line['receipt_amount_e'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_f'] if line['receipt_amount_f'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_f']) if line['receipt_amount_f'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_g'] if line['receipt_amount_g'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_g']) if line['receipt_amount_g'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_h'] if line['receipt_amount_h'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_h']) if line['receipt_amount_h'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['receipt_amount_i'] if line['receipt_amount_i'] != 0 else ''"/>
+                                        <t t-esc="int(line['receipt_amount_i']) if line['receipt_amount_i'] != 0 else ''"/>
                                     </td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_total_receipt']"/>
+                                        <t t-esc="int(line['amount_total_receipt'])"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="'{:,.0f}'.format(line['price']).replace(',', '.')"/>
@@ -363,10 +363,10 @@
                                     <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="total_qty"/>
+                                        <t t-esc="int(total_qty)"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                    <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="'{:,.0f}'.format(subtotal_total).replace(',', '.')"/>
                                     </td>
                                 </tr>
@@ -381,31 +381,31 @@
                                 </td>
                                 <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_b if tot_b != 0 else ''"/>
+                                    <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_c if tot_c != 0 else ''"/>
+                                    <t t-esc="int(tot_c) if tot_c != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_d if tot_d != 0 else ''"/>
+                                    <t t-esc="int(tot_d) if tot_d != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_e if tot_e != 0 else ''"/>
+                                    <t t-esc="int(tot_e) if tot_e != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_f if tot_f != 0 else ''"/>
+                                    <t t-esc="int(tot_f) if tot_f != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_g if tot_g != 0 else ''"/>
+                                    <t t-esc="int(tot_g) if tot_g != 0 else ''"/>
                                 </td>
                                 <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_h if tot_h != 0 else ''"/>
+                                    <t t-esc="int(tot_h) if tot_h != 0 else ''"/>
                                 </td>
                                 <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_i if tot_i != 0 else ''"/>
+                                    <t t-esc="int(tot_i) if tot_i != 0 else ''"/>
                                 </td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="total_qty"/>
+                                    <t t-esc="int(total_qty)"/>
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">

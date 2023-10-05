@@ -30,7 +30,7 @@
                         <tr>
                             <td style="width: 40%;">
                                 <h2>
-                                    <span style="text-decoration: underline;">PURCHASE ORDER</span>
+                                    <span style="text-decoration: underline;">PO MATERIAL</span>
                                 </h2>
                             </td>
                             <td style="width: 22%;"></td>
@@ -76,10 +76,10 @@
                                 <t t-esc="doc.product_mo"/>
                             </td>
                             <td style="width: 2.08768%; height: 18px;"></td>
-                            <td style="width: 23.0878%; height: 18px;">Delivery</td>
+                            <td style="width: 23.0878%; height: 18px;">Delivery Date</td>
                             <td style="width: 2.08768%; height: 18px; text-align: center;">:</td>
                             <td style="width: 37.9228%; height: 18px;">
-                              <t t-esc="doc.date_planned"/>
+                              <t t-esc="doc.effective_date" t-options="{'widget': 'date'}"/>
                             </td>
                         </tr>
                     </tbody>
