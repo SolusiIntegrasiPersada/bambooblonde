@@ -62,24 +62,6 @@ class StockPicking(models.Model):
             if model_category_pair not in model_category_dict:
                 model_category_dict[model_category_pair] = True  # Mark the pair as processed
 
-            # key_category = (model, category)
-            # if key_category not in model_category_dict:
-            #     model_category_dict[key_category] = {
-            #         'name': name,
-            #         'colour': colour,
-            #         'size': size,
-            #         'retail': retail,
-            #         'price': price,
-            #         'code': code,
-            #         'model': model,
-            #         'category': category,
-            #         'qty': 0,  # Initialize quantity to 0
-            #         'price_receipt': 0.0,  # Initialize price_receipt to 0.0
-            #     }
-            #
-            # for key_category, values in model_category_dict.items():
-            #     consolidated_lines[key_category] = values
-
             key = (name, colour)
             if key in consolidated_lines:
                 consolidated_lines[key]['sizes'].append(size)
