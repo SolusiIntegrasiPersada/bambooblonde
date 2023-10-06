@@ -40,6 +40,5 @@
         'report/report_receipt.xml',
         'report/report_return.xml',
         'report/report_production.xml',
-        # 'report/report_testing.xml',
     ],
 }
