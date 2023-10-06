@@ -101,6 +101,20 @@
         <field name="binding_model_id" eval="False"/>
     </record>
 
+    <record id="action_report_testing_action" model="ir.actions.report">
+      <field name="name">Report - Testing</field>
+      <field name="model">stock.picking</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">sol_stock.report_testing</field>
+      <field name="report_file">sol_stock.report_testing</field>
+      <field name="paperformat_id" ref="sol_stock.report_paperformat_a4_portrait"/>
+      <field name="print_report_name">'Testing - %s - %s' % (object.partner_id.name or '', object.name)</field>
+      <field name="binding_model_id" ref="stock.model_stock_picking"/>
+<!--      <field name="binding_model_id" eval="False"/>-->
+      <field name="binding_type">report</field>
+<!--      <field name="groups_id" eval="[(4, ref('sol_stock.group_report_internal'))]"/>-->
+    </record>
+
   </data>
   
 
