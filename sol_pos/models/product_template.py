@@ -10,6 +10,7 @@ class ProductTemplate(models.Model):
     is_shooping_bag = fields.Boolean(string='Is Shopping Bag', default=False)
     is_produk_diskon = fields.Boolean(string='Is Product Discount', default=False)
     is_produk_promotion = fields.Boolean(string='Is Product Discount Voucher', default=False)
+    is_produk_promotion_free = fields.Boolean(string='Is Product Discount Free Voucher', default=False)
     
     
     product_model_categ_id = fields.Many2one("product.category", string="Model Department" , 
@@ -41,6 +42,11 @@ class ProductProduct(models.Model):
     
     product_model_categ_id = fields.Many2one("product.category", string="Model" , 
         related='product_tmpl_id.product_model_categ_id', store=True)
+    
+    # @api.model
+    # def create(self, values):
+    #     res = super(ProductProduct, self).create(values)
+    #     return res
     
 
                     

@@ -275,6 +275,18 @@ class CouponProgram(models.Model):
         related='sold_in_pos_id.config_id'
     )
     
+    is_add_to_pos = fields.Boolean(string='Add to Pos ?', default=False)
+    
+    def add_to_pos(self):
+        for doc in self:
+            pos_config = self.env["pos.config"].search([("use_coupon_programs", "=", True)])
+            for pos in pos_config :
+                if doc.program_type == 'coupon_program' :
+                    pos.coupon_program_ids = [(4, doc.id)]
+                if doc.program_type == 'promotion_program' :
+                    pos.promo_program_ids = [(4, doc.id)]
+    
+            doc.is_add_to_pos = True
     
     def write(self, vals):
         res = super(CouponProgram,self).write(vals)
@@ -295,7 +307,7 @@ class CouponProgram(models.Model):
         for record in self:
             code_coupon_generate = False
             state_coupon_generate = False
-            if record.is_generate_pos and record.coupon_ids :
+            if record.coupon_ids :
                 code_coupon_generate = record.coupon_ids[0].code
                 state_coupon_generate = record.coupon_ids[0].state
                 
@@ -320,26 +332,43 @@ class CouponProgram(models.Model):
     
     @api.model
     def create(self, values):
+        produk = False
+        if values.get('is_generate_pos', False):
+            produk = self.env["product.product"].search([("is_produk_promotion", "=", True)])
+        elif values.get('program_type', False) == 'coupon_program':
+            produk = self.env["product.product"].search([("is_produk_promotion", "=", True), ('is_produk_promotion_free', "=", True)])
+
+        if produk:
+            values['discount_line_product_id'] = produk[0].id
+
         res = super(CouponProgram, self).create(values)
-        for coupon in res :
-            if  coupon.qty_generate > 0 and coupon.is_generate_pos:
-                vals = {'program_id': coupon.id}
-                for count in range(0, int(coupon.qty_generate)):
-                    coupon_voucher = self.env['coupon.coupon'].create(vals)
-                    
-                # push to all pos.config
-                pos_config = self.env["pos.config"].search([("use_coupon_programs", "=", True)])
-                
-                for pos in pos_config :
-                    pos.coupon_program_ids = [(4, coupon.id)]
-                    
-            if coupon.discount_line_product_id :
-                coupon.discount_line_product_id.is_produk_promotion = True
-                
-            if values.get('rule_partners_domain',False) :
-                for program in res.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
-                    program.valid_partner_ids._compute_promo_coupon()
+        
+        vals = {'program_id': res.id}
+        if res.qty_generate > 0 and res.is_generate_pos:
+            for _ in range(int(res.qty_generate)):
+                coupon_voucher = self.env['coupon.coupon'].create(vals)
+        else :
+            if res.program_type == 'coupon_program' :
+                coupon_voucher = self.env['coupon.coupon'].create(vals)
+
+        res.add_to_pos()
+        res.add_produk_diskon()
+
+        if values.get('rule_partners_domain', False):
+            for program in res.filtered(lambda x: 'available_in_pos' in x.rule_products_domain and x.program_type == 'promotion_program'):
+                program.valid_partner_ids._compute_promo_coupon()
+        
         return res
+
+    def add_produk_diskon(self):
+        if self.discount_line_product_id:
+            self.discount_line_product_id.is_produk_promotion = True
+            if not self.is_generate_pos:
+                self.discount_line_product_id.is_produk_promotion_free = True
+
+        if self.discount_line_product_id and self.program_type == 'promotion_program':
+            self.discount_line_product_id.is_produk_diskon = True
+
 
 from uuid import uuid4
 

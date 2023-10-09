@@ -14,6 +14,7 @@
                             <field name="is_shooping_bag"/>
                             <field name="is_produk_diskon"/>
                             <field name="is_produk_promotion"/>
+                            <field name="is_produk_promotion_free"/>
                         </group>
                     </page>
                     <!-- <span class="d-inline-block">

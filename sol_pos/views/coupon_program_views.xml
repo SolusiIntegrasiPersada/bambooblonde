@@ -1,10 +1,33 @@
 <?xml version="1.0" ?>
 <odoo>
+
+    <record model="ir.ui.view" id="coupon_program_view_promo_program_form2">
+        <field name="name">coupon_program_view_promo_program_form2</field>
+        <field name="model">coupon.program</field>
+        <field name="inherit_id" ref="coupon.coupon_program_view_promo_program_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="is_add_to_pos" invisible="1"/>
+                    <button type="object" name="add_to_pos" string="Add to POS" attrs="{'invisible': [('is_add_to_pos', '=', True)]}" class="oe_highlight"/>
+
+                </header>
+            </xpath>
+        </field>
+    </record>
+
     <record id="coupon_program_view_form_common_inherit" model="ir.ui.view">
         <field name="name">coupon.program.common.form.inherit</field>
         <field name="model">coupon.program</field>
-        <field name="inherit_id" ref="coupon.coupon_program_view_form_common" />
+        <field name="inherit_id" ref="coupon.coupon_program_view_coupon_program_form" />
         <field name="arch" type="xml">
+
+
+
+            <xpath expr="//header" position="inside">
+                <field name="is_add_to_pos" invisible="1"/>
+                <button type="object" name="add_to_pos" string="Add to POS" attrs="{'invisible': [('is_add_to_pos', '=', True)]}" class="oe_highlight"/>
+            </xpath>
             <xpath expr="///group[@name='reward']/field[@name='discount_line_product_id']" position="attributes">
                 <attribute name="readonly">0</attribute>
             </xpath>
@@ -14,7 +37,7 @@
 
                     <field name="is_generate_pos" class="oe_inline"/>
                 </div>
-                <group attrs="{'invisible':[('is_generate_pos', '=', False)]}">
+                <group>
                     <label for="sold_in_pos_id"/>
                     <div>
 
