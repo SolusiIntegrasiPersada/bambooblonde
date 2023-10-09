@@ -275,6 +275,16 @@ class CouponProgram(models.Model):
         related='sold_in_pos_id.config_id'
     )
     
+    
+    def write(self, vals):
+        res = super(CouponProgram,self).write(vals)
+        
+        if vals.get('rule_partners_domain',False) :
+            for program in self.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
+                program.valid_partner_ids._compute_promo_coupon()
+        
+        return res
+    
     code_coupon_generate = fields.Char(string='Code Coupon', 
         compute='_compute_coupon_code_and_state' )
     state_coupon_generate = fields.Char(string='State Coupon', 
@@ -325,6 +335,10 @@ class CouponProgram(models.Model):
                     
             if coupon.discount_line_product_id :
                 coupon.discount_line_product_id.is_produk_promotion = True
+                
+            if values.get('rule_partners_domain',False) :
+                for program in res.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
+                    program.valid_partner_ids._compute_promo_coupon()
         return res
 
 from uuid import uuid4
