@@ -103,123 +103,124 @@ class StockPicking(models.Model):
                     'qtyy': [qty],
                     'price_receipt': price_receipt
                 }
-        category_list = []
-        consolidated_data = []
-        for (name, colour), type_data in consolidated_lines.items():
-
-            sizes = type_data['sizes']
-            model = type_data['model']
-            category = type_data['category']
-            item_type = None
-            price = type_data['price']
-            code = type_data['code']
-            qtyy = type_data['qtyy']
-            price_receipt = type_data['price_receipt']
-
-            # Determine item_type based on matching types
-            if all(size in type_a for size in sizes):
-                item_type = 'A'
-            elif all(size in type_b for size in sizes):
-                item_type = 'B'
-            elif all(size in type_c for size in sizes):
-                item_type = 'C'
-            elif all(size in type_d for size in sizes):
-                item_type = 'D'
-            elif all(size in type_e for size in sizes):
-                item_type = 'E'
-            elif all(size in type_f for size in sizes):
-                item_type = 'F'
-            elif all(size in type_g for size in sizes):
-                item_type = 'G'
-            elif all(size in type_h for size in sizes):
-                item_type = 'H'
-            elif all(size in type_i for size in sizes):
-                item_type = 'I'
-            else:
-                item_type = None
-
-            amounts = {
-                'amount_b': sum(1 for size in sizes if size in column_b),
-                'amount_c': sum(1 for size in sizes if size in column_c),
-                'amount_d': sum(1 for size in sizes if size in column_d),
-                'amount_e': sum(1 for size in sizes if size in column_e),
-                'amount_f': sum(1 for size in sizes if size in column_f),
-                'amount_g': sum(1 for size in sizes if size in column_g),
-                'amount_h': sum(1 for size in sizes if size in column_h),
-                'amount_i': sum(1 for size in sizes if size in column_i),
-            }
-
-            amount_total = sum(amount for amount in amounts.values() if amount is not None)
-            total_retail += retail
-
-            amounts_receipt = {
-                'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b),
-                'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c),
-                'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d),
-                'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e),
-                'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f),
-                'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g),
-                'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h),
-                'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i),
-            }
-
-            amount_total_receipt = sum(amounts_receipt for amounts_receipt in amounts_receipt.values() if amounts_receipt is not None)
-            total_receipt = amount_total_receipt * price_receipt
-
-            tot_b += amounts['amount_b']
-            tot_c += amounts['amount_c']
-            tot_d += amounts['amount_d']
-            tot_e += amounts['amount_e']
-            tot_f += amounts['amount_f']
-            tot_g += amounts['amount_g']
-            tot_h += amounts['amount_h']
-            tot_i += amounts['amount_i']
-            total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
-
-            # if model_category_pair in model_category_dict:
-            consolidated_data.append({
-                'name': name,
-                'colour': colour,
-                'model': model,
-                'category': category,
-                'item_type': item_type,
-                'total_qty': total_qty,
-                'qty': qtyy,
-                'amount_b': amounts['amount_b'],
-                'amount_c': amounts['amount_c'],
-                'amount_d': amounts['amount_d'],
-                'amount_e': amounts['amount_e'],
-                'amount_f': amounts['amount_f'],
-                'amount_g': amounts['amount_g'],
-                'amount_h': amounts['amount_h'],
-                'amount_i': amounts['amount_i'],
-                'tot_b': tot_b,
-                'tot_c': tot_c,
-                'tot_d': tot_d,
-                'tot_e': tot_e,
-                'tot_f': tot_f,
-                'tot_g': tot_g,
-                'tot_h': tot_h,
-                'tot_i': tot_i,
-                'receipt_amount_b': amounts_receipt['amount_b'],
-                'receipt_amount_c': amounts_receipt['amount_c'],
-                'receipt_amount_d': amounts_receipt['amount_d'],
-                'receipt_amount_e': amounts_receipt['amount_e'],
-                'receipt_amount_f': amounts_receipt['amount_f'],
-                'receipt_amount_g': amounts_receipt['amount_g'],
-                'receipt_amount_h': amounts_receipt['amount_h'],
-                'receipt_amount_i': amounts_receipt['amount_i'],
-                'total_retail': total_retail,
-                'amount_total': amount_total,
-                'retail': retail,
-                'price': price,
-                'price_receipt': price_receipt,
-                'code': code,
-                'total_receipt': total_receipt,
-                'amount_total_receipt': amount_total_receipt,
-            })
-
-        return consolidated_data
+        # category_list = []
+        # consolidated_data = []
+        # for (name, colour), type_data in consolidated_lines.items():
+        #
+        #     sizes = type_data['sizes']
+        #     model = type_data['model']
+        #     category = type_data['category']
+        #     item_type = None
+        #     price = type_data['price']
+        #     code = type_data['code']
+        #     qtyy = type_data['qtyy']
+        #     price_receipt = type_data['price_receipt']
+        #
+        #     # Determine item_type based on matching types
+        #     if all(size in type_a for size in sizes):
+        #         item_type = 'A'
+        #     elif all(size in type_b for size in sizes):
+        #         item_type = 'B'
+        #     elif all(size in type_c for size in sizes):
+        #         item_type = 'C'
+        #     elif all(size in type_d for size in sizes):
+        #         item_type = 'D'
+        #     elif all(size in type_e for size in sizes):
+        #         item_type = 'E'
+        #     elif all(size in type_f for size in sizes):
+        #         item_type = 'F'
+        #     elif all(size in type_g for size in sizes):
+        #         item_type = 'G'
+        #     elif all(size in type_h for size in sizes):
+        #         item_type = 'H'
+        #     elif all(size in type_i for size in sizes):
+        #         item_type = 'I'
+        #     else:
+        #         item_type = None
+        #
+        #     amounts = {
+        #         'amount_b': sum(1 for size in sizes if size in column_b),
+        #         'amount_c': sum(1 for size in sizes if size in column_c),
+        #         'amount_d': sum(1 for size in sizes if size in column_d),
+        #         'amount_e': sum(1 for size in sizes if size in column_e),
+        #         'amount_f': sum(1 for size in sizes if size in column_f),
+        #         'amount_g': sum(1 for size in sizes if size in column_g),
+        #         'amount_h': sum(1 for size in sizes if size in column_h),
+        #         'amount_i': sum(1 for size in sizes if size in column_i),
+        #     }
+        #
+        #     amount_total = sum(amount for amount in amounts.values() if amount is not None)
+        #     total_retail += retail
+        #
+        #     amounts_receipt = {
+        #         'amount_b': sum(qty for size, qty in zip(sizes, qtyy) if size in column_b),
+        #         'amount_c': sum(qty for size, qty in zip(sizes, qtyy) if size in column_c),
+        #         'amount_d': sum(qty for size, qty in zip(sizes, qtyy) if size in column_d),
+        #         'amount_e': sum(qty for size, qty in zip(sizes, qtyy) if size in column_e),
+        #         'amount_f': sum(qty for size, qty in zip(sizes, qtyy) if size in column_f),
+        #         'amount_g': sum(qty for size, qty in zip(sizes, qtyy) if size in column_g),
+        #         'amount_h': sum(qty for size, qty in zip(sizes, qtyy) if size in column_h),
+        #         'amount_i': sum(qty for size, qty in zip(sizes, qtyy) if size in column_i),
+        #     }
+        #
+        #     amount_total_receipt = sum(amounts_receipt for amounts_receipt in amounts_receipt.values() if amounts_receipt is not None)
+        #     total_receipt = amount_total_receipt * price_receipt
+        #
+        #     tot_b += amounts['amount_b']
+        #     tot_c += amounts['amount_c']
+        #     tot_d += amounts['amount_d']
+        #     tot_e += amounts['amount_e']
+        #     tot_f += amounts['amount_f']
+        #     tot_g += amounts['amount_g']
+        #     tot_h += amounts['amount_h']
+        #     tot_i += amounts['amount_i']
+        #     total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
+        #
+        #     # if model_category_pair in model_category_dict:
+        #     consolidated_data.append({
+        #         'name': name,
+        #         'colour': colour,
+        #         'model': model,
+        #         'category': category,
+        #         'item_type': item_type,
+        #         'total_qty': total_qty,
+        #         'qty': qtyy,
+        #         'amount_b': amounts['amount_b'],
+        #         'amount_c': amounts['amount_c'],
+        #         'amount_d': amounts['amount_d'],
+        #         'amount_e': amounts['amount_e'],
+        #         'amount_f': amounts['amount_f'],
+        #         'amount_g': amounts['amount_g'],
+        #         'amount_h': amounts['amount_h'],
+        #         'amount_i': amounts['amount_i'],
+        #         'tot_b': tot_b,
+        #         'tot_c': tot_c,
+        #         'tot_d': tot_d,
+        #         'tot_e': tot_e,
+        #         'tot_f': tot_f,
+        #         'tot_g': tot_g,
+        #         'tot_h': tot_h,
+        #         'tot_i': tot_i,
+        #         'receipt_amount_b': amounts_receipt['amount_b'],
+        #         'receipt_amount_c': amounts_receipt['amount_c'],
+        #         'receipt_amount_d': amounts_receipt['amount_d'],
+        #         'receipt_amount_e': amounts_receipt['amount_e'],
+        #         'receipt_amount_f': amounts_receipt['amount_f'],
+        #         'receipt_amount_g': amounts_receipt['amount_g'],
+        #         'receipt_amount_h': amounts_receipt['amount_h'],
+        #         'receipt_amount_i': amounts_receipt['amount_i'],
+        #         'total_retail': total_retail,
+        #         'amount_total': amount_total,
+        #         'retail': retail,
+        #         'price': price,
+        #         'price_receipt': price_receipt,
+        #         'code': code,
+        #         'total_receipt': total_receipt,
+        #         'amount_total_receipt': amount_total_receipt,
+        #     })
+        #
+        # return consolidated_data
+        return
 
 
 class StockMove(models.Model):

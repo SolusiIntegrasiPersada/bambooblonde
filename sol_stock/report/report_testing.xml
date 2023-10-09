@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <h2>Testing</h2>
-                <t t-foreach="o.consolidated_lines.items()" t-as="line">
+                <t t-foreach="docs.consolidate_lines()" t-as="line">
                     <div class="page">
                         <h1>Model: <t t-esc="line[0][0]" /></h1>
                         <h2>Category: <t t-esc="line[0][1]" /></h2>
