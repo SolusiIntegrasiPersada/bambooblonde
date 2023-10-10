@@ -199,7 +199,7 @@ class StockPicking(models.Model):
                 'code': code,
             })
 
-        return consolidated_data
+        return
         # return
 
     def consolidate_lines(self):
