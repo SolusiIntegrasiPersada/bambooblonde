@@ -925,6 +925,7 @@ odoo.define("sol_pos.models", function (require) {
                 }
             }
             var discount = - val / 100.0 * base_to_discount;
+
             if (discount < 0) {
                 if (discount_product_id) {
                     var line = new models.Orderline({}, { pos: self.pos, order: order, product: product, quantity: 1, price: discount, lst_price: discount, is_offer_product: true, is_discount_product: true });
@@ -1407,5 +1408,45 @@ odoo.define("sol_pos.models", function (require) {
             $.extend(orders, {note: this.get_order_note() || ''});
             return orders;
         },
+        /**
+         * This method is called via `collectRewards` inside `_calculateRewards`.
+         * This returns discount rewards based on all the orderlines. Amounts are grouped based
+         * on products tax ids (see `_getGroupKey`). `amountsToDiscount` is adjusted
+         * based on the rewarded products.
+         *
+         * @param {coupon.program} program
+         * @param {number} coupon_id
+         * @param {Reward[]} productRewards
+         * @returns {[Reward[], string | null]}
+         */
+        _getOnOrderDiscountRewards: function (program, coupon_id, productRewards) {
+            const productIdsToAccount = new Set();
+            const amountsToDiscount = {};
+        
+            for (let line of this._getRegularOrderlines()) {
+                const key = this._getGroupKey(line);
+                if (program) {
+                    if (program.valid_product_ids.has(line.product.id)) {
+                        if (!(key in amountsToDiscount)) {
+                            amountsToDiscount[key] = line.get_base_price();
+                        } else {
+                            amountsToDiscount[key] += line.get_base_price();
+                        }
+                        productIdsToAccount.add(line.product.id);
+                    }
+                } else {
+                    if (!(key in amountsToDiscount)) {
+                        amountsToDiscount[key] = line.get_base_price();
+                    } else {
+                        amountsToDiscount[key] += line.get_base_price();
+                    }
+                    productIdsToAccount.add(line.product.id);
+                }
+            }
+            this._considerProductRewards(amountsToDiscount, productIdsToAccount, productRewards);
+            return this._createDiscountRewards(program, coupon_id, amountsToDiscount);
+        },
+        
+        
     });
 });

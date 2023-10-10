@@ -44,10 +44,11 @@ odoo.define('sol_pos.receipt', function (require) {
                         product_id: line.product.id,
                         product_name: line.product.display_name,
                         quantity: line.get_quantity(),
-                        price: line.get_price_with_tax(),
-                        price_real: line.get_price_with_tax(),
+                        price: line.get_price_with_tax()/line.get_quantity(),
+                        price_real: line.get_price_with_tax()/line.get_quantity(),
                         discount: line.get_discount(),
                         is_diskon_promotion : line.check_if_offer_can_be_applied()
+
                     };
                 });
 
