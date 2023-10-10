@@ -144,7 +144,6 @@ class SummarySalesReport(models.TransientModel):
             total_receipt += 1
             total_before_diskon += total_sales
             total_diskon += discount
-            total_after_diskon += order.amount_total
             total_payment_cash += payment_cash
             total_payment_cc += payment_cc
             total_coupon += amount_coupon
@@ -155,7 +154,7 @@ class SummarySalesReport(models.TransientModel):
         qty_sold = total_qty
         before_discount = total_before_diskon
         discount = total_diskon
-        after_discount = total_after_diskon
+        after_discount = before_discount - discount
         payment_cash = total_payment_cash
         payment_cc = total_payment_cc
         coupon = total_coupon
