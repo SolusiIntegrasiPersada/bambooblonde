@@ -16,3 +16,5 @@ class PosSession(models.Model):
         tracking=True,
         copy=False,
     )
+    
+    visitor_count_flt = fields.Float(string='Visitor Count')

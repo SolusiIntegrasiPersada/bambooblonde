@@ -45,22 +45,14 @@ class SummarySalesReport(models.TransientModel):
         endd_month = str(enddate.strftime("%B"))
         endd_year = str(enddate.strftime("%y"))
 
-        # where_ids = " and 1=1 "
-        # if user_id :
-        #     where_ids = " and s.user_id = %s"%(user_id)
+       
 
         datetime_string = self.get_default_date_model().strftime("%Y-%m-%d %H:%M:%S")
         date_string = self.get_default_date_model().strftime("%Y-%m-%d")
         report_name = 'Summary Sales Report'
         filename = '%s %s' % (report_name, date_string)
 
-        # where_date = " and 1=1 "
-        # if self.shift == 'ALL':
-        #     where_date += " and DATE_TRUNC('day', s.start_at) >= '%s' and DATE_TRUNC('day', s.stop_at) <= '%s' and s.shift in ('Shift A','Shift B')"%(self.start_period, self.end_period)
-        # elif self.shift == 'Shift A':
-        #     where_date += " and DATE_TRUNC('day', s.start_at) >= '%s' and DATE_TRUNC('day', s.stop_at) <= '%s' and s.shift in ('Shift A')"%(self.start_period, self.end_period)
-        # elif self.shift == 'Shift B':
-        #     where_date += " and DATE_TRUNC('day', s.start_at) >= '%s' and DATE_TRUNC('day', s.stop_at) <= '%s' and s.shift in ('Shift B')"%(self.start_period, self.end_period)
+      
 
         where_date = " and 1=1 "
         if self.shift == 'ALL':
@@ -73,93 +65,117 @@ class SummarySalesReport(models.TransientModel):
             where_date += " and DATE_TRUNC('day', o.date_order) >= '%s' and DATE_TRUNC('day', o.date_order) <= '%s' and s.shift in ('Shift B')" % (
             self.start_period, self.end_period)
 
-        query = """
-            SELECT          
-                s.config_id AS config_id,
-                rp.name AS user_name,
-                COUNT(o) AS print_receipt,
-                COALESCE(SUM(ol.qty_sold),0) AS qty_sold,
-                COALESCE(SUM(ol.before_discount),0) AS before_discount,
-                COALESCE(SUM(ol.discount),0) AS discount,
-                COALESCE(SUM(o.amount_total),0) AS after_discount,
-                COALESCE(SUM(p.payment_cash),0) AS payment_cash,
-                COALESCE(SUM(p.payment_cc),0) AS payment_cc
-            FROM 
-                pos_order o
-            LEFT JOIN 
-                (SELECT ol.order_id, COALESCE(SUM(ol.qty),0) AS qty_sold, COALESCE(SUM(ol.price_unit * ol.qty),0) AS before_discount, COALESCE(SUM(ol.price_unit * ol.qty),0) - COALESCE(SUM(ol.price_subtotal_incl),0) AS discount FROM pos_order_line ol GROUP BY ol.order_id) ol ON ol.order_id=o.id
-            LEFT JOIN 
-                (SELECT p.pos_order_id AS pos_order_id,
-                        CASE 
-                            WHEN aj.type IN ('cash') THEN COALESCE(SUM(p.amount),0)
-                        END AS payment_cash,
-                        CASE 
-                            WHEN aj.type IN ('bank') THEN COALESCE(SUM(p.amount),0)
-                        END AS payment_cc
-                  FROM pos_payment p 
-                  LEFT JOIN 
-                     pos_payment_method pm ON p.payment_method_id=pm.id
-                  LEFT JOIN 
-                     account_journal aj ON pm.journal_id=aj.id
-                  GROUP BY p.pos_order_id,aj.type) p ON p.pos_order_id=o.id
-            LEFT JOIN 
-                pos_session s ON o.session_id=s.id
-            LEFT JOIN 
-                res_users ru ON s.user_id=ru.id
-            LEFT JOIN 
-                res_partner rp ON ru.partner_id=rp.id
-            WHERE 
-                o.state NOT IN ('draft','cancel') AND s.config_id=%s %s
-            GROUP BY 
-                s.config_id, rp.name
-        """
-        self._cr.execute(query % (config_id, where_date))
-        result = self._cr.dictfetchall()
-        # result = self._cr.fetchall()
 
+        
+        domain = [('state', 'not in', ['draft', 'cancel'])]
+
+        if self.shift == 'ALL':
+            domain += [('date_order', '>=', self.start_period),
+                       ('date_order', '<=', self.end_period)]
+        elif self.shift == 'Shift A':
+            domain += [('date_order', '>=', self.start_period), ('date_order',
+                                                                 '<=', self.end_period), ('session_id.shift', '=', 'Shift A')]
+        elif self.shift == 'Shift B':
+            domain += [('date_order', '>=', self.start_period), ('date_order',
+                                                                 '<=', self.end_period), ('session_id.shift', '=', 'Shift B')]
+        if config_id :
+            domain += [('config_id', '=', self.config_id.id)]
+        
+        orders = self.env['pos.order'].search(domain)
+
+        result = []
+        total_qty = 0
+        total_receipt = 0
+        total_before_diskon = 0
+        total_after_diskon = 0
+        total_diskon = 0
+        total_payment_cash = 0
+        total_payment_cc = 0
+        total_coupon = 0
         nat_asian = 0
         nat_ina = 0
         nat_west = 0
         nat_japan = 0
         nat_aus = 0
         total = 0
-        query2 = """
-            SELECT 
-                CASE 
-                    WHEN vr.name IN ('Asian') THEN COUNT(*)
-                END AS nat_asian,
-                CASE 
-                    WHEN vr.name IN ('Ina') THEN COUNT(*)
-                END AS nat_ina,
-                CASE 
-                    WHEN vr.name IN ('West','We') THEN COUNT(*)
-                END AS nat_west,
-                CASE 
-                    WHEN vr.name IN ('Japan','Japa') THEN COUNT(*)
-                END AS nat_japan,
-                CASE 
-                    WHEN vr.name IN ('Aus') THEN COUNT(*)
-                END AS nat_aus
-            FROM pos_order o
-            LEFT JOIN pos_session s ON o.session_id=s.id
-            LEFT JOIN visitor_region vr ON o.region_id=vr.id
-            WHERE o.state NOT IN ('draft','cancel') AND s.config_id=%s %s
-            GROUP BY vr.name, o.partner_id
-        """
-        self._cr.execute(query2 % (config_id, where_date))
-        result2 = self._cr.dictfetchall()
-        for res2 in result2:
-            if res2['nat_asian']:
-                nat_asian += res2['nat_asian']
-            if res2['nat_ina']:
-                nat_ina += res2['nat_ina']
-            if res2['nat_west']:
-                nat_west += res2['nat_west']
-            if res2['nat_japan']:
-                nat_japan += res2['nat_japan']
-            if res2['nat_aus']:
-                nat_aus += res2['nat_aus']
+        name = ''
+        for order in orders:
+            region = order.region_id
+            if region.name in ('Asian') :
+                nat_asian += 1
+            if region.name in ('Ina','Indonesian') :
+                nat_ina += 1
+            if region.name in ('West','We','Westerner') :
+                nat_west += 1
+            if region.name in ('Japan','Japa','Japanese') :
+                nat_japan += 1
+            if region.name in ('Aus','Australian') :
+                nat_aus += 1
+                
+            
+            name = order.session_id.user_id.name
+            visitor_count = order.session_id.visitor_count_flt
+            lineplus = order.lines.filtered(lambda x: x.price_subtotal_incl > 0)
+            qty = sum(lineplus.mapped('qty'))
+            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)
+            total_sales = pricexqty
+            price_inc = sum(lineplus.mapped('price_subtotal_incl'))
+            discount = pricexqty - price_inc
+            total_return = abs(order.amount_total) if order.amount_total < 0 else 0
+            cash = order.payment_ids.filtered(
+                lambda x: x.payment_method_id.journal_id.type == 'cash')
+            bank = order.payment_ids.filtered(
+                lambda x: x.payment_method_id.journal_id.type == 'bank' and x.amount > 0)
+            payment_cash = sum(cash.mapped('amount'))
+            payment_cc = sum(bank.mapped('amount'))
+            
+            amount_coupon = 0
+            coupon = order.lines.filtered(lambda x: x.product_id.is_produk_promotion)
+            if coupon :
+                amount_coupon = abs(sum(coupon.mapped('price_subtotal_incl')))
+            
+            discount_member = order.lines.filtered(lambda x: x.product_id.is_produk_diskon)
+            if discount_member :
+                discount += abs(sum(discount_member.mapped('price_subtotal_incl')))
+                
+           
+                
+            total_qty += qty
+            total_receipt += 1
+            total_before_diskon += total_sales
+            total_diskon += discount
+            total_after_diskon += order.amount_total
+            total_payment_cash += payment_cash
+            total_payment_cc += payment_cc
+            total_coupon += amount_coupon
+        
+        config_id = config_id
+        user_name = name
+        print_receipt = total_receipt
+        qty_sold = total_qty
+        before_discount = total_before_diskon
+        discount = total_diskon
+        after_discount = total_after_diskon
+        payment_cash = total_payment_cash
+        payment_cc = total_payment_cc
+        coupon = total_coupon
+        visitor_count = sum(order.mapped('session_id').mapped('visitor_count_flt'))
+        result.append({'config_id': config_id, 
+                       'user_name': user_name, 
+                       'print_receipt': print_receipt, 
+                       'qty_sold': qty_sold, 
+                       'before_discount': before_discount, 
+                       'discount': discount, 
+                       'after_discount': after_discount, 
+                       'payment_cash': payment_cash, 
+                       'payment_cc': payment_cc, 
+                       'coupon': coupon, 
+                       'visitor_count': visitor_count, 
+                       })
+            
         total = nat_asian + nat_ina + nat_west + nat_japan + nat_aus
+
+
 
         fp = BytesIO()
         workbook = xlsxwriter.Workbook(fp)
@@ -181,16 +197,16 @@ class SummarySalesReport(models.TransientModel):
         period_end = self.end_period
         start_datetime = datetime(period.year, period.month, period.day, 0, 0, 0) - timedelta(hours=7)
         end_datetime = datetime(period_end.year, period_end.month, period_end.day, 23, 59, 59) - timedelta(hours=7)
-        if self.shift == 'ALL':
-            pos_session_ids = self.env['pos.session'].sudo().search(
-                [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
-                 ('config_id', '=', self.config_id.id)])
-        else:
-            pos_session_ids = self.env['pos.session'].sudo().search(
-                [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
-                 ('config_id', '=', self.config_id.id), ('shift', '=', self.shift)])
+        # if self.shift == 'ALL':
+        #     pos_session_ids = self.env['pos.session'].sudo().search(
+        #         [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
+        #          ('config_id', '=', self.config_id.id)])
+        # else:
+        #     pos_session_ids = self.env['pos.session'].sudo().search(
+        #         [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
+        #          ('config_id', '=', self.config_id.id), ('shift', '=', self.shift)])
 
-        visitor_count = sum(pos_session_ids.mapped('visitor_count'))
+        # visitor_count = sum(pos_session_ids.mapped('visitor_count'))
         for res in result:
 
             worksheet.merge_range('A1:G1', str(pos_name), wbf['title_doc'])
@@ -253,14 +269,6 @@ class SummarySalesReport(models.TransientModel):
                 row += 1
 
             row1 = row
-            # worksheet.merge_range('A%s:B%s' % (row1, row1), 'Total Received US$', wbf['content_number'])
-            # worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Received AUD', wbf['content_number'])
-            # worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Total Received JPY', wbf['content_number'])
-            # worksheet.merge_range('A%s:B%s' % (row1 + 3, row1 + 3), 'Total Received Euro', wbf['content_number'])
-            # worksheet.set_row(row1, None, None, {'hidden': True})
-            # worksheet.set_row(row1 + 1, None, None, {'hidden': True})
-            # worksheet.set_row(row1 + 2, None, None, {'hidden': True})
-            # worksheet.set_row(row1 + 3, None, None, {'hidden': True})
             worksheet.merge_range('A%s:B%s' % (row1, row1), 'Total Received Voucher', wbf['content_number'])
             worksheet.merge_range('A%s:B%s' % (row1 + 1, row1 + 1), 'Total Receipt Print', wbf['content_number'])
             worksheet.merge_range('A%s:B%s' % (row1 + 2, row1 + 2), 'Visitor Statistic:', wbf['content_number'])
@@ -271,9 +279,9 @@ class SummarySalesReport(models.TransientModel):
             worksheet.write('C%s: C%s' % (row2 + 2, row2 + 2), ': ', wbf['content'])
 
             row3 = row
-            worksheet.merge_range('D%s:G%s' % (row3, row3), '-', wbf['content_float'])
+            worksheet.merge_range('D%s:G%s' % (row3, row3), res['coupon'], wbf['content_float'])
             worksheet.merge_range('D%s:G%s' % (row3 + 1, row3 + 1), res['print_receipt'] or '', wbf['content'])
-            worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), visitor_count, wbf['content'])
+            worksheet.merge_range('D%s:G%s' % (row3 + 2, row3 + 2), res['visitor_count'], wbf['content'])
 
             row4 = row3 + 3
             worksheet.write(row4, 0, 'Asian', wbf['content2'])
@@ -302,15 +310,7 @@ class SummarySalesReport(models.TransientModel):
             row7 = row6 + 1
 
             worksheet.merge_range('A%s:G%s' % (row7, row7), 'Conversion Ratio:', wbf['content2'])
-            # # # worksheet.merge_range('A28:G28', '', wbf['content'])
-            # # # worksheet.merge_range('C29:E29', '', wbf['content'])
-            # # # worksheet.merge_range('A29:B29', 'Signature,', wbf['title_doc2'])
-            # # # worksheet.merge_range('F29:G29', 'Signature,', wbf['title_doc2'])
-            # # # worksheet.merge_range('A30:G30', '', wbf['content'])
-            # # # worksheet.merge_range('A31:G31', '', wbf['content'])
-            # # # worksheet.merge_range('C32:E32', '', wbf['title_doc2'])
-            # # # worksheet.merge_range('A32:B32', '(Supervisor)', wbf['title_doc2'])
-            # # # worksheet.merge_range('F32:G32', '(Cashier)', wbf['title_doc2'])
+          
             row8 = row7 + 1
             worksheet.merge_range('A%s:G%s' % (row8, row8), '', wbf['content'])
 

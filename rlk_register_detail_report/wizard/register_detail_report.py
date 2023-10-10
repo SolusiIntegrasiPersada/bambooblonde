@@ -72,6 +72,8 @@ class RegisterDetailReport(models.TransientModel):
         elif self.shift == 'Shift B':
             domain += [('date_order', '>=', self.start_period), ('date_order',
                                                                  '<=', self.end_period), ('session_id.shift', '=', 'Shift B')]
+        if config_id :
+            domain += [('config_id', '=', self.config_id.id)]
 
         
         orders = self.env['pos.order'].search(domain)
