@@ -87,6 +87,10 @@ class StockPicking(models.Model):
         for (model, category), model_data in consolidated_lines.items():
             for (name, colour), type_data in model_data['names'].items():
 
+
+                # name_group = model_data['names']
+                model = model_data['model']
+                category = model_data['category']
                 sizes = type_data['sizes']
                 item_type = None
                 price = type_data['price']
@@ -145,6 +149,8 @@ class StockPicking(models.Model):
                     'colour': colour,
                     'item_type': item_type,
                     'total_qty': total_qty,
+                    'model': model,
+                    'category': category,
                     # 'qty': qtyy,
                     'amount_b': amounts['amount_b'],
                     'amount_c': amounts['amount_c'],

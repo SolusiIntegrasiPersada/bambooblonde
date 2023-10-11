@@ -26,8 +26,8 @@
                 <h2>Testing</h2>
                 <t t-foreach="docs.consolidate_lines()" t-as="line">
                     <div class="page">
-                        <h1>Model: <t t-esc="line[0][0]" /></h1>
-                        <h2>Category: <t t-esc="line[0][1]" /></h2>
+<!--                        <h1>Model: <t t-esc="line[model]" /></h1>-->
+<!--                        <h2>Category: <t t-esc="line[0][1]" /></h2>-->
                         <table>
                             <thead>
                                 <tr>
@@ -42,16 +42,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="line[1]" t-as="product_line">
-                                    <td><t t-esc="product_line.name" /></td>
-                                    <td><t t-esc="product_line.colour" /></td>
-                                    <td><t t-esc="product_line.size" /></td>
-                                    <td><t t-esc="product_line.retail" /></td>
-                                    <td><t t-esc="product_line.price" /></td>
-                                    <td><t t-esc="product_line.code" /></td>
-                                    <td><t t-esc="product_line.qty" /></td>
-                                    <td><t t-esc="product_line.price_receipt" /></td>
-                                </tr>
+<!--                                <tr t-foreach="line" t-as="product_line">-->
+                                <td><t t-esc="line.name" /></td>
+                                <td><t t-esc="line.colour" /></td>
+                                <td><t t-esc="line.size" /></td>
+<!--                                <td><t t-esc="product_line.retail" /></td>-->
+<!--                                <td><t t-esc="product_line.price" /></td>-->
+                                <td><t t-esc="product_line.code" /></td>
+<!--                                <td><t t-esc="product_line.qty" /></td>-->
+<!--                                <td><t t-esc="product_line.price_receipt" /></td>-->
+<!--                                </tr>-->
                             </tbody>
                         </table>
                     </div>
