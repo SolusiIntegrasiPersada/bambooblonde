@@ -276,6 +276,7 @@ class CouponProgram(models.Model):
     )
     
     is_add_to_pos = fields.Boolean(string='Add to Pos ?', default=False)
+    is_member = fields.Boolean(string='Is Diskon Member ?', default=False)
     
     def add_to_pos(self):
         for doc in self:
@@ -292,8 +293,10 @@ class CouponProgram(models.Model):
         res = super(CouponProgram,self).write(vals)
         
         if vals.get('rule_partners_domain',False) :
-            for program in self.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
-                program.valid_partner_ids._compute_promo_coupon()
+            for program in self.filtered(lambda x: x.is_member and x.program_type == 'promotion_program'):
+                self.env['res.partner'].search([])._compute_promo_coupon()
+            self.validasi_partner_member(self)
+                
         
         return res
     
@@ -322,8 +325,8 @@ class CouponProgram(models.Model):
         
         res = super(CouponProgram, self)._compute_valid_partner_ids()
         
-        for program in self.filtered(lambda x:'available_in_pos","=",True' in str(x.rule_products_domain) and x.program_type == 'promotion_program'):
-            program.valid_partner_ids._compute_promo_coupon()
+        for program in self.filtered(lambda x:x.is_member and x.program_type == 'promotion_program'):
+            self.env['res.partner'].search([])._compute_promo_coupon()
             
         return res
     
@@ -343,6 +346,8 @@ class CouponProgram(models.Model):
 
         res = super(CouponProgram, self).create(values)
         
+        
+        
         vals = {'program_id': res.id}
         if res.qty_generate > 0 and res.is_generate_pos:
             for _ in range(int(res.qty_generate)):
@@ -355,10 +360,18 @@ class CouponProgram(models.Model):
         res.add_produk_diskon()
 
         if values.get('rule_partners_domain', False):
-            for program in res.filtered(lambda x: 'available_in_pos' in x.rule_products_domain and x.program_type == 'promotion_program'):
-                program.valid_partner_ids._compute_promo_coupon()
+            for program in res.filtered(lambda x: x.is_member and x.program_type == 'promotion_program'):
+                self.env['res.partner'].search([])._compute_promo_coupon()
+                self.validasi_partner_member(res)
         
         return res
+
+    def validasi_partner_member(self, res):
+        if res.program_type == 'promotion_program' and res.is_member:
+            partner_names = [partner.name for partner in res.valid_partner_ids if partner.id in res.env["coupon.program"].search([("is_member", "=", True), ("id", "!=", res.id)]).mapped('valid_partner_ids').ids]
+            if partner_names:
+                raise ValidationError(f"Partner {', '.join(partner_names)} sudah ada di Promo Member lain")
+
 
     def add_produk_diskon(self):
         if self.discount_line_product_id:

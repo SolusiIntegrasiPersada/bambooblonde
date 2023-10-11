@@ -13,6 +13,13 @@
 
                 </header>
             </xpath>
+            <xpath expr="//group[@name='validity']" position="inside">
+            <label for="is_member" string="Is Member"/>
+                <div>
+
+                    <field name="is_member" class="oe_inline"/>
+                </div>
+            </xpath>
         </field>
     </record>
 
@@ -32,6 +39,8 @@
                 <attribute name="readonly">0</attribute>
             </xpath>
             <xpath expr="//group[@name='validity']" position="inside">
+
+               
                 <label for="is_generate_pos" string="Is Generate Pos"/>
                 <div>
 

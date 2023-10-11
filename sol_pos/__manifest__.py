@@ -38,6 +38,7 @@
         'views/product_template_views.xml',
         'views/res_users_view.xml',
         'views/sequence_data.xml',
+        'views/res_partner.xml',
         'report/action_report.xml',
     ],
     'assets': {
