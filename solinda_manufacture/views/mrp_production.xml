@@ -298,7 +298,7 @@
 
     <menuitem action="mrp_production_sample_action"
               id="menu_mrp_production_sample_action"
-              name="Manufacturing Orders (Sample)"
+              name="Production Details (Sample)"
               parent="mrp.menu_mrp_manufacturing"
               sequence="2"/>
 </odoo>

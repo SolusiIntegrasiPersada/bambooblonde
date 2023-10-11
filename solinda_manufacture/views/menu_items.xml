@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <menuitem action="mrp.mrp_production_action"
+                  id="mrp.menu_mrp_production_action"
+                  name="Production Details"
+                  parent="mrp.menu_mrp_manufacturing"
+                  sequence="1"/>
+
+        <menuitem id="mrp.menu_mrp_root"
+                  name="Production"
+                  groups="mrp.group_mrp_user,mrp.group_mrp_manager"
+                  web_icon="mrp,static/description/icon.png"
+                  sequence="145"/>
+    </data>
+</odoo>
