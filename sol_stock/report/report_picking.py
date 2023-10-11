@@ -38,7 +38,6 @@ class StockPicking(models.Model):
         total_price = 0
 
         consolidated_lines = {}
-        model_category_dict = {}
 
         for line in self.move_ids_without_package:
             name = line.product_id.name
@@ -60,146 +59,117 @@ class StockPicking(models.Model):
             qty = line.quantity_done
             price_receipt = line.price
 
+            if (model, category) not in consolidated_lines:
+                consolidated_lines[(model, category)] = {
+                    'names': {},
+                    'model': model,
+                    'category': category,
+                }
+            name_group = consolidated_lines[(model, category)]['names']
 
-
-
-        # for key_category, values in model_category_dict.items():
-        #     consolidated_lines[key_category] = values
-
-            key = (name, colour)
-            if key in consolidated_lines:
-                consolidated_lines[key]['sizes'].append(size)
-                consolidated_lines[key]['qtyy'].append(qty)
-            else:
-                consolidated_lines[key] = {
+            # Group by (name, colour) within the (model, category) group
+            if (name, colour) not in name_group:
+                name_group[(name, colour)] = {
+                    'colour': colour,
                     'name': name,
-                    'sizes': [size],
-                    'model': model,
-                    'category': category,
+                    'sizes': [],
                     'price': price,
+                    'price_receipt': price_receipt,
                     'code': code,
-                    'qtyy': [qty],
-                    'price_receipt': price_receipt
                 }
+            size_group = name_group[(name, colour)]['sizes']
 
-            key_category = (model, category)
-            if key_category not in model_category_dict:
-                model_category_dict[key_category] = {
-                    'name': [],
-                    'colour': [],
-                    'model': model,
-                    'category': category,
-                }
-            #
-            # # Update the totals for the same (model, category)
-            model_category_dict[key_category]['name'].append(name)
-            model_category_dict[key_category]['colour'].append(colour)
-
-        consolidated_internal = []
-        for (model, category), values in model_category_dict.items():
-            name = values['name']
-            model = values['model']
-            category = values['category']
-            consolidated_internal.append({
-                'name': name,
-                'model': model,
-                'category': category,
-            })
+            # Append size to the (name, colour) group
+            size_group.append(size)
 
 
         consolidated_data = []
-        for (name, colour), type_data in consolidated_lines.items():
-        # for key_category, type_data in model_category_dict.items():
+        for (model, category), model_data in consolidated_lines.items():
+            for (name, colour), type_data in model_data['names'].items():
 
-            sizes = type_data['sizes']
-            # model = type_data['model']
-            # category = type_data['category']
-            item_type = None
-            price = type_data['price']
-            code = type_data['code']
-            qtyy = type_data['qtyy']
-            price_receipt = type_data['price_receipt']
-
-            # Determine item_type based on matching types
-            if all(size in type_a for size in sizes):
-                item_type = 'A'
-            elif all(size in type_b for size in sizes):
-                item_type = 'B'
-            elif all(size in type_c for size in sizes):
-                item_type = 'C'
-            elif all(size in type_d for size in sizes):
-                item_type = 'D'
-            elif all(size in type_e for size in sizes):
-                item_type = 'E'
-            elif all(size in type_f for size in sizes):
-                item_type = 'F'
-            elif all(size in type_g for size in sizes):
-                item_type = 'G'
-            elif all(size in type_h for size in sizes):
-                item_type = 'H'
-            elif all(size in type_i for size in sizes):
-                item_type = 'I'
-            else:
+                sizes = type_data['sizes']
                 item_type = None
+                price = type_data['price']
+                code = type_data['code']
+                # price_receipt = type_data['price_receipt']
 
-            amounts = {
-                'amount_b': sum(1 for size in sizes if size in column_b),
-                'amount_c': sum(1 for size in sizes if size in column_c),
-                'amount_d': sum(1 for size in sizes if size in column_d),
-                'amount_e': sum(1 for size in sizes if size in column_e),
-                'amount_f': sum(1 for size in sizes if size in column_f),
-                'amount_g': sum(1 for size in sizes if size in column_g),
-                'amount_h': sum(1 for size in sizes if size in column_h),
-                'amount_i': sum(1 for size in sizes if size in column_i),
-            }
+                # Determine item_type based on matching types
+                if all(size in type_a for size in sizes):
+                    item_type = 'A'
+                elif all(size in type_b for size in sizes):
+                    item_type = 'B'
+                elif all(size in type_c for size in sizes):
+                    item_type = 'C'
+                elif all(size in type_d for size in sizes):
+                    item_type = 'D'
+                elif all(size in type_e for size in sizes):
+                    item_type = 'E'
+                elif all(size in type_f for size in sizes):
+                    item_type = 'F'
+                elif all(size in type_g for size in sizes):
+                    item_type = 'G'
+                elif all(size in type_h for size in sizes):
+                    item_type = 'H'
+                elif all(size in type_i for size in sizes):
+                    item_type = 'I'
+                else:
+                    item_type = None
 
-            amount_total = sum(amount for amount in amounts.values() if amount is not None)
-            total_retail += retail
+                amounts = {
+                    'amount_b': sum(1 for size in sizes if size in column_b),
+                    'amount_c': sum(1 for size in sizes if size in column_c),
+                    'amount_d': sum(1 for size in sizes if size in column_d),
+                    'amount_e': sum(1 for size in sizes if size in column_e),
+                    'amount_f': sum(1 for size in sizes if size in column_f),
+                    'amount_g': sum(1 for size in sizes if size in column_g),
+                    'amount_h': sum(1 for size in sizes if size in column_h),
+                    'amount_i': sum(1 for size in sizes if size in column_i),
+                }
 
-            tot_b += amounts['amount_b']
-            tot_c += amounts['amount_c']
-            tot_d += amounts['amount_d']
-            tot_e += amounts['amount_e']
-            tot_f += amounts['amount_f']
-            tot_g += amounts['amount_g']
-            tot_h += amounts['amount_h']
-            tot_i += amounts['amount_i']
-            total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
+                amount_total = sum(amount for amount in amounts.values() if amount is not None)
+                total_retail += retail
 
-            # if model_category_pair in model_category_dict:
-            consolidated_data.append({
-                'name': name,
-                'colour': colour,
-                # 'model': model,
-                # 'category': category,
-                'item_type': item_type,
-                'total_qty': total_qty,
-                # 'qty': qtyy,
-                'amount_b': amounts['amount_b'],
-                'amount_c': amounts['amount_c'],
-                'amount_d': amounts['amount_d'],
-                'amount_e': amounts['amount_e'],
-                'amount_f': amounts['amount_f'],
-                'amount_g': amounts['amount_g'],
-                'amount_h': amounts['amount_h'],
-                'amount_i': amounts['amount_i'],
-                'tot_b': tot_b,
-                'tot_c': tot_c,
-                'tot_d': tot_d,
-                'tot_e': tot_e,
-                'tot_f': tot_f,
-                'tot_g': tot_g,
-                'tot_h': tot_h,
-                'tot_i': tot_i,
-                'total_retail': total_retail,
-                'amount_total': amount_total,
-                'retail': retail,
-                'price': price,
-                'price_receipt': price_receipt,
-                'code': code,
-            })
+                tot_b += amounts['amount_b']
+                tot_c += amounts['amount_c']
+                tot_d += amounts['amount_d']
+                tot_e += amounts['amount_e']
+                tot_f += amounts['amount_f']
+                tot_g += amounts['amount_g']
+                tot_h += amounts['amount_h']
+                tot_i += amounts['amount_i']
+                total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
 
-        return
+                # if model_category_pair in model_category_dict:
+                consolidated_data.append({
+                    'name': name,
+                    'colour': colour,
+                    'item_type': item_type,
+                    'total_qty': total_qty,
+                    # 'qty': qtyy,
+                    'amount_b': amounts['amount_b'],
+                    'amount_c': amounts['amount_c'],
+                    'amount_d': amounts['amount_d'],
+                    'amount_e': amounts['amount_e'],
+                    'amount_f': amounts['amount_f'],
+                    'amount_g': amounts['amount_g'],
+                    'amount_h': amounts['amount_h'],
+                    'amount_i': amounts['amount_i'],
+                    'tot_b': tot_b,
+                    'tot_c': tot_c,
+                    'tot_d': tot_d,
+                    'tot_e': tot_e,
+                    'tot_f': tot_f,
+                    'tot_g': tot_g,
+                    'tot_h': tot_h,
+                    'tot_i': tot_i,
+                    'total_retail': total_retail,
+                    'amount_total': amount_total,
+                    'retail': retail,
+                    'price': price,
+                    'price_receipt': price_receipt,
+                    'code': code,
+                })
+        return consolidated_data
         # return
 
     def consolidate_lines(self):
