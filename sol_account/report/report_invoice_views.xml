@@ -21,16 +21,16 @@
                 <t t-set="address">
                     <t t-if="o.partner_id">
                         <div t-if="o.move_type == 'in_invoice'">
-                            Vendor 
+                            Vendor :
                         </div>
                         <div t-if="o.move_type == 'out_invoice'">
-                            Customer 
+                            Customer : 
                         </div>
-                        <div style="padding-left: 50px;">
+                        <div style="padding-left: 60px;">
                             <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
                         </div>
                     </t>
-                    <div t-if="o.partner_id.vat" class="mt16">
+                    <div style="padding-left: 60px;" t-if="o.partner_id.vat" class="mt16">
                         <t t-if="o.company_id.account_fiscal_country_id.vat_label" t-esc="o.company_id.account_fiscal_country_id.vat_label" id="inv_tax_id_label"/>
                         <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/>
                     </div>
