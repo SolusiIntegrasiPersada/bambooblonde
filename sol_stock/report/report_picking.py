@@ -77,20 +77,22 @@ class StockPicking(models.Model):
                     'price_receipt': price_receipt,
                     'code': code,
                 }
+
             size_group = name_group[(name, colour)]['sizes']
 
             # Append size to the (name, colour) group
             size_group.append(size)
 
-
         consolidated_data = []
+
         for (model, category), model_data in consolidated_lines.items():
+            model = model_data['model']
+            category = model_data['category']
+            size_data = []
+
+
             for (name, colour), type_data in model_data['names'].items():
 
-
-                # name_group = model_data['names']
-                model = model_data['model']
-                category = model_data['category']
                 sizes = type_data['sizes']
                 item_type = None
                 price = type_data['price']
@@ -143,8 +145,7 @@ class StockPicking(models.Model):
                 tot_i += amounts['amount_i']
                 total_qty = tot_b + tot_c + tot_d + tot_e + tot_f + tot_g + tot_h + tot_i
 
-                # if model_category_pair in model_category_dict:
-                consolidated_data.append({
+                name_color_dict = ({
                     'name': name,
                     'colour': colour,
                     'item_type': item_type,
@@ -175,6 +176,12 @@ class StockPicking(models.Model):
                     'price_receipt': price_receipt,
                     'code': code,
                 })
+                size_data.append(name_color_dict)
+            consolidated_data.append({
+                'model': model,
+                'category': category,
+                'name': size_data,
+            })
         return consolidated_data
         # return
 
