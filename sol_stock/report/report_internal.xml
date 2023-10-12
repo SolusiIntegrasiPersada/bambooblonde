@@ -250,16 +250,16 @@
                             <t t-set="tot_h" t-value="0"/>
                             <t t-set="tot_i" t-value="0"/>
                             <t t-foreach="docs.internal_transfer()" t-as="line">
-                                <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>
-                                <t t-set="total_retail" t-value="total_retail + line['retail']"/>
-                                <t t-set="tot_b" t-value="tot_b + line['amount_b']"/>
-                                <t t-set="tot_c" t-value="tot_c + line['amount_c']"/>
-                                <t t-set="tot_d" t-value="tot_d + line['amount_d']"/>
-                                <t t-set="tot_e" t-value="tot_e + line['amount_e']"/>
-                                <t t-set="tot_f" t-value="tot_f + line['amount_f']"/>
-                                <t t-set="tot_g" t-value="tot_g + line['amount_g']"/>
-                                <t t-set="tot_h" t-value="tot_h + line['amount_h']"/>
-                                <t t-set="tot_i" t-value="tot_i + line['amount_i']"/>
+<!--                                <t t-set="total_qty" t-value="total_qty + line['amount_total']"/>-->
+<!--                                <t t-set="total_retail" t-value="total_retail + line['retail']"/>-->
+<!--                                <t t-set="tot_b" t-value="tot_b + line['amount_b']"/>-->
+<!--                                <t t-set="tot_c" t-value="tot_c + line['amount_c']"/>-->
+<!--                                <t t-set="tot_d" t-value="tot_d + line['amount_d']"/>-->
+<!--                                <t t-set="tot_e" t-value="tot_e + line['amount_e']"/>-->
+<!--                                <t t-set="tot_f" t-value="tot_f + line['amount_f']"/>-->
+<!--                                <t t-set="tot_g" t-value="tot_g + line['amount_g']"/>-->
+<!--                                <t t-set="tot_h" t-value="tot_h + line['amount_h']"/>-->
+<!--                                <t t-set="tot_i" t-value="tot_i + line['amount_i']"/>-->
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 32.9896%; height: 18px; border: 1pt solid black; padding: 5px;" colspan="3">
                                         <strong t-esc="line['model']"/>
@@ -299,49 +299,49 @@
 
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <t t-esc="line['code']"/>
+<!--                                        <t t-esc="line['code']"/>-->
                                     </td>
                                     <td style="width: 10.33994%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                         <t t-esc="line['name']"/>
                                     </td>
                                     <td style="width: 10.9763%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <t t-esc="line['colour']"/>
+<!--                                        <t t-esc="line['colour']"/>-->
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="line['item_type']"/>
+<!--                                            <t t-esc="line['item_type']"/>-->
                                     </td>
                                     <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_b'] if line['amount_b'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_b'] if line['amount_b'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_c'] if line['amount_c'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_c'] if line['amount_c'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_d'] if line['amount_d'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_d'] if line['amount_d'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_e'] if line['amount_e'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_e'] if line['amount_e'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_f'] if line['amount_f'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_f'] if line['amount_f'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_g'] if line['amount_g'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_g'] if line['amount_g'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_h'] if line['amount_h'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_h'] if line['amount_h'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_i'] if line['amount_i'] != 0 else ''"/>
+<!--                                        <t t-esc="line['amount_i'] if line['amount_i'] != 0 else ''"/>-->
                                     </td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="line['amount_total']"/>
+<!--                                        <t t-esc="line['amount_total']"/>-->
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="'{:,.0f}'.format(line['price']).replace(',', '.')"/>-->
+
                                     </td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>
+<!--                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>-->
                                     </td>
                                 </tr>
 
@@ -362,11 +362,11 @@
                                     <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="total_qty"/>
+<!--                                        <t t-esc="total_qty"/>-->
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <t t-esc="'{:,.0f}'.format(line['total_retail']).replace(',', '.')"/>
+<!--                                        <t t-esc="'{:,.0f}'.format(line['total_retail']).replace(',', '.')"/>-->
                                     </td>
                                 </tr>
                             </t>
@@ -404,11 +404,11 @@
                                     <t t-esc="tot_i if tot_i != 0 else ''"/>
                                 </td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="total_qty"/>
+<!--                                    <t t-esc="total_qty"/>-->
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_retail).replace(',', '.')"/>
+<!--                                    <t t-esc="'{:,.0f}'.format(total_retail).replace(',', '.')"/>-->
                                 </td>
                             </tr>
 
