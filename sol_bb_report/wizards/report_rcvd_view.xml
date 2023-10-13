@@ -19,14 +19,14 @@
         </record>
 
         <record model='ir.actions.act_window' id='report_rcvd_wizard_action'>
-            <field name="name">Report RCVD Plan</field>
+            <field name="name">Report Received Plan</field>
             <field name="res_model">report.rcvd.wizard</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="report_rcvd_wizard_form"/>
             <field name="target">new</field>
         </record>
 
-        <menuitem name="Report RCVD Plan"
+        <menuitem name="Report Received Plan"
             parent="sol_bb_report.menu_report_sample_development"
             id="menu_report_rcvd_wizard"
             action="report_rcvd_wizard_action"
@@ -36,10 +36,10 @@
         <report
             id="report_rcvd_wizard_xlsx"
             model="report.rcvd.wizard"
-            string="Report RCVD Plan"
+            string="Report Received Plan"
             report_type="xlsx"
             name="sol_bb_report.rcvd.xlsx"
-            file="Report RCVD Plan.xlsx"
+            file="Report Received Plan.xlsx"
             menu="False"
             attachment_use="False"/>
     </data>
