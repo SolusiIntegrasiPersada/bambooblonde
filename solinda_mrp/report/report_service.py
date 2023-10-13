@@ -39,7 +39,7 @@ class ProductionReportXlsx(models.AbstractModel):
         if mp_ids["supplier"]:
             for s in mp_ids["supplier"]:
                 sheet = workbook.add_worksheet(s.name)
-
+                sheet.set_column('A:N', 15)
                 title = (title_workcenter["name"] + " " + "Report" + " " + s.name + " " + year)
 
                 bold = workbook.add_format({"bold": True})
@@ -134,6 +134,7 @@ class ProductionReportXlsx(models.AbstractModel):
                     product = i.product_tmpl_id.name or ""
                     customer = i.customer or ""
                     keterangan = i.keterangan or ""
+                    supplier = i.supplier.name or ""
 
                     sheet.write(row, col, no, format_2)
                     sheet.write(row, col + 1, date, format_2)
@@ -147,13 +148,13 @@ class ProductionReportXlsx(models.AbstractModel):
                     sheet.write(row, col + 9, product, format_2)
                     sheet.write(row, col + 10, total_received, format_2)
                     sheet.write(row, col + 11, in_date, format_2)
-                    sheet.write(row, col + 12, " ", format_2)
-                    sheet.write(row, col + 13, keterangan, format_2)
+                    sheet.write(row, col + 12, keterangan, format_2)
+                    sheet.write(row, col + 13, supplier, format_2)
                     row += 1
                     no += 1
         else:
             sheet = workbook.add_worksheet("Report")
-
+            sheet.set_column('A:N', 15)
             title = title_workcenter["name"] + " " + "Report" + " " + year
 
             bold = workbook.add_format({"bold": True})
@@ -245,6 +246,7 @@ class ProductionReportXlsx(models.AbstractModel):
                 wo = i.workcenter_id.name or ""
                 product = i.product_tmpl_id.name or ""
                 customer = i.customer or ""
+                keterangan = i.keterangan or ""
                 keterangan = i.supplier.name or ""
 
                 sheet.write(row, col, no, format_2)
@@ -259,7 +261,7 @@ class ProductionReportXlsx(models.AbstractModel):
                 sheet.write(row, col + 9, product, format_2)
                 sheet.write(row, col + 10, total_received, format_2)
                 sheet.write(row, col + 11, in_date, format_2)
-                sheet.write(row, col + 12, " ", format_2)
-                sheet.write(row, col + 13, keterangan, format_2)
+                sheet.write(row, col + 12, keterangan, format_2)
+                sheet.write(row, col + 13, supplier, format_2)
                 row += 1
                 no += 1
