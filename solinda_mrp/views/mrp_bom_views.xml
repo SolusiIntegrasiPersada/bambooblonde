@@ -98,6 +98,9 @@
             <xpath expr="//notebook/page[@name='components']" position="attributes">
                 <attribute name="string">Material</attribute>
             </xpath>
+            <xpath expr="//notebook/page[@name='components']/field/tree/field[@name='product_qty']" position="attributes">
+                <attribute name="string">HK</attribute>
+            </xpath>
             <xpath expr="//field[@name='picking_type_id']" position="attributes">
                 <attribute name="required">1</attribute>
             </xpath>
@@ -123,7 +126,7 @@
                                     aria-label="Product Attachments" title="Product Attachments"
                                     class="float-right oe_read_only" invisible="1"/>
                             <field name="attachments_count" class="text-left oe_read_only" string=" " invisible="1"/>
-                            <field name="product_qty"/>
+                            <field name="product_qty" string="HK"/>
                             <!-- <field name="shrinkage"/> -->
                             <field name="product_uom_category_id" invisible="1"/>
                             <field name="parent_product_tmpl_id" invisible="1"/>
