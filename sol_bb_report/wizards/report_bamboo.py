@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 
 class ReportBamboo(models.TransientModel):
     _name = 'report.bamboo.wizard'
-    _description = 'Report Bamboo Wizard'
+    _description = 'Report Order Wizard'
 
     from_date = fields.Date(string='From Date')
     to_date = fields.Date(string='To Date')

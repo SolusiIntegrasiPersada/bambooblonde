@@ -36,6 +36,7 @@ class MrpWorkorder(models.Model):
                                   related='production_id.customer.company_type')
     product_tmpl_id = fields.Many2one('product.template', string='Product', related='product_id.product_tmpl_id')
     mrp_payment_id = fields.Many2one('mrp.payment', string='Payment')
+    total_receipt = fields.Float(string='Total Receipt',)
 
     @api.depends('production_id', 'fabric_id')
     def _compute_total_meter(self):

@@ -201,10 +201,10 @@ class XlsxBamboo(models.Model):
                 sheet.write(row, 11, cost_price, formatDetailCurrencyTableReOrder)
                 sheet.write(row, 12, total, formatDetailCurrencyTableReOrder)
                 sheet.write(row, 13, trans_date, formatDetailTableReOrder)
-                sheet.write(row, 14, supplier, formatDetailTableReOrder)
-                sheet.write(row, 15, date_out, formatDetailTableReOrder)
-                sheet.write(row, 16, date_in, formatDetailTableReOrder)
-                sheet.write(row, 17, status, formatDetailTableReOrder)
+                sheet.write(row, 14, '', formatDetailTableReOrder)
+                sheet.write(row, 15, '', formatDetailTableReOrder)
+                sheet.write(row, 16, '', formatDetailTableReOrder)
+                sheet.write(row, 17, '', formatDetailTableReOrder)
 
                 sum_total += total
                 sum_qty += qty

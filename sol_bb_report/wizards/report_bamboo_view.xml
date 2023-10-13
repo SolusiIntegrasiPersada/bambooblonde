@@ -19,14 +19,14 @@
         </record>
 
         <record model='ir.actions.act_window' id='report_bamboo_wizard_action'>
-            <field name="name">Report Bamboo</field>
+            <field name="name">Report Order</field>
             <field name="res_model">report.bamboo.wizard</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="report_bamboo_wizard_form"/>
             <field name="target">new</field>
         </record>
 
-        <menuitem name="Report Bamboo"
+        <menuitem name="Report Order"
             parent="sol_bb_report.menu_report_sample_development"
             id="menu_report_bamboo_wizard"
             action="report_bamboo_wizard_action"
@@ -36,7 +36,7 @@
         <report
             id="report_bamboo_wizard_xlsx"
             model="report.bamboo.wizard"
-            string="Report Bamboo"
+            string="Report Order"
             report_type="xlsx"
             name="sol_bb_report.bamboo.xlsx"
             file="Report Bamboo.xlsx"
