@@ -238,6 +238,16 @@ class PurchaseRequest(models.Model):
     label_dress_ids = fields.One2many('label.dress', 'label_dress_id', string='label dress id')
     prod_summ_ids = fields.One2many('production.summary', 'prod_summ_id', string='prod summ id')
 
+    @api.depends('name', 'name_source')
+    def name_get(self):
+        res = []
+        for record in self:
+            name = record.name
+            if record.name_source:
+                name = f'{name} ({record.name_source})'
+            res.append((record.id, name))
+        return res
+
     def button_to_pattern(self):
         return self.write({'state': 'rejected'})
 
