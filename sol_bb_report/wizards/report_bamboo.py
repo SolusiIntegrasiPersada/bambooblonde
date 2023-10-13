@@ -7,6 +7,8 @@ class ReportBamboo(models.TransientModel):
 
     from_date = fields.Date(string='From Date')
     to_date = fields.Date(string='To Date')
+    order_type = fields.Selection(
+        [('new_order', 'New Order'), ('re_order', 'Reorder'), ('all', 'All')], default='all')
 
     def button_generate_excel(self):
         context = self._context
