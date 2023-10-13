@@ -40,15 +40,7 @@ class ProductionReportXlsx(models.AbstractModel):
             for s in mp_ids["supplier"]:
                 sheet = workbook.add_worksheet(s.name)
 
-                title = (
-                    title_workcenter["name"]
-                    + " "
-                    + "Report"
-                    + " "
-                    + s.name
-                    + " "
-                    + year
-                )
+                title = (title_workcenter["name"] + " " + "Report" + " " + s.name + " " + year)
 
                 bold = workbook.add_format({"bold": True})
                 format_1 = workbook.add_format(
@@ -114,7 +106,7 @@ class ProductionReportXlsx(models.AbstractModel):
 
                 for i in mrp_ids:
                     date = i.po_date.strftime("%d/%m/%Y") if i.po_date else ""
-                    in_date = i.in_date.strftime("%d/%m/%Y") if i.out_date else ""
+                    in_date = i.in_date.strftime("%d/%m/%Y") if i.in_date else ""
                     out_date = i.out_date.strftime("%d/%m/%Y") if i.out_date else ""
                     fabric = ""
                     total_meter_need = 0

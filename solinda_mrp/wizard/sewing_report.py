@@ -1,12 +1,13 @@
 from odoo import api, fields, models
 
+
 class SewingReport(models.TransientModel):
     _name = 'sewing.report'
     _description = 'Sewing Report'
 
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
-    # service = fields.Many2one('mrp.workcenter', string='Service')
+    service = fields.Many2one('mrp.workcenter', string='Service')
     customer = fields.Many2many('res.partner', string='Customer')
 
     def action_print_report(self):
