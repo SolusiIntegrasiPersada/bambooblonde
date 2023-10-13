@@ -13,23 +13,46 @@ class XlsxRcvd(models.Model):
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, objs):
-        header_table = ['No', 'Po. No', 'Order Type', 'Del Date', 'Image', 'Style Description', 'Color', 'Variant Size', 'Total Qty Pcs', 'Sewing Supplier Name', 'Date Out To Sewing Supplier / Process Print', 'Plan RCVD In Taboo', 'Actual RCVD in Taboo', 'Send Date to Bamb', 'Remarks']
+        header_table = ['No', 'Po. No', 'Order Type', 'Del Date', 'Image', 'Style Description', 'Color', 'Variant Size',
+                        'Total Qty Pcs', 'Sewing Supplier Name', 'Date Out To Sewing Supplier / Process Print',
+                        'Plan Received In Taboo', 'Actual Received in Taboo', 'Send Date to Bamb', 'Remarks']
 
-        formatHeaderCompany = workbook.add_format({'font_size': 14, 'valign':'vcenter', 'align': 'center', 'bold': True})
-        formatHeaderTable = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bold': True, 'bg_color':'#8db4e2', 'color':'black', 'text_wrap': True, 'border': 1})
-        formatHeaderTableSand = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bold': True, 'bg_color':'#e5b776', 'color':'black', 'text_wrap': True, 'border': 1})
-        formatNormal = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'left', 'bold': True})
-        formatNormalCenter = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'center', 'text_wrap': True, 'bold': True})
-        formatNormalCurrencyCenter = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'center', 'num_format': '_-"Rp"* #,##0.00_-;-"Rp"* #,##0.00_-;_-"Rp"* "-"_-;_-@_-', 'text_wrap': True, 'bold': True})
-        formatDetailTable = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'text_wrap': True, 'border': 1})
-        formatDetailCurrencyTable = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'num_format': '_-"Rp"* #,##0.00_-;-"Rp"* #,##0.00_-;_-"Rp"* "-"_-;_-@_-', 'text_wrap': True, 'border': 1})
-        formatDetailTableReOrder = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre','text_wrap': True, 'border': 1})
-        formatDetailCurrencyTableReOrder = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'num_format': '_-"Rp"* #,##0_-;-"Rp"* #,##0_-;_-"Rp"* "-"_-;_-@_-', 'text_wrap': True, 'border': 1})
-        formatDetailTableReOrderBlue = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bg_color':'#8db4e2', 'text_wrap': True, 'border': 1})
-        formatDetailTableReOrderSand = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bg_color':'#e5b776', 'text_wrap': True, 'border': 1})
-        formatDetailCurrencyTableReOrderBlue = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre', 'bg_color':'#8db4e2', 'num_format': '_-"Rp"* #,##0_-;-"Rp"* #,##0_-;_-"Rp"* "-"_-;_-@_-', 'text_wrap': True, 'border': 1})
+        formatHeaderCompany = workbook.add_format(
+            {'font_size': 14, 'valign': 'vcenter', 'align': 'center', 'bold': True})
+        formatHeaderTable = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'bold': True, 'bg_color': '#8db4e2',
+             'color': 'black', 'text_wrap': True, 'border': 1})
+        formatHeaderTableSand = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'bold': True, 'bg_color': '#e5b776',
+             'color': 'black', 'text_wrap': True, 'border': 1})
+        formatNormal = workbook.add_format({'font_size': 11, 'valign': 'vcenter', 'align': 'left', 'bold': True})
+        formatNormalCenter = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'center', 'text_wrap': True, 'bold': True})
+        formatNormalCurrencyCenter = workbook.add_format({'font_size': 11, 'valign': 'vcenter', 'align': 'center',
+                                                          'num_format': '_-"Rp"* #,##0.00_-;-"Rp"* #,##0.00_-;_-"Rp"* "-"_-;_-@_-',
+                                                          'text_wrap': True, 'bold': True})
+        formatDetailTable = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'text_wrap': True, 'border': 1})
+        formatDetailCurrencyTable = workbook.add_format({'font_size': 11, 'valign': 'vcenter', 'align': 'centre',
+                                                         'num_format': '_-"Rp"* #,##0.00_-;-"Rp"* #,##0.00_-;_-"Rp"* "-"_-;_-@_-',
+                                                         'text_wrap': True, 'border': 1})
+        formatDetailTableReOrder = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'text_wrap': True, 'border': 1})
+        formatDetailCurrencyTableReOrder = workbook.add_format({'font_size': 11, 'valign': 'vcenter', 'align': 'centre',
+                                                                'num_format': '_-"Rp"* #,##0_-;-"Rp"* #,##0_-;_-"Rp"* "-"_-;_-@_-',
+                                                                'text_wrap': True, 'border': 1})
+        formatDetailTableReOrderBlue = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'bg_color': '#8db4e2', 'text_wrap': True,
+             'border': 1})
+        formatDetailTableReOrderSand = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'bg_color': '#e5b776', 'text_wrap': True,
+             'border': 1})
+        formatDetailCurrencyTableReOrderBlue = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'bg_color': '#8db4e2',
+             'num_format': '_-"Rp"* #,##0_-;-"Rp"* #,##0_-;_-"Rp"* "-"_-;_-@_-', 'text_wrap': True, 'border': 1})
         formatImage = workbook.add_format({'text_wrap': True, 'border': 1})
-        formatDetailNoBorder = workbook.add_format({'font_size': 11, 'valign':'vcenter', 'align': 'centre','text_wrap': True})
+        formatDetailNoBorder = workbook.add_format(
+            {'font_size': 11, 'valign': 'vcenter', 'align': 'centre', 'text_wrap': True})
 
         datas = data.get('form', {})
         from_date = datetime.strptime(datas.get('from_date'), '%Y-%m-%d').strftime('%d/%m/%Y')
@@ -37,7 +60,8 @@ class XlsxRcvd(models.Model):
 
         sheet = workbook.add_worksheet(f'{from_date}')
         row = 1
-        sheet.merge_range(row, 0, row, len(header_table)-1, f'REPORT RCVD {from_date} - {to_date}', formatHeaderCompany)
+        sheet.merge_range(row, 0, row, len(header_table) - 1, f'REPORT RECEIVED {from_date} - {to_date}',
+                          formatHeaderCompany)
         row += 1
         column = 0
         for header in header_table:
@@ -46,7 +70,7 @@ class XlsxRcvd(models.Model):
 
         for x in range(0, len(header_table)):
             sheet.set_column(x, x, 15)
-        
+
         # pol_ids = self.env['purchase.order.line'].sudo().search([
         #     ('order_id.date_approve', '>=', datas.get('from_date')),
         #     ('order_id.date_approve', '<=', datas.get('to_date')),
@@ -61,13 +85,14 @@ class XlsxRcvd(models.Model):
         seq_no = 0
         sum_total_qty_pcs = 0
         for prl in pol_ids.mapped('product_id.product_tmpl_id'):
-            list_color = ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']
+            list_color = ['COLOR', 'COLOUR', 'COLOURS', 'COLORS', 'WARNA', 'CORAK']
 
-            if prl.attribute_line_ids and prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped('id'):
+            if prl.attribute_line_ids and prl.attribute_line_ids.filtered(
+                    lambda x: x.attribute_id.name in list_color).value_ids.mapped('id'):
                 po1_ids = self.env['mrp.production'].sudo().search([
                     ('delivery_date', '>=', datas.get('from_date')),
                     ('delivery_date', '<=', datas.get('to_date')),
-                    ('state', 'in', ['progress', 'done']), 
+                    ('state', 'in', ['progress', 'done']),
                     ('purchase_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
                 ])
                 # po1_ids = self.env['purchase.order'].sudo().search([
@@ -76,9 +101,10 @@ class XlsxRcvd(models.Model):
                 #     ('state', 'in', ['purchase', 'done']), 
                 #     ('picking_type_id.barcode', '=', 'WHBB-RECEIPTS')
                 # ])
-                attrt_color = prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped('name')
+                attrt_color = prl.attribute_line_ids.filtered(
+                    lambda x: x.attribute_id.name in list_color).value_ids.mapped('name')
                 for po1 in po1_ids:
-                # for po1 in po1_ids.order_line.filtered(lambda x: x.product_id.product_tmpl_id == prl and x.colour.strip() == color_name):
+                    # for po1 in po1_ids.order_line.filtered(lambda x: x.product_id.product_tmpl_id == prl and x.colour.strip() == color_name):
 
                     po_no = f'BAMB-{po1.purchase_id.name}' if po1.purchase_id else ''
                     order_type = ''
@@ -105,7 +131,8 @@ class XlsxRcvd(models.Model):
 
                         color = color_name
                         total_qty = 0
-                        for po1_line in po1.by_product_ids.filtered(lambda x: x.product_id.product_tmpl_id == prl and x.colour.strip() == color_name):
+                        for po1_line in po1.by_product_ids.filtered(
+                                lambda x: x.product_id.product_tmpl_id == prl and x.colour.strip() == color_name):
                             total_qty += po1_line.product_uom_qty
                             list_size_qty += [f'{po1_line.size}: {int(po1_line.product_uom_qty)}']
                         # for po1_line in po1.order_line.filtered(lambda x: x.product_id.product_tmpl_id == prl and x.colour.strip() == color_name):
@@ -120,20 +147,31 @@ class XlsxRcvd(models.Model):
                         variant_size = '\n'.join(list_size_qty)
                         # mrp = self.env['mrp.production'].sudo().search([('purchase_id', '=', po1.id), ('state', 'not in', ['draft', 'cancel'])], limit = 1)
                         mrp = po1
-                        wo_ids = mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'SEWING' and x.state in ['progress', 'done'])
+                        wo_ids = mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'SEWING' and x.state in ['progress', 'done'])
                         sewing_supplier = wo_ids[0].supplier.name or '' if wo_ids else ''
                         date_out_sewing = wo_ids[0].out_date.strftime('%d/%m/%Y') if wo_ids and wo_ids[0].out_date else ''
-                        plan_rcvd_in = (wo_ids[0].order_id.date_approve.date() + relativedelta(weeks=+wo_ids[0].order_id.plan_receive_in_week)).strftime('%d/%m/%Y') if wo_ids and wo_ids[0].order_id.date_approve else ''
-                        actual_rcvd_in = wo_ids[0].order_id.effective_date.date().strftime('%d/%m/%Y') if wo_ids and wo_ids[0].order_id.effective_date else ''
-                        send_date_to_bamb = mrp.sales_order_id.effective_date.date().strftime('%d/%m/%Y') if mrp.sales_order_id.effective_date else ''
+                        plan_rcvd_in = (wo_ids[0].order_id.date_approve.date() + relativedelta(
+                            weeks=+wo_ids[0].order_id.plan_receive_in_week)).strftime('%d/%m/%Y') if wo_ids and wo_ids[
+                            0].order_id.date_approve else ''
+                        actual_rcvd_in = wo_ids[0].order_id.effective_date.date().strftime('%d/%m/%Y') if wo_ids and \
+                                                                                                          wo_ids[
+                                                                                                              0].order_id.effective_date else ''
+                        send_date_to_bamb = mrp.sales_order_id.effective_date.date().strftime(
+                            '%d/%m/%Y') if mrp.sales_order_id.effective_date else ''
 
                         flag_plan_rcvd_in = True if wo_ids and wo_ids[0].order_id.date_approve else False
                         flag_actual_rcvd_in = True if wo_ids and wo_ids[0].order_id.effective_date else False
-                        flag_washing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'WASHING' and x.state == 'progress') else False
-                        flag_dyeing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'DYEING' and x.state == 'progress') else False
-                        flag_cutting_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'CUTTING' and x.state == 'progress') else False
-                        flag_printing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'PRINTING' and x.state == 'progress') else False
-                        flag_sewing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(lambda x: x.workcenter_id.name.upper() == 'SEWING' and x.state == 'progress') else False
+                        flag_washing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'WASHING' and x.state == 'progress') else False
+                        flag_dyeing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'DYEING' and x.state == 'progress') else False
+                        flag_cutting_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'CUTTING' and x.state == 'progress') else False
+                        flag_printing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'PRINTING' and x.state == 'progress') else False
+                        flag_sewing_process = True if mrp.workorder_ids and mrp.workorder_ids.filtered(
+                            lambda x: x.workcenter_id.name.upper() == 'SEWING' and x.state == 'progress') else False
                         remarks = ''
                         if flag_plan_rcvd_in and flag_actual_rcvd_in and mrp.service_ids:
                             remarks = 'SERVICE TO VENDOR PROCESS'
@@ -178,8 +216,8 @@ class XlsxRcvd(models.Model):
                         cell_width = 98.0
                         cell_height = 80.0
 
-                        x_scale = cell_width/image_width
-                        y_scale = cell_height/image_height
+                        x_scale = cell_width / image_width
+                        y_scale = cell_height / image_height
 
                         row += 1
                         seq_no += 1
@@ -195,7 +233,9 @@ class XlsxRcvd(models.Model):
                         column += 1
                         if picture:
                             sheet.write(row, column, '', formatDetailTableReOrder)
-                            sheet.insert_image(row, column, "image.png", {'image_data': picture, 'object_position': 1, 'x_scale': x_scale, 'y_scale': y_scale, 'x_offset': 10, 'y_offset': 5})
+                            sheet.insert_image(row, column, "image.png",
+                                               {'image_data': picture, 'object_position': 1, 'x_scale': x_scale,
+                                                'y_scale': y_scale, 'x_offset': 10, 'y_offset': 5})
                             # sheet.insert_image(row, 1, "image.png", {'image_data': picture, 'object_position': 1, 'x_scale': 0.3, 'y_scale': 0.3, 'x_offset': 10, 'y_offset': 5}, formatImage)
                         else:
                             sheet.write(row, column, '', formatDetailTableReOrder)
@@ -221,7 +261,7 @@ class XlsxRcvd(models.Model):
                         sheet.write(row, column, remarks, formatDetailTableReOrder)
                         column += 1
                         sum_total_qty_pcs += total_qty_pcs
-                        
+
                         sheet.set_row(row, 70)
         row += 1
         column = 0
