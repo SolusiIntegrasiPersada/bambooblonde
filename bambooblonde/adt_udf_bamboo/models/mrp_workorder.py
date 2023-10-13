@@ -5,9 +5,8 @@ from dateutil.relativedelta import relativedelta
 class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
-    total_receipt = fields.Float(string='Total Receipt',)
-    
-    
+    # total_receipt = fields.Float(string='Total Receipt',)
+
     def button_finish(self):
         """
         Function to inherit button finish and automatically creates stock_move based on pair with
