@@ -73,7 +73,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-set="lines" t-value="o.move_lines.filtered(lambda x: x.product_uom_qty)"/>
+                            <t t-set="lines" t-value="o.move_ids_without_package.filtered(lambda x: x.quantity_done != 0.0)"/>
                             <tr t-foreach="lines" t-as="move">
                                 <td>
                                     <span t-field="move.product_id"/>
@@ -88,7 +88,8 @@
                                     <span t-field="move.color_mo"/>
                                 </td>
                                 <td>
-                                    <span t-field="move.product_uom_qty"/>
+                                    <!-- <span t-field="move.product_uom_qty"/> -->
+                                    <span t-field="o.total_product_uom_qty"/>
                                     <span t-field="move.product_uom"/>
                                 </td>
                                 <td>

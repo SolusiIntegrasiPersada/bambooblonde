@@ -25,6 +25,7 @@ class StockPicking(models.Model):
     is_manufacture = fields.Boolean(string="Is Manufacturing", related='company_id.is_manufacturing', readonly=True)
     hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
     is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
+    total_product_uom_qty = fields.Float(string='Total Product Uom Qty', compute='_compute_total_product_uom_qty')
     # source_so = fields.Char(string='SO No')
 
     # def action_print_quotation_receive(self):
@@ -47,6 +48,12 @@ class StockPicking(models.Model):
             if rec.picking_type_id.code == 'internal' and not rec.is_manufacture and not rec.is_foc_type:
                 data = {'domain': {'location_dest_id': [('is_transit', '=', True)]}}
             return data
+        
+    @api.depends('move_ids_without_package')
+    def _compute_total_product_uom_qty(self):
+        for record in self:
+            for rec in record.move_ids_without_package :
+                record.total_product_uom_qty += rec.product_uom_qty
 
 
 class StockMove(models.Model):
@@ -99,7 +106,6 @@ class StockMove(models.Model):
                 s = ''
             i.colour = c
             i.size = s
-
 
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
