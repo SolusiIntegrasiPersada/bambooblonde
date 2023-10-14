@@ -27,6 +27,7 @@ class MrpWorkorder(models.Model):
                                 for stock_move in stock_move_obj :
                                     # if data.workcenter_id.id not in (4,5) :
                                     #     data.total_receipt = stock_move.quantity_done
-                                    data.total_receipt = stock_move.quantity_done
-            x=1
+                                    data.total_receipt += stock_move.quantity_done
+
+        x=1
         return res
