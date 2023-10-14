@@ -28,6 +28,11 @@ class MrpWorkorder(models.Model):
                                     # if data.workcenter_id.id not in (4,5) :
                                     #     data.total_receipt = stock_move.quantity_done
                                     data.total_receipt += stock_move.quantity_done
+            if data.workcenter_id.name == 'CUTTING' :
+                sql_query = """
+                    update mrp_workorder set total_dyeing = %s where production_id = %s and workcenter_id = 5
+                    """
+                self.env.cr.execute(sql_query, (data.total_receipt,data.production_id.id,))
 
         x=1
         return res
