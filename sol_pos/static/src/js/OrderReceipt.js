@@ -40,6 +40,7 @@ odoo.define('sol_pos.receipt', function (require) {
                 }, 0);
 
                 const filteredOrderLineAsArray = filteredOrderLine.map((line) => {
+
                     return {
                         product_id: line.product.id,
                         product_name: line.product.display_name,
@@ -77,14 +78,20 @@ odoo.define('sol_pos.receipt', function (require) {
                 }
                     
                 const pos_promotion_diskon = this.env.pos.db.discount_product;
+                let discount = null;
                 filteredOrderLineAsArray.forEach((line) => {
-                    if (line.discount >= 0 && line.is_diskon_promotion && promo_promotion) {
+                    if (line.discount >0 && line.is_diskon_promotion && promo_promotion) {
                         promo_member = null ;
-                        const discountedPriceReal = line.price_real / (1 - (pos_promotion_diskon[0].percent_discount / 100));
+                        const discountedPriceReal = line.price_real / (1 - (line.discount / 100));
                         line.price_real = discountedPriceReal;
+                        discount = line.discount
                     }
 
                 });
+
+                if (discount === null) { 
+                    promo_promotion = null;
+                }
 
 
                 const data = {
