@@ -247,7 +247,7 @@ class ProductionReportXlsx(models.AbstractModel):
                 product = i.product_tmpl_id.name or ""
                 customer = i.customer or ""
                 keterangan = i.keterangan or ""
-                keterangan = i.supplier.name or ""
+                supplier = i.supplier.name or ""
 
                 sheet.write(row, col, no, format_2)
                 sheet.write(row, col + 1, date, format_2)
