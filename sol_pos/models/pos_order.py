@@ -76,6 +76,17 @@ class PosOrderLine(models.Model):
     _inherit = "pos.order.line"
 
     absolute_discount = fields.Float(string="Discount per Unit (abs)", default=0.0)
+    cost_in_order = fields.Float(string="Cost in Order", default=0.0)
+    
+    
+    @api.model
+    def create(self, values):
+        result = super(PosOrderLine,self).create(values)
+        
+        for line in result :
+            line.cost_in_order = line.product_id.standard_price
+        
+        return result
 
     @api.depends(
         "price_unit", "tax_ids", "qty", "discount", "product_id", "absolute_discount"
