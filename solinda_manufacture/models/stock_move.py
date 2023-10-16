@@ -105,6 +105,30 @@ class StockMove(models.Model):
                     move.update({
                         'raw_material_production_id': None
                     })
+            
+            if i.company_id.id == 1 :
+                sql_query = """
+                    select id from stock_picking where origin = %s and company_id = 1
+                    """
+                self.env.cr.execute(sql_query, (po.name,))
+                id_picking = self.env.cr.dictfetchall()
+                id_picking = id_picking[0]['id']
+
+                sql_query = """
+                    update stock_picking set location_dest_id = %s where id = %s
+                    """
+                self.env.cr.execute(sql_query, (8,id_picking,))
+
+                sql_query = """
+                    update stock_move set location_dest_id = %s where picking_id = %s
+                    """
+                self.env.cr.execute(sql_query, (8,id_picking,))
+
+                sql_query = """
+                    update stock_move_line set location_dest_id = %s where picking_id = %s
+                    """
+                self.env.cr.execute(sql_query, (8,id_picking,))
+                x=1
 
             return i.show_po()
 

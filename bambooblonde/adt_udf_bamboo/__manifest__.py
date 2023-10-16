@@ -24,6 +24,6 @@
 
     # always loaded
     'data': [
-        # 'views/mrp_production.xml',
+        'views/stock.picking.xml',
     ],
 }

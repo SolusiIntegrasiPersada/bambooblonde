@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="adt_udf_stock_picking_form_inherit">
+            <field name="name">udf.stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="before">
+                    <button name="kirim_barang"  string="Sync Qty PO" type="object" class="oe_highlight"  data-hotkey="y" 
+                    attrs="{'invisible': ['|','|','|',('state', '!=', 'done'),('picking_type_code', '!=', 'outgoing'),('company_id', '!=', 1),('is_sync_qty_po', '=', True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="is_sync_qty_po"/>
+                  </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
