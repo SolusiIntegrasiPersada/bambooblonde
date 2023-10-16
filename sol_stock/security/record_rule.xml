@@ -35,6 +35,11 @@
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
             <field name="category_id" ref="group_access_report_stock" />
         </record>
+        <record id="group_report_foc" model="res.groups">
+            <field name="name">FOC To Supplier</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+            <field name="category_id" ref="group_access_report_stock" />
+        </record>
         <record id="group_report_production" model="res.groups">
             <field name="name">Production PO</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
