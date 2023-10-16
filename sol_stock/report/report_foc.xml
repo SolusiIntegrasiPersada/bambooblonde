@@ -2,13 +2,13 @@
 <odoo>
     <data>
 
-        <template id="report_internal_type">
+        <template id="report_foc_type">
             <t t-foreach="docs" t-as="o">
-                <t t-call="sol_stock.report_picking_internal" t-lang="o.partner_id.lang"/>
+                <t t-call="sol_stock.report_foc" t-lang="o.partner_id.lang"/>
             </t>
         </template>
 
-        <template id="report_picking_internal">
+        <template id="report_foc">
             <t t-call="web.basic_layout">
                 <div class="header" t-att-style="report_header_style">
                     <t t-set="company" t-value="res_company"></t>
@@ -24,13 +24,13 @@
                       </div>
                     </div>
                 </div>
-                <h2>DELIVERY TO OUTLET</h2>
+                <h2>Free Of Charge</h2>
                 <div class="body">
                     <table style="border-collapse: collapse; width: 100%; height: 85px; border: 1pt solid black;" border="1">
                         <tbody>
                             <tr style="height: 85px;">
                                 <td style="width: 54.0936%; height: 85px;">
-                                    <table style="border-collapse: collapse; width: 100%;" border="0">
+                                    <table style="border-collapse: collapse; width: 100%;">
                                         <tbody>
                                             <tr>
                                                 <td style="width: 37.8615%; text-align: right;"><strong>Register</strong></td>
@@ -47,17 +47,17 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 37.8615%; text-align: right;"><strong>Location Out</strong></td>
+                                                <td style="width: 37.8615%; text-align: right;"><strong>Supplier</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
-                                                    <span t-field="o.location_id"/>
+                                                    <span t-field="o.partner_id"/>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="width: 37.8615%; text-align: right;"><strong>Notes</strong></td>
-                                                <td style="width: 4.50983%;">:</td>
+                                                <td style="width: 37.8615%; text-align: right;"><strong></strong></td>
+                                                <td style="width: 4.50983%;"></td>
                                                 <td style="width: 57.6286%;">
-                                                    <span t-field="o.note"/>
+<!--                                                    <span t-field="o.note"/>-->
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -67,7 +67,7 @@
                                     <table style="border-collapse: collapse; width: 100%; height: 73px;">
                                         <tbody>
                                             <tr style="height: 19px;">
-                                                <td style="width: 18.1034%; height: 19px; text-align: right;"><strong>To</strong></td>
+                                                <td style="width: 18.1034%; height: 19px; text-align: right;"><strong>Destination</strong></td>
                                                 <td style="width: 4.74141%; height: 19px;">:</td>
                                                 <td style="width: 77.1552%; height: 19px;">
                                                     <strong>
@@ -76,17 +76,15 @@
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
-                                                <td style="width: 18.1034%; height: 18px;"></td>
+                                                <td style="width: 18.1034%; height: 18px;"><strong></strong></td>
                                                 <td style="width: 4.74141%; height: 18px;"></td>
-                                                <td style="width: 77.1552%; height: 18px;">
-                                                    <span t-field="o.location_dest_id.address"/>
-                                                </td>
+                                                <td style="width: 77.1552%; height: 18px;"></td>
                                             </tr>
                                             <tr style="height: 18px;">
                                                 <td style="width: 18.1034%; height: 18px;"></td>
                                                 <td style="width: 4.74141%; height: 18px;"></td>
                                                 <td style="width: 77.1552%; height: 18px;">
-                                                    <span t-field="o.location_dest_id.phone"/>
+<!--                                                    <span t-field="o.location_dest_id.phone"/>-->
                                                 </td>
                                             </tr>
                                             <tr style="height: 18px;">
@@ -103,13 +101,13 @@
 
                     <table style="border-collapse: collapse; width: 100%; height: 270px; border: 1pt solid black;" border="1">
                         <tbody>
-                            <tr style="height: 36px; border: 1pt solid black;">
+                             <tr style="height: 36px; border: 1pt solid black;">
                                 <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;" colspan="3">Code / Descriptions</td>
                                 <td style="width: 2.54517%; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;">Size Type</td>
                                 <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;" colspan="8">Quantity</td>
                                 <td style="width: 4.51857%; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;">TTL QTY</td>
-                                <td style="width: 5.4815%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black; padding: 5px;"></td>
-                                <td style="width: 8.37037%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black; padding: 5px;">Retail Price</td>
+                                <td style="width: 5.4815%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black; padding: 5px;">Price</td>
+                                <td style="width: 8.37037%; height: 36px; text-align: right; font-size: 10px; border: 1pt solid black; padding: 5px;">Sub Total</td>
                             </tr>
                             <tr style="height: 18px; border: 1pt solid black;">
                                 <td style="width: 6.67336%; height: 18px; font-size: 13px; border: 1pt solid black;" colspan="3" rowspan="9"></td>
@@ -240,7 +238,7 @@
                             </tr>
 
                             <t t-set="total_grand_qty" t-value="0"/>
-                            <t t-set="total_grand_retail" t-value="0"/>
+                            <t t-set="total_grand_price" t-value="0"/>
                             <t t-set="tot_b" t-value="0"/>
                             <t t-set="tot_c" t-value="0"/>
                             <t t-set="tot_d" t-value="0"/>
@@ -250,8 +248,8 @@
                             <t t-set="tot_h" t-value="0"/>
                             <t t-set="tot_i" t-value="0"/>
                             <t t-set="printed_models" t-value="[]" />
-
                             <t t-foreach="docs.internal_transfer()" t-as="line">
+
                                 <t t-if="line['model'] not in printed_models">
                                     <t t-set="printed_models" t-value="printed_models + [line['model']]" />
                                     <tr style="height: 18px; border: 1pt solid black;">
@@ -274,7 +272,7 @@
                                 </t>
 
                                 <t t-set="total_sub_qty" t-value="0"/>
-                                <t t-set="total_sub_retail" t-value="0"/>
+                                <t t-set="total_sub_price" t-value="0"/>
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 32.9896%; height: 18px; border: 1pt solid black; padding: 5px;" colspan="3">
                                         <strong t-esc="line['category']"/>
@@ -294,11 +292,12 @@
                                 </tr>
 
                                 <t t-foreach="line['name']" t-as="rec">
-                                    <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total']"/>
-                                    <t t-set="total_sub_qty" t-value="total_sub_qty + rec['amount_total']"/>
-                                    <t t-set="total_retail" t-value="rec['amount_total'] * rec['retail']"/>
-                                    <t t-set="total_sub_retail" t-value="total_sub_retail + total_retail"/>
-                                    <t t-set="total_grand_retail" t-value="total_grand_retail + total_retail"/>
+                                     <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total_receipt']"/>
+                                    <t t-set="total_sub_qty" t-value="total_sub_qty + rec['amount_total_receipt']"/>
+                                    <t t-set="total_price" t-value="rec['amount_total_receipt'] * rec['price']"/>
+                                    <t t-set="total_sub_price" t-value="total_sub_price + total_price"/>
+                                    <t t-set="total_grand_price" t-value="total_grand_price + total_price"/>
+
                                     <t t-set="tot_b" t-value="tot_b + rec['amount_b']"/>
                                     <t t-set="tot_c" t-value="tot_c + rec['amount_c']"/>
                                     <t t-set="tot_d" t-value="tot_d + rec['amount_d']"/>
@@ -307,102 +306,81 @@
                                     <t t-set="tot_g" t-value="tot_g + rec['amount_g']"/>
                                     <t t-set="tot_h" t-value="tot_h + rec['amount_h']"/>
                                     <t t-set="tot_i" t-value="tot_i + rec['amount_i']"/>
-
                                     <tr style="height: 18px; border: 1pt solid black;">
                                         <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                             <t t-esc="rec['code']"/>
                                         </td>
-                                        <td style="width: 10.33994%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                        <td style="width: 10.9763%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                             <t t-esc="rec['name']"/>
                                         </td>
-                                        <td style="width: 10.9763%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                        <td style="width: 10.33994%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                             <t t-esc="rec['colour']"/>
                                         </td>
                                         <td style="width: 2.54517%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
                                             <t t-esc="rec['item_type']"/>
                                         </td>
                                         <td style="width: 3.75692%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_b'] if rec['amount_b'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_b']) if rec['receipt_amount_b'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 3.81019%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_c'] if rec['amount_c'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_c']) if rec['receipt_amount_c'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 3.76856%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_d'] if rec['amount_d'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_d']) if rec['receipt_amount_d'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 3.90741%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_e'] if rec['amount_e'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_e']) if rec['receipt_amount_e'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 3.37041%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_f'] if rec['amount_f'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_f']) if rec['receipt_amount_f'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 3.55555%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_g'] if rec['amount_g'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_g']) if rec['receipt_amount_g'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 4.14809%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_h'] if rec['amount_h'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_h']) if rec['receipt_amount_h'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 5.62967%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_i'] if rec['amount_i'] != 0 else ''"/>
+                                            <t t-esc="int(rec['receipt_amount_i']) if rec['receipt_amount_i'] != 0 else ''"/>
                                         </td>
                                         <td style="width: 2.51857%; text-align: center; height: 18px; font-size: 11px; border: 1pt solid black;">
-                                            <t t-esc="rec['amount_total']"/>
+                                            <t t-esc="int(rec['amount_total_receipt'])"/>
                                         </td>
-                                        <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black;">
-
+                                        <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                            <t t-esc="'{:,.0f}'.format(rec['price']).replace(',', '.')"/>
                                         </td>
                                         <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                            <t t-esc="'{:,.0f}'.format(rec['retail']).replace(',', '.')"/>
+    <!--                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>-->
+                                            <t t-esc="'{:,.0f}'.format(total_price).replace(',', '.')"/>
                                         </td>
                                     </tr>
                                 </t>
 
-
                                 <tr style="height: 18px; border: 1pt solid black;">
-                                    <td style="text-align: right; height: 18px; border: 1pt solid black;  font-size: 14px; border: 1pt solid black; padding: 5px;" colspan="3">
+                                    <td style="text-align: right; height: 18px; border: 1pt solid black;  font-size: 14px; border: 1pt solid black;" colspan="3">
                                         <strong>
                                             Sub Total - <t t-esc="line['category']"/>
                                         </strong>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_b'] if rec['tot_b'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_c'] if rec['tot_c'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_d'] if rec['tot_d'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_e'] if rec['tot_e'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_f'] if rec['tot_f'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_g'] if rec['tot_g'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_h'] if rec['tot_h'] != 0 else ''"/>-->
-                                    </td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-<!--                                        <t t-esc="rec['tot_i'] if rec['tot_i'] != 0 else ''"/>-->
-                                    </td>
+                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <strong>
-                                            <t t-esc="total_sub_qty"/>
-                                        </strong>
+                                        <t t-esc="int(total_sub_qty)"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <strong>
-                                            <t t-esc="'{:,.0f}'.format(total_sub_retail).replace(',', '.')"/>
-                                        </strong>
+                                        <t t-esc="'{:,.0f}'.format(total_sub_price).replace(',', '.')"/>
                                     </td>
                                 </tr>
-
                             </t>
+
 
                             <tr style="height: 18px; border: 1pt solid black;">
                                 <td style="width: 32.9896%; text-align: right; border: 1pt solid black; padding: 5px;" colspan="3">
@@ -412,41 +390,46 @@
                                 </td>
                                 <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_b if tot_b != 0 else ''"/>
+                                    <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_c if tot_c != 0 else ''"/>
+                                    <t t-esc="int(tot_c) if tot_c != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_d if tot_d != 0 else ''"/>
+                                    <t t-esc="int(tot_d) if tot_d != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_e if tot_e != 0 else ''"/>
+                                    <t t-esc="int(tot_e) if tot_e != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_f if tot_f != 0 else ''"/>
+                                    <t t-esc="int(tot_f) if tot_f != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_g if tot_g != 0 else ''"/>
+                                    <t t-esc="int(tot_g) if tot_g != 0 else ''"/>
                                 </td>
                                 <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_h if tot_h != 0 else ''"/>
+                                    <t t-esc="int(tot_h) if tot_h != 0 else ''"/>
                                 </td>
                                 <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="tot_i if tot_i != 0 else ''"/>
+                                    <t t-esc="int(tot_i) if tot_i != 0 else ''"/>
                                 </td>
-                                <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="total_grand_qty"/>
+                                <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                    <t t-esc="int(total_grand_qty)"/>
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_retail).replace(',', '.')"/>
+                                    <t t-esc="'{:,.0f}'.format(total_grand_price).replace(',', '.')"/>
                                 </td>
                             </tr>
 
                         </tbody>
                     </table>
                 </div>
+                <p></p>
+                <p><strong>NOTE :</strong></p>
+                <p><span t-field="o.note"/></p>
+                <br/>
+                <br/>
                 <div class="container">
                     <table style="border-collapse: collapse; width: 100%; background-color: transparent;">
                         <tbody style="font-size: 15px;background-color: transparent;">
