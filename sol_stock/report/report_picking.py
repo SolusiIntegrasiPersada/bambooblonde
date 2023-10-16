@@ -76,6 +76,7 @@ class StockPicking(models.Model):
                     'price': price,
                     'price_receipt': price_receipt,
                     'code': code,
+                    'retail': retail,
                 }
 
             size_group = name_group[(name, colour)]['sizes']
@@ -90,6 +91,8 @@ class StockPicking(models.Model):
             category = model_data['category']
             size_data = []
 
+            # total qty dan total retail
+            sub_total = []
 
             for (name, colour), type_data in model_data['names'].items():
 
@@ -97,6 +100,7 @@ class StockPicking(models.Model):
                 item_type = None
                 price = type_data['price']
                 code = type_data['code']
+                retail = type_data['retail']
                 # price_receipt = type_data['price_receipt']
 
                 # Determine item_type based on matching types
@@ -133,7 +137,7 @@ class StockPicking(models.Model):
                 }
 
                 amount_total = sum(amount for amount in amounts.values() if amount is not None)
-                total_retail += retail
+                total_retail = amount_total * retail
 
                 tot_b += amounts['amount_b']
                 tot_c += amounts['amount_c']
@@ -149,7 +153,6 @@ class StockPicking(models.Model):
                     'name': name,
                     'colour': colour,
                     'item_type': item_type,
-                    'total_qty': total_qty,
                     'model': model,
                     'category': category,
                     # 'qty': qtyy,
@@ -176,6 +179,10 @@ class StockPicking(models.Model):
                     'price_receipt': price_receipt,
                     'code': code,
                 })
+                # sub_total_dict = ({
+                #     'total_qty': total_qty,
+                # })
+                # sub_total.append(sub_total_dict)
                 size_data.append(name_color_dict)
             consolidated_data.append({
                 'model': model,
