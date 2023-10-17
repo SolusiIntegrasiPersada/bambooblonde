@@ -71,7 +71,7 @@
                                                 <td style="width: 4.74141%; height: 19px;">:</td>
                                                 <td style="width: 77.1552%; height: 19px;">
                                                     <strong>
-                                                        <span t-field="o.location_dest_id"/>
+                                                        <span t-field="o.location_dest_id.warehouse_id"/>
                                                     </strong>
                                                 </td>
                                             </tr>

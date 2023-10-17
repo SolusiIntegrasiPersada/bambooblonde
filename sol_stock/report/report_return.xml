@@ -384,7 +384,7 @@
                                         <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(tot_c) if tot_c != 0 else ''"/>>
+                                        <t t-esc="int(tot_c) if tot_c != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="int(tot_d) if tot_d != 0 else ''"/>
