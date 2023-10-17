@@ -457,7 +457,7 @@
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_retail).replace(',', '.')"/>
+                                    <t t-esc="'{:,.0f}'.format(total_grand_retail).replace(',', '.')"/>
                                 </td>
                             </tr>
 
