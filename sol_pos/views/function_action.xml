@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data >
+
+
+    <record model="ir.actions.server" id="action_hr_payroll_recompute_whole_sheet">
+        <field name="name">Recompute Model and Category</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_update_model_catogories()
+        </field>
+    </record>
+        
+    </data>
+</odoo>

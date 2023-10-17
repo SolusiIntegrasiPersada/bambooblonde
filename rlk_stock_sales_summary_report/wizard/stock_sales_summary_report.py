@@ -275,6 +275,7 @@ class StockSalesSummaryReport(models.TransientModel):
                     'color': color or '-',
                     'size': size,
                     'qty': 0,
+                    'size_type': 0,
                     'size1': 0,
                     'size2': 0,
                     'size3': 0,
@@ -291,22 +292,57 @@ class StockSalesSummaryReport(models.TransientModel):
                 }
 
             data[key]['qty'] += line.qty or 0
-            if size in (' 6 ',' 7 ',' 32 ', ' 33 ', ' A ', ' XXS ', ' XS/S '):
-                data[key]['size1'] += line.qty or 0
-            elif size in (' 8 ', ' 35 ', ' B ', ' XS ', ' S/M ',' 9 ',' 34 '):
-                data[key]['size2'] += line.qty or 0
-            elif size in (' 10 ', ' 37 ', ' C ', ' M/L ', ' XSS ',' 11 ',' 36 '):
-                data[key]['size3'] += line.qty or 0
-            elif size in (' 12 ', ' 39 ', ' D ', ' S ', ' L/XL ',' 38 '):
-                data[key]['size4'] += line.qty or 0
-            elif size in (' 14 ', ' 41 ', ' M ',' 40 '):
-                data[key]['size5'] += line.qty or 0
-            elif size in (' 4 ', ' 43 ', ' L ',' 42 '):
-                data[key]['size6'] += line.qty or 0
-            elif size in (' XL '):
-                data[key]['size7'] += line.qty or 0
-            elif size in (' OS ', ' ALL '):
-                data[key]['size8'] += line.qty or 0
+            
+            # print(size)
+            size = size.replace(" ","")
+            size_to_group = {
+                '6': 'size1', '7': 'size1', '32': 'size1', '33': 'size1', 'A': 'size1', 'XXS': 'size1', 'XS/S': 'size1',
+                '8': 'size2', '35': 'size2', 'B': 'size2', 'XS': 'size2', 'S/M': 'size2', '9': 'size2', '34': 'size2',
+                '10': 'size3', '37': 'size3', 'C': 'size3', 'M/L': 'size3', 'XSS': 'size3', '11': 'size3', '36': 'size3',
+                '12': 'size4', '39': 'size4', 'D': 'size4', 'S': 'size4', 'L/XL': 'size4', '38': 'size4',
+                '14': 'size5', '41': 'size5', 'M': 'size5', '40': 'size5',
+                '4': 'size6', '43': 'size6', 'L': 'size6', '42': 'size6',
+                'XL': 'size7',
+                'OS': 'size8', 'ALL': 'size8',
+            }
+
+            # Atur nilai berdasarkan ukuran dan grup yang sesuai
+            group = size_to_group.get(size, 'size8')
+            data[key][group] += line.qty or 0
+            
+            # size_type_mapping = {
+            # '6': 'A', '8': 'A', '10': 'A', '12': 'A', '14': 'A', '4': 'A',
+            # '7': 'B', '9': 'B', '11': 'B',
+            # '32': 'C', '34': 'C', '36': 'C', '38': 'C', '40': 'C', '42': 'C',
+            # '33': 'D', '35': 'D', '37': 'D', '39': 'D', '41': 'D', '43': 'D',
+            # 'A': 'F', 'B': 'F', 'C': 'F', 'D': 'F',
+            # 'XXS': 'G', 'XS': 'G', 'XSS': 'G', 'S': 'G', 'M': 'G', 'L': 'G', 'XL': 'G', 'OS': 'G',
+            # 'XS/S': 'H', 'S/M': 'H', 'M/L': 'H', 'L/XL': 'H'}
+
+            # # Atur tipe ukuran berdasarkan size yang diberikan
+            # sizetypess = size_type_mapping.get(size, 'H')
+            list_size = ['SIZE', 'SIZES', 'UKURAN']
+            sizetypess = "H"  # Default label
+
+            for v in product.product_template_variant_value_ids:
+                if any(v.display_name.upper().startswith(word) for word in list_size):
+                    attribute_id = v.attribute_id.value_ids.filtered(lambda value: value.name == v.name)
+                    if attribute_id and attribute_id.label_id and attribute_id.label_id.name:
+                        sizetypess = attribute_id.label_id.name
+                        
+
+            sizetypess = sizetypess.replace(" ", "")
+
+            if data[key]['size_type']:
+                # Memisahkan tipe ukuran yang sudah ada
+                existing_size_types = data[key]['size_type'].split(', ')
+                if sizetypess not in existing_size_types:
+                    # Tambahkan tipe ukuran baru jika belum ada
+                    data[key]['size_type'] += ", " + sizetypess
+            else:
+                # Jika belum ada, langsung atur tipe ukuran sebagai tipe ukuran baru
+                data[key]['size_type'] = sizetypess
+                
             subtotal2_price = line.qty * price_unit_inc_discount or 0
             subtotal2_cost = line.qty * cost_price or 0
             data[key]['subtotal'] += subtotal2_price or 0
@@ -388,7 +424,7 @@ class StockSalesSummaryReport(models.TransientModel):
                     worksheet.write('%s%s:%s%s' % (
                         col1, row, col2, row), rec2['color'] or '', wbf['content2'])
                     worksheet.write('%s%s:%s%s' % (
-                        col2, row, col3, row), '', wbf['content_number'])
+                        col2, row, col3, row), rec2['size_type'], wbf['content_number'])
                     worksheet.write('%s%s:%s%s' % (
                         col3, row, col14, row), rec2['size1'] or '', wbf['content_number'])
                     worksheet.write('%s%s:%s%s' % (

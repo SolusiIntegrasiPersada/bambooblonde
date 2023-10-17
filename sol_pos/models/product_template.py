@@ -21,6 +21,7 @@ class ProductTemplate(models.Model):
             
     @api.depends('categ_id')
     def _compute_search_model(self):
+        print("template _compute_search_model")
         def search_model(categ_id, loop,type):
             if loop >= 4:
                 return False
@@ -40,8 +41,10 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = 'product.product'
     
-    product_model_categ_id = fields.Many2one("product.category", string="Model" , 
-        related='product_tmpl_id.product_model_categ_id', store=True)
+    product_model_categ_id = fields.Many2one("product.category", string="Model Department" , 
+        compute='_compute_search_model' , store=True)
+    product_category_categ_id = fields.Many2one("product.category", string="Model Category" , 
+        compute='_compute_search_model' , store=True)
     
     # @api.model
     # def create(self, values):
@@ -57,6 +60,33 @@ class ProductProduct(models.Model):
     #     res = super(ProductProduct, self).write(values)
         
     #     return res
+    
+    @api.depends('categ_id')
+    def _compute_search_model(self):
+        print("product _compute_search_model")
+        def search_model(categ_id, loop,type):
+            print (categ_id.category_product)
+            if loop >= 7:
+                return False
+            if categ_id.category_product == type:
+                return categ_id.id
+            return search_model(categ_id.parent_id, loop + 1,type)
+
+        for record in self:
+            product_models_id = False
+            if record.categ_id:
+                product_models_id = search_model(record.categ_id, 1, 'department')
+                product_category_id = search_model(record.categ_id, 1,'category')
+                
+            record.product_model_categ_id = product_models_id
+            record.product_category_categ_id = product_category_id
+    
+    def action_update_model_catogories(self):
+        print(self)
+        for doc in self:
+            
+            doc._compute_search_model()
+    
     
 class ProductTemplateAttributeValue(models.Model):
     """Materialized relationship between attribute values

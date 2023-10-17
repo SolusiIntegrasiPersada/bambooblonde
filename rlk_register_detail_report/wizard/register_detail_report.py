@@ -100,7 +100,7 @@ class RegisterDetailReport(models.TransientModel):
             discount = pricexqty - price_inc
             total_return = abs(order.amount_total) if order.amount_total < 0 else 0
             payment_cash = sum(order.payment_ids.filtered(
-                lambda x: x.payment_method_id.journal_id.type == 'cash' and x.amount > 0).mapped('amount'))
+                lambda x: x.payment_method_id.journal_id.type == 'cash').mapped('amount'))
             payment_cc = sum(order.payment_ids.filtered(
                 lambda x: x.payment_method_id.journal_id.type == 'bank' and x.amount > 0).mapped('amount'))
             

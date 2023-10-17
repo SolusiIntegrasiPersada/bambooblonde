@@ -39,6 +39,7 @@
         'views/res_users_view.xml',
         'views/sequence_data.xml',
         'views/res_partner.xml',
+        'views/function_action.xml',
         'report/action_report.xml',
     ],
     'assets': {
