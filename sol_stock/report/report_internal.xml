@@ -43,14 +43,14 @@
                                                 <td style="width: 37.8615%; text-align: right;"><strong>Date</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
-                                                    <t t-esc="o.scheduled_date" t-options='{"widget": "date"}'/>
+                                                    <t t-esc="o.date_done" t-options='{"widget": "date"}'/>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="width: 37.8615%; text-align: right;"><strong>Location Out</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
-                                                    <span t-field="o.location_id"/>
+                                                    <span t-field="o.location_id.warehouse_id"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -302,9 +302,9 @@
                                 </tr>
 
                                 <t t-foreach="line['name']" t-as="rec">
-                                    <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total']"/>
-                                    <t t-set="total_sub_qty" t-value="total_sub_qty + rec['amount_total']"/>
-                                    <t t-set="total_retail" t-value="rec['amount_total'] * rec['retail']"/>
+                                    <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total_receipt']"/>
+                                    <t t-set="total_sub_qty" t-value="total_sub_qty + rec['amount_total_receipt']"/>
+                                    <t t-set="total_retail" t-value="rec['amount_total_receipt'] * rec['retail']"/>
                                     <t t-set="total_sub_retail" t-value="total_sub_retail + total_retail"/>
                                     <t t-set="total_grand_retail" t-value="total_grand_retail + total_retail"/>
                                     <t t-set="tot_b" t-value="tot_b + rec['receipt_amount_b']"/>
@@ -386,7 +386,7 @@
                                         <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
-                                        <t t-esc="int(tot_c) if tot_c != 0 else ''"/>>
+                                        <t t-esc="int(tot_c) if tot_c != 0 else ''"/>
                                     </td>
                                     <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="int(tot_d) if tot_d != 0 else ''"/>

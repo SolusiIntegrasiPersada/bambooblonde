@@ -43,7 +43,7 @@
                                                 <td style="width: 37.8615%; text-align: right;"><strong>Date</strong></td>
                                                 <td style="width: 4.50983%;">:</td>
                                                 <td style="width: 57.6286%;">
-                                                    <t t-esc="o.scheduled_date" t-options='{"widget": "date"}'/>
+                                                    <t t-esc="o.date_done" t-options='{"widget": "date"}'/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -71,7 +71,7 @@
                                                 <td style="width: 4.74141%; height: 19px;">:</td>
                                                 <td style="width: 77.1552%; height: 19px;">
                                                     <strong>
-                                                        <span t-field="o.location_dest_id"/>
+                                                        <span t-field="o.location_dest_id.warehouse_id"/>
                                                     </strong>
                                                 </td>
                                             </tr>
