@@ -239,14 +239,14 @@
 
                             <t t-set="total_grand_qty" t-value="0"/>
                             <t t-set="total_grand_price" t-value="0"/>
-                            <t t-set="tot_b" t-value="0"/>
-                            <t t-set="tot_c" t-value="0"/>
-                            <t t-set="tot_d" t-value="0"/>
-                            <t t-set="tot_e" t-value="0"/>
-                            <t t-set="tot_f" t-value="0"/>
-                            <t t-set="tot_g" t-value="0"/>
-                            <t t-set="tot_h" t-value="0"/>
-                            <t t-set="tot_i" t-value="0"/>
+                            <t t-set="tot_grand_b" t-value="0"/>
+                            <t t-set="tot_grand_c" t-value="0"/>
+                            <t t-set="tot_grand_d" t-value="0"/>
+                            <t t-set="tot_grand_e" t-value="0"/>
+                            <t t-set="tot_grand_f" t-value="0"/>
+                            <t t-set="tot_grand_g" t-value="0"/>
+                            <t t-set="tot_grand_h" t-value="0"/>
+                            <t t-set="tot_grand_i" t-value="0"/>
                             <t t-set="printed_models" t-value="[]" />
                             <t t-foreach="docs.internal_transfer()" t-as="line">
 
@@ -273,6 +273,14 @@
 
                                 <t t-set="total_sub_qty" t-value="0"/>
                                 <t t-set="total_sub_price" t-value="0"/>
+                                <t t-set="tot_b" t-value="0"/>
+                                <t t-set="tot_c" t-value="0"/>
+                                <t t-set="tot_d" t-value="0"/>
+                                <t t-set="tot_e" t-value="0"/>
+                                <t t-set="tot_f" t-value="0"/>
+                                <t t-set="tot_g" t-value="0"/>
+                                <t t-set="tot_h" t-value="0"/>
+                                <t t-set="tot_i" t-value="0"/>
                                 <tr style="height: 18px; border: 1pt solid black;">
                                     <td style="width: 32.9896%; height: 18px; border: 1pt solid black; padding: 5px;" colspan="3">
                                         <strong t-esc="line['category']"/>
@@ -292,20 +300,29 @@
                                 </tr>
 
                                 <t t-foreach="line['name']" t-as="rec">
-                                     <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total_receipt']"/>
+                                    <t t-set="total_grand_qty" t-value="total_grand_qty + rec['amount_total_receipt']"/>
                                     <t t-set="total_sub_qty" t-value="total_sub_qty + rec['amount_total_receipt']"/>
                                     <t t-set="total_price" t-value="rec['amount_total_receipt'] * rec['price']"/>
                                     <t t-set="total_sub_price" t-value="total_sub_price + total_price"/>
                                     <t t-set="total_grand_price" t-value="total_grand_price + total_price"/>
 
-                                    <t t-set="tot_b" t-value="tot_b + rec['amount_b']"/>
-                                    <t t-set="tot_c" t-value="tot_c + rec['amount_c']"/>
-                                    <t t-set="tot_d" t-value="tot_d + rec['amount_d']"/>
-                                    <t t-set="tot_e" t-value="tot_e + rec['amount_e']"/>
-                                    <t t-set="tot_f" t-value="tot_f + rec['amount_f']"/>
-                                    <t t-set="tot_g" t-value="tot_g + rec['amount_g']"/>
-                                    <t t-set="tot_h" t-value="tot_h + rec['amount_h']"/>
-                                    <t t-set="tot_i" t-value="tot_i + rec['amount_i']"/>
+                                     <t t-set="tot_b" t-value="tot_b + rec['receipt_amount_b']"/>
+                                    <t t-set="tot_c" t-value="tot_c + rec['receipt_amount_c']"/>
+                                    <t t-set="tot_d" t-value="tot_d + rec['receipt_amount_d']"/>
+                                    <t t-set="tot_e" t-value="tot_e + rec['receipt_amount_e']"/>
+                                    <t t-set="tot_f" t-value="tot_f + rec['receipt_amount_f']"/>
+                                    <t t-set="tot_g" t-value="tot_g + rec['receipt_amount_g']"/>
+                                    <t t-set="tot_h" t-value="tot_h + rec['receipt_amount_h']"/>
+                                    <t t-set="tot_i" t-value="tot_i + rec['receipt_amount_i']"/>
+
+                                    <t t-set="tot_grand_b" t-value="tot_grand_b + rec['receipt_amount_b']"/>
+                                    <t t-set="tot_grand_c" t-value="tot_grand_c + rec['receipt_amount_c']"/>
+                                    <t t-set="tot_grand_d" t-value="tot_grand_d + rec['receipt_amount_d']"/>
+                                    <t t-set="tot_grand_e" t-value="tot_grand_e + rec['receipt_amount_e']"/>
+                                    <t t-set="tot_grand_f" t-value="tot_grand_f + rec['receipt_amount_f']"/>
+                                    <t t-set="tot_grand_g" t-value="tot_grand_g + rec['receipt_amount_g']"/>
+                                    <t t-set="tot_grand_h" t-value="tot_grand_h + rec['receipt_amount_h']"/>
+                                    <t t-set="tot_grand_i" t-value="tot_grand_i + rec['receipt_amount_i']"/>
                                     <tr style="height: 18px; border: 1pt solid black;">
                                         <td style="width: 6.67336%; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                             <t t-esc="rec['code']"/>
@@ -363,14 +380,30 @@
                                         </strong>
                                     </td>
                                     <td style="width: 2.54517%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
-                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
+                                     <td style="width: 3.75692%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.81019%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_c) if tot_c != 0 else ''"/>>
+                                    </td>
+                                    <td style="width: 3.76856%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_d) if tot_d != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.90741%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_e) if tot_e != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.37041%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_f) if tot_f != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.55555%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_g) if tot_g != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 4.14809%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_h) if tot_h != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_i) if tot_i != 0 else ''"/>
+                                    </td>
                                     <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="int(total_sub_qty)"/>
                                     </td>
@@ -390,28 +423,28 @@
                                 </td>
                                 <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_b) if tot_grand_b != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_c) if tot_c != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_c) if tot_grand_c != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_d) if tot_d != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_d) if tot_grand_d != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_e) if tot_e != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_e) if tot_grand_e != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_f) if tot_f != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_f) if tot_grand_f != 0 else ''"/>
                                 </td>
                                 <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_g) if tot_g != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_g) if tot_grand_g != 0 else ''"/>
                                 </td>
                                 <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_h) if tot_h != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_h) if tot_grand_h != 0 else ''"/>
                                 </td>
                                 <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_i) if tot_i != 0 else ''"/>
+                                    <t t-esc="int(tot_grand_i) if tot_grand_i != 0 else ''"/>
                                 </td>
                                 <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; padding: 5px;">
                                     <t t-esc="int(total_grand_qty)"/>
