@@ -21,7 +21,7 @@ class ProductTemplate(models.Model):
             
     @api.depends('categ_id')
     def _compute_search_model(self):
-        print("template _compute_search_model")
+        # print("template _compute_search_model")
         def search_model(categ_id, loop,type):
             if loop >= 4:
                 return False
@@ -63,9 +63,9 @@ class ProductProduct(models.Model):
     
     @api.depends('categ_id')
     def _compute_search_model(self):
-        print("product _compute_search_model")
+        # print("product _compute_search_model")
         def search_model(categ_id, loop,type):
-            print (categ_id.category_product)
+            # print (categ_id.category_product)
             if loop >= 7:
                 return False
             if categ_id.category_product == type:
@@ -82,7 +82,7 @@ class ProductProduct(models.Model):
             record.product_category_categ_id = product_category_id
     
     def action_update_model_catogories(self):
-        print(self)
+        # print(self)
         for doc in self:
             
             doc._compute_search_model()
