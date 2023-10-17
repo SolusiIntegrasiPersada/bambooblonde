@@ -18,13 +18,23 @@ odoo.define('sol_pos.receipt', function (require) {
                 const receipt_design = this.env.pos.config.design_receipt;
                 const order = this.env.pos.get_order();
                 const receipts = order.export_for_printing();
+                const reward_line = order._getRewardLines()
                 let promo_member = null;
                 let promo_promotion = this.env.pos.db.all_promo_message;
-                const code = receipts.client?.coupon_promo_id;
+                // const code = receipts.client?.coupon_promo_id;
+                
+                
+                // debugger ; 
+                // if (code) {
+                //     promo_member = this.env.pos.coupon_programs_by_id[code[0]];
+                // }
 
-                if (code) {
-                    promo_member = this.env.pos.coupon_programs_by_id[code[0]];
+                
+                if (reward_line && reward_line.length > 0) {
+                    promo_member = this.env.pos.coupon_programs_by_id[reward_line[0].program_id];
                 }
+
+
 
                 const order_line = order.get_orderlines();
                 // debugger ; 
