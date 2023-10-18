@@ -5,11 +5,6 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-<!--                <xpath expr="//header" position="inside">-->
-<!--                    <button name="action_print_quotation_receive" string="Print Report Receiving" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'mrp_operation')]}"/>-->
-<!--                    <button name="action_print_quotation_internal" string="Print Report Internal Transfer" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'internal')]}"/>-->
-<!--                    <button name="action_print_quotation_return" string="Print Report Return" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'mrp_operation')]}"/>-->
-<!--                </xpath>-->
                 <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
                     <attribute name="attrs">{'invisible': [('hide_return', '=', True)]}</attribute>
                 </xpath>
@@ -42,9 +37,7 @@
                 <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="attributes">
                     <attribute name="string">Quantity</attribute>
                 </xpath>
-<!--                <xpath expr="//notebook/page[@name='extra']/group/group/field[@name='group_id']" position="after">-->
-<!--                    <field name="source_so"/>-->
-<!--                </xpath>-->
+
             </field>
         </record>
 

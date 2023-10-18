@@ -70,13 +70,12 @@ class StockMove(models.Model):
 
     @api.onchange('product_id')
     def _onchange_product(self):
-        self.ensure_one()
         for record in self:
             if record.product_id:
-                record.update({
-                    # 'image': record.product_id.image_1920,
-                    'price': record.product_id.standard_price
-                })
+                # record.update({
+                #     'image': record.product_id.image_1920,
+                #     'price': record.product_id.standard_price
+                # })
                 if record.picking_id and record.location_id:
                     record.update({
                         'qty_available': sum(self.env['stock.quant'].search(
