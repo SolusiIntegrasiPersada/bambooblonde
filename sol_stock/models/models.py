@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 import datetime
 
 
@@ -26,16 +27,12 @@ class StockPicking(models.Model):
     hide_return = fields.Boolean('Hide Return', related='picking_type_id.hide_return')
     is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
     total_product_uom_qty = fields.Float(string='Total Product Uom Qty', compute='_compute_total_product_uom_qty')
-    # source_so = fields.Char(string='SO No')
 
-    # def action_print_quotation_receive(self):
-    #     return self.env.ref('sol_stock.action_report_receive_action').report_action(self)
-    #
-    # def action_print_quotation_internal(self):
-    #     return self.env.ref('sol_stock.action_report_internal_action').report_action(self)
-    #
-    # def action_print_quotation_return(self):
-    #     return self.env.ref('sol_stock.action_report_return_action').report_action(self)
+    @api.constrains('location_id', 'location_dest_id')
+    def _check_location(self):
+        for rec in self:
+            if rec.location_id == rec.location_dest_id:
+                raise ValidationError("Source Location and Destination Location can't be the same location")
 
     @api.onchange('is_foc_type')
     def _onchange_location(self):
@@ -62,6 +59,7 @@ class StockMove(models.Model):
     fabric_width = fields.Float(string="Fabric Width", related='product_id.fabric_width')
     price = fields.Float(string="Cost")
     price_mo = fields.Float(string="Cost")
+    sales_price = fields.Float(string="Sales Price", related='product_id.lst_price')
     image = fields.Image(string='Image')
     color_ids = fields.Many2many('product.template.attribute.value', string="Size and Color")
     colour = fields.Char('Color', compute="_onchange_color_size")

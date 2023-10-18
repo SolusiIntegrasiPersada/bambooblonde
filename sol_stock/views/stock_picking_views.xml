@@ -34,9 +34,13 @@
                     <field name="image" widget="image" class="oe_avatar" />
                     <field name="color_mo" attrs="{'column_invisible': [('parent.picking_type_code', '=', 'internal')]}"/>
                     <field name="fabric_width" invisible='1'/>
-                    <field name="price" attrs="{'column_invisible': [('parent.picking_type_code', 'in', 'mrp_operation')]}"/>
+                    <field name="price" attrs="{'column_invisible': [('parent.picking_type_code', 'not in', ['incoming', 'outgoing'])]}"/>
                     <field name="price_mo" attrs="{'column_invisible': [('parent.picking_type_code', 'not in', 'mrp_operation')]}"/>
+                    <field name="sales_price" attrs="{'column_invisible': [('parent.picking_type_code', 'not in', 'internal')]}"/>
                     <field name="qty_available" attrs="{'column_invisible': [('parent.picking_type_code', '!=', 'internal')]}"/>
+                </xpath>
+                <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">Quantity</attribute>
                 </xpath>
 <!--                <xpath expr="//notebook/page[@name='extra']/group/group/field[@name='group_id']" position="after">-->
 <!--                    <field name="source_so"/>-->
