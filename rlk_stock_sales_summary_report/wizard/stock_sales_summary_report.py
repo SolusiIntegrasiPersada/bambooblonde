@@ -263,7 +263,7 @@ class StockSalesSummaryReport(models.TransientModel):
                     else:
                         price_unit_inc_discount -= prog.discount_fixed_amount
             
-            cost_price = line.cost_in_order or product.standard_price or 0
+            cost_price = line.cost_in_order  or 0
 
             key = (product.name, color)
             if key not in data:

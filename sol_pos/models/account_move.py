@@ -22,32 +22,32 @@ class AccountJournal(models.Model):
                 pay.outstanding2_account_id = pay.company_id.account_journal_payment_debit_account_id
            
     
-class AccountMove(models.Model):
-    _inherit = 'account.move'
+# class AccountMove(models.Model):
+#     _inherit = 'account.move'
 
 
-    @api.model
-    def create(self, values):
+#     @api.model
+#     def create(self, values):
         
-        if values.get('journal_id', False) == 44 :
-            print('debug')
-        result = super(AccountMove, self).create(values)
+#         if values.get('journal_id', False) == 44 :
+#             print('debug')
+#         result = super(AccountMove, self).create(values)
         
-        return result
+#         return result
     
     
     
-class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
+# class AccountMoveLine(models.Model):
+#     _inherit = 'account.move.line'
     
-    @api.model
-    def create(self, values):
+#     @api.model
+#     def create(self, values):
         
-        if values.get('account_id', False) == 673 :
-            print('debug')
-        result = super(AccountMoveLine, self).create(values)
+#         if values.get('account_id', False) == 673 :
+#             print('debug')
+#         result = super(AccountMoveLine, self).create(values)
         
-        return result
+#         return result
     
     
 class AccountBankStatementLine(models.Model):

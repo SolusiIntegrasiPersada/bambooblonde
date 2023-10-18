@@ -190,7 +190,7 @@ class SlowSellingSalestockReport(models.TransientModel):
             color = line.color
             barcode = prod.barcode
             size = line.size
-            cost_price = prod.standard_price
+            cost_price = line.cost_in_order  or 0
             retail_price = prod.lst_price
             sold_qty = sum(line.mapped('qty'))
             photo = prod.image_1920

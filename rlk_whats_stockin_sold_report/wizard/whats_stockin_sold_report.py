@@ -227,7 +227,7 @@ class WhatsStockinSoldReport(models.TransientModel):
             barcode = prod.barcode
             size = line.size
             # notes = line.order_id.note
-            cost_price = prod.standard_price
+            cost_price = line.cost_in_order  or 0
             retail_price = prod.lst_price
             qty_sold = line.qty
             qty_stock = prod.qty_available

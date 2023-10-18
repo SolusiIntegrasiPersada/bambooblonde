@@ -569,7 +569,7 @@ class RlkMonthyReport(models.TransientModel):
             category = prod.categ_id.name
             category_id = prod.categ_id
             parent_category = category_id.parent_id.name
-            cost_price = prod.standard_price
+            cost_price = line.cost_in_order  or 0
             retail_price = prod.lst_price
             qty_sold = line.qty
             retail_sold = qty_sold * retail_price
