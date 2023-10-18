@@ -19,7 +19,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale', 'pos_sale', 'pos_discount', 'product', 'report_xlsx','pos_coupon','pos_settle_due','pos_loyalty','sol_bb_product','coupon'],
+    'depends': ['base', 'point_of_sale', 'pos_sale', 'pos_discount', 'product', 'report_xlsx','pos_coupon','pos_settle_due','pos_loyalty','sol_bb_product','coupon','account'],
 
     # always loaded
     'data': [
@@ -40,6 +40,7 @@
         'views/sequence_data.xml',
         'views/res_partner.xml',
         'views/function_action.xml',
+        'views/account_journal.xml',
         'report/action_report.xml',
     ],
     'assets': {
