@@ -60,7 +60,7 @@ class StockMove(models.Model):
     price = fields.Float(string="Cost")
     price_mo = fields.Float(string="Cost")
     sales_price = fields.Float(string="Sales Price", related='product_id.lst_price')
-    image = fields.Image(string='Image')
+    image = fields.Binary(string='Image', store=True)
     color_ids = fields.Many2many('product.template.attribute.value', string="Size and Color")
     colour = fields.Char('Color', compute="_onchange_color_size")
     size = fields.Char('Size', compute="_onchange_color_size")
