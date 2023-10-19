@@ -37,17 +37,17 @@ class AccountJournal(models.Model):
     
     
     
-class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
+# class AccountMoveLine(models.Model):
+#     _inherit = 'account.move.line'
     
-    @api.model
-    def create(self, values):
+#     @api.model
+#     def create(self, values):
         
-        if values.get('account_id', False) == 673 :
-            print('debug')
-        result = super(AccountMoveLine, self).create(values)
+#         if values.get('account_id', False) == 673 :
+#             print('debug')
+#         result = super(AccountMoveLine, self).create(values)
         
-        return result
+#         return result
     
     
 class AccountBankStatementLine(models.Model):
