@@ -21,7 +21,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx', 'product', 'solinda_manufacture'],
+    'depends': ['base', 'stock', 'sol_purchase', 'report_xlsx', 'product', 'solinda_manufacture','barcodes'],
 
     # always loaded
     'data': [

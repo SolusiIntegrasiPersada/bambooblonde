@@ -12,14 +12,14 @@ class AccountJournal(models.Model):
         compute='_compute_outstanding2_account_id',
         check_company=True)
     
-    @api.depends('inbound_payment_method_line_ids.payment_account_id')
+    @api.depends('outbound_payment_method_line_ids.payment_account_id')
     def _compute_outstanding2_account_id(self):
         for pay in self:
-            if pay.inbound_payment_method_line_ids :
-                pay.outstanding2_account_id = (pay.inbound_payment_method_line_ids[0].payment_account_id.id
+            if pay.outbound_payment_method_line_ids :
+                pay.outstanding2_account_id = (pay.outbound_payment_method_line_ids[0].payment_account_id.id
                                               or pay.company_id.account_journal_payment_debit_account_id)
             else :
-                pay.outstanding2_account_id = pay.company_id.account_journal_payment_debit_account_id
+                pay.outstanding2_account_id = pay.company_id.account_journal_payment_credit_account_id
            
     
 # class AccountMove(models.Model):
@@ -37,17 +37,17 @@ class AccountJournal(models.Model):
     
     
     
-# class AccountMoveLine(models.Model):
-#     _inherit = 'account.move.line'
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
     
-#     @api.model
-#     def create(self, values):
+    @api.model
+    def create(self, values):
         
-#         if values.get('account_id', False) == 673 :
-#             print('debug')
-#         result = super(AccountMoveLine, self).create(values)
+        if values.get('account_id', False) == 673 :
+            print('debug')
+        result = super(AccountMoveLine, self).create(values)
         
-#         return result
+        return result
     
     
 class AccountBankStatementLine(models.Model):
@@ -118,3 +118,41 @@ class AccountBankStatementLine(models.Model):
             else:
                 other_lines += line
         return liquidity_lines, suspense_lines, other_lines
+    
+    
+class AccountPayment(models.Model):
+    _inherit = "account.payment"
+    
+    def _get_valid_liquidity_accounts(self):
+        return (
+            self.journal_id.default_account_id,
+            self.journal_id.outstanding2_account_id,
+            self.payment_method_line_id.payment_account_id,
+            self.journal_id.company_id.account_journal_payment_debit_account_id,
+            self.journal_id.company_id.account_journal_payment_credit_account_id,
+            self.journal_id.inbound_payment_method_line_ids.payment_account_id,
+            self.journal_id.outbound_payment_method_line_ids.payment_account_id,
+        )
+        
+    def _seek_for_lines(self):
+        ''' Helper used to dispatch the journal items between:
+        - The lines using the temporary liquidity account.
+        - The lines using the counterpart account.
+        - The lines being the write-off lines.
+        :return: (liquidity_lines, counterpart_lines, writeoff_lines)
+        '''
+        self.ensure_one()
+
+        liquidity_lines = self.env['account.move.line']
+        counterpart_lines = self.env['account.move.line']
+        writeoff_lines = self.env['account.move.line']
+
+        for line in self.move_id.line_ids:
+            if line.account_id in self._get_valid_liquidity_accounts():
+                liquidity_lines += line
+            elif line.account_id.internal_type in ('receivable', 'payable') or line.account_id == line.company_id.transfer_account_id:
+                counterpart_lines += line
+            else:
+                writeoff_lines += line
+
+        return liquidity_lines, counterpart_lines, writeoff_lines
