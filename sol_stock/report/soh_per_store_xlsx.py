@@ -113,8 +113,8 @@ class StockOnHandPerStoreXlsx(models.AbstractModel):
         worksheet.write(row, 8, brand, style_basic_center)
         worksheet.write(row, 9, i['size'], style_basic_center)
         worksheet.write(row, 10, qty, number_style)
-        worksheet.write(row, 11, price, money_format)
-        worksheet.write(row, 12, cost, money_format)
+        worksheet.write(row, 11, cost, money_format)
+        worksheet.write(row, 12, price, money_format)
         row += 1
       row += 1  
         
