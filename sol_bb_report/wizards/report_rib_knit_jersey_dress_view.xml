@@ -32,13 +32,13 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem name="Report Rib Knit Jersey Dress"
+        <!-- <menuitem name="Report Rib Knit Jersey Dress"
                   parent="point_of_sale.menu_point_rep"
                   id="menu_rib_knit_jersey_dress_clothes_wizard"
                   action="report_rib_knit_jersey_dress_wizard_action"
                   sequence="5"
                   groups="point_of_sale.group_pos_manager"
-        />
+        /> -->
 
         <report
                 id="report_rib_knit_jersey_dress_wizard_xlsx"

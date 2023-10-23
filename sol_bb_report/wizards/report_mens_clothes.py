@@ -17,6 +17,7 @@ class ReportMensClothes(models.TransientModel):
     aging_to = fields.Integer(string='Aging To')
     stock_type = fields.Many2one('stock.type', string='Stock Type')
     is_stock_type = fields.Boolean(string='Stock Type ?')
+    type_in_report = fields.Selection([("best","best"),("slow","slow")], string='type in report')
 
     @api.onchange('product_model_id')
     def onchange_domain_product_category_id(self):
@@ -36,4 +37,10 @@ class ReportMensClothes(models.TransientModel):
         for field in datas['form'].keys():
             if isinstance(datas['form'][field], tuple):
                 datas['form'][field] = datas['form'][field][0]
-        return self.env.ref('sol_bb_report.report_mens_clothes_wizard_xlsx').report_action(self, data=datas)
+                
+        print("self.type_in_report")
+        print(self.type_in_report)
+        if self.type_in_report == 'slow' :
+            return self.env.ref('sol_bb_report.report_slow_clothes_wizard_xlsx').report_action(self, data=datas)
+        else :
+            return self.env.ref('sol_bb_report.report_mens_clothes_wizard_xlsx').report_action(self, data=datas)

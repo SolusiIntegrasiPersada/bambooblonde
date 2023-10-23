@@ -7,6 +7,7 @@
                 <form>
                     <group>
                         <group>
+                            <field name="type_in_report" invisible="1"/>
                             <field name="class_product"/>
                             <field name="product_model_id" required="1"/>
                             <field name="product_category_id"/>
@@ -29,8 +30,7 @@
                         </div>
                     </group>
                     <footer>
-                        <button name="button_generate_excel" type="object" default_focus="1"
-                                string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button name="button_generate_excel" type="object" default_focus="1" string="Excel Report" class="oe_highlight" icon="fa-download"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
@@ -43,22 +43,23 @@
             <field name="view_mode">form</field>
             <field name="view_id" ref="report_mens_clothes_wizard_form"/>
             <field name="target">new</field>
+            <field name="context">{'default_type_in_report': 'best'}</field>
         </record>
 
-        <menuitem name="Report Best Seller"
-                  parent="point_of_sale.menu_point_rep"
-                  id="menu_report_mens_clothes_wizard"
-                  action="report_mens_clothes_wizard_action"
-                  sequence="5"/>
+        <record model='ir.actions.act_window' id='report_slow_clothes_wizard_action'>
+            <field name="name">Report Slow Seller Model</field>
+            <field name="res_model">report.mens.clothes.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_mens_clothes_wizard_form"/>
+            <field name="target">new</field>
+            <field name="context">{'default_type_in_report': 'slow'}</field>
+        </record>
 
-        <report
-                id="report_mens_clothes_wizard_xlsx"
-                model="report.mens.clothes.wizard"
-                string="Report Best Seller Model"
-                report_type="xlsx"
-                name="sol_bb_report.mens_clothes.xlsx"
-                file="Report Best Seller Model.xlsx"
-                menu="False"
-                attachment_use="False"/>
+        <menuitem name="Report Best Seller" parent="point_of_sale.menu_point_rep" id="menu_report_mens_clothes_wizard" action="report_mens_clothes_wizard_action" sequence="5"/>
+
+        <menuitem name="Report Slow Seller" parent="point_of_sale.menu_point_rep" id="menu_report_slow_clothes_wizard" action="report_slow_clothes_wizard_action" sequence="5"/>
+
+        <report id="report_mens_clothes_wizard_xlsx" model="report.mens.clothes.wizard" string="Report Best Seller Model" report_type="xlsx" name="sol_bb_report.mens_clothes.xlsx" file="Report Best Seller Model.xlsx" menu="False" attachment_use="False"/>
+        <report id="report_slow_clothes_wizard_xlsx" model="report.mens.clothes.wizard" string="Report Slow Seller Model" report_type="xlsx" name="sol_bb_report.slow_clothes.xlsx" file="Report Slow Seller Model.xlsx" menu="False" attachment_use="False"/>
     </data>
 </odoo>
