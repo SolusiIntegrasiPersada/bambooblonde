@@ -5,7 +5,7 @@ from odoo import models
 from pytz import timezone
 import pytz
 
-header_table = ['Sales ID', 'Sales Date', 'Sales Time', 'Client No', 'Member Name', 'Outlet ID', 'Outlet Name', 'Staff Name', 'Credit Card Amount', 'Bank Name', 'Notes', 'Cash Amount', 'Voucher', 'Void', 'Void Date', 'Void Staff Name', 'Change', 'Shift Code', 'Card Bank', 'Nation ID', 'Nation Desc', 'Void Note', 'Barcode', 'Qty', 'Total Price', 'Total Cost', 'Stock Name', 'Stock ID', 'Color', 'Size Num', 'Model', 'Category', 'Stock Type', 'Stock Class']
+header_table = ['Sales ID', 'Sales Date', 'Sales Time', 'Client No', 'Member Name', 'Outlet ID', 'Outlet Name', 'Staff Name', 'Credit Card Amount', 'Bank Name', 'Notes', 'Cash Amount', 'Voucher', 'Void', 'Void Date', 'Void Staff Name', 'Change', 'Shift Code', 'Nation ID', 'Nation Desc', 'Void Note', 'Barcode', 'Qty', 'Total Price', 'Total Cost', 'Stock Name', 'Stock ID', 'Color', 'Size Num', 'Model', 'Category', 'Stock Type', 'Stock Class']
 
 class XlsxSalesReportDetail(models.Model):
     _name = 'report.sol_bb_report.sales_report_detail.xlsx'
@@ -75,7 +75,9 @@ class XlsxSalesReportDetail(models.Model):
 
         row += 1
         no = 1
-        for pol in pos_order_line.filtered(lambda x: not x.product_id.is_shooping_bag and not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion):
+        data_pos_order = pos_order_line.filtered(lambda x: not x.product_id.is_shooping_bag and not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion)
+        sorted_data = sorted(data_pos_order, key=lambda pol: (pol['order_id']['session_id']['config_id']['name'], pol['order_id']['date_order']))
+        for pol in sorted_data:
             sales_id = pol.order_id.pos_reference.replace("Order ","")
             date_orders = pytz.UTC.localize(pol.order_id.date_order).astimezone(
                     timezone(self.env.user.tz or 'UTC'))
@@ -97,14 +99,14 @@ class XlsxSalesReportDetail(models.Model):
             void_staff_name = staff_name if void == "True" else ""
             change = compute_amount_payment(pol.order_id, "change")
             shift_code = pol.order_id.session_id.shift or ''
-            card_bank = bank_name or ''
+            # card_bank = bank_name or ''
             nation_id = pol.order_id.region_id.sequence or ''
             nation_desc = pol.order_id.region_id.name or ''
             void_notes = notes if void == "True" else ""
             barcode = pol.product_id.barcode or ''
             qty = pol.qty or 0
             total_price = pol.price_subtotal_incl or ''
-            total_cost = pol.product_id.standard_price * qty
+            total_cost = pol.cost_in_order * qty
             stock_name = pol.product_id.name or ''
             stock_id = pol.product_id.default_code or ''
 
@@ -119,7 +121,7 @@ class XlsxSalesReportDetail(models.Model):
                     color += v.name
             
             model = pol.product_id.product_model_categ_id.name or ""
-            category = pol.product_id.categ_id.name or ''
+            category = pol.product_id.product_category_categ_id.name or ''
             stock_type = pol.product_id.stock_type.name or ''
             stock_class = pol.product_id.class_product.name or ''
 
@@ -142,22 +144,21 @@ class XlsxSalesReportDetail(models.Model):
             sheet.write(row, 15, void_staff_name, formatDetailTableReOrder)
             sheet.write(row, 16, change, formatDetailCurrencyTable)
             sheet.write(row, 17, shift_code, formatDetailTableReOrder)
-            sheet.write(row, 18, card_bank, formatDetailTableReOrder)
-            sheet.write(row, 19, nation_id, formatDetailTableReOrder)
-            sheet.write(row, 20, nation_desc, formatDetailTableReOrder)
-            sheet.write(row, 21, void_notes, formatDetailTableReOrder)
-            sheet.write(row, 22, barcode, formatDetailTableReOrder)
-            sheet.write(row, 23, qty, formatDetailTableReOrder)
-            sheet.write(row, 24, total_price, formatDetailCurrencyTable)
-            sheet.write(row, 25, total_cost, formatDetailCurrencyTable)
-            sheet.write(row, 26, stock_name, formatDetailTableReOrder)
-            sheet.write(row, 27, stock_id, formatDetailTableReOrder)
-            sheet.write(row, 28, color, formatDetailTableReOrder)
-            sheet.write(row, 29, size_num, formatDetailTableReOrder)
-            sheet.write(row, 30, model, formatDetailTableReOrder)
-            sheet.write(row, 31, category, formatDetailTableReOrder)
-            sheet.write(row, 32, stock_type, formatDetailTableReOrder)
-            sheet.write(row, 33, stock_class, formatDetailTableReOrder)
+            sheet.write(row, 18, nation_id, formatDetailTableReOrder)
+            sheet.write(row, 19, nation_desc, formatDetailTableReOrder)
+            sheet.write(row, 20, void_notes, formatDetailTableReOrder)
+            sheet.write(row, 21, barcode, formatDetailTableReOrder)
+            sheet.write(row, 22, qty, formatDetailTableReOrder)
+            sheet.write(row, 23, total_price, formatDetailCurrencyTable)
+            sheet.write(row, 24, total_cost, formatDetailCurrencyTable)
+            sheet.write(row, 25, stock_name, formatDetailTableReOrder)
+            sheet.write(row, 26, stock_id, formatDetailTableReOrder)
+            sheet.write(row, 27, color, formatDetailTableReOrder)
+            sheet.write(row, 28, size_num, formatDetailTableReOrder)
+            sheet.write(row, 29, model, formatDetailTableReOrder)
+            sheet.write(row, 30, category, formatDetailTableReOrder)
+            sheet.write(row, 31, stock_type, formatDetailTableReOrder)
+            sheet.write(row, 32, stock_class, formatDetailTableReOrder)
 
 
 
