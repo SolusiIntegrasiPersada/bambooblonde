@@ -11,7 +11,7 @@
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="is_sync_qty_po"/>
-                  </xpath>
+                </xpath>
             </field>
         </record>
     </data>
