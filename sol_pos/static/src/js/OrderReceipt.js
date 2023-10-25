@@ -21,14 +21,6 @@ odoo.define('sol_pos.receipt', function (require) {
                 const reward_line = order._getRewardLines()
                 let promo_member = null;
                 let promo_promotion = this.env.pos.db.all_promo_message;
-                // const code = receipts.client?.coupon_promo_id;
-                
-                
-                // debugger ; 
-                // if (code) {
-                //     promo_member = this.env.pos.coupon_programs_by_id[code[0]];
-                // }
-
                 
                 if (reward_line && reward_line.length > 0) {
                     promo_member = this.env.pos.coupon_programs_by_id[reward_line[0].program_id];
@@ -37,7 +29,6 @@ odoo.define('sol_pos.receipt', function (require) {
 
 
                 const order_line = order.get_orderlines();
-                // debugger ; 
                 const filteredOrderLine = order_line.filter((line) => !(
                     line.product.is_shooping_bag ||
                     line.product.is_produk_promotion ||
@@ -68,7 +59,7 @@ odoo.define('sol_pos.receipt', function (require) {
                     const validProductIds = promo_member.valid_product_ids;
                     promo_promotion = null ;
                     filteredOrderLineAsArray.forEach((line) => {
-                        if (validProductIds.has(line.product_id)) {
+                        if (validProductIds.has(line.product_id) && promo_member.reward_type === 'discount') {
                             if (line.discount <= 0) {
                                 const discountedPrice = line.price - (line.price * promo_member.discount_percentage / 100);
                                 line.price = Math.max(discountedPrice, 0);

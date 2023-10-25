@@ -10,7 +10,7 @@ class ReportMensClothes(models.TransientModel):
     # product_model_id = fields.Many2one('product.model', string='Model')
     class_product = fields.Many2one('class.product', string='Class')
     product_model_id = fields.Many2one('product.category', string='Model', domain=[('category_product', '=', 'department')])
-    product_category_id = fields.Many2one('product.category', string='Category')
+    product_category_id = fields.Many2one('product.category', string='Category',domain=[('category_product', '=', 'category')] ) # disini ada tambahan domain
     pos_config_id = fields.Many2one('pos.config', string='Store')
     types = fields.Selection([("staples","Staples"),("trend","Trend")], string='Type')
     aging_from = fields.Integer(string='Aging From')
