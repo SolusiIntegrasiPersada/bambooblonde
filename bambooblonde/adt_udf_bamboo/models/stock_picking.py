@@ -17,8 +17,8 @@ class StockPicking(models.Model):
                 for rec in record.move_line_ids_without_package:
                     mp_obj = self.env['mrp.production'].search([('sales_order_id', '=', record.sale_id.id)])
                     po_obj = self.env['purchase.order'].search([('id', '=', mp_obj.purchase_id.id)])
-                    receipt_obj = self.env['stock.picking'].search([('origin', '=', po_obj.name)])
-                    move_obj = self.env['stock.move'].search([('picking_id', '=', receipt_obj.id)])
+                    receipt_obj_id = self.env['stock.picking'].search([('origin', '=', po_obj.name)]).mapped('id')
+                    move_obj = self.env['stock.move'].search([('picking_id', 'in', receipt_obj_id)])
                     for move in move_obj:
                         if move.product_id.id == rec.product_id.id:
                             move_line_id = self.env['stock.move.line'].sudo().create({
@@ -33,11 +33,3 @@ class StockPicking(models.Model):
                                 'product_id': move.product_id.id,
                                 'qty_done': rec.qty_done,
                                 })
-                            
-    # def button_validate(self):
-    #     res = super(StockPicking, self).button_validate()
-    #     self.kirim_barang()
-    #     return res
-
-
-        
