@@ -214,7 +214,7 @@
                         <!-- <field name="total_mtr_dye" optional="show" /> -->
                         <field name="total_dyeing" optional="show"/>
                         <field name="total_receipt" readonly="1"/>
-                        <field name="total_receipt_updated" readonly="1"/>
+                        <field name="total_receipt_updated" readonly="1" optional="hide"/>
                         <!-- <button name="button_start" type="object" string="Start" class="btn-success" attrs="{'invisible': ['|', '|', '|', ('production_state','in', ('draft', 'done', 'cancel')), ('working_state', '=', 'blocked'), ('state', '=', 'done'), ('is_user_working', '!=', False)]}"/> -->
                         <button name="create_po" type="object" icon="fa-pencil-square-o" string="Create PO"
                                 class="oe_highlight btn-success"
