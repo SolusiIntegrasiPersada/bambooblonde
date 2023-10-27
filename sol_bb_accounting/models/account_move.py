@@ -81,3 +81,10 @@ class AccountMove(models.Model):
             move.invoice_outstanding_credits_debits_widget = json.dumps(payments_widget_vals)
             move.invoice_has_outstanding = True
         return res
+
+    def get_is_cn(self):
+        for record in self:
+            if record.move_type == 'out_refund':
+                return True
+            else:
+                return False
