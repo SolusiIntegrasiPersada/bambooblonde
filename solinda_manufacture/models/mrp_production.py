@@ -118,34 +118,36 @@ class MrpProduction(models.Model):
     def update_qty_variant(self):
         if self.mrp_bom_variant_ids:
             self.mrp_bom_variant_ids.unlink()
+
         variant_ids = []
-        for b in self.bom_id.bom_line_variant_ids:
-            qty_po = 0
-            total_qty = 0
-            dummy_obj = self.env['by.product.dummy']
-            dummy_id = dummy_obj.search(['|',
-                                         ('size', 'ilike', b.sizes),
-                                         ('size', 'ilike', (b.sizes.strip('()'))),
-                                         ('mrp_id', '=', self.id),
-                                         ], limit=1)
-            if dummy_id:
-                qty_po = dummy_id.product_uom_qty
+        for i in self:
+            # purchase_obj = self.purchase_id.search([('')])
+            for b in i.bom_id.bom_line_variant_ids:
+                qty_po = 0
+                sizes = b.sizes.strip('()')
+                purchase = self.env["purchase.order"].search([('id', '=', self.purchase_id.id)], limit=1)
+                order_line_sizes = [(line.size.strip(' '), line.product_qty) for line in purchase.order_line]
 
-            # total_qty = (qty_po * b.product_qty) + (((qty_po * b.product_qty) * b.shrinkage) / 100)
+                for size, product_qty in order_line_sizes:
+                    if size == sizes:
+                        qty_po = product_qty
+                        break
 
-            variant_ids.append((0, 0, {
-                'product_id': b.product_id.id,
-                'product_qty': b.product_qty,
-                'po_qty': qty_po,
-                'product_uom_id': b.product_uom_id.id,
-                'supplier': b.supplier.id,
-                'ratio': b.ratio,
-                'sizes': b.sizes,
-                # 'shrinkage' : b.shrinkage,
-                # 'total_qty' : total_qty,
-            }))
+                variant_ids.append((0, 0, {
+                    'product_id': b.product_id.id,
+                    'product_qty': b.product_qty,
+                    'po_qty': qty_po,
+                    'product_uom_id': b.product_uom_id.id,
+                    'supplier': b.supplier.id,
+                    'ratio': b.ratio,
+                    'sizes': b.sizes,
+                    'color': b.color,
+                    # 'shrinkage' : b.shrinkage,
+                    # 'total_qty' : total_qty,
+                }))
 
-        self.mrp_bom_variant_ids = variant_ids
+
+        i.mrp_bom_variant_ids = variant_ids
 
     def _create_workorder(self):
         for production in self:
@@ -325,3 +327,4 @@ class MrpProductionBomVariant(models.Model):
     cost = fields.Float(string="Cost", related='product_id.standard_price')
     total_material = fields.Float(string="Total Material", compute=_compute_total_material)
     shrinkage = fields.Float(string='Shkg(%)')
+
