@@ -104,7 +104,7 @@
                         <table style="border-collapse: collapse; width: 100%;" border="1">
                             <thead style="font-size: 12px">
                                 <tr>
-                                    <td style="width: 20%; border: 1px solid black;">Description</td>
+                                    <td style="width: 20%; text-align: left; border: 1px solid black; padding: 5px;">Description</td>
                                     <td style="width: 10%; text-align: center; border: 1px solid black;">Color</td>
                                     <td style="width: 10%; text-align: center; border: 1px solid black;">Unit</td>
                                     <td style="width: 10%; text-align: center; border: 1px solid black;">Sizes</td>
@@ -119,7 +119,7 @@
                                 <t t-set="subtotal" t-value="0"/>
                                 <t t-foreach="doc.bom_line_ids" t-as="bom">
                                     <tr>
-                                        <td style="width: 20%; border: 1px solid black;">
+                                        <td style="width: 20%; border: 1px solid black; padding: 5px;">
                                             <t t-esc="bom.product_id.name"/>
                                         </td>
                                         <td style="width: 10%; text-align: center; border: 1px solid black;">
@@ -137,15 +137,18 @@
                                         <td style="width: 10%; text-align: center; border: 1px solid black;">
                                             <t t-esc="bom.product_qty"/>
                                         </td>
-                                        <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="bom.cost_material"
-                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                        <td style="width: 15%; text-align: right; border: 1px solid black; padding: 5px;">
+                                            <t t-esc="'{:,.0f}'.format(bom.cost_material)"/>
+<!--                                            <t t-esc="bom.cost_material"-->
+<!--                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+
                                         </td>
-                                        <td style="width: 15%; text-align: right; border: 1px solid black;">
+                                        <td style="width: 15%; text-align: right; border: 1px solid black; padding: 5px;">
                                             <t t-set="sub_tot" t-value="bom.product_qty * bom.cost_material"/>
                                             <!-- <t t-esc="bom.total_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/> -->
-                                            <t t-esc="sub_tot"
-                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+<!--                                            <t t-esc="sub_tot"-->
+<!--                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                            <t t-esc="'{:,.0f}'.format(sub_tot)"/>
                                             <t t-set="total_material" t-value="total_material + sub_tot"/>
                                         </td>
                                     </tr>
@@ -159,9 +162,10 @@
                                 <td style="width: 10%; text-align: center;"/>
                                 <td style="width: 10%; text-align: center;"/>
                                 <td style="width: 15%; text-align: center; border: 1px solid black;">Total Material</td>
-                                <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                    <t t-esc="total_material"
-                                       t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                <td style="width: 15%; text-align: right; border: 1px solid black; padding: 5px;">
+                                    <t t-esc="'{:,.0f}'.format(total_material)"/>
+<!--                                    <t t-esc="total_material"-->
+<!--                                       t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
                                 </td>
                             </tfoot>
                         </table>
@@ -172,7 +176,7 @@
                         <table style="border-collapse: collapse; width: 100%;" border="1">
                             <tbody style="font-size: 12px">
                                 <tr>
-                                    <td style="width: 10%; border: 1px solid black;">Services</td>
+                                    <td style="width: 10%; text-align: left; border: 1px solid black; padding: 5px;">Services</td>
                                     <td style="width: 18%; text-align: center; border: 1px solid black;">Fabric</td>
                                     <td style="width: 18%; text-align: center; border: 1px solid black;">DPT</td>
                                     <td style="width: 10%; text-align: center; border: 1px solid black;">Qty</td>
@@ -185,10 +189,10 @@
                                 <t t-set="subtotal" t-value="0"/>
                                 <t t-foreach="doc.operation_ids" t-as="op">
                                     <tr>
-                                        <td style="width: 10%; border: 1px solid black;">
+                                        <td style="width: 10%; border: 1px solid black; padding: 5px;">
                                             <t t-esc="op.workcenter_id.name"/>
                                         </td>
-                                        <td style="width: 24%; border: 1px solid black;">
+                                        <td style="width: 24%; border: 1px solid black; padding: 5px;">
                                             <t t-foreach="op.fabric_id" t-as="line">
                                                 <span t-esc="line.product_id.name"/>
                                             </t>
@@ -201,9 +205,10 @@
                                                 <t t-esc="op.hk"/>
                                             </t>
                                         </td>
-                                        <td style="width: 12.5%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="op.cost_service"
-                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                        <td style="width: 12.5%; text-align: right; border: 1px solid black; padding: 5px;">
+                                            <t t-esc="'{:,.0f}'.format(op.cost_service)"/>
+<!--                                            <t t-esc="op.cost_service"-->
+<!--                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
                                         </td>
                                         <td style="width: 6.5%; text-align: center; border: 1px solid black;">
                                             <t t-esc="op.shrinkage"/>
@@ -211,9 +216,10 @@
                                         <td style="width: 7%; text-align: center; border: 1px solid black;">
                                             <t t-esc="'%.2f'% op.shkg"/>
                                         </td>
-                                        <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                            <t t-esc="op.total_services"
-                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                        <td style="width: 15%; text-align: right; border: 1px solid black; padding: 5px;">
+                                            <t t-esc="'{:,.0f}'.format(op.total_services)"/>
+<!--                                            <t t-esc="op.total_services"-->
+<!--                                               t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
                                             <t t-set="total_services" t-value="total_services + op.total_services"/>
                                             <!-- <t t-set="subtotal" t-value="op.cost_service * op.shkg"/>
                                             <t t-set="total_services" t-value="total_services + subtotal"/>
@@ -233,9 +239,10 @@
                                         Total Services
                                     </td>
                                     <!-- <td style="width: 10%; text-align: center;"></td> -->
-                                    <td style="width: 15%; text-align: right; border: 1px solid black;">
-                                        <t t-esc="total_services"
-                                           t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                    <td style="width: 15%; text-align: right; border: 1px solid black; padding: 5px;">
+                                        <t t-esc="'{:,.0f}'.format(total_services)"/>
+<!--                                        <t t-esc="total_services"-->
+<!--                                           t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
                                     </td>
                                 </tr>
                             </tfoot>
@@ -260,43 +267,43 @@
                                                     <td style="width: 30%; text-align: right;"/>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 30%; border: 1px solid black;">Margin(%)</td>
-                                                    <td style="width: 30%; text-align: left; border: 1px solid black;">
+                                                    <td style="width: 30%; border: 1px solid black; padding: 5px;">Margin(%)</td>
+                                                    <td style="width: 30%; border: 1px solid black; padding: 5px;">
                                                         Suggest Price
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
-                                                    <td style="width: 30%; height: 18px; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.margin * 100"/>
                                                     </td>
-                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.nominal_1"
                                                            t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
-                                                    <td style="width: 30%; height: 18px; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.margin_2 * 100"/>
                                                     </td>
-                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.nominal_2"
                                                            t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
-                                                    <td style="width: 30%; height: 18px; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.margin_3 * 100"/>
                                                     </td>
-                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black;">
+                                                    <td style="width: 30%; height: 18px; text-align: left; border: 1px solid black; padding: 5px;">
                                                         <t t-esc="doc.nominal_3"
                                                            t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
                                                 </tr>
                                                 <tr style="height: 18px;">
-                                                    <td style="width: 30%; height: 18px;">
+                                                    <td style="width: 30%; height: 18px; padding: 5px;">
                                                         Actual Price
                                                     </td>
-                                                    <td style="width: 30%; height: 18px; text-align: left;">
+                                                    <td style="width: 30%; height: 18px; text-align: left; padding: 5px;">
                                                         <t t-esc="doc.retail_price"
                                                            t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                                     </td>
@@ -309,7 +316,7 @@
                                                border="1">
                                             <tbody>
                                                 <tr style="height: 18px;">
-                                                    <td style="width: 53.6458%; text-align: right; height: 18px;">Cost
+                                                    <td style="width: 53.6458%; text-align: right; height: 18px; padding: 5px;">Cost
                                                         Before Over
                                                     </td>
                                                     <td style="width: 5.98955%; text-align: center; height: 18px;">:
@@ -353,33 +360,35 @@
                         <br/>
                         <table style="border-collapse: collapse; width: 50%;" border="1">
                             <tr>
-                                <td style="border: 1px solid black;font-weight:bold;padding:1px">Component</td>
-                                <td style="border: 1px solid black;font-weight:bold;padding:1px">Sizes</td>
-                                <td style="text-align: right; border: 1px solid black;font-weight:bold;padding:1px">
+                                <td style="border: 1px solid black;font-weight:bold; padding: 5px;">Component</td>
+                                <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">Sizes</td>
+                                <td style="text-align: center; border: 1px solid black;font-weight:bold; padding: 5px;">
                                     Quantity
                                 </td>
-                                <td style="border: 1px solid black;font-weight:bold;padding:1px">UoM</td>
+                                <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">UoM</td>
                             </tr>
                             <t t-foreach="doc.bom_line_variant_ids" t-as="variant">
                                 <tr>
-                                    <td style="padding:1px;border: 1px solid black;">
+                                    <td style="padding:1px;border: 1px solid black; padding: 5px;">
                                         <t t-esc="variant.product_id.name"/>
                                     </td>
-                                    <td style="padding:1px;border: 1px solid black;">
+                                    <td style="padding:1px;border: 1px solid black;text-align: center;">
                                         <t t-esc="variant.sizes"/>
                                     </td>
-                                    <td style="padding:1px;text-align: right;border: 1px solid black;">
+                                    <td style="padding:1px;text-align: center;border: 1px solid black;">
                                         <t t-esc="variant.product_qty"/>
                                     </td>
-                                    <td style="padding:1px;border: 1px solid black;">
+                                    <td style="padding:1px;border: 1px solid black;text-align: center;">
                                         <t t-esc="variant.product_uom_id.name"/>
                                     </td>
                                 </tr>
                             </t>
                         </table>
-                        <div name="product_image" class="container" style="width: 50%; float: right;">
-                          <img class="img-fluid" t-attf-src="data:image/*;base64,{{doc.product_tmpl_id.image_1920}}"/>
-                        </div>
+                        <p><strong>Image : </strong></p>
+                        <p><img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:120px; max-width:125px;"/></p>
+<!--                        <div name="product_image" class="container" style="width: 50%; float: right;">-->
+<!--                          <img class="img-fluid" t-attf-src="data:image/*;base64,{{doc.product_tmpl_id.image_1920}}"/>-->
+<!--                        </div>-->
                     </div>
                 </t>
             </div>
