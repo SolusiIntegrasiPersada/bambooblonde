@@ -358,34 +358,54 @@
                             </tbody>
                         </table>
                         <br/>
-                        <table style="border-collapse: collapse; width: 50%;" border="1">
-                            <tr>
-                                <td style="border: 1px solid black;font-weight:bold; padding: 5px;">Component</td>
-                                <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">Sizes</td>
-                                <td style="text-align: center; border: 1px solid black;font-weight:bold; padding: 5px;">
-                                    Quantity
-                                </td>
-                                <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">UoM</td>
-                            </tr>
-                            <t t-foreach="doc.bom_line_variant_ids" t-as="variant">
+                        <table style="border-collapse: collapse; width: 100%;" border="1">
+                            <tbody>
                                 <tr>
-                                    <td style="padding:1px;border: 1px solid black; padding: 5px;">
-                                        <t t-esc="variant.product_id.name"/>
+                                    <td style="width: 50%;">
+                                        <table style="border-collapse: collapse; width: 50%;" border="1">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="border: 1px solid black;font-weight:bold; padding: 5px;">Component</td>
+                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">Sizes</td>
+                                                    <td style="text-align: center; border: 1px solid black;font-weight:bold; padding: 5px;">
+                                                        Quantity
+                                                    </td>
+                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">UoM</td>
+                                                </tr>
+                                                <t t-foreach="doc.bom_line_variant_ids" t-as="variant">
+                                                    <tr>
+                                                        <td style="padding:1px;border: 1px solid black; padding: 5px;">
+                                                            <t t-esc="variant.product_id.name"/>
+                                                        </td>
+                                                        <td style="padding:1px;border: 1px solid black;text-align: center;">
+                                                            <t t-esc="variant.sizes"/>
+                                                        </td>
+                                                        <td style="padding:1px;text-align: center;border: 1px solid black;">
+                                                            <t t-esc="variant.product_qty"/>
+                                                        </td>
+                                                        <td style="padding:1px;border: 1px solid black;text-align: center;">
+                                                            <t t-esc="variant.product_uom_id.name"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+
                                     </td>
-                                    <td style="padding:1px;border: 1px solid black;text-align: center;">
-                                        <t t-esc="variant.sizes"/>
-                                    </td>
-                                    <td style="padding:1px;text-align: center;border: 1px solid black;">
-                                        <t t-esc="variant.product_qty"/>
-                                    </td>
-                                    <td style="padding:1px;border: 1px solid black;text-align: center;">
-                                        <t t-esc="variant.product_uom_id.name"/>
+
+                                    <td style="width: 50%;">
+                                        <table style="border-collapse: collapse; width: 100%; height: 126px;"
+                                               border="1">
+                                            <tbody>
+                                                <p><strong>Image : </strong></p>
+                                                <p><img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:120px; max-width:125px;"/></p>
+                                            </tbody>
+                                        </table>
                                     </td>
                                 </tr>
-                            </t>
+                            </tbody>
                         </table>
-                        <p><strong>Image : </strong></p>
-                        <p><img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:120px; max-width:125px;"/></p>
+
 <!--                        <div name="product_image" class="container" style="width: 50%; float: right;">-->
 <!--                          <img class="img-fluid" t-attf-src="data:image/*;base64,{{doc.product_tmpl_id.image_1920}}"/>-->
 <!--                        </div>-->
