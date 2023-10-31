@@ -204,7 +204,7 @@ class RegisterDetailReport(models.TransientModel):
                     payment_cash = '-'
                     payment_cc = '-'
                 
-                net_sales = res['total_sales'] - res['total_return']
+                net_sales = res['total_sales'] - res['total_return'] - res['discount']
                 total_return = res['total_return']
                 discount = res['discount']
                 voucher = res['coupon']
@@ -305,7 +305,7 @@ class RegisterDetailReport(models.TransientModel):
                     payment_cash = '-'
                     payment_cc = '-'
                 
-                net_sales = res['total_sales'] - res['total_return']
+                net_sales = res['total_sales'] - res['total_return'] - res['discount']
                 total_return = res['total_return']
                 discount = res['discount']
                 voucher = res['coupon']
@@ -494,7 +494,6 @@ class RegisterDetailReport(models.TransientModel):
                 total_return = res['total_return']
                 discount = res['discount']
                 net_sales = res['total_sales'] - res['total_return'] - res['discount']
-                voucher = res['coupon']
 
                 if shift == 'Shift A':
                     no_shift1 += 1
@@ -684,7 +683,7 @@ class RegisterDetailReport(models.TransientModel):
                     payment_cash = '-'
                     payment_cc = '-'
                 amount_return = 0
-                net_sales = res['total_sales'] - res['total_return']
+                net_sales = res['total_sales'] - res['total_return'] - res['discount']
                 total_return = res['total_return']
                 discount = res['discount']
                 voucher = res['coupon']
