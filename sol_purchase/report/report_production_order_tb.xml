@@ -89,19 +89,19 @@
                     <thead style="font-size: 12px;">
                         <tr style="height: 18px;">
                             <td
-                                style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px;">Code</td>
+                                style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Code</td>
                             <td
-                                style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px;">Description</td>
+                                style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Description</td>
                             <td
-                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">DPT</td>
+                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">DPT</td>
                             <td
-                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">Unit</td>
+                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Unit</td>
                             <td
-                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">Qty</td>
+                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Qty</td>
                             <td
-                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">Cost Price</td>
+                                style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Cost Price</td>
                             <td
-                                style="width: 15%; text-align: center; border: 1px solid black; height: 18px;">Sub Total</td>
+                                style="width: 15%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">Sub Total</td>
                         </tr>
                     </thead>
                     <tbody style="font-size: 12px;">
@@ -109,31 +109,31 @@
                         <t t-foreach="doc.order_line" t-as="order">
                           <tr style="height: 18px;">
                               <td
-                                  style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px;">
+                                  style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
                                     <span t-field="order.product_id.default_code"/>
                                   </td>
                               <td
-                                  style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px;">
+                                  style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
                                     <span t-field="order.product_id"/>
                                   </td>
                               <td
-                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">
-
+                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
+                                    <t t-esc="order.colour"/>
                                   </td>
                               <td
-                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px;">
+                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
                                     <span t-field="order.product_uom"/>
                                   </td>
                               <td
-                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px;">
+                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
                                     <t t-esc="order.product_qty"/>
                                   </td>
                               <td
-                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px;">
+                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
                                     <t t-esc="order.price_unit" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                   </td>
                               <td
-                                  style="width: 15%; text-align: right; border: 1px solid black; height: 18px;">
+                                  style="width: 15%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
                                     <t t-esc="order.price_subtotal" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                   </td>
                           </tr>
@@ -155,13 +155,13 @@
                                 <td
                                     style="width: 10%; text-align: center; border: 1px solid black; height: 18px;"></td>
                                 <td
-                                    style="width: 10%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px;">
+                                    style="width: 10%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px; padding:5px;">
                                     <t t-esc="reduce(lambda x, obj: x+obj.product_qty, doc.order_line, 0)"/>
                                     </td>
                                 <td
                                     style="width: 10%; text-align: center; border: 1px solid black; height: 18px;"></td>
                                 <td
-                                    style="width: 15%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px;">
+                                    style="width: 15%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px; padding:5px;">
                                     <t t-esc="doc.amount_total" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                     </td>
                           </tr>

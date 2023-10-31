@@ -42,6 +42,8 @@
                     </div>
                 </t>
                 <div class="page">
+                    <br/>
+                    <br/>
                     <h2>
                         PURCHASE NOTES - <span t-field="o.name"/>
                     </h2>
@@ -63,13 +65,13 @@
                     <table class="table table-sm" name="stock_move_table">
                         <thead>
                             <tr>
-                                <th name="th_sm_product"><strong>Product</strong></th>
-                                <th name="th_sm_material"><strong>Material</strong></th>
-                                <th name="th_sm_color"><strong>Color</strong></th>
-                                <th name="th_sm_ordered"><strong>Ordered</strong></th>
-                                <th name="th_sm_quantity"><strong>Delivered</strong></th>
-                                <th name="th_sm_cost"><strong>Cost</strong></th>
-                                <th name="th_sm_total_cost"><strong>Total Cost</strong></th>
+                                <th name="th_sm_product" style="text-align: center;"><strong>Product</strong></th>
+                                <th name="th_sm_material" style="text-align: center;"><strong>Material</strong></th>
+                                <th name="th_sm_color" style="text-align: center;"><strong>Color</strong></th>
+                                <th name="th_sm_ordered" style="text-align: center;"><strong>Ordered</strong></th>
+                                <th name="th_sm_quantity" style="text-align: center;"><strong>Delivered</strong></th>
+                                <th name="th_sm_cost" style="text-align: center;"><strong>Cost</strong></th>
+                                <th name="th_sm_total_cost" style="text-align: center;"><strong>Total Cost</strong></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,26 +84,26 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <span t-field="move.material_ids"/>
+                                    <t t-esc="move.material_ids.name"/>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <span t-field="move.color_mo"/>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <!-- <span t-field="move.product_uom_qty"/> -->
                                     <span t-field="o.total_product_uom_qty"/>
                                     <span t-field="move.product_uom"/>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <span t-field="move.quantity_done"/>
                                     <span t-field="move.product_uom"/>
                                 </td>
-                                <td>
-                                    <t t-esc="'{:,.0f}'.format(move.price_mo).replace(',', '.')"/>
+                                <td style="text-align: center;">
+                                    <t t-esc="'{:,.0f}'.format(move.price_mo)"/>
                                 </td>
-                                <td>
+                                <td style="text-align: center;">
                                     <t t-set="total_cost" t-value="move.price_mo * move.quantity_done" />
-                                    <t t-esc="'{:,.0f}'.format(total_cost).replace(',', '.')"/>
+                                    <t t-esc="'{:,.0f}'.format(total_cost)"/>
                                 </td>
                             </tr>
                         </tbody>
