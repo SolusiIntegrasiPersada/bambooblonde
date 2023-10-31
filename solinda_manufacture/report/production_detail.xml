@@ -94,7 +94,8 @@
                                     <td style="width: 5.75629%; height: 36px; text-align: center;">:</td>
                                     <td style="width: 14.6315%; height: 36px;">
                                         <strong>
-                                            <t t-esc="'%.0f'% doc.retail_price"/>
+<!--                                            <t t-esc="'%.0f'% doc.retail_price"/>-->
+                                            <t t-esc="'{:,.0f}'.format(doc.retail_price)"/>
                                         </strong>
                                     </td>
                                 </tr>
@@ -103,102 +104,116 @@
                         <table style="border-collapse: collapse; width: 100%; height: 90px;" border="1">
                             <tbody>
                                 <tr style="height: 18px;">
-                                    <td style="width: 15%; height: 18px; text-align: center; border: 1px solid black;">Supplier</td>
-                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">Payment</td>
-                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">Fabric</td>
-                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">Service</td>
-                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">Color</td>
-                                    <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">HK</td>
-                                    <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">Qty</td>
-                                    <td style="width: 7%; height: 18px; text-align: center; border: 1px solid black;">Price</td>
-                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">UoM</td>
-                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">T.Dyeing</td>
-                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">T.Mtr</td>
-                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">T.Buy</td>
-                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">Shkg.</td>
-                                    <td style="width: 7%; height: 18px; text-align: center; border: 1px solid black;">T.Cost</td>
+                                    <td style="width: 15%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Supplier</td>
+                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Payment</td>
+                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Fabric</td>
+                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Service</td>
+                                    <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Color</td>
+                                    <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">HK</td>
+                                    <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Qty</td>
+                                    <td style="width: 7%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Price</td>
+                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">UoM</td>
+                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">T.Dyeing</td>
+                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">T.Mtr</td>
+                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">T.Buy</td>
+                                    <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">Shkg.</td>
+                                    <td style="width: 7%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">T.Cost</td>
                                 </tr>
                                 <t t-foreach="doc.move_raw_ids" t-as="move">
                                     <tr style="height: 18px;">
-                                        <td style="width: 15%; height: 18px; border: 1px solid black;">
+                                        <td style="width: 15%; height: 18px; border: 1px solid black; padding:3px;">
                                             <t t-esc="move.supplier.name"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <span t-field="move.mrp_payment_id"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="move.product_id.name"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">FABRIC</td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">FABRIC</td>
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <span t-field="move.color_id"/>
                                         </td>
-                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="move.hk"/>
                                         </td>
-                                        <td style="width: 3%; height: 18px; text-align: right; border: 1px solid black;">
+                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="'%.0f'% move.po_qty"/>
                                         </td>
-                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <span t-esc="move.cost_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black; padding:3px;">
+<!--                                            <span t-esc="move.cost_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                            <t t-esc="'{:,.0f}'.format(move.cost_material)"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="move.product_uom.name"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">-</td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">-</td>
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="move.product_uom_qty"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="'%.0f'% move.total_buy"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">-</td>
-                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <t t-esc="move.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">-</td>
+                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black; padding:3px;">
+<!--                                            <t t-esc="move.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                            <t t-esc="'{:,.0f}'.format(move.total_cost)"/>
                                         </td>
                                     </tr>
                                 </t>
                                 <t t-foreach="doc.workorder_ids" t-as="work">
                                     <tr style="height: 18px;">
-                                        <td style="width: 15%; height: 18px; border: 1px solid black;">
+                                        <td style="width: 15%; height: 18px; border: 1px solid black; padding:3px;">
                                             <t t-esc="work.supplier.name"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <span t-field="work.mrp_payment_id"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-foreach="work.fabric_id" t-as="line">
                                                 <span t-esc="line.product_id.name"/>
                                             </t>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="work.workcenter_id.name"/>
                                         </td>
-                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 10%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <span t-field="work.color_id"/>
                                         </td>
-                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="work.hk"/>
                                         </td>
-                                        <td style="width: 3%; height: 18px; text-align: right; border: 1px solid black;">
+                                        <td style="width: 3%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="'%.0f'% doc.total_qty"/>
                                         </td>
-                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <t t-esc="work.cost_service" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
+                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black; padding:3px;">
+<!--                                            <t t-esc="work.cost_service" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />-->
+                                            <t t-esc="'{:,.0f}'.format(work.cost_service)"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black;">
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
                                             <t t-esc="work.workcenter_id.uom_id.name"/>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <t t-esc="'%.0f'% work.total_dyeing"/>
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
+                                            <t t-if="work.workcenter_id.name == 'DYEING' or work.workcenter_id.name == 'PRINTING' or work.workcenter_id.name == 'WASHING'">
+                                                <t t-esc="'%.0f'% work.total_dyeing"/>
+                                            </t>
+                                            <t t-else="">
+                                                -
+                                            </t>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <t t-esc="work.total_mtr"/>
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">
+                                            <t t-if="work.workcenter_id.name == 'DYEING' or work.workcenter_id.name == 'PRINTING' or work.workcenter_id.name == 'WASHING'">
+                                                <t t-esc="work.total_mtr"/>
+                                            </t>
+                                            <t t-else="">
+                                                -
+                                            </t>
                                         </td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">-</td>
-                                        <td style="width: 5%; height: 18px; text-align: right; border: 1px solid black;">-</td>
-                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black;">
-                                            <t t-esc="work.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">-</td>
+                                        <td style="width: 5%; height: 18px; text-align: center; border: 1px solid black; padding:3px;">-</td>
+                                        <td style="width: 7%; height: 18px; text-align: right; border: 1px solid black; padding:3px;">
+<!--                                            <t t-esc="work.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />-->
+                                            <t t-esc="'{:,.0f}'.format(work.total_cost)"/>
                                         </td>
                                     </tr>
                                 </t>
@@ -216,7 +231,7 @@
                                     <td style="width: 5%; text-align: right; border: 1px solid black;"></td>
                                     <td style="width: 5%; text-align: right; border: 1px solid black;"></td>
                                     <td style="width: 5%; text-align: right; border: 1px solid black;"></td>
-                                    <td style="width: 7%; text-align: right; border: 1px solid black;">
+                                    <td style="width: 7%; text-align: right; border: 1px solid black; padding:3px;">
                                         <strong>
                                             <t t-esc="doc.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
                                         </strong>
@@ -231,24 +246,24 @@
                                         <table style="border-collapse: collapse; width: 100%;" border="1">
                                             <tbody>
                                                 <tr>
-                                                    <td style="width: 50%; border: 1px solid black;">SIZE</td>
-                                                    <td style="width: 50%; border: 1px solid black;">Qty</td>
+                                                    <td style="width: 50%; border: 1px solid black; padding:3px;">SIZE</td>
+                                                    <td style="width: 50%; border: 1px solid black; padding:3px;">Qty</td>
                                                 </tr>
                                                 <t t-set="total_qty" t-value="0"/>
                                                 <t t-foreach="doc.by_product_ids" t-as="by">
                                                     <t t-set="total_qty" t-value="total_qty + by.product_uom_qty"/>
                                                     <tr>
-                                                        <td style="width: 50%; border: 1px solid black;">
+                                                        <td style="width: 50%; border: 1px solid black; padding:3px;">
                                                             <t t-esc="by.size"/>
                                                         </td>
-                                                        <td style="width: 50%; border: 1px solid black;">
+                                                        <td style="width: 50%; border: 1px solid black; padding:3px;">
                                                             <t t-esc="'%.0f'% by.product_uom_qty"/>
                                                         </td>
                                                     </tr>
                                                 </t>
                                                 <tr>
-                                                    <td style="width: 50%; border: 1px solid black;">TOTAL</td>
-                                                    <td style="width: 50%; border: 1px solid black;">
+                                                    <td style="width: 50%; border: 1px solid black; padding:3px;">TOTAL</td>
+                                                    <td style="width: 50%; border: 1px solid black; padding:3px;">
                                                         <t t-esc="'%.0f'% total_qty"/>
                                                     </td>
                                                 </tr>
@@ -259,18 +274,18 @@
                                         <table style="border-collapse: collapse; width: 100%;" border="1">
                                             <tbody>
                                                 <tr>
-                                                    <td style="width: 22.158%; border: 1px solid black;">Total Cost</td>
-                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black;">:</td>
-                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black;">
+                                                    <td style="width: 22.158%; border: 1px solid black; padding:3px;">Total Cost</td>
+                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black; padding:3px;">:</td>
+                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black; padding:3px;">
                                                         <strong>
                                                             <t t-esc="doc.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
                                                         </strong>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 22.158%; border: 1px solid black;">Total Wholesale</td>
-                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black;">:</td>
-                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black;">
+                                                    <td style="width: 22.158%; border: 1px solid black; padding:3px;">Total Wholesale</td>
+                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black; padding:3px;">:</td>
+                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black; padding:3px;">
                                                         <strong>
                                                             <t t-set="total_whole" t-value="doc.retail_price * doc.total_qty"/>
                                                             <t t-esc="total_whole" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
@@ -278,9 +293,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width: 22.158%; border: 1px solid black;">ROI</td>
-                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black;">:</td>
-                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black;">
+                                                    <td style="width: 22.158%; border: 1px solid black; padding:3px;">ROI</td>
+                                                    <td style="width: 4.81688%; text-align: center; border: 1px solid black; padding:3px;">:</td>
+                                                    <td style="width: 84.2118%; text-align: right; border: 1px solid black; padding:3px;">
                                                         <strong>
                                                             <t t-esc="'%.2f'% doc.roi" />
                                                             %
@@ -296,9 +311,9 @@
                         <table style="border-collapse: collapse; width: 100%;" border="1">
                             <tbody>
                                 <tr>
-                                    <td style="width: 13.2948%;">Notes</td>
-                                    <td style="width: 11.368%; text-align: center;">:</td>
-                                    <td style="width: 75.3371%;"></td>
+                                    <td style="width: 13.2948%; padding:3px;">Notes</td>
+                                    <td style="width: 11.368%; text-align: center; padding:3px;">:</td>
+                                    <td style="width: 75.3371%; padding:3px;"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -335,7 +350,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-sm">
-                                <img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:300px; max-width:300px;"/>
+                                <img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:120px; max-width:125;"/>
                             </div>
                             <div class="col-sm">
                             </div>
