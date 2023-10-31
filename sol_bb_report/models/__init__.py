@@ -17,3 +17,4 @@ from . import xlsx_staples_style
 from . import xlsx_best_seller_model_store
 from . import xlsx_rcvd
 from . import account_general_ledger
+from . import xlsx_sampdev

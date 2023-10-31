@@ -141,7 +141,7 @@
                               </td>
                               <td style="width:245px; border: 1pt solid black; padding: 5px;"><strong>Costing Order</strong></td>
                               <td style="width:411px; border: 1pt solid black; padding: 5px;">
-                                  <t t-esc="rec['pattern_cost']"/>
+                                  <t t-esc="'{:,.0f}'.format(rec['pattern_cost'])"/>
                               </td>
                             </tr>
                             <tr style="border: 1pt solid black;">

@@ -43,6 +43,7 @@
         'wizards/report_staples_style_view.xml',
         'wizards/report_best_seller_model_store_view.xml',
         'wizards/report_rcvd_view.xml',
+        'wizards/report_samp_dev_view.xml',
 
     ],
     # only loaded in demonstration mode

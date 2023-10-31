@@ -11,3 +11,4 @@ from . import report_rib_knit_jersey_dress
 from . import report_staples_style
 from . import report_best_seller_model_store
 from . import report_rcvd
+from . import report_samp_dev
