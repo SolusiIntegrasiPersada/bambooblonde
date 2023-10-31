@@ -98,8 +98,10 @@ class XlsxSampDev(models.Model):
             source = pr.name_source
             status_of_sample = pr.status_of_sample if pr.status_of_sample else ''
             style_name = pr.line_ids.product_id.name
-            costing_product = pr.get_last_costing if pr.get_last_costing else False
-            costing += costing_product
+            if pr.state == 'done':
+                costing_product = pr.get_last_costing if pr.get_last_costing else 0
+            else:
+                costing_product = 0
 
             sheet.write(row, 0, no, formatDetailTableReOrder)
             sheet.write(row, 1, trans_no, formatDetailTableReOrder)
@@ -115,6 +117,8 @@ class XlsxSampDev(models.Model):
             sheet.write(row, 5, source, formatDetailTableReOrder)
             sheet.write(row, 6, status_of_sample, formatDetailTableReOrder)
             sheet.write(row, 7, style_name, formatDetailTableReOrder)
+
+            costing = costing_product if pr.state == 'done' else 0
             sheet.write(row, 8, costing, formatDetailCurrencyTableReOrder)
 
             sum_total += costing
