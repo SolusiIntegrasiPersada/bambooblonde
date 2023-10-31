@@ -44,7 +44,7 @@ class PurchaseRequestLineMakePurchaseOrder(models.TransientModel):
             "name": line.name or line.product_id.name,
             "product_qty": line.pending_qty_to_receive,
             "product_uom_id": line.product_uom_id.id,
-            "costing_order": line.request_id.get_last_costing
+            "costing_order": line.request_id.get_actual_pps
         }
 
     @api.model

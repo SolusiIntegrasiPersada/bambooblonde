@@ -64,7 +64,7 @@
                     <!-- <field name="request_detail_id" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/> -->
                     <field name="story_id" attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
                     <field name="revision_id" invisible="1"/>
-                    <field name="get_last_costing" invisible="1"/>
+                    <field name="get_actual_pps" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="attributes">
                     <attribute name="invisible">1</attribute>

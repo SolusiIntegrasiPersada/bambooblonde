@@ -29,7 +29,7 @@ class CustomPattern(models.Model):
     fabric_width = fields.Char('Fabric Width')
     pattern_time = fields.Float('Pattern Time')
     consumption = fields.Char('Consumption')
-    pattern_cost = fields.Float('Costing Order')
+    pattern_cost = fields.Float('Costing Order', default=0.0)
 
 
 class DataLabelHardware(models.Model):
@@ -217,7 +217,6 @@ class PurchaseRequest(models.Model):
     purchase_revision_id = fields.Many2one('purchase.request', string='Pattern Alteration')
     pattern_count = fields.Integer(string='Pattern', compute='_find_len')
     test = fields.Boolean(string="Test", default=False)
-    get_last_costing = fields.Float(string="Get Costing", compute="get_last_costing_pattern")
 
     ### PENDING ORDER ###
     status_of_sample = fields.Char(string='Status of Sample')
@@ -237,6 +236,45 @@ class PurchaseRequest(models.Model):
     label_hardware_ids = fields.One2many('label.hardware', 'purchase_id', string='label hardware id')
     label_dress_ids = fields.One2many('label.dress', 'label_dress_id', string='label dress id')
     prod_summ_ids = fields.One2many('production.summary', 'prod_summ_id', string='prod summ id')
+    get_actual_pps = fields.Float(string="Get Actual Price PPS", compute="_compute_costing_pps")
+
+    @api.depends('name_source', 'state')
+    def _compute_costing_pps(self):
+        for rec in self:
+            # costing = 0
+            if rec.state == 'done':
+                pps = self.env['mrp.bom'].search([
+                    ('product_tmpl_id.name', '=', rec.name_source),
+                    ('is_final', '=', True),
+                ])
+                costing = pps.mapped('retail_price')
+                rec.get_actual_pps = sum(costing)
+                sorted_custom_ids = rec.purchase_custom_ids.sorted(key=lambda l: l.id, reverse=True)
+                if sorted_custom_ids:
+                    last_custom_id = sorted_custom_ids[0]
+                    last_custom_id.write({
+                        'pattern_cost': rec.get_actual_pps
+                    })
+            else:
+                rec.get_actual_pps = 0
+
+    # @api.onchange('state', 'get_actual_pps')
+    # def _trigger_change_last_costing(self):
+    #     # Trigger _change_last_costing when state or get_actual_pps changes.
+    #     self._change_pattern_cost()
+
+    # @api.onchange('state', 'get_actual_pps')
+    # def _change_pattern_cost(self):
+    #     for rec in self:
+    #         if rec.state == 'done':
+    #             sorted_custom_ids = rec.purchase_custom_ids.sorted(key=lambda l: l.pattern_cost, reverse=True)
+    #             if sorted_custom_ids:
+    #                 last_custom_id = sorted_custom_ids[0]
+    #                 last_custom_id.write({
+    #                     'pattern_cost': rec.get_actual_pps
+    #                 })
+    #         else:
+    #             rec.get_actual_pps = 0.0
 
     @api.depends('name', 'name_source')
     def name_get(self):
@@ -317,13 +355,3 @@ class PurchaseRequest(models.Model):
         for record in self:
             return record.purchase_custom_ids.sorted(lambda l: l.id, reverse=True)[0]
 
-    @api.depends('test', 'purchase_custom_ids.pattern_cost')
-    def get_last_costing_pattern(self):
-        for record in self:
-            if record.test is True:
-                sorted_custom_ids = record.purchase_custom_ids.sorted(key=lambda l: l.pattern_cost, reverse=True)
-                if sorted_custom_ids:
-                    last_custom_id = sorted_custom_ids[0]
-                    record.get_last_costing = last_custom_id.pattern_cost
-            else:
-                record.get_last_costing = 0.0
