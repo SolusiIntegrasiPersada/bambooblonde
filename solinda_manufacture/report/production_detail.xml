@@ -29,6 +29,8 @@
                         </div>
                       </div>
                     </div>
+                    <br/>
+                    <br/>
                     <div class="container">
                         <table style="border-collapse: collapse; width: 100%;" border="1">
                             <tbody>
@@ -233,7 +235,8 @@
                                     <td style="width: 5%; text-align: right; border: 1px solid black;"></td>
                                     <td style="width: 7%; text-align: right; border: 1px solid black; padding:3px;">
                                         <strong>
-                                            <t t-esc="doc.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />
+<!--                                            <t t-esc="doc.total_cost" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}" />-->
+                                            <t t-esc="'{:,.0f}'.format(doc.total_cost)"/>
                                         </strong>
                                     </td>
                                 </tr>
@@ -350,7 +353,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-sm">
-                                <img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:120px; max-width:125;"/>
+                                <img t-if="doc.product_tmpl_id.image_1920" t-att-src="image_data_uri(doc.product_tmpl_id.image_1920)" style="max-height:220px; max-width:225;"/>
                             </div>
                             <div class="col-sm">
                             </div>
