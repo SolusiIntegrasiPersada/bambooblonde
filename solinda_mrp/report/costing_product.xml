@@ -362,15 +362,15 @@
                             <tbody>
                                 <tr>
                                     <td style="width: 50%;">
-                                        <table style="border-collapse: collapse; width: 50%;" border="1">
+                                        <table style="border-collapse: collapse; width:100%" border="1">
                                             <tbody>
                                                 <tr>
-                                                    <td style="border: 1px solid black;font-weight:bold; padding: 5px;">Component</td>
-                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">Sizes</td>
-                                                    <td style="text-align: center; border: 1px solid black;font-weight:bold; padding: 5px;">
+                                                    <td style="border: 1px solid black;font-weight:bold; padding: 5px; width:298px">Component</td>
+                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px; width:99px">Sizes</td>
+                                                    <td style="text-align: center; border: 1px solid black;font-weight:bold; padding: 5px; width:93px">
                                                         Quantity
                                                     </td>
-                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px;">UoM</td>
+                                                    <td style="border: 1px solid black;font-weight:bold; text-align: center; padding: 5px; width:60px">UoM</td>
                                                 </tr>
                                                 <t t-foreach="doc.bom_line_variant_ids" t-as="variant">
                                                     <tr>
@@ -393,7 +393,7 @@
 
                                     </td>
 
-                                    <td style="width: 50%;">
+                                    <td style="width: 50%; text-align:center;">
                                         <table style="border-collapse: collapse; width: 100%; height: 126px;"
                                                border="1">
                                             <tbody>
