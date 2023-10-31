@@ -84,7 +84,9 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <t t-esc="move.material_ids.name"/>
+                                    <t t-foreach="move.material_ids" t-as="material">
+                                        <t t-esc="material.product_id.name"/>
+                                    </t>
                                 </td>
                                 <td style="text-align: center;">
                                     <span t-field="move.color_mo"/>

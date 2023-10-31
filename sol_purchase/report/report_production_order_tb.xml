@@ -107,65 +107,53 @@
                     <tbody style="font-size: 12px;">
                         <t t-set="no" t-value="1"/>
                         <t t-foreach="doc.order_line" t-as="order">
-                          <tr style="height: 18px;">
-                              <td
-                                  style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
-                                    <span t-field="order.product_id.default_code"/>
-                                  </td>
-                              <td
-                                  style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
-                                    <span t-field="order.product_id"/>
-                                  </td>
-                              <td
-                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
-                                    <t t-esc="order.colour"/>
-                                  </td>
-                              <td
-                                  style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
-                                    <span t-field="order.product_uom"/>
-                                  </td>
-                              <td
-                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
-                                    <t t-esc="order.product_qty"/>
-                                  </td>
-                              <td
-                                  style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
-                                    <t t-esc="order.price_unit" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
-                                  </td>
-                              <td
-                                  style="width: 15%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
-                                    <t t-esc="order.price_subtotal" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
-                                  </td>
-                          </tr>
-                          <t t-set="no" t-value="no + 1"/>
-
+                            <tr style="height: 18px;">
+                                  <td
+                                      style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
+                                        <span t-field="order.product_id.default_code"/>
+                                      </td>
+                                  <td
+                                      style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
+                                        <t t-esc="order.product_id.name"/>
+                                      </td>
+                                  <td
+                                      style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
+                                        <t t-esc="order.color_mo"/>
+                                      </td>
+                                  <td
+                                      style="width: 10%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">
+                                        <span t-field="order.product_uom"/>
+                                      </td>
+                                  <td
+                                      style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
+                                        <t t-esc="order.product_qty"/>
+                                      </td>
+                                  <td
+                                      style="width: 10%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
+                                        <t t-esc="'{:,.0f}'.format(order.price_unit)"/>
+<!--                                        <t t-esc="order.price_unit" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                      </td>
+                                  <td
+                                      style="width: 15%; text-align: right; border: 1px solid black; height: 18px; padding:5px;">
+                                        <t t-esc="'{:,.0f}'.format(order.price_subtotal)"/>
+<!--                                        <t t-esc="order.price_subtotal" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                      </td>
+                            </tr>
+                            <t t-set="no" t-value="no + 1"/>
                         </t>
+                        <tr>
+                            <td colspan="4" rowspan="1" style="border-color:black; border-style:solid; border-width:1px; height:18px; text-align:center; width:6.2213%; padding:5px;"><strong>TOTAL</strong></td>
+                            <td style="border-color:black; border-style:solid; border-width:1px; height:18px; text-align:right; width:10%; padding:5px;"><strong>
+                                <t t-esc="reduce(lambda x, obj: x+obj.product_qty, doc.order_line, 0)"/>
+                            </strong></td>
+                            <td style="border-color:black; border-style:solid; border-width:1px; height:18px; text-align:right; width:10%; padding:5px;"></td>
+                            <td style="border-color:black; border-style:solid; border-width:1px; height:18px; text-align:right; width:15%; padding:5px;"><strong>
+<!--                                <t t-esc="doc.amount_total" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
+                                    <t t-esc="'{:,.0f}'.format(doc.amount_total)"/>
+                            </strong></td>
+                        </tr>
+
                     </tbody>
-                </table>
-                <table style="table-layout: fixed; border-collapse: collapse; width: 99.9999%; margin-top: 0px; height: 20px;" border="0">
-                    <thead></thead>
-                    <body style="font-size: 12px;">
-                        <tr style="height: 18px;">
-                                <td
-                                    style="width: 6.2213%; border: 1px solid black; height: 18px; border-right: 1px solid transparent;"></td>
-                                <td
-                                    style="width: 23.7787%; text-align: center; border: 1px solid black; height: 18px; border-right: 1px solid transparent; font-size: 12px;">TOTAL</td>
-                                <td
-                                    style="width: 10%; text-align: center; border: 1px solid black; height: 18px; border-right: 1px solid transparent;"></td>
-                                <td
-                                    style="width: 10%; text-align: center; border: 1px solid black; height: 18px;"></td>
-                                <td
-                                    style="width: 10%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px; padding:5px;">
-                                    <t t-esc="reduce(lambda x, obj: x+obj.product_qty, doc.order_line, 0)"/>
-                                    </td>
-                                <td
-                                    style="width: 10%; text-align: center; border: 1px solid black; height: 18px;"></td>
-                                <td
-                                    style="width: 15%; text-align: right; border: 1px solid black; height: 18px; font-size: 12px; padding:5px;">
-                                    <t t-esc="doc.amount_total" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
-                                    </td>
-                          </tr>
-                    </body>
                 </table>
                 <br/>
                 <!-- <div id="total" class="row justify-content-end">
