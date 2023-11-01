@@ -17,12 +17,17 @@ class PurchaseBudget(models.Model):
     def _get_this_month(self):
         return str(datetime.today().month)
 
+    @api.model
+    def _get_this_year(self):
+        return str(datetime.today().year)
+
     name = fields.Char(string='Name')
     budget_amount = fields.Float(string='Budget', default=0)
-    remaining_amount = fields.Float(string='Rem. Balance', default=0)
-    usage_amount = fields.Float(string='Used Balance', default=0)
+    remaining_amount = fields.Float(string='Rem. Balance', compute='_compute_amount')
+    usage_amount = fields.Float(string='Used Balance', compute='_compute_amount')
     budget_ids = fields.One2many('category.budget', 'budget_id', string='Category Budget')
     budget_days = fields.Integer(string='Budget Days', default=180, required=True)
+    year = fields.Integer(string='Year', default=_get_this_year)
     month = fields.Selection(
         [('1', 'Januari'),
          ('2', 'Februari'),
@@ -42,7 +47,14 @@ class PurchaseBudget(models.Model):
         month_name = dict(self._fields['month'].selection).get(vals['month'])
         vals["name"] = f"""Budget {month_name} {datetime.today().year}"""
         return super(PurchaseBudget, self).create(vals)
-    
+
+    @api.depends('budget_ids')
+    def _compute_amount(self):
+        for record in self:
+            usage_amount = sum(record.budget_ids.mapped('total_value'))
+            remaining_amount = record.budget_amount - usage_amount
+            record.usage_amount = usage_amount
+            record.remaining_amount = remaining_amount
     
 class CategoryBudget(models.Model):
     _name = 'category.budget'
@@ -83,7 +95,7 @@ class CategoryBudget(models.Model):
 
                 # sales_amount = sum(self.env['pos.order.line'].search(domain).mapped('price_unit'))
                 cost_amount = sum(self.env['pos.order.line'].search(domain).mapped('product_id.standard_price'))
-                record.budget_guide =  (cost_amount / (record.budget_id.budget_days / 30)) / record.budget_id.budget_amount or 0
+                record.budget_guide = ((cost_amount / (record.budget_id.budget_days / 30)) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
 
     def _inverse_budget_guide(self):
         pass
@@ -92,7 +104,6 @@ class CategoryBudget(models.Model):
     def _compute_budget_amount(self):
         for record in self:
             record.budget_amount = record.budget_guide * record.budget_id.budget_amount
-
 
     @api.depends('category_id')
     def _compute_stock_purchase(self):
@@ -108,7 +119,7 @@ class CategoryBudget(models.Model):
                 product_cost = self.env['stock.quant'].search(
                     [('product_id', 'in', product_ids)]).mapped('product_id.standard_price')
 
-                stock_percentage = sum(product_cost) / record.budget_id.budget_amount
+                stock_percentage = (sum(product_cost) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
                 purchase_qty = sum(purchase_obj.mapped('product_qty')) or 0
                 total_value = sum(purchase_obj.mapped('price_unit')) or 0
 
