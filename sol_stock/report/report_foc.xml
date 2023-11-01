@@ -102,7 +102,7 @@
                     <table style="border-collapse: collapse; width: 100%; height: 270px; border: 1pt solid black;" border="1">
                         <tbody>
                              <tr style="height: 36px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;" colspan="3">Code / Descriptions</td>
+                                <td style="width: 32.9896%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px; border-bottom: 1px solid white;" colspan="3">Code / Descriptions</td>
                                 <td style="width: 2.54517%; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;">Size Type</td>
                                 <td style="width: 46.0949%; text-align: center; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;" colspan="8">Quantity</td>
                                 <td style="width: 4.51857%; height: 36px; font-size: 10px; border: 1pt solid black; padding: 5px;">TTL QTY</td>
@@ -364,17 +364,17 @@
                                             <t t-esc="int(rec['amount_total_receipt'])"/>
                                         </td>
                                         <td style="width: 7.4815%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                            <t t-esc="'{:,.0f}'.format(rec['price']).replace(',', '.')"/>
+                                            <t t-esc="'{:,.0f}'.format(rec['price'])"/>
                                         </td>
                                         <td style="width: 8.37037%; text-align: right; height: 18px; font-size: 11px; border: 1pt solid black; padding: 5px;">
     <!--                                        <t t-esc="'{:,.0f}'.format(line['retail']).replace(',', '.')"/>-->
-                                            <t t-esc="'{:,.0f}'.format(total_price).replace(',', '.')"/>
+                                            <t t-esc="'{:,.0f}'.format(total_price)"/>
                                         </td>
                                     </tr>
                                 </t>
 
                                 <tr style="height: 18px; border: 1pt solid black;">
-                                    <td style="text-align: right; height: 18px; border: 1pt solid black;  font-size: 14px; border: 1pt solid black;" colspan="3">
+                                    <td style="text-align: right; height: 18px; border: 1pt solid black;  font-size: 14px; border: 1pt solid black; padding: 5px;" colspan="3">
                                         <strong>
                                             Sub Total - <t t-esc="line['category']"/>
                                         </strong>
@@ -404,19 +404,19 @@
                                     <td style="width: 5.62967%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
                                         <t t-esc="int(tot_i) if tot_i != 0 else ''"/>
                                     </td>
-                                    <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;">
+                                    <td style="width: 2.51857%; text-align: center; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;padding: 5px;">
                                         <t t-esc="int(total_sub_qty)"/>
                                     </td>
                                     <td style="width: 7.4815%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black;"></td>
                                     <td style="width: 8.37037%; text-align: right; height: 18px; border: 1pt solid black; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                        <t t-esc="'{:,.0f}'.format(total_sub_price).replace(',', '.')"/>
+                                        <t t-esc="'{:,.0f}'.format(total_sub_price)"/>
                                     </td>
                                 </tr>
                             </t>
 
 
                             <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; text-align: right; border: 1pt solid black; padding: 5px;" colspan="3">
+                                <td style="width: 32.9896%; text-align: right; border: 1pt solid black; padding: 5px; padding: 5px;" colspan="3">
                                     <strong>
                                         GRAND TOTAL
                                     </strong>
@@ -451,7 +451,7 @@
                                 </td>
                                 <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black;"></td>
                                 <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_grand_price).replace(',', '.')"/>
+                                    <t t-esc="'{:,.0f}'.format(total_grand_price)"/>
                                 </td>
                             </tr>
 
@@ -466,37 +466,37 @@
                 <div class="container">
                     <table style="border-collapse: collapse; width: 100%; background-color: transparent;">
                         <tbody style="font-size: 15px;background-color: transparent;">
-                            <tr style="border: 1px solid transparent;">
-                                <td style="width: 20%;text-align: center;">Mengetahui,</td>
-                                <td style="width: 20%;text-align: center;"></td>
-                                <td style="width: 20%;text-align: center;">Menerima,</td>
-                                <td style="width: 20%;text-align: center;"></td>
-                                <td style="width: 20%;text-align: center;">Menyerahkan,</td>
+                            <tr style="border: 1px solid black;">
+                                <td style="width: 20%;text-align: center; border-bottom: 1px solid white; border-right: 1px solid white;">Mengetahui,</td>
+                                <td style="width: 20%;text-align: center; border-bottom: 1px solid white; border-right: 1px solid white;"/>
+                                <td style="width: 20%;text-align: center; border-bottom: 1px solid white; border-right: 1px solid white;">Menerima,</td>
+                                <td style="width: 20%;text-align: center; border-bottom: 1px solid white; border-right: 1px solid white;"/>
+                                <td style="width: 20%;text-align: center; border-bottom: 1px solid white;">Menyerahkan,</td>
                             </tr>
-                            <tr style="background-color: transparent;">
-                                <td style="width: 20%;text-align: center;">
+                            <tr style="background-color: transparent; border: 1px solid black;">
+                                <td style="width: 20%;text-align: center; padding: 10px; border-right: 1px solid white;">
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................................... )
+                                        ( ................................ )
                                         <br/>
                                     </strong>
                                 </td>
-                                <td style="width: 20%;text-align: center;"></td>
-                                <td style="width: 20%;text-align: center;">
+                                <td style="width: 20%;text-align: center; border-right: 1px solid white;"/>
+                                <td style="width: 20%;text-align: center; padding: 10px; border-right: 1px solid white;">
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................................... )
+                                        ( ................................ )
                                         <br/>
                                     </strong>
                                 </td>
-                                <td style="width: 20%;text-align: center;"></td>
-                                <td style="width: 20%;text-align: center;">
+                                <td style="width: 20%;text-align: center; border-right: 1px solid white;"/>
+                                <td style="width: 20%;text-align: center; padding: 10px;">
                                     <br/>
                                     <br/>
                                     <strong>
-                                        ( ...................................... )
+                                        ( ................................ )
                                         <br/>
                                     </strong>
                                 </td>
@@ -505,7 +505,6 @@
                     </table>
 
                 </div>
-
             </t>
         </template>
 
