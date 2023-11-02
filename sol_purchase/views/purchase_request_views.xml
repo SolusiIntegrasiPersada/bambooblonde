@@ -17,7 +17,7 @@
                 <xpath expr="//group/group/field[@name='origin']" position="after">
                     <label for="source"/>
                     <div class="o_row">
-                        <field name="name_source" placeholder="Name of Origin" readonly="1"/>
+                        <field name="name_source" placeholder="Name of Origin" readonly="0"/>
                         /
                         <field name="source" placeholder="No. Source" readonly="1"/>
                     </div>
