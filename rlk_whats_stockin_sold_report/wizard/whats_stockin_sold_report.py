@@ -226,7 +226,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 prod = line.product_id
                 class_id = prod.class_product
                 category = prod.product_model_categ_id
-                parent_category = category.parent_id
+                parent_category = prod.product_tmpl_id.categ_id
                 style = '<' + str(prod.name) + '>-' + str(line.color)
                 stockname = '<' + str(prod.name) + '>'
                 stockid = prod.default_code
@@ -989,7 +989,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 prod = line.product_id
                 class_id = prod.class_product
                 category = prod.product_model_categ_id
-                parent_category = category.parent_id
+                parent_category = prod.product_tmpl_id.categ_id
                 style = '<' + str(prod.name) + '>-' + str(line.color)
                 stockname = '<' + str(prod.name) + '>'
                 stockid = prod.default_code
@@ -1417,7 +1417,7 @@ class WhatsStockinSoldReport(models.TransientModel):
 
                     worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
                     worksheet.write(row, 1, d_category or ' ', wbf['content'])
-                    worksheet.write(row, 2, d_parent_category  or ' ', wbf['content'])
+                    worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
                     if d_picture:
                         worksheet.write(row, 3, '', wbf['content'])
                         worksheet.insert_image(row, 3, "image.png", {'image_data': d_picture, 'x_scale': 0.21, 'y_scale': 0.15, 'object_position': 1, 'x_offset': 30, 'y_offset': 5})
