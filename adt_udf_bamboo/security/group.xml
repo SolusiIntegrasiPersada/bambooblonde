@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- <record id="group_sdt_button_pv_req_approvals" model="res.groups">
+            <field name="name">PopUp Payment Voucher </field>
+            <field name="category_id" ref="sdt_payment_prepare.sdt_payment_prepare_access"/>
+        </record> -->
+
+        <record id="group_customer_statement_filter" model="res.groups">
+            <field name="name">Customer Statement Filter</field>
+        </record>
+    </data>
+</odoo>

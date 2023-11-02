@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_customer_statement_filter_user,customer.statement.filter.user,model_customer_statement_filter,sdt_custom_form_brasma.group_customer_statement_filter,1,1,1,1
-access_customer_statement_details_user,customer.statement.details.user,model_customer_statement_details,sdt_custom_form_brasma.group_customer_statement_filter,1,1,1,1
