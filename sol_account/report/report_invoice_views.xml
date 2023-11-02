@@ -293,19 +293,7 @@
                                         </t>
                                     </td>
                                 </tr>
-                                <!-- <tr style="height: 18px;">
-                                    <td style="width: 23.4965%; height: 18px; text-align: center;">
-                                        <t t-esc="o.prepared_hr.job_title"/>
-                                    </td>
-                                    <td style="width: 25.5944%; height: 18px; text-align: center;">
-                                        <t t-esc="o.verified_hr.job_title"/>
-                                    </td>
-                                    <td style="width: 6.71329%; height: 18px;"></td>
-                                    <td style="width: 22.7972%; height: 18px; text-align: center;">
-                                        <t t-esc="o.approved_hr.job_title"/>
-                                    </td>
-                                    <td style="width: 21.3986%; height: 18px; text-align: center;"></td>
-                                </tr> -->
+                        
                             </tbody>
                         </table>
                     </div>
