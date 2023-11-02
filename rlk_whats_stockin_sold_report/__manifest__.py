@@ -11,7 +11,7 @@
         What in Stock vs What is Sold Report
     """,
     "depends": [
-        "sale_stock", "product", "sol_bb_product",
+        "report_xlsx", "sale_stock", "product", "sol_bb_product",
     ],
     "data": [
         "wizard/whats_stockin_sold_report.xml",
