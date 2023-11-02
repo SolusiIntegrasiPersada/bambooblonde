@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import io
 import base64
 
-header_table = ['No', 'Tanggal','Toko','Shift','Payment', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total', 'Total Sold', 'Margin']
+header_table = ['No', 'Tanggal','Toko','Shift','Payment', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total', 'Total Sold']
 
 class XlsxRekapPenjualan(models.Model):
     _name = 'report.sol_bb_report.rekap_penjualan.xlsx'
@@ -46,7 +46,7 @@ class XlsxRekapPenjualan(models.Model):
         sheet.merge_range(row, 0, row, 1, f'Dari Tanggal', formatNormal)
         sheet.merge_range(row, 2, row, 3, f': {from_date}', formatNormal)
         row += 1
-        sheet.merge_range(row, 0, row, 1, f'Sampe Tanggal', formatNormal)
+        sheet.merge_range(row, 0, row, 1, f'Smp Tanggal', formatNormal)
         sheet.merge_range(row, 2, row, 3, f': {to_date}', formatNormal)
         row += 1
         sheet.merge_range(row, 0, row, 1, f'Brand', formatNormal)
@@ -71,53 +71,56 @@ class XlsxRekapPenjualan(models.Model):
         sum_total= 0
         sum_total_sold= 0
         for pol in pos_order_line:
-            list_size = ['SIZE','SIZES','UKURAN']
-            tanggal = pol.order_id.date_order.strftime('%d/%m/%Y') if pol.order_id.date_order else ''
-            brand = pol.product_id.brand.name or ''
-            category = pol.product_id.categ_id.name or ''
-            barcode = pol.product_id.barcode or ''
-            style_code = pol.product_id.default_code or ''
-            size = ''
-            for v in pol.product_id.product_template_variant_value_ids:
-                if any(v.display_name.upper().startswith(word) for word in list_size):
-                    size += v.name
-            stock_name = pol.product_id.name or ''
-            toko = pol.order_id.session_id.config_id.name or " "
-            shift = pol.order_id.session_id.shift or " "
-            last_cost = pol.product_id.standard_price
-            last_price = pol.price_unit
-            qty_sold = pol.qty
-            total = last_cost * qty_sold
-            total_sold = last_price * qty_sold
-            margin = 0
-            payment = pol.order_id.payment_ids[0].payment_method_id.name or '' if len(pol.order_id.payment_ids) > 0 else ''
+            if pol.product_id.is_produk_diskon != True :
+                if pol.product_id.is_produk_promotion != True :
+                    if pol.product_id.is_produk_promotion_free != True :
+                        list_size = ['SIZE','SIZES','UKURAN']
+                        tanggal = pol.order_id.date_order.strftime('%d/%m/%Y') if pol.order_id.date_order else ''
+                        brand = pol.product_id.brand.name or ''
+                        category = pol.product_id.categ_id.parent_id.name or ''
+                        barcode = pol.product_id.barcode or ''
+                        style_code = pol.product_id.default_code or ''
+                        size = ''
+                        for v in pol.product_id.product_template_variant_value_ids:
+                            if any(v.display_name.upper().startswith(word) for word in list_size):
+                                size += v.name
+                        stock_name = pol.product_id.name or ''
+                        toko = pol.order_id.session_id.config_id.name or " "
+                        shift = pol.order_id.session_id.shift or " "
+                        last_cost = pol.product_id.standard_price
+                        last_price = pol.price_unit
+                        qty_sold = pol.qty
+                        total = last_cost * qty_sold
+                        total_sold = last_price * qty_sold
+                        margin = 0
+                        payment = pol.order_id.payment_ids[0].payment_method_id.name or '' if len(pol.order_id.payment_ids) > 0 else ''
 
-            sum_last_cost += last_cost
-            sum_last_price += last_price
-            sum_qty_sold += qty_sold
-            sum_total += total
-            sum_total_sold += total_sold
+                        sum_last_cost += last_cost
+                        sum_last_price += last_price
+                        sum_qty_sold += qty_sold
+                        sum_total += total
+                        sum_total_sold += total_sold
 
-            sheet.write(row, 0, no, formatDetailTableReOrder)
-            sheet.write(row, 1, tanggal, formatDetailTableReOrder)
-            sheet.write(row, 2, toko, formatDetailTableReOrder)
-            sheet.write(row, 3, shift, formatDetailTableReOrder)
-            sheet.write(row, 4, payment, formatDetailTableReOrder)
-            sheet.write(row, 5, brand, formatDetailTableReOrder)
-            sheet.write(row, 6, category, formatDetailTableReOrder)
-            sheet.write(row, 7, barcode, formatDetailTableReOrder)
-            sheet.write(row, 8, style_code, formatDetailTableReOrder)
-            sheet.write(row, 7, size, formatDetailTableReOrder)
-            sheet.write(row, 8, stock_name, formatDetailTableReOrder)
-            sheet.write(row, 9, last_cost, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 10, last_price, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 11, qty_sold, formatDetailTableReOrder)
-            sheet.write(row, 12, total, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 13, total_sold, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 14, margin, formatDetailCurrencyTableReOrder)
+                        sheet.write(row, 0, no, formatDetailTableReOrder)
+                        sheet.write(row, 1, tanggal, formatDetailTableReOrder)
+                        sheet.write(row, 2, toko, formatDetailTableReOrder)
+                        sheet.write(row, 3, shift, formatDetailTableReOrder)
+                        sheet.write(row, 4, payment, formatDetailTableReOrder)
+                        sheet.write(row, 5, brand, formatDetailTableReOrder)
+                        sheet.write(row, 6, category, formatDetailTableReOrder)
+                        sheet.write(row, 7, barcode, formatDetailTableReOrder)
+                        sheet.write(row, 8, style_code, formatDetailTableReOrder)
+                        sheet.write(row, 9, size, formatDetailTableReOrder)
+                        sheet.write(row, 10, stock_name, formatDetailTableReOrder)
+                        sheet.write(row, 11, last_cost, formatDetailCurrencyTableReOrder)
+                        sheet.write(row, 12, last_price, formatDetailCurrencyTableReOrder)
+                        sheet.write(row, 13, qty_sold, formatDetailTableReOrder)
+                        sheet.write(row, 14, total, formatDetailCurrencyTableReOrder)
+                        sheet.write(row, 15, total_sold, formatDetailCurrencyTableReOrder)
+                        # sheet.write(row, 14, margin, formatDetailCurrencyTableReOrder)
 
-            row += 1
-            no += 1
+                        row += 1
+                        no += 1
         row += 1
         sheet.write(row, 7, 'Grand Total', formatNormalCenter)
         sheet.write(row, 9, sum_last_cost, formatNormalCurrencyCenter)
