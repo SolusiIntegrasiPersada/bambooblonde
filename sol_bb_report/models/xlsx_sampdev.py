@@ -99,7 +99,7 @@ class XlsxSampDev(models.Model):
             status_of_sample = pr.status_of_sample if pr.status_of_sample else ''
             style_name = pr.line_ids.product_id.name
             if pr.state == 'done':
-                costing_product = pr.get_last_costing if pr.get_last_costing else 0
+                costing_product = pr.get_actual_pps if pr.get_actual_pps else 0
             else:
                 costing_product = 0
 
