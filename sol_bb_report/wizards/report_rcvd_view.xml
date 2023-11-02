@@ -27,7 +27,7 @@
         </record>
 
         <menuitem name="Report Received Plan"
-            parent="sol_bb_report.menu_report_sample_development"
+            parent="mrp.menu_mrp_reporting"
             id="menu_report_rcvd_wizard"
             action="report_rcvd_wizard_action"
             sequence="5"

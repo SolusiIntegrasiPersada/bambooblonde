@@ -21,7 +21,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['report_xlsx', 'sol_purchase', 'sol_sale', 'sol_pos'],
+    'depends': ['report_xlsx', 'sol_purchase', 'sol_sale', 'sol_pos', 'mrp'],
 
     # always loaded
     'data': [
