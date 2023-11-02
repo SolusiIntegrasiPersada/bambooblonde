@@ -15,6 +15,7 @@ from math import ceil
 class WhatsStockinSoldReport(models.TransientModel):
     _name = "whats.stockin.sold.report"
     _description = "What in Stock vs What is Sold .xlsx"
+    _inherit = 'report.report_xlsx.abstract'
     
     @api.model
     def get_default_date_model(self):
