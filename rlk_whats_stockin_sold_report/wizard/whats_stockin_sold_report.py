@@ -638,8 +638,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                     d_online_qty_stock = size_value['online_qty_stock']
 
                     worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
-                    worksheet.write(row, 1, d_parent_category or ' ', wbf['content'])
-                    worksheet.write(row, 2, d_category or ' ', wbf['content'])
+                    worksheet.write(row, 1, d_category or ' ', wbf['content'])
+                    worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
                     worksheet.write(row, 3, d_style or ' ', wbf['content'])
                     worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
                     worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
@@ -680,8 +680,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                     row += 1
 
                 worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
-                worksheet.write(row, 1, dt_parent_category or ' ', wbf['total_content'])
-                worksheet.write(row, 2, dt_category or ' ', wbf['total_content'])
+                worksheet.write(row, 1, dt_category  or ' ', wbf['total_content'])
+                worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
                 worksheet.write(row, 3, ' ', wbf['total_content'])
                 worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
                 worksheet.write(row, 5, ' ', wbf['total_content'])
@@ -1416,8 +1416,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                     d_online_qty_stock = size_value['online_qty_stock']
 
                     worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
-                    worksheet.write(row, 1, d_parent_category or ' ', wbf['content'])
-                    worksheet.write(row, 2, d_category or ' ', wbf['content'])
+                    worksheet.write(row, 1, d_category or ' ', wbf['content'])
+                    worksheet.write(row, 2, d_parent_category  or ' ', wbf['content'])
                     if d_picture:
                         worksheet.write(row, 3, '', wbf['content'])
                         worksheet.insert_image(row, 3, "image.png", {'image_data': d_picture, 'x_scale': 0.21, 'y_scale': 0.15, 'object_position': 1, 'x_offset': 30, 'y_offset': 5})
@@ -1465,8 +1465,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                     row += 1
 
                 worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
-                worksheet.write(row, 1, dt_parent_category or ' ', wbf['total_content'])
-                worksheet.write(row, 2, dt_category or ' ', wbf['total_content'])
+                worksheet.write(row, 1, dt_category or ' ', wbf['total_content'])
+                worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
                 worksheet.write(row, 3, ' ', wbf['total_content'])
                 worksheet.write(row, 4, ' ', wbf['total_content'])
                 worksheet.write(row, 5, style + ' Total' or ' ', wbf['total_content'])
