@@ -2,7 +2,7 @@ from . import report_sample_development
 from . import report_bamboo
 from . import report_rekap_penjualan
 from . import report_sales_report_detail
-from . import report_supplier_sewing_report
+from . import report_supplier_sewing
 from . import report_best_seller
 from . import report_best_seller_store
 from . import report_best_seller_women

@@ -33,7 +33,4 @@
         <field name="view_id" ref="production_report_wizard_form"/>
         <field name="target">new</field>
     </record>
-
-    <menuitem id="menu_mrp_service_report" name="Service Report" parent="mrp.menu_mrp_reporting" action="production_report_action" sequence="15"/>
-
 </odoo>

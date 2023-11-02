@@ -27,13 +27,6 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem name="Report Order"
-            parent="mrp.menu_mrp_reporting"
-            id="menu_report_bamboo_wizard"
-            action="report_bamboo_wizard_action"
-            sequence="5"
-            groups="sol_bb_report.group_special_report_taboo"/>
-
         <report
             id="report_bamboo_wizard_xlsx"
             model="report.bamboo.wizard"

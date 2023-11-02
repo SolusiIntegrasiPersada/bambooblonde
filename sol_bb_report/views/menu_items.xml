@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <menuitem id="menu_mrp_excel_report"
+                  name="Excel Report"
+                  parent="mrp.menu_mrp_reporting"
+                  sequence="99"/>
+
+        <menuitem name="Report Order"
+                  parent="menu_mrp_excel_report"
+                  id="menu_report_bamboo_wizard"
+                  action="report_bamboo_wizard_action"
+                  sequence="1"
+                  groups="sol_bb_report.group_special_report_taboo"/>
+
+        <menuitem name="Report Received Plan"
+                  parent="menu_mrp_excel_report"
+                  id="menu_report_rcvd_wizard"
+                  action="report_rcvd_wizard_action"
+                  sequence="2"
+                  groups="sol_bb_report.group_special_report_taboo"/>
+
+        <menuitem name="Report Supplier Sewing"
+                  parent="menu_mrp_excel_report"
+                  id="menu_report_supplier_sewing_report_wizard"
+                  action="report_supplier_sewing_report_wizard_action"
+                  sequence="3"
+                  groups="sol_bb_report.group_special_report_taboo"/>
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_mrp_service_report"
+              name="Report Service"
+              parent="sol_bb_report.menu_mrp_excel_report"
+              action="production_report_action"
+              sequence="4"/>
+
+<!--    <menuitem id="menu_mrp_sewing_report"-->
+<!--              name="Sewing Report"-->
+<!--              parent="menu_mrp_excel_report"-->
+<!--              action="sewing_report_action"-->
+<!--              sequence="2"/>-->
+
+</odoo>

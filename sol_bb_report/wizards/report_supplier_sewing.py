@@ -1,5 +1,4 @@
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo import fields, models
 
 class ReportSupplierSewingReport(models.TransientModel):
     _name = 'report.supplier.sewing.report.wizard'

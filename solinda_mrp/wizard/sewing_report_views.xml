@@ -33,12 +33,4 @@
         <field name="view_id" ref="sewing_report_wizard_form"/>
         <field name="target">new</field>
     </record>
-
-    <menuitem id="menu_mrp_sewing_report"
-              name="Sewing Report"
-              parent="mrp.menu_mrp_reporting"
-              action="sewing_report_action"
-              sequence="16"
-    />
-
 </odoo>

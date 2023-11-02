@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model='ir.ui.view' id='report_supplier_sewing_report_wizard_form'>
+            <field name="name">report.supplier.sewing.report.wizard.form</field>
+            <field name="model">report.supplier.sewing.report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group string="Delivery Date">
+                        <field name="from_date" required="1"/>
+                        <field name="to_date" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="button_generate_excel" type="object"
+                                string="Excel Report" class="oe_highlight" icon="fa-download"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model='ir.actions.act_window' id='report_supplier_sewing_report_wizard_action'>
+            <field name="name">Report Supplier Sewing Report</field>
+            <field name="res_model">report.supplier.sewing.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="report_supplier_sewing_report_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <report id="report_supplier_sewing_report_wizard_xlsx"
+                model="report.supplier.sewing.report.wizard"
+                string="Report Supplier Sewing Report"
+                report_type="xlsx"
+                name="sol_bb_report.supplier_sewing_report.xlsx"
+                file="Report Supplier Sewing Report.xlsx"
+                menu="False"
+                attachment_use="False"/>
+    </data>
+</odoo>

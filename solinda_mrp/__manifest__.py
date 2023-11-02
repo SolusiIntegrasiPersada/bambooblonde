@@ -23,6 +23,7 @@
     'data': [
         'security/ir.model.access.csv',
         "views/sequence_data.xml",
+        'views/menu_items.xml',
         'views/mrp_routing_views.xml',
         'views/mrp_bom_views.xml',
         'views/tender_bom.xml',
