@@ -15,21 +15,21 @@ class MrpWorkorder(models.Model):
         res = super(MrpWorkorder, self).button_finish()
         for data in self:
             if data.order_id:
-                picking_obj = self.env['stock.picking'].search([('origin','=',data.order_id.name)])
+                picking_obj = self.env['stock.picking'].search([('origin', '=', data.order_id.name)])
                 if picking_obj:
                     for picking in picking_obj:
-                        if picking.state != 'done':
-                            raise UserError(_('Picking has not been done !'))
-                        else:
-                            data.in_date = picking.date_done
-                            stock_move_obj = self.env['stock.move'].search([('picking_id','=',picking.id)])
-                            if stock_move_obj:
-                                for stock_move in stock_move_obj:
-                                    if not data.total_receipt_updated:
-                                    # if data.workcenter_id.id not in (4,5) :
-                                    #     data.total_receipt = stock_move.quantity_done
-                                        data.total_receipt += stock_move.quantity_done
-                                        data.total_receipt_updated = True
+                        # if picking.state != 'done':
+                        #     raise UserError(_('Picking has not been done !'))
+                        # else:
+                        data.in_date = picking.date_done
+                        stock_move_obj = self.env['stock.move'].search([('picking_id','=',picking.id)])
+                        if stock_move_obj:
+                            for stock_move in stock_move_obj:
+                                if not data.total_receipt_updated:
+                                # if data.workcenter_id.id not in (4,5) :
+                                #     data.total_receipt = stock_move.quantity_done
+                                    data.total_receipt += stock_move.quantity_done
+                                    data.total_receipt_updated = True
             if data.workcenter_id.name == 'CUTTING':
                 sql_query = """
                     update mrp_workorder set total_dyeing = %s where production_id = %s and workcenter_id = 5
