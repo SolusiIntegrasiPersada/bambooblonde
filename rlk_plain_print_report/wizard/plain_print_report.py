@@ -10,6 +10,7 @@ import pytz
 import io
 import itertools
 from itertools import groupby
+from collections import defaultdict
 
 class RlkPlainPrintReport(models.TransientModel):
     _name = "rlk.plain.print.report"
@@ -147,7 +148,8 @@ class RlkPlainPrintReport(models.TransientModel):
         total_percent_print_sold = 0
         total_percent_print_stock = 0
         total_sell_thru_print  = 0
-        for main_color, values in data.items():
+        sorted_data = dict(sorted(data.items(), key=lambda x: x[1]['qty_print_sold'], reverse=True))
+        for main_color, values in sorted_data.items():
            
             percent_print_sold = 0
             percent_print_stock = 0
@@ -233,14 +235,15 @@ class RlkPlainPrintReport(models.TransientModel):
         mapping = []
         warna = ""
         categ = ""
-        for main_and_categ, values in data_main_categ.items():
+        sorted_data = dict(sorted(data_main_categ.items(), key=lambda x: x[1]['qty_print_sold'], reverse=True))
+        for main_and_categ, values in sorted_data.items():
             parts = main_and_categ.split('/')  # Membagi string berdasarkan tanda '/'
             if len(parts) == 2:
                 warna, categ = parts
                 
             mapping.append({'warna': warna, 'categ': categ,'qty_print_sold' : values['qty_print_sold'] , 'qty_print_stock' : values['qty_print_stock']})
             
-        mapping_sorted = sorted(mapping, key=lambda x: x['warna'])
+        mapping_sorted = sorted(mapping, key=lambda x: (x['warna'], x['qty_print_sold']), reverse=True)
         
         row = 6
         total_percent_print_sold = 0
@@ -254,7 +257,21 @@ class RlkPlainPrintReport(models.TransientModel):
         total_percent_print_sold_per_warna = 0 
         total_percent_print_stock_per_warna= 0
         total_sell_thru_print_per_warna = 0
-        for colorxcateg in mapping_sorted:
+        
+        data_dict = defaultdict(float)
+        for item in mapping_sorted:
+            data_dict[item['warna']] += item['qty_print_sold']
+
+        # Mengurutkan 'warna' berdasarkan total 'qty' terbesar ke terkecil
+        sorted_data = sorted(data_dict, key=data_dict.get, reverse=True)
+
+        # Membuat list hasil berdasarkan urutan yang sudah diurutkan
+        result = []
+        for warna in sorted_data:
+            for item in mapping_sorted:
+                if item['warna'] == warna:
+                    result.append(item)
+        for colorxcateg in result:
             
             
             percent_print_sold = 0
@@ -388,7 +405,7 @@ class RlkPlainPrintReport(models.TransientModel):
 
         for quant in quants:
             main_color = quant.product_id.main_color_id.name
-            quant.product_id.product_template_variant_value_ids.filtered(lambda x: x.attribute_id.name.upper() in ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']).name
+            sub_color = quant.product_id.product_template_variant_value_ids.filtered(lambda x: x.attribute_id.name.upper() in ['COLOR','COLOUR','COLOURS','COLORS','WARNA','CORAK']).name
             main_color_plus_sub_color = f"{str(main_color)}/{str(sub_color)}"
             if main_color_plus_sub_color not in data_main_sub_color:
                 data_main_sub_color[main_color_plus_sub_color] = {
@@ -410,7 +427,7 @@ class RlkPlainPrintReport(models.TransientModel):
                 
             mapping.append({'warna': warna, 'categ': categ,'qty_print_sold' : values['qty_print_sold'] , 'qty_print_stock' : values['qty_print_stock']})
             
-        mapping_sorted = sorted(mapping, key=lambda x: x['warna'])
+        mapping_sorted = sorted(mapping, key=lambda x: (x['warna'], x['qty_print_sold']), reverse=True)
         
         row = 6
         total_percent_print_sold = 0
@@ -424,7 +441,23 @@ class RlkPlainPrintReport(models.TransientModel):
         total_percent_print_sold_per_warna = 0 
         total_percent_print_stock_per_warna= 0
         total_sell_thru_print_per_warna = 0
-        for colorxcateg in mapping_sorted:
+        
+        
+        data_dict = defaultdict(float)
+        for item in mapping_sorted:
+            data_dict[item['warna']] += item['qty_print_sold']
+
+        # Mengurutkan 'warna' berdasarkan total 'qty' terbesar ke terkecil
+        sorted_data = sorted(data_dict, key=data_dict.get, reverse=True)
+
+        # Membuat list hasil berdasarkan urutan yang sudah diurutkan
+        result = []
+        for warna in sorted_data:
+            for item in mapping_sorted:
+                if item['warna'] == warna:
+                    result.append(item)
+                    
+        for colorxcateg in result:
             
             
             percent_print_sold = 0
