@@ -22,18 +22,20 @@ class AccountJournal(models.Model):
                 pay.outstanding2_account_id = pay.company_id.account_journal_payment_credit_account_id
            
     
-# class AccountMove(models.Model):
-#     _inherit = 'account.move'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    
+    ref_ori = fields.Char(string='Reference Original')
+    pos_config = fields.Char(string='Pos Config')
+    shift = fields.Char(string='Pos Config')
 
 
-#     @api.model
-#     def create(self, values):
+    @api.model
+    def create(self, values):
         
-#         if values.get('journal_id', False) == 44 :
-#             print('debug')
-#         result = super(AccountMove, self).create(values)
+        result = super(AccountMove, self).create(values)
         
-#         return result
+        return result
     
     
     
