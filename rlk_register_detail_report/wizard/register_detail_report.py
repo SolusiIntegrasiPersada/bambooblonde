@@ -494,6 +494,7 @@ class RegisterDetailReport(models.TransientModel):
                 total_return = res['total_return']
                 discount = res['discount']
                 net_sales = res['total_sales'] - res['total_return'] - res['discount']
+                voucher = res['coupon']
 
                 if shift == 'Shift A':
                     no_shift1 += 1
