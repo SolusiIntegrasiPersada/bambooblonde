@@ -216,28 +216,17 @@ class StockSalesSummaryReport(models.TransientModel):
         grandtotal_size7 = 0
         grandtotal_size8 = 0
 
-        domain = []
+        domain = [
+            ('order_id.state', 'not in', ['draft', 'cancel']),
+            ('order_id.date_order', '>=', self.start_period),
+            ('order_id.date_order', '<=', self.end_period),
+        ]
 
-        if self.shift == 'Shift A':
-            domain = [
-                ('order_id.state', 'not in', ['draft', 'cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-                ('order_id.session_id.shift', '=', 'Shift A'),
-            ]
-        elif self.shift == 'Shift B':
-            domain = [
-                ('order_id.state', 'not in', ['draft', 'cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-                ('order_id.session_id.shift', '=', 'Shift B'),
-            ]
-        else:
-            domain = [
-                ('order_id.state', 'not in', ['draft', 'cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-            ]
+        if self.shift:
+            domain.append(('order_id.session_id.shift', '=', self.shift))
+        
+        if config_id :
+            domain.append(('order_id.config_id', '=', config_id))
 
         docs = self.env['pos.order.line'].search(domain)
 
