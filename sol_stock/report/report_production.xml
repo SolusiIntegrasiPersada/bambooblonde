@@ -110,78 +110,96 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p><span t-field="o.note"/></p>
-<!--                    <table class="table table-sm mt48" t-if="o.move_line_ids and o.state=='done'" name="stock_move_line_table">-->
-<!--                        <t t-set="has_serial_number" t-value="False"/>-->
-<!--                        <t t-set="has_serial_number" t-value="o.move_line_ids.mapped('lot_id')" groups="stock.group_lot_on_delivery_slip"/>-->
-<!--                        <thead>-->
-<!--                            <tr>-->
-<!--                                <th name="th_sml_product"><strong>Product</strong></th>-->
-<!--                                <t name="lot_serial" t-if="has_serial_number">-->
-<!--                                    <th>-->
-<!--                                        Lot/Serial Number-->
-<!--                                    </th>-->
-<!--                                </t>-->
-<!--                                <th name="th_sml_qty_ordered" class="text-center" t-if="not has_serial_number">-->
-<!--                                    <strong>Ordered</strong>-->
-<!--                                </th>-->
-<!--                                <th name="th_sml_quantity" class="text-center"><strong>Delivered</strong></th>-->
-<!--                            </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                        &lt;!&ndash; This part gets complicated with different use cases (additional use cases in extensions of this report):-->
-<!--                                1. If serial numbers are used and set to print on delivery slip => print lines as is, otherwise group them by overlapping-->
-<!--                                    product + description + uom combinations-->
-<!--                                2. If any packages are assigned => split products up by package (or non-package) and then apply use case 1 &ndash;&gt;-->
-<!--                            &lt;!&ndash; If has destination packages => create sections of corresponding products &ndash;&gt;-->
-<!--                            <t t-if="o.has_packages" name="has_packages">-->
-<!--                                <t t-set="packages" t-value="o.move_line_ids.mapped('result_package_id')"/>-->
-<!--                                <t t-foreach="packages" t-as="package">-->
-<!--                                    <t t-call="stock.stock_report_delivery_package_section_line"/>-->
-<!--                                    <t t-set="package_move_lines" t-value="o.move_line_ids.filtered(lambda l: l.result_package_id == package)"/>-->
-<!--                                    &lt;!&ndash; If printing lots/serial numbers => keep products in original lines &ndash;&gt;-->
-<!--                                    <t t-if="has_serial_number">-->
-<!--                                        <tr t-foreach="package_move_lines" t-as="move_line">-->
-<!--                                            <t t-call="stock.stock_report_delivery_has_serial_move_line"/>-->
-<!--                                        </tr>-->
-<!--                                    </t>-->
-<!--                                    &lt;!&ndash; If not printing lots/serial numbers => merge lines with same product+description+uom &ndash;&gt;-->
-<!--                                    <t t-else="">-->
-<!--                                        <t t-set="aggregated_lines" t-value="package_move_lines._get_aggregated_product_quantities(strict=True)"/>-->
-<!--                                        <t t-call="stock.stock_report_delivery_aggregated_move_lines"/>-->
-<!--                                    </t>-->
-<!--                                </t>-->
-<!--                                &lt;!&ndash; Make sure we do another section for package-less products if they exist &ndash;&gt;-->
-<!--                                <t t-set="move_lines" t-value="o.move_line_ids.filtered(lambda l: not l.result_package_id)"/>-->
-<!--                                <t t-set="aggregated_lines" t-value="o.move_line_ids._get_aggregated_product_quantities(except_package=True)"/>-->
-<!--                                <t t-if="move_lines or aggregated_lines" name="no_package_move_lines">-->
-<!--                                    <t t-call="stock.stock_report_delivery_no_package_section_line" name="no_package_section"/>-->
-<!--                                    <t t-if="has_serial_number">-->
-<!--                                        <tr t-foreach="move_lines" t-as="move_line">-->
-<!--                                            <t t-call="stock.stock_report_delivery_has_serial_move_line"/>-->
-<!--                                        </tr>-->
-<!--                                    </t>-->
-<!--                                    <t t-elif="aggregated_lines">-->
-<!--                                        <t t-call="stock.stock_report_delivery_aggregated_move_lines"/>-->
-<!--                                    </t>-->
-<!--                                </t>-->
-<!--                            </t>-->
-<!--                            &lt;!&ndash; No destination packages &ndash;&gt;-->
-<!--                            <t t-else="">-->
-<!--                                &lt;!&ndash; If printing lots/serial numbers => keep products in original lines &ndash;&gt;-->
-<!--                                <t t-if="has_serial_number">-->
-<!--                                    <tr t-foreach="o.move_line_ids" t-as="move_line">-->
-<!--                                        <t t-call="stock.stock_report_delivery_has_serial_move_line"/>-->
-<!--                                    </tr>-->
-<!--                                </t>-->
-<!--                                &lt;!&ndash; If not printing lots/serial numbers => merge lines with same product &ndash;&gt;-->
-<!--                                <t t-else="" name="aggregated_move_lines">-->
-<!--                                    <t t-set="aggregated_lines" t-value="o.move_line_ids._get_aggregated_product_quantities()"/>-->
-<!--                                    <t t-call="stock.stock_report_delivery_aggregated_move_lines"/>-->
-<!--                                </t>-->
-<!--                            </t>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
+                    <br/>
+                    <table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px transparent; background-color: transparent;">
+                        <tbody>
+                            <tr style="background-color: transparent; ">
+                                <td style="width:49px; padding: 3px; border: 1px transparent;">Notes</td>
+                                <td style="width:7px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:338px; padding: 3px; border: 1px transparent;">
+                                    <span t-field="o.note"/>
+                                </td>
+                                <td style="text-align:right; width:481px; padding: 3px; border: 1px transparent;">Sub total</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
+                                    <t t-esc="'{:,.0f}'.format(total_cost)"/>
+                                </td>
+                            </tr>
+                            <tr style="background-color: transparent; ">
+                                <td colspan="3" rowspan="5" style="width:404px; border: 1px transparent;"></td>
+                                <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">PPn</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">-</td>
+                            </tr>
+                            <tr style="background-color: transparent; ">
+                                <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Grand Total</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
+<!--                                    total_cost * PPn-->
+                                    <t t-esc="'{:,.0f}'.format(total_cost)"/>
+                                </td>
+                            </tr>
+                            <tr style="background-color: transparent; ">
+                                <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Deposit</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;"></td>
+                            </tr>
+                            <tr style="background-color: transparent; ">
+                                <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Paid Amount</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">-</td>
+                            </tr>
+                            <tr style="background-color: transparent; ">
+                                <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Balance</td>
+                                <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="container">
+                        <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0;">
+                            <tbody style="font-size: 15px;background-color: transparent;">
+                                <tr>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;">Prepared By,</td>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;">Ordered By,</td>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;">Approved By,</td>
+                                </tr>
+                                <tr style="background-color: transparent; ">
+                                    <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                                        <br/>
+                                        <br/>
+                                        <strong>
+                                            ( ........................ )
+                                            <br/>
+                                        </strong>
+                                    </td>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                                    <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                                        <br/>
+                                        <br/>
+                                        <strong>
+                                            ( ........................ )
+                                            <br/>
+                                        </strong>
+                                    </td>
+                                    <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                                    <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                                        <br/>
+                                        <br/>
+                                        <strong>
+                                            ( ........................ )
+                                            <br/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
                     <t t-set="backorders" t-value="o.backorder_ids.filtered(lambda x: x.state not in ('done', 'cancel'))"/>
                     <t t-if="o.backorder_ids and backorders">
                         <p class="mt-5">
