@@ -43,28 +43,28 @@
                             </td>
                         </tr>
                         <tr style="height: 18px;">
-                            <td style="width: 14.1115%; height: 36px;">Trans Date</td>
-                            <td style="width: 2.08768%; height: 36px;">:</td>
-                            <td style="width: 28.7268%; height: 36px;">
+                            <td style="width: 14.1115%; height: 18px;">Trans Date</td>
+                            <td style="width: 2.08768%; height: 18px;">:</td>
+                            <td style="width: 28.7268%; height: 18px;">
                               <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
                             </td>
-                            <td style="width: 6.01553%; height: 36px;"></td>
-                            <td style="width: 22.2605%; height: 36px;">Supplier</td>
-                            <td style="width: 2.08768%; height: 36px;">:</td>
-                            <td style="width: 32.0241%; height: 36px;">
+                            <td style="width: 6.01553%; height: 18px;"></td>
+                            <td style="width: 22.2605%; height: 18px;">Supplier</td>
+                            <td style="width: 2.08768%; height: 18px;">:</td>
+                            <td style="width: 32.0241%; height: 18px;">
                               <t t-esc="doc.partner_id.name"/>
                             </td>
                         </tr>
                         <tr style="height: 18px;">
-                            <td style="width: 14.1115%; height: 36px;">Division</td>
-                            <td style="width: 2.08768%; height: 36px;">:</td>
-                            <td style="width: 28.7268%; height: 36px;">
+                            <td style="width: 14.1115%; height: 18px;">Division</td>
+                            <td style="width: 2.08768%; height: 18px;">:</td>
+                            <td style="width: 28.7268%; height: 18px;">
                               <span t-field="doc.sub_suplier"/>
                             </td>
-                            <td style="width: 6.01553%;"></td>
-                            <td style="width: 22.2605%;">Order Date</td>
-                            <td style="width: 2.08768%;">:</td>
-                            <td style="width: 32.0241%;">
+                            <td style="width: 6.01553%; height: 18px;"></td>
+                            <td style="width: 22.2605%; height: 18px;">Order Date</td>
+                            <td style="width: 2.08768%; height: 18px;">:</td>
+                            <td style="width: 32.0241%; height: 18px;">
                               <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
                               <!-- <span t-esc="datetime.date.today().strftime('%b %d, %Y')"/> -->
                             </td>
@@ -73,7 +73,7 @@
                     </tbody>
                 </table>
                 <table
-                    style="table-layout: fixed; border-collapse: collapse; width: 99.9452%; margin-top: 20px; height: 20px;"
+                    style="table-layout: fixed; border-collapse: collapse; width: 99.9452%; margin-top: 10px; height: 20px;"
                     border="1">
                     <thead>
                         <tr style="height: 20px;">
@@ -113,10 +113,10 @@
                                 style="width: 11.004%; text-align: center; border: 1px solid black; padding-top: 7px;">
                                 <strong>Total</strong>
                             </td>
-                            <td
-                                style="width: 13.9312%; text-align: center; border: 1px solid black; padding-top: 7px;">
-                                <strong>Production Comment</strong>
-                            </td>
+<!--                            <td-->
+<!--                                style="width: 13.9312%; text-align: center; border: 1px solid black; padding-top: 7px;">-->
+<!--                                <strong>Production Comment</strong>-->
+<!--                            </td>-->
                         </tr>
                     </thead>
                     <tbody>
@@ -161,10 +161,10 @@
                                     <span t-esc="pw.product_qty*pw.price_unit" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                     <!-- <t t-esc="order.price_subtotal" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/> -->
                                   </td>
-                              <td
-                                  style="width: 13.9312%; border: 1px solid black; padding-right: 3px; text-align: left;">
-                                    <t t-esc="pw.sample_comment "/>
-                                  </td>
+<!--                              <td-->
+<!--                                  style="width: 13.9312%; border: 1px solid black; padding-right: 3px; text-align: left;">-->
+<!--                                    <t t-esc="pw.sample_comment "/>-->
+<!--                                  </td>-->
                             </tr>
                             <t t-set="no" t-value="no + 1"/>
                           </t>
@@ -198,19 +198,102 @@
                             <td
                                 style="width: 9.86852%; border: 1px solid black; padding-right: 3px; text-align: right;"></td>
                             <td
-                                style="width: 11.004%; border: 1px solid black; padding-right: 3px; text-align: right; border-right: 1px solid transparent;">
+                                style="width: 11.004%; border: 1px solid black; padding-right: 3px; text-align: right;">
                                   <t t-esc="doc.amount_total" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>
                                 </td>
-                            <td
-                                style="width: 13.9312%; border: 1px solid black; padding-right: 3px; text-align: left;"></td>
+<!--                            <td-->
+<!--                                style="width: 13.9312%; border: 1px solid black; padding-right: 3px; text-align: left;"></td>-->
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <p><strong>Picture :</strong></p>
-            <t t-foreach="doc.get_last_record_order()" t-as="rec">
-                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/></p>
-            </t>
+
+            <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+                <tbody>
+                    <tr>
+                        <td style="width:222px">
+                            <p><strong>Picture :</strong></p>
+                            <t t-foreach="doc.get_last_record_order()" t-as="rec">
+                                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/></p>
+                            </t>
+                        </td>
+                        <td style="width:962px">
+                            <table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px transparent; background-color: transparent;">
+                                <tbody>
+                                    <tr style="background-color: transparent; ">
+                                        <td style="width:49px; padding: 3px; border: 1px transparent;"><strong>Notes</strong></td>
+                                        <td style="width:7px; padding: 3px; border: 1px transparent;">:</td>
+                                        <td style="width:338px; padding: 3px; border: 1px transparent;">
+                                            <span t-field="doc.notes"/>
+                                        </td>
+                                        <td style="text-align:right; width:481px; padding: 3px; border: 1px transparent;">Sub total</td>
+                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
+                                            <span t-field="doc.amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="background-color: transparent; ">
+                                        <td colspan="3" rowspan="5" style="width:404px; border: 1px transparent;"></td>
+                                        <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">PPn</td>
+                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
+                                            <span t-field="doc.amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="background-color: transparent; ">
+                                        <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Grand Total</td>
+                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
+                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
+                                             <span t-field="doc.amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+            <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0;">
+                <tbody style="font-size: 15px;background-color: transparent;">
+                    <tr>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;">Prepared By,</td>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;">Ordered By,</td>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;">Approved By,</td>
+                    </tr>
+                    <tr style="background-color: transparent; ">
+                        <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                            <br/>
+                            <br/>
+                            <strong>
+                                ( ........................ )
+                                <br/>
+                            </strong>
+                        </td>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                        <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                            <br/>
+                            <br/>
+                            <strong>
+                                ( ........................ )
+                                <br/>
+                            </strong>
+                        </td>
+                        <td style="width: 20%;text-align: center; border: 1px transparent;"/>
+                        <td style="width: 20%;text-align: center; padding: 10px; border: 1px transparent;">
+                            <br/>
+                            <br/>
+                            <strong>
+                                ( ........................ )
+                                <br/>
+                            </strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
         </t>
     </template>
 </odoo>
