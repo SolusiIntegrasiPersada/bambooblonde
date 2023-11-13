@@ -35,7 +35,7 @@ class StockMove(models.Model):
     def _conversion_to_yard(self):
         yard = 0.9144
         for i in self:
-            total = i.product_uom_qty * yard
+            total = i.product_uom_qty / yard
             i.to_consume_conversion = total
 
 
