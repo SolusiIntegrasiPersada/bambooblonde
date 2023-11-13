@@ -146,7 +146,7 @@
 <!--                                            <span t-esc="move.cost_material" t-options="{'widget': 'monetary','display_currency': res_company.currency_id}"/>-->
                                             <t t-if="move.uom_total_buy.name == 'yard'">
                                                 <t t-set="yard" t-value="0.9144"/>
-                                                <t t-set="total" t-value="move.cost_material / yard"/>
+                                                <t t-set="total" t-value="move.cost_material * yard"/>
                                                 <t t-esc="'{:,.0f}'.format(total)"/>
                                             </t>
                                             <t t-else="">
