@@ -94,11 +94,11 @@
                                 <td style="text-align: center;">
                                     <!-- <span t-field="move.product_uom_qty"/> -->
                                     <span t-field="o.total_product_uom_qty"/>
-                                    <span t-field="move.product_uom"/>
+<!--                                    <span t-field="move.product_uom"/>-->
                                 </td>
                                 <td style="text-align: center;">
                                     <span t-field="move.quantity_done"/>
-                                    <span t-field="move.product_uom"/>
+<!--                                    <span t-field="move.product_uom"/>-->
                                 </td>
                                 <td style="text-align: center;">
                                     <t t-esc="'{:,.0f}'.format(move.price_mo)"/>
