@@ -38,7 +38,6 @@ class StockMove(models.Model):
             total = i.product_uom_qty / yard
             i.to_consume_conversion = total
 
-
     @api.depends('raw_material_production_id.qty_producing', 'product_uom_qty', 'product_uom')
     def _compute_should_consume_qty(self):
         for move in self:
@@ -76,6 +75,12 @@ class StockMove(models.Model):
             raw_po_line = []
             # total_quant = i.product_qty
             total_quant = i.total_buy
+            yard = 0.9144
+            if i.uom_total_buy.name == 'yard':
+                total_yard = i.cost_material * yard
+            else:
+                total_yard = i.cost_material
+
             if not total_quant:
                 raise ValidationError('Total buy cannot be 0')
 
@@ -100,7 +105,7 @@ class StockMove(models.Model):
                 # 'lining':'',
                 'color_mo': i.color_id.name,
                 'product_qty': total_quant,
-                'price_unit': i.cost_material,
+                'price_unit': total_yard,
                 'image': i.raw_material_production_id.product_tmpl_id.image_1920,
                 'product_uom': i.uom_total_buy.id,
                 # 'material_ids': i.product_id.id,
@@ -147,13 +152,14 @@ class StockMove(models.Model):
 
             return i.show_po()
 
-    @api.depends('product_id.standard_price', 'product_uom_qty', 'hk', 'total_buy')
+    @api.depends('product_id.standard_price', 'product_uom_qty', 'hk', 'total_buy', 'uom_total_buy')
     def _compute_total_cost(self):
         for line in self:
             line.update({
                 'total_cost': line.cost_material * (
                     line.total_buy if line.total_buy else line.product_uom_qty)
             })
+
 
 
 class StockMoveLine(models.Model):
