@@ -25,6 +25,20 @@ class StockMove(models.Model):
     cost_material = fields.Float(string='Cost')
     workorder_notes = fields.Char(string='Workorder')
 
+    # Conversion Yard to M
+    uom_cost = fields.Many2one('uom.uom', string="UoM", default=lambda self: self.env['uom.uom'].search([('name', '=', 'm')], limit=1))
+    uom_total_buy = fields.Many2one('uom.uom', string="UoM", domain="[('category_id', '=', product_uom_category_id)]")
+    to_consume_conversion = fields.Float(string="Conversion", compute="_conversion_to_yard")
+    to_consume_uom = fields.Many2one('uom.uom', string="UoM", default=lambda self: self.env['uom.uom'].search([('name', '=', 'yard')], limit=1))
+
+    @api.depends('product_uom_qty')
+    def _conversion_to_yard(self):
+        yard = 0.9144
+        for i in self:
+            total = i.product_uom_qty * yard
+            i.to_consume_conversion = total
+
+
     @api.depends('raw_material_production_id.qty_producing', 'product_uom_qty', 'product_uom')
     def _compute_should_consume_qty(self):
         for move in self:
@@ -88,6 +102,7 @@ class StockMove(models.Model):
                 'product_qty': total_quant,
                 'price_unit': i.cost_material,
                 'image': i.raw_material_production_id.product_tmpl_id.image_1920,
+                'product_uom': i.uom_total_buy.id,
                 # 'material_ids': i.product_id.id,
             }))
             po.update({
