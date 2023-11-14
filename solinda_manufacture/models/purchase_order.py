@@ -303,9 +303,10 @@ class PurchaseOrderLine(models.Model):
                 yard = 0.9144
                 total = self.price_unit / yard
                 rec['price_mo'] = total
+                rec['price'] = total
             else:
                 rec['price_mo'] = self.price_unit
-            rec['price'] = self.price_unit
+                rec['price'] = self.price_unit
             rec['color_mo'] = self.color_mo
             rec['image'] = self.image
             rec['material_ids'] = self.material_ids.ids
