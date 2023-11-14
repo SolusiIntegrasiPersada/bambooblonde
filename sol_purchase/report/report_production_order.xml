@@ -26,56 +26,41 @@
             </div>
             <h2 style="text-align: left; text-decoration: underline;">PO SUPPLIER</h2>
             <div class="body">
-                <table
-                    style="table-layout: fixed; border-collapse: collapse; width: 100%; height: 144px;">
-                    <tbody style="font-size: 15px;">
-                        <tr style="height: 18px;">
-                            <td style="width: 14.1115%; height: 18px;">Trans No</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 28.7268%; height: 18px;">
-                              <t t-esc="doc.name"/>
-                            </td>
-                            <td style="width: 6.01553%; height: 18px;"></td>
-                            <td style="width: 22.2605%; height: 18px;">Delivery Date</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 32.0241%; height: 18px;">
-                              <t t-esc="doc.effective_date" t-options="{'widget': 'date'}"/>
-                            </td>
-                        </tr>
-                        <tr style="height: 18px;">
-                            <td style="width: 14.1115%; height: 18px;">Trans Date</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 28.7268%; height: 18px;">
-                              <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
-                            </td>
-                            <td style="width: 6.01553%; height: 18px;"></td>
-                            <td style="width: 22.2605%; height: 18px;">Supplier</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 32.0241%; height: 18px;">
-                              <t t-esc="doc.partner_id.name"/>
-                            </td>
-                        </tr>
-                        <tr style="height: 18px;">
-                            <td style="width: 14.1115%; height: 18px;">Division</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 28.7268%; height: 18px;">
-                              <span t-field="doc.sub_suplier"/>
-                            </td>
-                            <td style="width: 6.01553%; height: 18px;"></td>
-                            <td style="width: 22.2605%; height: 18px;">Order Date</td>
-                            <td style="width: 2.08768%; height: 18px;">:</td>
-                            <td style="width: 32.0241%; height: 18px;">
-                              <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
-                              <!-- <span t-esc="datetime.date.today().strftime('%b %d, %Y')"/> -->
-                            </td>
-                        </tr>
-
-                    </tbody>
+                <div class="container">
+                <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+                  	<tbody style="font-size: 15px;">
+                  		<tr>
+                  			<td style="width:132px; padding: 5px">Trans No</td>
+                  			<td style="width:4px; padding: 5px">:</td>
+                  			<td style="width:417px; padding: 5px"></td>
+                  			<td style="width:158px; padding: 5px">Delivery Fate</td>
+                  			<td style="width:5px; padding: 5px">:</td>
+                  			<td style="width:449px; padding: 5px"></td>
+                  		</tr>
+                  		<tr>
+                  			<td style="width:132px; padding: 5px">Trans Date</td>
+                  			<td style="width:4px; padding: 5px">:</td>
+                  			<td style="width:417px; padding: 5px"></td>
+                  			<td style="width:158px; padding: 5px">Supplier</td>
+                  			<td style="width:5px; padding: 5px">:</td>
+                  			<td style="width:449px; padding: 5px"></td>
+                  		</tr>
+                  		<tr>
+                  			<td style="width:132px; padding: 5px">Cutting</td>
+                  			<td style="width:4px; padding: 5px">:</td>
+                  			<td style="width:417px; padding: 5px"></td>
+                  			<td style="width:158px; padding: 5px">Order Date</td>
+                  			<td style="width:5px; padding: 5px">:</td>
+                  			<td style="width:449px; padding: 5px"></td>
+                  		</tr>
+                  	</tbody>
                 </table>
+                </div>
+                <div class="container">
                 <table
                     style="table-layout: fixed; border-collapse: collapse; width: 99.9452%; margin-top: 10px; height: 20px;"
                     border="1">
-                    <thead>
+                    <thead style="font-size: 15px;">
                         <tr style="height: 20px;">
                             <td
                                 style="width: 10.8264%; text-align: center; height: 20px; border: 1px solid black; padding-top: 7px;">
@@ -119,7 +104,7 @@
 <!--                            </td>-->
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="font-size: 15px;">
                         <t t-set="no" t-value="1"/>
                         <t t-foreach="doc.pw_ids" t-as="pw">
                           <t t-foreach="doc.order_line" t-as="order">
@@ -171,11 +156,13 @@
                         </t>
                     </tbody>
                 </table>
+                </div>
+                <div class="container">
                 <table
                     style="table-layout: fixed; border-collapse: collapse; width: 99.9452%; margin-top: 0px; height: 20px;"
                     border="1">
                     <thead></thead>
-                    <tbody>
+                    <tbody style="font-size: 15px;">
                         <tr>
                             <td
                                 style="width: 10.8264%; border: 1px solid black; padding-left: 5px; border-right: 1px solid transparent;">
@@ -206,55 +193,60 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
-
-            <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
-                <tbody>
-                    <tr>
-                        <td style="width:222px">
-                            <p><strong>Picture :</strong></p>
-                            <t t-foreach="doc.get_last_record_order()" t-as="rec">
-                                <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/></p>
-                            </t>
-                        </td>
-                        <td style="width:962px">
-                            <table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px transparent; background-color: transparent;">
-                                <tbody>
-                                    <tr style="background-color: transparent; ">
-                                        <td style="width:49px; padding: 3px; border: 1px transparent;"><strong>Notes</strong></td>
-                                        <td style="width:7px; padding: 3px; border: 1px transparent;">:</td>
-                                        <td style="width:338px; padding: 3px; border: 1px transparent;">
-                                            <span t-field="doc.notes"/>
-                                        </td>
-                                        <td style="text-align:right; width:481px; padding: 3px; border: 1px transparent;">Sub total</td>
-                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
-                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
-                                            <span t-field="doc.amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: transparent; ">
-                                        <td colspan="3" rowspan="5" style="width:404px; border: 1px transparent;"></td>
-                                        <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">PPn</td>
-                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
-                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
-                                            <span t-field="doc.amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color: transparent; ">
-                                        <td style="text-align:right; width:157px; padding: 3px; border: 1px transparent;">Grand Total</td>
-                                        <td style="width:2px; padding: 3px; border: 1px transparent;">:</td>
-                                        <td style="width:241px; padding: 3px; border: 1px transparent; text-align:right;">
-                                             <span t-field="doc.amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
             <br/>
-            <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0;">
+            <div class="container">
+            <table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+            	<tbody style="font-size: 15px;">
+            		<tr>
+            			<td style="width:614px">
+            			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+            				<tbody style="font-size: 15px;">
+            					<tr>
+            						<td style="width:53px"><strong>Notes</strong></td>
+            						<td style="width:7px"><strong>:</strong></td>
+            						<td style="width:536px"><span t-field="doc.notes"/></td>
+            					</tr>
+            					<tr>
+            						<td style="width:53px"><strong>Picture</strong></td>
+            						<td style="width:7px"><strong>:</strong></td>
+            						<td style="width:536px">
+            						  <t t-foreach="doc.get_last_record_order()" t-as="rec">
+                                        <p><img t-if="rec['image']" t-att-src="image_data_uri(rec['image'])" style="max-height:110px; max-width:115px;"/></p>
+                                    </t>
+                                    </td>
+            					</tr>
+            				</tbody>
+            			</table>
+            			</td>
+            			<td style="width:570px">
+            			<table border="1" cellpadding="1" cellspacing="1" style="width:100%">
+            				<tbody style="font-size: 15px;">
+            					<tr>
+            						<td style="text-align:right; width:331px">Sub total</td>
+            						<td style="width:12px">:</td>
+            						<td style="width:209px; text-align:right;"><span t-field="doc.amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/></td>
+            					</tr>
+            					<tr>
+            						<td style="text-align:right; width:331px">PPn</td>
+            						<td style="width:12px">:</td>
+            						<td style="width:209px; text-align:right;"><span t-field="doc.amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/></td>
+            					</tr>
+            					<tr>
+            						<td style="text-align:right; width:331px">Grand Total</td>
+            						<td style="width:12px">:</td>
+            						<td style="width:209px; text-align:right;"><span t-field="doc.amount_total" widget="monetary" options="{'currency_field': 'currency_id'}"/></td>
+            					</tr>
+            				</tbody>
+            			</table>
+            			</td>
+            		</tr>
+            	</tbody>
+            </table>
+            </div>
+            <br/>
+            <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0; page-break-before:always;">
                 <tbody style="font-size: 15px;background-color: transparent;">
                     <tr>
                         <td style="width: 20%;text-align: center; border: 1px transparent;">Prepared By,</td>
