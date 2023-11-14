@@ -156,7 +156,7 @@
                     </tbody>
                 </table>
                 </div>
-                <br/>
+                <p></p>
                 <!-- <div id="total" class="row justify-content-end">
                     <div class="col-4">
                         <table class="table table-sm">
@@ -167,7 +167,7 @@
                 </div> -->
                 <div class="container">
                 <table border="0" cellpadding="1" cellspacing="1" style="width:100%; border: 1px transparent; background-color: transparent;">
-                    <tbody>
+                    <tbody style="font-size: 12px;">
                         <tr style="background-color: transparent; ">
                             <td style="width:49px; padding: 3px; border: 1px transparent;"><strong>Notes</strong></td>
                             <td style="width:7px; padding: 3px; border: 1px transparent;">:</td>
