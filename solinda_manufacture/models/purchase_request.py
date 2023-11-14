@@ -243,7 +243,7 @@ class PurchaseRequest(models.Model):
                                 mp.move_raw_ids = list_move_raw
                                 mp._onchange_workorder_ids()
                                 mp.update({'move_byproduct_ids': mo_line, 'by_product_ids': by_prod_temp})
-                                mp.update_qty_variant()
+                                mp.update_qty_variant_pr()
                                 mp.update_qty_consume_with_variant_pr()
                 i.write({'mrp_ids': [(6, 0, mrp)], 'mrp_id': mp.id})
                 return i.show_mrp_prod()

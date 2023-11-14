@@ -149,6 +149,40 @@ class MrpProduction(models.Model):
 
         i.mrp_bom_variant_ids = variant_ids
 
+    def update_qty_variant_pr(self):
+        if self.mrp_bom_variant_ids:
+            self.mrp_bom_variant_ids.unlink()
+
+        variant_ids = []
+        for i in self:
+            # purchase_obj = self.purchase_id.search([('')])
+            for b in i.bom_id.bom_line_variant_ids:
+                qty_po = 0
+                sizes = b.sizes.strip('()')
+                purchase_request = self.env["purchase.request"].search([('id', '=', self.purchase_request_id.id)], limit=1)
+                order_line_sizes = [(line.size.strip(' '), line.product_qty) for line in purchase_request.line_ids]
+
+                for size, product_qty in order_line_sizes:
+                    if size == sizes:
+                        qty_po = product_qty
+                        break
+
+                variant_ids.append((0, 0, {
+                    'product_id': b.product_id.id,
+                    'product_qty': b.product_qty,
+                    'po_qty': qty_po,
+                    'product_uom_id': b.product_uom_id.id,
+                    'supplier': b.supplier.id,
+                    'ratio': b.ratio,
+                    'sizes': b.sizes,
+                    'color': b.color,
+                    # 'shrinkage' : b.shrinkage,
+                    # 'total_qty' : total_qty,
+                }))
+
+
+        i.mrp_bom_variant_ids = variant_ids
+
     def _create_workorder(self):
         for production in self:
             if not production.bom_id or not production.product_id:
