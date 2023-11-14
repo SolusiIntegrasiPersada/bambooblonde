@@ -299,7 +299,12 @@ class PurchaseOrderLine(models.Model):
         res = super(PurchaseOrderLine, self)._prepare_stock_moves(picking)
         # if self.order_id.hide_field:
         for rec in res:
-            rec['price_mo'] = self.price_unit
+            if self.product_uom.name == 'yard':
+                yard = 0.9144
+                total = self.price_unit / yard
+                rec['price_mo'] = total
+            else:
+                rec['price_mo'] = self.price_unit
             rec['price'] = self.price_unit
             rec['color_mo'] = self.color_mo
             rec['image'] = self.image
