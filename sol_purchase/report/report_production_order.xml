@@ -32,26 +32,38 @@
                   		<tr>
                   			<td style="width:132px; padding: 5px">Trans No</td>
                   			<td style="width:4px; padding: 5px">:</td>
-                  			<td style="width:417px; padding: 5px"></td>
-                  			<td style="width:158px; padding: 5px">Delivery Fate</td>
+                  			<td style="width:417px; padding: 5px">
+                                <t t-esc="doc.name"/>
+                            </td>
+                  			<td style="width:158px; padding: 5px">Delivery Date</td>
                   			<td style="width:5px; padding: 5px">:</td>
-                  			<td style="width:449px; padding: 5px"></td>
+                  			<td style="width:449px; padding: 5px">
+                                <t t-esc="doc.effective_date" t-options="{'widget': 'date'}"/>
+                            </td>
                   		</tr>
                   		<tr>
                   			<td style="width:132px; padding: 5px">Trans Date</td>
                   			<td style="width:4px; padding: 5px">:</td>
-                  			<td style="width:417px; padding: 5px"></td>
+                  			<td style="width:417px; padding: 5px">
+                                <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
+                            </td>
                   			<td style="width:158px; padding: 5px">Supplier</td>
                   			<td style="width:5px; padding: 5px">:</td>
-                  			<td style="width:449px; padding: 5px"></td>
+                  			<td style="width:449px; padding: 5px">
+                                <t t-esc="doc.partner_id.name"/>
+                            </td>
                   		</tr>
                   		<tr>
                   			<td style="width:132px; padding: 5px">Cutting</td>
                   			<td style="width:4px; padding: 5px">:</td>
-                  			<td style="width:417px; padding: 5px"></td>
+                  			<td style="width:417px; padding: 5px">
+                                <span t-field="doc.sub_suplier"/>
+                            </td>
                   			<td style="width:158px; padding: 5px">Order Date</td>
                   			<td style="width:5px; padding: 5px">:</td>
-                  			<td style="width:449px; padding: 5px"></td>
+                  			<td style="width:449px; padding: 5px">
+                                <t t-esc="doc.date_order" t-options="{'widget': 'date'}"/>
+                            </td>
                   		</tr>
                   	</tbody>
                 </table>
@@ -60,7 +72,7 @@
                 <table
                     style="table-layout: fixed; border-collapse: collapse; width: 99.9452%; margin-top: 10px; height: 20px;"
                     border="1">
-                    <thead style="font-size: 15px;">
+                    <thead>
                         <tr style="height: 20px;">
                             <td
                                 style="width: 10.8264%; text-align: center; height: 20px; border: 1px solid black; padding-top: 7px;">
@@ -246,7 +258,7 @@
             </table>
             </div>
             <br/>
-            <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0; page-break-before:always;">
+            <table style="border-collapse: collapse; width: 100%; background-color: transparent; border: 0; page-break-after:always;">
                 <tbody style="font-size: 15px;background-color: transparent;">
                     <tr>
                         <td style="width: 20%;text-align: center; border: 1px transparent;">Prepared By,</td>
