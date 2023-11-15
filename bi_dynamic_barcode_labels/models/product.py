@@ -77,6 +77,10 @@ class Product(models.Model):
 
             barcode = f"{barcode_model}{barcode_categ}{barcode_color}{barcode_size}{barcode_sequence}"
             
+            search_product_by_barcode = self.env['product.product'].search([('barcode','=',barcode)])
+            if search_product_by_barcode :
+                barcode = str(barcode) + '-' + str(doc.id)
+                
             doc.barcode = barcode
 
     def get_no_sequence(self, doc,params):
