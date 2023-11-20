@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import io
 import base64
 
-header_table = ['No', 'Tanggal','Toko','Shift','Payment', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total Cost', 'Total Price', 'Margin']
+header_table = ['No', 'Tanggal','Toko','Shift','Payment', 'Brand', 'Category', 'Barcode', 'Style Code', 'Size', 'Stock Name', 'Last Cost', 'Last Price', 'Qty Sold', 'Total Cost', 'Total Price']
 
 class XlsxRekapPenjualan(models.Model):
     _name = 'report.sol_bb_report.rekap_penjualan.xlsx'
@@ -78,7 +78,7 @@ class XlsxRekapPenjualan(models.Model):
             list_size = ['SIZE','SIZES','UKURAN']
             tanggal = pol.order_id.date_order.strftime('%d/%m/%Y') if pol.order_id.date_order else ''
             brand = pol.product_id.brand.name or ''
-            category = pol.product_id.categ_id.name or ''
+            category = pol.product_id.product_category_categ_id.name or ''
             barcode = pol.product_id.barcode or ''
             style_code = pol.product_id.default_code or ''
             size = ''
@@ -111,7 +111,6 @@ class XlsxRekapPenjualan(models.Model):
             qty_sold = pol.qty
             total = last_cost * qty_sold
             total_sold = last_price * qty_sold
-            margin = 0
             payment = pol.order_id.payment_ids[0].payment_method_id.name or '' if len(pol.order_id.payment_ids) > 0 else ''
 
             sum_last_cost += last_cost
@@ -136,7 +135,6 @@ class XlsxRekapPenjualan(models.Model):
             sheet.write(row, 13, qty_sold, formatDetailTableReOrder)
             sheet.write(row, 14, total, formatDetailCurrencyTableReOrder)
             sheet.write(row, 15, total_sold, formatDetailCurrencyTableReOrder)
-            sheet.write(row, 16, margin, formatDetailCurrencyTableReOrder)
 
             row += 1
             no += 1
