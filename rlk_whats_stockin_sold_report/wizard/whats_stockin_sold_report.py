@@ -178,13 +178,20 @@ class WhatsStockinSoldReport(models.TransientModel):
 
 
             # filter sales orders based on date range
-            pos_orders = self.env['pos.order.line'].search([
-                ('order_id.state', 'not in', ['draft','cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-                ('product_id.class_product', '=', self.class_product_id.id),
-                ('product_id.product_category_categ_id', '=', self.product_category_id.id),
-            ])
+            if self.class_product_id or self.product_category_id:
+                pos_orders = self.env['pos.order.line'].search([
+                    ('order_id.state', 'not in', ['draft','cancel']),
+                    ('order_id.date_order', '>=', self.start_period),
+                    ('order_id.date_order', '<=', self.end_period),
+                    ('product_id.class_product', '=', self.class_product_id.id),
+                    ('product_id.product_category_categ_id', '=', self.product_category_id.id),
+                ])
+            else:
+                pos_orders = self.env['pos.order.line'].search([
+                    ('order_id.state', 'not in', ['draft', 'cancel']),
+                    ('order_id.date_order', '>=', self.start_period),
+                    ('order_id.date_order', '<=', self.end_period),
+                ])
 
             report_data = {}
             for line in pos_orders:
@@ -941,13 +948,20 @@ class WhatsStockinSoldReport(models.TransientModel):
             no = 1
 
             # filter sales orders based on date range
-            pos_orders = self.env['pos.order.line'].search([
-                ('order_id.state', 'not in', ['draft', 'cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-                ('product_id.class_product', '=', self.class_product_id.id),
-                ('product_id.product_category_categ_id', '=', self.product_category_id.id),
-            ])
+            if self.class_product_id or self.product_category_id:
+                pos_orders = self.env['pos.order.line'].search([
+                    ('order_id.state', 'not in', ['draft', 'cancel']),
+                    ('order_id.date_order', '>=', self.start_period),
+                    ('order_id.date_order', '<=', self.end_period),
+                    ('product_id.class_product', '=', self.class_product_id.id),
+                    ('product_id.product_category_categ_id', '=', self.product_category_id.id),
+                ])
+            else:
+                pos_orders = self.env['pos.order.line'].search([
+                    ('order_id.state', 'not in', ['draft', 'cancel']),
+                    ('order_id.date_order', '>=', self.start_period),
+                    ('order_id.date_order', '<=', self.end_period),
+                ])
 
             report_data = {}
             for line in pos_orders:

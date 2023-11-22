@@ -12,8 +12,8 @@
 		                <group>
 		                	<field name="start_period" required="1" widget="daterange" options="{'related_end_date':'end_period'}"/>
 		                    <field name="end_period" required="1" widget="daterange" options="{'related__date':'start_period'}"/>
-							<field name="class_product_id" required="1"/>
-							<field name="product_category_id" required="1"/>
+							<field name="class_product_id" required="0"/>
+							<field name="product_category_id" required="0"/>
 							<field name="picture"/>
 						</group>
 		        	</group>
