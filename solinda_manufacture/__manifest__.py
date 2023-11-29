@@ -38,6 +38,7 @@
         'report/action_report.xml',
         'report/production_detail.xml',
         'report/sample_detail.xml',
+        'report/cost_analysis.xml',
         'views/templates.xml',
         'views/mrp_payment.xml',
     ],

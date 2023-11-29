@@ -234,8 +234,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                 class_id = prod.class_product
                 category = prod.product_model_categ_id
                 parent_category = prod.product_category_categ_id
-                style = '<' + str(prod.name) + '>-' + str(line.color)
-                stockname = '<' + str(prod.name) + '>'
+                style = str(prod.name) + '-' + str(line.color)
+                stockname = prod.name
                 stockid = prod.default_code
                 color = line.color
                 barcode = prod.barcode
@@ -1004,8 +1004,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                 class_id = prod.class_product
                 category = prod.product_model_categ_id
                 parent_category = prod.product_category_categ_id
-                style = '<' + str(prod.name) + '>-' + str(line.color)
-                stockname = '<' + str(prod.name) + '>'
+                style = str(prod.name) + '-' + str(line.color)
+                stockname = prod.name
                 stockid = prod.default_code
                 color = line.color
                 barcode = prod.barcode

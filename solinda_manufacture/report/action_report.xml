@@ -58,6 +58,18 @@
             <field name="binding_type">report</field>
         </record>
 
+        <record id="cost_struct_mrp_production_action" model="ir.actions.report">
+            <field name="name">Cost Analysis</field>
+            <field name="model">mrp.production</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">solinda_manufacture.cost_analysis_report</field>
+            <field name="report_file">solinda_manufacture.cost_analysis_report</field>
+            <field name="paperformat_id" ref="solinda_manufacture.report_paperformat_a4_portrait_costing_product_tb" />
+            <field name="print_report_name">'Cost Analysis - %s ' % object.name</field>
+            <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_type">report</field>
+        </record>
+
         <record id="mrp.action_report_production_order" model="ir.actions.report">
             <field name="binding_model_id" eval="False"/>
         </record>
