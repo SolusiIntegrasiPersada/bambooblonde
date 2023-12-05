@@ -45,3 +45,35 @@ class MrpProduction(models.Model):
                 raise UserError(_("You must indicate a non-zero amount consumed for at least one of your components"))
         return True
     
+    def button_mark_done(self):
+        #TODO: 1. pindahin super ke bawah biar dia ga jalan duluan
+        #TODO: 2. modifikasi value mrp.workorder cost hour dari harga PO
+        #TODO: 3. ubah duration mrp workcenter productivity jadi 1
+
+        workorder_record = self.env['mrp.workorder'].search([('production_id', 'in', self.ids)])
+        for record in workorder_record:
+            po_price = record.order_id.order_line.price_subtotal if record.order_id else 0.0
+            record.write({
+                'costs_hour': po_price
+            })
+        workcenter_productivity = self.env['mrp.workcenter.productivity'].search([('workorder_id', 'in', workorder_record.ids)])
+        for workcenter in workcenter_productivity:
+            duration = 1
+            workcenter_productivity.write({'duration': duration})
+
+        res = super(MrpProduction, self).button_mark_done()
+            # print(record)
+        return res
+
+
+class MrpCostStructure(models.AbstractModel):
+    _inherit = 'report.mrp_account_enterprise.mrp_cost_structure'
+    _description = 'Custom Report Costs Structure'
+
+    def get_lines(self, productions):
+        res = super(MrpCostStructure, self).get_lines(productions)
+        for data in res:
+            for operation in data['operations']:
+                working_time = 1
+                operation[3] = working_time
+        return res

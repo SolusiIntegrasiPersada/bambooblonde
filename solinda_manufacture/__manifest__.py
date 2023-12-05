@@ -19,7 +19,7 @@
     'license': "LGPL-3",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mrp', 'purchase_stock', 'sol_purchase','solinda_mrp', 'sale', 'stock', 'quality_mrp'],
+    'depends': ['base', 'mrp', 'purchase_stock', 'sol_purchase','solinda_mrp', 'sale', 'stock', 'quality_mrp', 'mrp_account_enterprise'],
 
     # always loaded
     'data': [
@@ -38,7 +38,6 @@
         'report/action_report.xml',
         'report/production_detail.xml',
         'report/sample_detail.xml',
-        'report/cost_analysis.xml',
         'views/templates.xml',
         'views/mrp_payment.xml',
     ],
