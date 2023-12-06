@@ -39,35 +39,45 @@ class AccountReport(models.AbstractModel):
         })
         sheet = workbook.add_worksheet(self._get_report_name()[:31])
 
-        date_default_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})
-        date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
-        default_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
+        date_default_col1_style = workbook.add_format(
+            {'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})
+        date_default_style = workbook.add_format(
+            {'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+        default_col1_style = workbook.add_format(
+            {'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
         default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
         style_header = workbook.add_format({
-                                            'font_name': 'Arial',
-                                            'font_size': 18,
-                                            'font_color': '#666666',
-                                            'text_wrap': True,  # Untuk memungkinkan teks melingkar dalam sel
-                                            'valign': 'vcenter',  # Untuk mengatur teks ke tengah sel secara vertikal
-                                        })
+            'font_name': 'Arial',
+            'font_size': 18,
+            'font_color': '#666666',
+            'text_wrap': True,  # Untuk memungkinkan teks melingkar dalam sel
+            'valign': 'vcenter',  # Untuk mengatur teks ke tengah sel secara vertikal
+        })
         style_parent_header = workbook.add_format({
-                                            'font_name': 'Arial',
-                                            'font_size': 12,
-                                            'font_color': '#666666',
-                                            'text_wrap': True,  # Untuk memungkinkan teks melingkar dalam sel
-                                            'valign': 'vcenter',  # Untuk mengatur teks ke tengah sel secara vertikal
-                                        })
+            'font_name': 'Arial',
+            'font_size': 12,
+            'font_color': '#666666',
+            'text_wrap': True,  # Untuk memungkinkan teks melingkar dalam sel
+            'valign': 'vcenter',  # Untuk mengatur teks ke tengah sel secara vertikal
+        })
         title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2})
-        level_0_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 6, 'font_color': '#666666'})
-        level_1_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 1, 'font_color': '#666666'})
-        level_2_col1_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
-        level_2_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
-        level_2_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
-        level_3_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
-        level_3_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
+        level_0_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 6, 'font_color': '#666666'})
+        level_1_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 1, 'font_color': '#666666'})
+        level_2_col1_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
+        level_2_col1_total_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+        level_2_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+        level_3_col1_style = workbook.add_format(
+            {'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
+        level_3_col1_total_style = workbook.add_format(
+            {'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
         level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
 
-        #Set the first column width to 50
+        # Set the first column width to 50
         sheet.set_column(0, 1, 60)
         sheet.set_row(0, 20)
         sheet.set_row(1, 50)
@@ -98,13 +108,13 @@ class AccountReport(models.AbstractModel):
             name_report = model_name
 
         headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
-        sheet.write(y_offset, 0, name_report, style_header)
+        sheet.write(y_offset, 0, name_report or model_name, style_header)
         y_offset += 1
         # Tambahkan "Journals: Info Journals"
-        sheet.write(y_offset, 0, 'Company : %s' %(company_names), style_parent_header)
-        sheet.write(y_offset, 1, 'Journals : %s' %(journal), style_parent_header)
+        sheet.write(y_offset, 0, 'Company : %s' % company_names, style_parent_header)
+        sheet.write(y_offset, 1, 'Journals : %s' % journal,  style_parent_header)
         y_offset += 1
-        sheet.write(y_offset, 1, 'Analytic Accounts : %s' %(analytic_name), style_parent_header)
+        sheet.write(y_offset, 1, 'Analytic Accounts : %s' % analytic_name, style_parent_header)
         y_offset += 2
         # Add headers.
         for header in headers:
@@ -115,7 +125,8 @@ class AccountReport(models.AbstractModel):
                 if colspan == 1:
                     sheet.write(y_offset, x_offset, column_name_formated, title_style)
                 else:
-                    sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated, title_style)
+                    sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated,
+                                      title_style)
                 x_offset += colspan
             y_offset += 1
 
@@ -139,26 +150,29 @@ class AccountReport(models.AbstractModel):
                 col1_style = style
             elif level == 2:
                 style = level_2_style
-                col1_style = 'total' in lines[y].get('class', '').split(' ') and level_2_col1_total_style or level_2_col1_style
+                col1_style = 'total' in lines[y].get('class', '').split(
+                    ' ') and level_2_col1_total_style or level_2_col1_style
             elif level == 3:
                 style = level_3_style
-                col1_style = 'total' in lines[y].get('class', '').split(' ') and level_3_col1_total_style or level_3_col1_style
+                col1_style = 'total' in lines[y].get('class', '').split(
+                    ' ') and level_3_col1_total_style or level_3_col1_style
             else:
                 style = default_style
                 col1_style = default_col1_style
 
-            #write the first column, with a specific style to manage the indentation
+            # write the first column, with a specific style to manage the indentation
             cell_type, cell_value = self._get_cell_type_value(lines[y])
             if cell_type == 'date':
                 sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
             else:
                 sheet.write(y + y_offset, 0, cell_value, col1_style)
 
-            #write all the remaining cells
+            # write all the remaining cells
             for x in range(1, len(lines[y]['columns']) + 1):
                 cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
                 if cell_type == 'date':
-                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, date_default_style)
+                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value,
+                                         date_default_style)
                 else:
                     sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
 
