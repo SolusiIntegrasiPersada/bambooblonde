@@ -194,7 +194,10 @@ class WhatsStockinSoldReport(models.TransientModel):
                 ])
 
             report_data = {}
-            for line in pos_orders:
+
+            data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free)
+
+            for line in data_pos_orders:
                 notes = ''
                 # pickings = self.env['stock.picking'].browse(line.order_id.picking_ids.filtered(lambda x: x.state == 'done').ids)
                 # for picking in pickings:
@@ -964,7 +967,10 @@ class WhatsStockinSoldReport(models.TransientModel):
                 ])
 
             report_data = {}
-            for line in pos_orders:
+
+            data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free)
+
+            for line in data_pos_orders:
                 notes = ''
                 # pickings = self.env['stock.picking'].browse(line.order_id.picking_ids.filtered(lambda x: x.state == 'done').ids)
                 # for picking in pickings:
@@ -1015,8 +1021,16 @@ class WhatsStockinSoldReport(models.TransientModel):
                 retail_price = prod.lst_price
                 qty_sold = line.qty
                 qty_stock = prod.qty_available
-                picture = io.BytesIO(base64.b64decode(prod.image_1920)) if prod.image_1920 else ''
+                picture = io.BytesIO(base64.b64decode(line.product_id.image_1920)) if line.product_id.image_1920 else ''
 
+                image_width = 140.0
+                image_height = 182.0
+
+                cell_width = 98.0
+                cell_height = 80.0
+
+                x_scale = cell_width / image_width
+                y_scale = cell_height / image_height
                 # stock_quant = self.env['stock.quant'].sudo().search([
                 #             ('location_id.usage', '=', 'internal'),
                 #             ('name_warehouse_id.code', 'in', ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne')),
@@ -1434,7 +1448,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
                     if d_picture:
                         worksheet.write(row, 3, '', wbf['content'])
-                        worksheet.insert_image(row, 3, "image.png", {'image_data': d_picture, 'x_scale': 0.21, 'y_scale': 0.15, 'object_position': 1, 'x_offset': 30, 'y_offset': 5})
+                        # worksheet.insert_image(row, 3, "image.png", {'image_data': d_picture, 'x_scale': 0.21, 'y_scale': 0.15, 'object_position': 1, 'x_offset': 30, 'y_offset': 5})
+                        worksheet.insert_image(row, 3, "image.png", {'image_data': d_picture, 'object_position': 1, 'x_scale': x_scale, 'y_scale': y_scale, 'x_offset': 10, 'y_offset': 5})
                     else:
                         worksheet.write(row, 3, '', wbf['content'])
                     worksheet.write(row, 4, d_style or ' ', wbf['content'])
