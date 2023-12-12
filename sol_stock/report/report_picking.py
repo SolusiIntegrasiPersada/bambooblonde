@@ -6,7 +6,7 @@ class StockPicking(models.Model):
     def get_paid_amount(self):
         paid_amount = 0
         residual_amount = 0
-
+        bill_data = []
         for rec in self:
             po = self.env['purchase.order'].search([
                 ('product_mo', '=', rec.style_name),
@@ -18,10 +18,12 @@ class StockPicking(models.Model):
                     paid_amount += invoice.amount_total - invoice.amount_residual
                     residual_amount += invoice.amount_residual
 
-        return {
-            'paid_amount': paid_amount,
-            'residual_amount': residual_amount,
-        }
+                bill_data.append({
+                    'paid_amount': paid_amount,
+                    'residual_amount': residual_amount,
+                })
+
+        return bill_data
     def internal_transfer(self):
 
         type_a = ['06', '08', '10', '12', '14', '04', '6', '8', '4']
