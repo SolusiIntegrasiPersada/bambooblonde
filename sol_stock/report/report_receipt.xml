@@ -423,67 +423,67 @@
                                 </tr>
                             </t>
 
-
-                            <tr style="height: 18px; border: 1pt solid black;">
-                                <td style="width: 32.9896%; text-align: right; border: 1pt solid black; padding: 5px;" colspan="3">
-                                    <strong>
-                                        GRAND TOTAL
-                                    </strong>
-                                </td>
-                                <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
-                                <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
-                                </td>
-                                <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_c) if tot_grand_c != 0 else ''"/>
-                                </td>
-                                <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_d) if tot_grand_d != 0 else ''"/>
-                                </td>
-                                <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_e) if tot_grand_e != 0 else ''"/>
-                                </td>
-                                <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_f) if tot_grand_f != 0 else ''"/>
-                                </td>
-                                <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_g) if tot_grand_g != 0 else ''"/>
-                                </td>
-                                <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_h) if tot_grand_h != 0 else ''"/>
-                                </td>
-                                <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
-                                    <t t-esc="int(tot_grand_i) if tot_grand_i != 0 else ''"/>
-                                </td>
-                                <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="int(total_grand_qty)"/>
-                                </td>
-                                <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_grand_price_amount)"/>
-                                </td>
-                                <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_grand_price)"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
-                                <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Paid Amount</td>
-                                <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-foreach="docs.get_paid_amount()" t-as="paid">
+                            <t t-foreach="docs.get_paid_amount()" t-as="paid">
+                                <tr style="height: 18px; border: 1pt solid black;">
+                                    <td style="width: 32.9896%; text-align: right; border: 1pt solid black; padding: 5px;" colspan="3">
+                                        <strong>
+                                            GRAND TOTAL
+                                        </strong>
+                                    </td>
+                                    <td style="width: 2.54517%; text-align: center; font-size: 11px; border: 1pt solid black;"></td>
+                                    <td style="width: 3.75692%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_b) if tot_b != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.81019%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_c) if tot_grand_c != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.76856%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_d) if tot_grand_d != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.90741%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_e) if tot_grand_e != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.37041%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_f) if tot_grand_f != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 3.55555%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_g) if tot_grand_g != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 4.14809%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_h) if tot_grand_h != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 5.62967%; text-align: center; font-size: 11px; border: 1pt solid black;">
+                                        <t t-esc="int(tot_grand_i) if tot_grand_i != 0 else ''"/>
+                                    </td>
+                                    <td style="width: 2.51857%; text-align: center; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                        <t t-esc="int(total_grand_qty)"/>
+                                    </td>
+                                    <td style="width: 7.4815%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                        <t t-esc="'{:,.0f}'.format(total_grand_price_amount)"/>
+                                    </td>
+                                    <td style="width: 8.37037%; text-align: right; font-size: 11px; border: 1pt solid black; padding: 5px;">
+                                        <t t-esc="'{:,.0f}'.format(total_grand_price)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
+                                    <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Paid Amount</td>
+                                    <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
+<!--                                        <t t-foreach="docs.get_paid_amount()" t-as="paid">-->
                                         <t t-esc="'{:,.0f}'.format(paid['paid_amount'])"/>
-                                    </t>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
-                                <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Outst. Bal.</td>
-                                <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-foreach="docs.get_paid_amount()" t-as="paid">
+<!--                                        </t>-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
+                                    <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Outst. Bal.</td>
+                                    <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
+<!--                                        <t t-foreach="docs.get_paid_amount()" t-as="paid">-->
                                         <t t-esc="'{:,.0f}'.format(paid['residual_amount'])"/>
-                                    </t>
-                                </td>
-                            </tr>
-
+<!--                                        </t>-->
+                                    </td>
+                                </tr>
+                            </t>
                         </tbody>
                     </table>
                 </div>
