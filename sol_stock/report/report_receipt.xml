@@ -250,6 +250,8 @@
                             <t t-set="total_grand_price_amount"  t-value="0"/>
                             <t t-set="printed_models" t-value="[]" />
 
+
+
                             <t t-foreach="docs.internal_transfer()" t-as="line">
 
                                  <t t-if="line['model'] not in printed_models">
@@ -467,14 +469,18 @@
                                 <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
                                 <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Paid Amount</td>
                                 <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    0
+                                    <t t-foreach="docs.get_paid_amount()" t-as="paid">
+                                        <t t-esc="'{:,.0f}'.format(paid['paid_amount'])"/>
+                                    </t>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="13" rowspan="1" style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:32.9896%; border: 1pt solid black;"></td>
                                 <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; width:7.4815%; font-size: 11px; border: 1pt solid black; padding: 5px;">Outst. Bal.</td>
                                 <td style="border-color:black; border-style:solid; border-width:1pt; height:18px; text-align:right; width:8.37037%; font-size: 11px; border: 1pt solid black; padding: 5px;">
-                                    <t t-esc="'{:,.0f}'.format(total_grand_price)"/>
+                                    <t t-foreach="docs.get_paid_amount()" t-as="paid">
+                                        <t t-esc="'{:,.0f}'.format(paid['residual_amount'])"/>
+                                    </t>
                                 </td>
                             </tr>
 

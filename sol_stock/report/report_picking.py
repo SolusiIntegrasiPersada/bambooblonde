@@ -3,6 +3,20 @@ from odoo import fields, api, models
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    def get_paid_amount(self):
+        paid_amount = 0
+        residual_amount = 0
+        for rec in self:
+            po = self.env['purchase.order'].search([
+                ('product_mo', '=', rec.style_name),
+                ('state', '=', 'purchase'),
+                ('name', '=', rec.origin)
+            ])
+            if po:
+                for invoice in po.invoice_ids.filtered(lambda x: x.state_bill == 'approve'):
+                    paid_amount += invoice.amount_total - invoice.amount_residual
+                    residual_amount += invoice.amount_residual
+
     def internal_transfer(self):
 
         type_a = ['06', '08', '10', '12', '14', '04', '6', '8', '4']
