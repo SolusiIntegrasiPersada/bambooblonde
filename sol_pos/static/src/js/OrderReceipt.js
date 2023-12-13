@@ -24,6 +24,10 @@ odoo.define('sol_pos.receipt', function (require) {
                 
                 if (reward_line && reward_line.length > 0) {
                     promo_member = this.env.pos.coupon_programs_by_id[reward_line[0].program_id];
+                    // debugger;
+                    if (promo_member && promo_member.program_type === 'coupon_program') {
+                        promo_member = null;
+                    }
                 }
 
 
