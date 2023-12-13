@@ -69,7 +69,7 @@ class StockPicking(models.Model):
             colour = line.colour.strip()
             size = line.size.strip()
             retail = line.product_id.lst_price
-            price = line.product_id.standard_price
+            price = line.price
             code = line.product_id.default_code
             model_rec = self.env['product.category'].search([
                 '&', ('category_product', '=', 'department'),
