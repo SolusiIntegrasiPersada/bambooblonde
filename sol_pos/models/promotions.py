@@ -337,12 +337,11 @@ class CouponProgram(models.Model):
     def create(self, values):
         produk = False
         if values.get('is_generate_pos', False):
-            produk = self.env["product.product"].search([("is_produk_promotion", "=", True)])
-        elif values.get('program_type', False) == 'coupon_program':
-            produk = self.env["product.product"].search([("is_produk_promotion", "=", True), ('is_produk_promotion_free', "=", True)])
+            produk = self.env["product.product"].search([("is_produk_promotion", "=", True), ('is_produk_promotion_free', "=", False)], limit=1)
+        elif values.get('program_type') == 'coupon_program':
+            produk = self.env["product.product"].search([("is_produk_promotion", "=", True), ('is_produk_promotion_free', "=", True)], limit=1)
 
-        if produk:
-            values['discount_line_product_id'] = produk[0].id
+        values['discount_line_product_id'] = produk[0].id if produk else False
 
         res = super(CouponProgram, self).create(values)
         
@@ -355,6 +354,8 @@ class CouponProgram(models.Model):
         else :
             if res.program_type == 'coupon_program' :
                 coupon_voucher = self.env['coupon.coupon'].create(vals)
+                
+        
 
         res.add_to_pos()
         res.add_produk_diskon()
