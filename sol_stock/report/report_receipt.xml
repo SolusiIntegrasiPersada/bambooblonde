@@ -311,8 +311,8 @@
                                     <t t-set="total_price" t-value="rec['amount_total_receipt'] * rec['price']"/>
                                     <t t-set="total_sub_price" t-value="total_sub_price + total_price"/>
                                     <t t-set="total_grand_price" t-value="total_grand_price + total_price"/>
-                                    <t t-set="total_sub_price_amount"  t-value="total_sub_price_amount + rec['total_price']"/>
-                                    <t t-set="total_grand_price_amount"  t-value="total_grand_price_amount + rec['total_price']"/>
+                                    <t t-set="total_sub_price_amount"  t-value="total_sub_price_amount + rec['retail']"/>
+                                    <t t-set="total_grand_price_amount"  t-value="total_grand_price_amount + rec['retail']"/>
 
                                     <t t-set="tot_b" t-value="tot_b + rec['receipt_amount_b']"/>
                                     <t t-set="tot_c" t-value="tot_c + rec['receipt_amount_c']"/>
