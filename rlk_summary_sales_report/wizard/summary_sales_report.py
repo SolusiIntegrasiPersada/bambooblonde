@@ -99,6 +99,7 @@ class SummarySalesReport(models.TransientModel):
         nat_aus = 0
         total = 0
         name = ''
+        visitor_count = 0
         for order in orders:
             region = order.region_id
             if region.name in ('Asian') :
@@ -114,9 +115,11 @@ class SummarySalesReport(models.TransientModel):
                 
             
             name = order.session_id.user_id.name
-            visitor_count = order.session_id.visitor_count_flt
+            visitor_count += order.session_id.visitor_count_flt
             lineplus = order.lines.filtered(lambda x: x.price_subtotal_incl > 0)
             qty = sum(lineplus.mapped('qty'))
+            # print('order', order,name)
+            # print('order', qty)
             pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)
             total_sales = pricexqty
             price_inc = sum(lineplus.mapped('price_subtotal_incl'))
@@ -158,7 +161,6 @@ class SummarySalesReport(models.TransientModel):
         payment_cash = total_payment_cash
         payment_cc = total_payment_cc
         coupon = total_coupon
-        visitor_count = sum(order.mapped('session_id').mapped('visitor_count_flt'))
         result.append({'config_id': config_id, 
                        'user_name': user_name, 
                        'print_receipt': print_receipt, 

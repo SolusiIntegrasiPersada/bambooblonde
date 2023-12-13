@@ -222,7 +222,7 @@ class StockSalesSummaryReport(models.TransientModel):
             ('order_id.date_order', '<=', self.end_period),
         ]
 
-        if self.shift:
+        if self.shift != 'ALL':
             domain.append(('order_id.session_id.shift', '=', self.shift))
         
         if config_id :

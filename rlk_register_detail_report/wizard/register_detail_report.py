@@ -80,10 +80,11 @@ class RegisterDetailReport(models.TransientModel):
 
         result = []
 
-       
+        # print(domain)
         for order in orders:
            
             shift = order.session_id.shift
+            # print(shift)
             region = order.region_id.name
             region_count = len(self.env['visitor.region'].search([]))
             start_at = self.start_period
@@ -182,6 +183,7 @@ class RegisterDetailReport(models.TransientModel):
             region_count = ''
             for res in result:
                 shift = res['shift']
+                # print(res['shift'])
 
                 region_name = res['region']
                 if res['region'] == 'We':
