@@ -15,8 +15,12 @@ class StockPicking(models.Model):
             ])
             if po:
                 for invoice in po.invoice_ids.filtered(lambda x: x.state_bill == 'approve'):
-                    paid_amount += po.amount_total - invoice.amount_total
-                    residual_amount += invoice.amount_residual
+                    if invoice.payment_state == 'paid':
+                        paid_amount += po.amount_total
+                        residual_amount += invoice.amount_residual
+                    else:
+                        paid_amount += po.amount_total - invoice.amount_total
+                        residual_amount += invoice.amount_residual
 
                 bill_data.append({
                     'paid_amount': paid_amount,
