@@ -5,6 +5,7 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
     
     
+    
     outstanding2_account_id = fields.Many2one(
         comodel_name='account.account',
         string="Outstanding Account",
