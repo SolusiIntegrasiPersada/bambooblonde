@@ -44,12 +44,12 @@ class Product(models.Model):
 
     def get_barcode_dynamic(self):
         for doc in self:
-            print("get_barcode_dynamic")
+            # print("get_barcode_dynamic")
             barcode_model = doc.product_model_categ_id.code
             if not barcode_model :
                 barcode_model = self.get_no_model(doc)
                 
-            barcode_categ = doc.categ_id.code
+            barcode_categ = doc.product_category_categ_id.code
             if not barcode_categ :
                 barcode_categ = self.get_no_categ(doc)
             barcode_categ = barcode_categ.zfill(2)
@@ -91,7 +91,7 @@ class Product(models.Model):
 
 
     def get_no_categ(self, doc):
-        categ_name = str(doc.categ_id.name).upper()
+        categ_name = str(doc.product_category_categ_id.name).upper()
 
         # Dictionary untuk memetakan nama kategori ke nomor kategori
         categ_mapping = {
