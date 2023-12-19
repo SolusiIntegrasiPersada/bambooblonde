@@ -99,7 +99,7 @@ class SummarySalesReport(models.TransientModel):
         nat_aus = 0
         total = 0
         name = ''
-        visitor_count = 0
+        # visitor_count = 0
         for order in orders:
             region = order.region_id
             if region.name in ('Asian') :
@@ -115,12 +115,15 @@ class SummarySalesReport(models.TransientModel):
                 
             
             name = order.session_id.user_id.name
-            visitor_count += order.session_id.visitor_count_flt
+            # visitor_count += order.session_id.visitor_count_flt
+            # print('order', order)
+            # print('order.session_id', order.session_id)
+            # print('order.session_id.visitor_count_flt', order.session_id.visitor_count_flt)
             lineplus = order.lines.filtered(lambda x: x.price_subtotal_incl > 0)
             qty = sum(lineplus.mapped('qty'))
             # print('order', order,name)
             # print('order', qty)
-            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)
+            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)    
             total_sales = pricexqty
             price_inc = sum(lineplus.mapped('price_subtotal_incl'))
             discount = pricexqty - price_inc
@@ -161,6 +164,11 @@ class SummarySalesReport(models.TransientModel):
         payment_cash = total_payment_cash
         payment_cc = total_payment_cc
         coupon = total_coupon
+        visitor_count22 = sum(orders.mapped('session_id').mapped('visitor_count_flt'))
+        # print('visitor_count22',orders.mapped('session_id'))
+        # print('visitor_count22',orders.mapped('session_id').mapped('visitor_count_flt'))
+        # print('visitor_count22',visitor_count22)
+        # print('visitor_count_new_sum',visitor_count)
         result.append({'config_id': config_id, 
                        'user_name': user_name, 
                        'print_receipt': print_receipt, 
@@ -171,7 +179,7 @@ class SummarySalesReport(models.TransientModel):
                        'payment_cash': payment_cash, 
                        'payment_cc': payment_cc, 
                        'coupon': coupon, 
-                       'visitor_count': visitor_count, 
+                       'visitor_count': visitor_count22, 
                        })
             
         total = nat_asian + nat_ina + nat_west + nat_japan + nat_aus
