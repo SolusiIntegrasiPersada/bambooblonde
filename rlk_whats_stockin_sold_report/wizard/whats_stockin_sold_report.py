@@ -892,7 +892,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                 ('Class', 20, 'char', 'char'),
                 ('Model', 20, 'char', 'char'),
                 ('Category', 20, 'char', 'char'),
-                ('Picture', 20, 'char', 'char'),
                 ('Style', 20, 'char', 'char'),
                 ('Stock Name', 20, 'char', 'char'),
                 ('Stock ID', 20, 'char', 'char'),
@@ -900,6 +899,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 ('Aging', 20, 'char', 'char'),
                 ('Barcode', 20, 'char', 'char'),
                 ('Size', 20, 'char', 'char'),
+                ('Photo', 20, 'char', 'char'),
                 ('Notes Order', 20, 'char', 'char'),
                 ('Cost Price', 20, 'char', 'char'),
                 ('Retail Price', 20, 'char', 'char'),
@@ -1451,7 +1451,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 9, d_size or ' ', wbf['content'])
                     if d_picture:
                         worksheet.write(row, 10, '', wbf['content'])
-                        worksheet.insert_image(row, 3, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
+                        worksheet.insert_image(row, 10, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
                                                                      'y_scale': 0.15, 'object_position': 1,
                                                                      'x_offset': 30, 'y_offset': 5})
                     else:
