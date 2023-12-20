@@ -1442,23 +1442,20 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
                     worksheet.write(row, 1, d_category or ' ', wbf['content'])
                     worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
+                    worksheet.write(row, 3, d_style or ' ', wbf['content'])
+                    worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
+                    worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
+                    worksheet.write(row, 6, d_color or ' ', wbf['content'])
+                    worksheet.write(row, 7, d_age or ' ', wbf['content2'])
+                    worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
+                    worksheet.write(row, 9, d_size or ' ', wbf['content'])
                     if d_picture:
-                        worksheet.write(row, 3, '', wbf['content'])
+                        worksheet.write(row, 10, '', wbf['content'])
                         worksheet.insert_image(row, 3, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
                                                                      'y_scale': 0.15, 'object_position': 1,
                                                                      'x_offset': 30, 'y_offset': 5})
-                    #     worksheet.insert_image(row, 3, "image.png", {'image_data': picture, 'object_position': 1,
-                    #                                                  'x_scale': x_scale, 'y_scale': y_scale,
-                    #                                                  'x_offset': 10, 'y_offset': 5})
-                    # else:
-                        worksheet.write(row, 3, '', wbf['content'])
-                    worksheet.write(row, 4, d_style or ' ', wbf['content'])
-                    worksheet.write(row, 5, d_stockname or ' ', wbf['content'])
-                    worksheet.write(row, 6, d_stockid or ' ', wbf['content'])
-                    worksheet.write(row, 7, d_color or ' ', wbf['content'])
-                    worksheet.write(row, 8, d_age or ' ', wbf['content2'])
-                    worksheet.write(row, 9, d_barcode or ' ', wbf['content'])
-                    worksheet.write(row, 10, d_size or ' ', wbf['content'])
+                    else:
+                        worksheet.write(row, 10, '', wbf['content'])
                     worksheet.write(row, 11, d_notes or ' ', wbf['content'])
                     worksheet.write(row, 12, d_cost_price or ' ', wbf['content_float_price'])
                     worksheet.write(row, 13, d_retail_price or ' ', wbf['content_float_price'])
