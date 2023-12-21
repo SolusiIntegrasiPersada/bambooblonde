@@ -115,46 +115,46 @@ class WhatsStockinSoldReport(models.TransientModel):
             worksheet.merge_range('AM3:AN3', "ONLINE STORE", wbf['header_no'])
 
             columns = [
-                ('Class', 20, 'char', 'char'),
+                ('Class', 8, 'char', 'char'),
                 ('Model', 20, 'char', 'char'),
                 ('Category', 20, 'char', 'char'),
-                ('Style', 20, 'char', 'char'),
-                ('Stock Name', 20, 'char', 'char'),
-                ('Stock ID', 20, 'char', 'char'),
+                ('Style', 60, 'char', 'char'),
+                ('Stock Name', 38, 'char', 'char'),
+                ('Stock ID', 8, 'char', 'char'),
                 ('Color', 20, 'char', 'char'),
-                ('Aging', 20, 'char', 'char'),
-                ('Barcode', 20, 'char', 'char'),
-                ('Size', 20, 'char', 'char'),
+                ('Aging', 11, 'char', 'char'),
+                ('Barcode', 15, 'char', 'char'),
+                ('Size', 7, 'char', 'char'),
                 ('Notes Order', 20, 'char', 'char'),
-                ('Cost Price', 20, 'char', 'char'),
-                ('Retail Price', 20, 'char', 'char'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
+                ('Cost Price', 9, 'char', 'char'),
+                ('Retail Price', 9, 'char', 'char'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
             ]
 
             row = 4
@@ -657,36 +657,36 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 6, d_color or ' ', wbf['content'])
                     worksheet.write(row, 7, d_age or ' ', wbf['content2'])
                     worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
-                    worksheet.write(row, 9, d_size or ' ', wbf['content'])
+                    worksheet.write(row, 9, d_size or ' ', wbf['content2'])
                     worksheet.write(row, 10, d_notes or ' ', wbf['content'])
                     worksheet.write(row, 11, d_cost_price or ' ', wbf['content_float_price'])
                     worksheet.write(row, 12, d_retail_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 13, d_total_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 13, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 14, d_total_qty_stock or ' ', wbf['content_float'])
                     worksheet.write(row, 15, d_whbb_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 16, d_bbflg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 16, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 17, d_bbflg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 18, d_bbbbg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 18, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 19, d_bbbbg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 20, d_bbbwk_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 20, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 21, d_bbbwk_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 22, d_bbbrw_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 22, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 23, d_bbbrw_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 24, d_bbpdg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 24, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 25, d_bbpdg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 26, d_bbsyv_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 26, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 27, d_bbsyv_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 28, d_bbglr_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 28, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 29, d_bbglr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 30, d_bbblg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 30, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 31, d_bbblg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 32, d_bbsnr_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 32, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 33, d_bbsnr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 34, d_bbptg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 34, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 35, d_bbptg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 36, d_bbkta_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 36, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 37, d_bbkta_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 38, d_online_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 38, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 39, d_online_qty_stock or ' ', wbf['content_float'])
                     row += 1
 
@@ -889,47 +889,47 @@ class WhatsStockinSoldReport(models.TransientModel):
             worksheet.merge_range('AN3:AO3', "ONLINE STORE", wbf['header_no'])
 
             columns = [
-                ('Class', 20, 'char', 'char'),
+                ('Class', 8, 'char', 'char'),
                 ('Model', 20, 'char', 'char'),
                 ('Category', 20, 'char', 'char'),
-                ('Style', 20, 'char', 'char'),
-                ('Stock Name', 20, 'char', 'char'),
-                ('Stock ID', 20, 'char', 'char'),
+                ('Style', 60, 'char', 'char'),
+                ('Stock Name', 38, 'char', 'char'),
+                ('Stock ID', 8, 'char', 'char'),
                 ('Color', 20, 'char', 'char'),
-                ('Aging', 20, 'char', 'char'),
-                ('Barcode', 20, 'char', 'char'),
-                ('Size', 20, 'char', 'char'),
-                ('Photo', 20, 'char', 'char'),
+                ('Aging', 11, 'char', 'char'),
+                ('Barcode', 15, 'char', 'char'),
+                ('Size', 7, 'char', 'char'),
+                ('Photo', 25, 'char', 'char'),
                 ('Notes Order', 20, 'char', 'char'),
-                ('Cost Price', 20, 'char', 'char'),
-                ('Retail Price', 20, 'char', 'char'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
-                ('Qty Sold', 20, 'float', 'float'),
-                ('In Stock', 20, 'float2', 'float2'),
+                ('Cost Price', 9, 'char', 'char'),
+                ('Retail Price', 9, 'char', 'char'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
+                ('QTY SOLD', 8, 'float', 'float'),
+                ('IN STOCK', 8, 'float2', 'float2'),
             ]
 
             row = 4
@@ -1448,7 +1448,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 6, d_color or ' ', wbf['content'])
                     worksheet.write(row, 7, d_age or ' ', wbf['content2'])
                     worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
-                    worksheet.write(row, 9, d_size or ' ', wbf['content'])
+                    worksheet.write(row, 9, d_size or ' ', wbf['content2'])
                     if d_picture:
                         worksheet.write(row, 10, '', wbf['content'])
                         worksheet.insert_image(row, 10, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
@@ -1459,32 +1459,32 @@ class WhatsStockinSoldReport(models.TransientModel):
                     worksheet.write(row, 11, d_notes or ' ', wbf['content'])
                     worksheet.write(row, 12, d_cost_price or ' ', wbf['content_float_price'])
                     worksheet.write(row, 13, d_retail_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 14, d_total_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 14, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 15, d_total_qty_stock or ' ', wbf['content_float'])
                     worksheet.write(row, 16, d_whbb_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 17, d_bbflg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 17, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 18, d_bbflg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 19, d_bbbbg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 19, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 20, d_bbbbg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 21, d_bbbwk_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 21, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 22, d_bbbwk_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 23, d_bbbrw_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 23, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 24, d_bbbrw_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 25, d_bbpdg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 25, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 26, d_bbpdg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 27, d_bbsyv_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 27, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 28, d_bbsyv_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 29, d_bbglr_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 29, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 30, d_bbglr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 31, d_bbblg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 31, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 32, d_bbblg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 33, d_bbsnr_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 33, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 34, d_bbsnr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 35, d_bbptg_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 35, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 36, d_bbptg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 37, d_bbkta_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 37, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 38, d_bbkta_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 39, d_online_qty_sold or ' ', wbf['content_float'])
+                    worksheet.write(row, 39, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
                     worksheet.write(row, 40, d_online_qty_stock or ' ', wbf['content_float'])
 
                     worksheet.set_row(row, 70)
@@ -1494,8 +1494,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                 worksheet.write(row, 1, dt_category or ' ', wbf['total_content'])
                 worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
                 worksheet.write(row, 3, ' ', wbf['total_content'])
-                worksheet.write(row, 4, ' ', wbf['total_content'])
-                worksheet.write(row, 5, style + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 5, ' ', wbf['total_content'])
                 worksheet.write(row, 6, ' ', wbf['total_content'])
                 worksheet.write(row, 7, ' ', wbf['total_content'])
                 worksheet.write(row, 8, ' ', wbf['total_content'])
@@ -1628,8 +1628,8 @@ class WhatsStockinSoldReport(models.TransientModel):
             'green': '#00FF7F',
             'light_green': '#90EE90',
             'dark_green': '#8FBC8F',
-            'blue': '#B0E0E6',
-            'brown': '#FFEFD5',
+            'blue': '#DCE6F1',
+            'brown': '#DDD9C4',
             'salmon': '#FFA07A',
             'beige': '#F5F5DC',
         }
@@ -1640,8 +1640,7 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header'].set_border()
 
         wbf['header_brown'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['brown'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'bold': 1, 'align': 'center', 'bg_color': colors['brown'], 'font_color': '#000000'})
         wbf['header_brown'].set_border()
 
         wbf['header_salmon'] = workbook.add_format(
@@ -1655,7 +1654,7 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header_beige'].set_border()
 
         wbf['header_blue'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000', 'font_name': 'Georgia'})
+            {'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000'})
         wbf['header_blue'].set_border()
 
         wbf['header_blue2'] = workbook.add_format(
@@ -1663,8 +1662,7 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header_blue2'].set_border()
 
         wbf['header_green'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['green'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'font_size': 11, 'italic': 1, 'bold': 1, 'align': 'center', 'bg_color': colors['green'], 'font_color': '#000000'})
         wbf['header_green'].set_border()
 
         wbf['header_light_green'] = workbook.add_format(
@@ -1678,7 +1676,7 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header_dark_green'].set_border()
 
         wbf['header_pink'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['pink'], 'font_color': '#000000', 'font_name': 'Georgia'})
+            {'bold': 1, 'align': 'center', 'bg_color': colors['pink'], 'font_color': '#000000'})
         wbf['header_pink'].set_border()
 
         wbf['header_violet'] = workbook.add_format(
@@ -1687,8 +1685,7 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header_violet'].set_border()
 
         wbf['header_orange'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['orange'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'font_size': 11, 'italic': 1, 'bold': 1, 'align': 'center', 'bg_color': colors['orange'], 'font_color': '#000000'})
         wbf['header_orange'].set_border()
 
         wbf['header_white_orange'] = workbook.add_format(
@@ -1697,12 +1694,12 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['header_white_orange'].set_border()
 
         wbf['header_yellow'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': colors['yellow'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'bold': 1, 'align': 'center', 'bg_color': colors['yellow'], 'font_color': '#000000'})
+        # wbf['header_yellow'] = self.format
         wbf['header_yellow'].set_border()
 
         wbf['header_no'] = workbook.add_format(
-            {'bold': 1, 'align': 'center', 'bg_color': '#FFFFDB', 'font_color': '#000000', 'font_name': 'Georgia'})
+            {'font_size': 11, 'italic': 1, 'bold': 1, 'align': 'center', 'bg_color': '#D8E4BC', 'font_color': '#000000'})
         wbf['header_no'].set_border()
         wbf['header_no'].set_align('vcenter')
 
@@ -1720,8 +1717,7 @@ class WhatsStockinSoldReport(models.TransientModel):
             'bold': True,
             'align': 'left',
             'valign': 'vcenter',
-            'font_size': 16,
-            'font_name': 'Georgia',
+            'font_size': 11,
             'bg_color': '#FFC0CB',
         })
 
@@ -1729,8 +1725,7 @@ class WhatsStockinSoldReport(models.TransientModel):
             'bold': True,
             'align': 'left',
             'valign': 'vcenter',
-            'font_size': 14,
-            'font_name': 'Georgia',
+            'font_size': 11,
             'bg_color': '#FFEFD5',
         })
 
@@ -1739,7 +1734,6 @@ class WhatsStockinSoldReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 20,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
 
@@ -1768,46 +1762,49 @@ class WhatsStockinSoldReport(models.TransientModel):
         wbf['company'] = workbook.add_format({'align': 'left', 'font_name': 'Georgia'})
         wbf['company'].set_font_size(11)
 
-        wbf['content'] = workbook.add_format({'valign': 'vcenter', 'align': 'center', 'border': 1, 'text_wrap': True})
+        wbf['content'] = workbook.add_format({'valign': 'vcenter', 'align': 'left', 'border': 1, 'text_wrap': True})
         wbf['content'].set_left()
         wbf['content'].set_right()
 
-        wbf['content2'] = workbook.add_format({'valign': 'vcenter', 'align': 'center', 'border': 1, 'text_wrap': True, 'font_name': 'Georgia'})
+        wbf['content2'] = workbook.add_format({'valign': 'vcenter', 'align': 'center', 'border': 1, 'text_wrap': True})
         wbf['content2'].set_left()
         wbf['content2'].set_right()
 
         wbf['total_content'] = workbook.add_format(
-            {'font_size': 9, 'bold': 1, 'valign': 'vcenter', 'align': 'center', 'border': 1, 'text_wrap': True, 'bg_color': colors['blue'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'font_size': 11, 'bold': 1, 'valign': 'vcenter', 'align': 'left', 'border': 1, 'text_wrap': True, 'bg_color': colors['blue'], 'font_color': '#000000'})
         wbf['total_content'].set_border()
 
         wbf['total_content_image'] = workbook.add_format(
-            {'font_size': 9, 'bold': 1, 'align': 'centre', 'text_wrap': True, 'bg_color': colors['blue'], 'font_color': '#000000',
+            {'font_size': 11, 'bold': 1, 'align': 'centre', 'text_wrap': True, 'bg_color': colors['blue'], 'font_color': '#000000',
              'font_name': 'Georgia'})
         wbf['total_content_image'].set_border()
 
         wbf['total_content2'] = workbook.add_format(
-            {'font_size': 9, 'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000',
-             'font_name': 'Georgia'})
+            {'font_size': 11, 'bold': 1, 'align': 'center', 'bg_color': colors['blue'], 'font_color': '#000000'})
         wbf['total_content2'].set_border()
 
         wbf['total_content_float'] = workbook.add_format(
-            {'font_size': 9, 'bold': True, 'align': 'center', 'num_format': '#,##0', 'font_name': 'Georgia',
+            {'font_size': 11, 'bold': True, 'align': 'right', 'num_format': '#,##0',
              'bg_color': colors['blue'], 'font_color': '#000000', 'valign': 'vcenter', 'border': 1})
         wbf['total_content_float'].set_border()
 
+        wbf['total_content_float_brown'] = workbook.add_format(
+            {'font_size': 11, 'bold': True, 'align': 'right', 'num_format': '#,##0',
+             'bg_color': colors['brown'], 'font_color': '#000000', 'valign': 'vcenter', 'border': 1})
+        wbf['total_content_float_brown'].set_border()
+
         wbf['total_content_float_price'] = workbook.add_format(
-            {'font_size': 9, 'bold': True, 'align': 'right', 'num_format': '#,##0', 'font_name': 'Georgia',
+            {'font_size': 11, 'bold': True, 'align': 'right', 'num_format': '#,##0',
              'bg_color': colors['blue'], 'font_color': '#000000', 'valign': 'vcenter', 'border': 1})
         wbf['total_content_float_price'].set_border()
 
         wbf['content_float'] = workbook.add_format(
-            {'font_size': 9, 'align': 'center', 'num_format': '#,##0', 'font_name': 'Georgia', 'valign': 'vcenter', 'border': 1,})
+            {'font_size': 11, 'bold': True, 'align': 'right', 'num_format': '#,##0', 'valign': 'vcenter', 'border': 1,})
         wbf['content_float'].set_right()
         wbf['content_float'].set_left()
 
         wbf['content_float_price'] = workbook.add_format(
-            {'font_size': 9, 'align': 'right', 'num_format': '#,##0', 'font_name': 'Georgia', 'valign': 'vcenter', 'border': 1,})
+            {'font_size': 11, 'align': 'right', 'num_format': '#,##0', 'valign': 'vcenter', 'border': 1,})
         wbf['content_float_price'].set_right()
         wbf['content_float_price'].set_left()
 
