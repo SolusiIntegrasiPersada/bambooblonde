@@ -176,23 +176,23 @@ class WhatsStockinSoldReport(models.TransientModel):
             row += 1
             no = 1
 
+            domain = [
+                ('order_id.state', 'not in', ['draft', 'cancel']),
+                ('order_id.date_order', '>=', self.start_period),
+                ('order_id.date_order', '<=', self.end_period),
+            ]
 
-
-            # filter sales orders based on date range
-            if self.class_product_id or self.product_category_id:
-                pos_orders = self.env['pos.order.line'].search([
-                    ('order_id.state', 'not in', ['draft','cancel']),
-                    ('order_id.date_order', '>=', self.start_period),
-                    ('order_id.date_order', '<=', self.end_period),
+            if self.class_product_id and self.product_category_id:
+                domain += [
                     ('product_id.class_product', '=', self.class_product_id.id),
                     ('product_id.product_category_categ_id', '=', self.product_category_id.id),
-                ])
-            else:
-                pos_orders = self.env['pos.order.line'].search([
-                    ('order_id.state', 'not in', ['draft', 'cancel']),
-                    ('order_id.date_order', '>=', self.start_period),
-                    ('order_id.date_order', '<=', self.end_period),
-                ])
+                ]
+            elif self.class_product_id:
+                domain.append(('product_id.class_product', '=', self.class_product_id.id))
+            elif self.product_category_id:
+                domain.append(('product_id.product_category_categ_id', '=', self.product_category_id.id))
+
+            pos_orders = self.env['pos.order.line'].search(domain)
 
             report_data = {}
 
@@ -952,21 +952,24 @@ class WhatsStockinSoldReport(models.TransientModel):
             no = 1
 
             # filter sales orders based on date range
-            if self.class_product_id or self.product_category_id:
-                pos_orders = self.env['pos.order.line'].search([
-                    ('order_id.state', 'not in', ['draft', 'cancel']),
-                    ('order_id.date_order', '>=', self.start_period),
-                    ('order_id.date_order', '<=', self.end_period),
+            domain = [
+                ('order_id.state', 'not in', ['draft', 'cancel']),
+                ('order_id.date_order', '>=', self.start_period),
+                ('order_id.date_order', '<=', self.end_period),
+            ]
+
+            if self.class_product_id and self.product_category_id:
+                domain += [
                     ('product_id.class_product', '=', self.class_product_id.id),
                     ('product_id.product_category_categ_id', '=', self.product_category_id.id),
-                ])
-            else:
-                pos_orders = self.env['pos.order.line'].search([
-                    ('order_id.state', 'not in', ['draft', 'cancel']),
-                    ('order_id.date_order', '>=', self.start_period),
-                    ('order_id.date_order', '<=', self.end_period),
-                ])
+                ]
+            elif self.class_product_id:
+                domain.append(('product_id.class_product', '=', self.class_product_id.id))
+            elif self.product_category_id:
+                domain.append(('product_id.product_category_categ_id', '=', self.product_category_id.id))
 
+            pos_orders = self.env['pos.order.line'].search(domain)
+            
             report_data = {}
 
             data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free)
