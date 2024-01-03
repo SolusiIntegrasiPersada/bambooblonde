@@ -245,16 +245,31 @@ class WhatsStockinSoldReport(models.TransientModel):
                 barcode = prod.barcode
                 size = line.size
                 # notes = line.order_id.note
-                cost_price = line.cost_in_order  or 0
+                cost_price = line.cost_in_order or 0
                 retail_price = prod.lst_price
-                qty_sold = line.qty
-                qty_stock = prod.qty_available
+                # qty_sold = line.qty
+                # qty_stock = prod.qty_available
 
+                qty_sold_quantities = self.env['pos.order'].search([
+                    ('picking_ids.move_lines.product_id', '=', prod.id),
+                    ('date_order', '>=', self.start_period),
+                    ('date_order', '<=', self.end_period),
+                    ('picking_ids.state', 'in', ['assigned', 'done']),
+                    ('picking_ids.location_id.warehouse_id.code', 'in', ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+                        'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG', 'BBKTA', 'Online'))
+                ])
+
+                qty_sold_per_warehouse = {wh.code: sum(move.product_uom_qty for move in move_lines)
+                                  for wh in self.env['stock.warehouse'].search([])
+                                  for move_lines in qty_sold_quantities.picking_ids.move_lines
+                                  if move_lines.location_id.warehouse_id.code == wh.code}
+
+                total_qty_sold = sum(qty_sold_per_warehouse.values())
 
                 # stock_quant = self.env['stock.quant'].sudo().search([
                 #             ('location_id.usage', '=', 'internal'),
                 #             ('name_warehouse_id.code', 'in', ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne')),
-                #             ('product_id.categ_id', '=', category),
+                #             ('product_id.categ_id', '=', category.id),
                 #         ])
                 # qty_stock = 0
                 # for quant in stock_quant:
@@ -263,7 +278,25 @@ class WhatsStockinSoldReport(models.TransientModel):
                 # qty_stock = sum(line.product_id.stock_quant_ids.filtered(lambda x: x.location_id.usage == 'internal' and x.location_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.in_date.date() >= self.start_period and x.in_date.date() <= self.end_period).mapped('quantity'))
                 # qty_stock = sum(line.product_id.qty_available for line in lines)
                 # qty_stock = sum(line.product_id.product_tmpl_id.qty_available for line in lines)
-                warehouse = line.order_id.picking_type_id.warehouse_id
+
+                warehouse_quantities = prod.stock_quant_ids.filtered(
+                    lambda x: x.location_id.usage == 'internal' and
+                              x.location_id.warehouse_id.code in (
+                              'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
+                              'BBPTG', 'BBKTA', 'Online')
+                )
+
+                # qty_stock = sum(warehouse_quantities.mapped('quantity'))
+                # warehouse = set(warehouse_quantities.mapped('location_id.warehouse_id'))
+                # warehouse_list = list(warehouse)
+                qty_stock_per_warehouse = {wh.code: sum(
+                    quant.quantity for quant in warehouse_quantities if quant.location_id.warehouse_id.code == wh.code)
+                                     for wh in set(warehouse_quantities.mapped('location_id.warehouse_id'))}
+
+                total_qty_stock = sum(qty_stock_per_warehouse.values())
+                # total_qty_sold += qty_sold
+
+                # warehouse = line.order_id.picking_type_id.warehouse_id
                 # age = int((fields.Date.today() - line.order_id.date_order.date()).days / 7)
                 today = datetime.now()
                 moves = sorted(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.state == 'done' and x.product_id == line.product_id), key=lambda x: x.date)
@@ -296,12 +329,17 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'age': age,
                     }
 
-                warehouse_key = warehouse.code
-                if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne'):
-                    report_data[key]['total_qty_sold'] += qty_sold
-                    report_data[key]['total_qty_stock'] += qty_stock
-                report_data[key]['qty_sold'][warehouse_key] += qty_sold
-                report_data[key]['qty_stock'][warehouse_key] += qty_stock
+                # warehouse_key = warehouse.code
+                for warehouse_key, quantity_stock in qty_stock_per_warehouse.items():
+                    if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Online'):
+                        report_data[key]['total_qty_stock'] = total_qty_stock
+                        report_data[key]['qty_stock'][warehouse_key] = quantity_stock
+
+                for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
+                    if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Online'):
+                        report_data[key]['total_qty_sold'] = total_qty_sold
+                        report_data[key]['qty_sold'][warehouse_key] = quantity_sold
+
 
             rows = []
             for data in report_data.values():
@@ -407,7 +445,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'bbbrw_qty_sold': bbbrw_qty_sold,
                         'bbpdg_qty_sold': bbpdg_qty_sold,
                         'bbsyv_qty_sold': bbsyv_qty_sold,
-                        'bbsyv_qty_sold': bbsyv_qty_sold,
                         'bbglr_qty_sold': bbglr_qty_sold,
                         'bbblg_qty_sold': bbblg_qty_sold,
                         'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -439,7 +476,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbbwk_qty_sold'] += bbbwk_qty_sold
                     grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                     grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
-                    grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                     grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
@@ -479,7 +515,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'bbbrw_qty_sold': bbbrw_qty_sold,
                         'bbpdg_qty_sold': bbpdg_qty_sold,
                         'bbsyv_qty_sold': bbsyv_qty_sold,
-                        'bbsyv_qty_sold': bbsyv_qty_sold,
                         'bbglr_qty_sold': bbglr_qty_sold,
                         'bbblg_qty_sold': bbblg_qty_sold,
                         'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -510,7 +545,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbbwk_qty_sold'] += bbbwk_qty_sold
                     grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                     grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
-                    grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                     grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
@@ -969,7 +1003,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 domain.append(('product_id.product_category_categ_id', '=', self.product_category_id.id))
 
             pos_orders = self.env['pos.order.line'].search(domain)
-            
+
             report_data = {}
 
             data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free)
@@ -1023,10 +1057,40 @@ class WhatsStockinSoldReport(models.TransientModel):
                 # notes = line.order_id.note
                 cost_price = line.cost_in_order or 0
                 retail_price = prod.lst_price
-                qty_sold = line.qty
-                qty_stock = prod.qty_available
+                # qty_sold = line.qty
+                # qty_stock = prod.qty_available
                 picture = io.BytesIO(base64.b64decode(prod.image_1920)) if prod.image_1920 else ''
 
+                qty_sold_quantities = self.env['pos.order'].search([
+                    ('picking_ids.move_lines.product_id', '=', prod.id),
+                    ('date_order', '>=', self.start_period),
+                    ('date_order', '<=', self.end_period),
+                    ('picking_ids.state', 'in', ['assigned', 'done']),
+                    ('picking_ids.location_id.warehouse_id.code', 'in', ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+                                                                         'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
+                                                                         'BBPTG', 'BBKTA', 'Online'))
+                ])
+
+                qty_sold_per_warehouse = {wh.code: sum(move.product_uom_qty for move in move_lines)
+                                          for wh in self.env['stock.warehouse'].search([])
+                                          for move_lines in qty_sold_quantities.picking_ids.move_lines
+                                          if move_lines.location_id.warehouse_id.code == wh.code}
+
+                total_qty_sold = sum(qty_sold_per_warehouse.values())
+
+                warehouse_quantities = prod.stock_quant_ids.filtered(
+                    lambda x: x.location_id.usage == 'internal' and
+                              x.location_id.warehouse_id.code in (
+                                  'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG',
+                                  'BBSNR',
+                                  'BBPTG', 'BBKTA', 'Online')
+                )
+
+                qty_stock_per_warehouse = {wh.code: sum(
+                    quant.quantity for quant in warehouse_quantities if quant.location_id.warehouse_id.code == wh.code)
+                    for wh in set(warehouse_quantities.mapped('location_id.warehouse_id'))}
+
+                total_qty_stock = sum(qty_stock_per_warehouse.values())
 
 
                 # stock_quant = self.env['stock.quant'].sudo().search([
@@ -1041,7 +1105,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 # qty_stock = sum(line.product_id.stock_quant_ids.filtered(lambda x: x.location_id.usage == 'internal' and x.location_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.in_date.date() >= self.start_period and x.in_date.date() <= self.end_period).mapped('quantity'))
                 # qty_stock = sum(line.product_id.qty_available for line in lines)
                 # qty_stock = sum(line.product_id.product_tmpl_id.qty_available for line in lines)
-                warehouse = line.order_id.picking_type_id.warehouse_id
+                # warehouse = line.order_id.picking_type_id.warehouse_id
                 # age = int((fields.Date.today() - line.order_id.date_order.date()).days / 7)
                 today = datetime.now()
                 moves = sorted(line.product_id.stock_move_ids.filtered(lambda
@@ -1079,14 +1143,15 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'age': age,
                     }
 
-                warehouse_key = warehouse.code
-                if warehouse_key in (
-                'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG', 'BBKTA',
-                'Onlne'):
-                    report_data[key]['total_qty_sold'] += qty_sold
-                    report_data[key]['total_qty_stock'] += qty_stock
-                report_data[key]['qty_sold'][warehouse_key] += qty_sold
-                report_data[key]['qty_stock'][warehouse_key] += qty_stock
+                for warehouse_key, quantity_stock in qty_stock_per_warehouse.items():
+                    if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Online'):
+                        report_data[key]['total_qty_stock'] = total_qty_stock
+                        report_data[key]['qty_stock'][warehouse_key] = quantity_stock
+
+                for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
+                    if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Online'):
+                        report_data[key]['total_qty_sold'] = total_qty_sold
+                        report_data[key]['qty_sold'][warehouse_key] = quantity_sold
 
             rows = []
             for data in report_data.values():
@@ -1194,7 +1259,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'bbbrw_qty_sold': bbbrw_qty_sold,
                         'bbpdg_qty_sold': bbpdg_qty_sold,
                         'bbsyv_qty_sold': bbsyv_qty_sold,
-                        'bbsyv_qty_sold': bbsyv_qty_sold,
                         'bbglr_qty_sold': bbglr_qty_sold,
                         'bbblg_qty_sold': bbblg_qty_sold,
                         'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -1226,7 +1290,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbbwk_qty_sold'] += bbbwk_qty_sold
                     grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                     grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
-                    grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                     grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
@@ -1266,7 +1329,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'bbbrw_qty_sold': bbbrw_qty_sold,
                         'bbpdg_qty_sold': bbpdg_qty_sold,
                         'bbsyv_qty_sold': bbsyv_qty_sold,
-                        'bbsyv_qty_sold': bbsyv_qty_sold,
                         'bbglr_qty_sold': bbglr_qty_sold,
                         'bbblg_qty_sold': bbblg_qty_sold,
                         'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -1297,7 +1359,6 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbbwk_qty_sold'] += bbbwk_qty_sold
                     grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                     grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
-                    grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                     grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                     grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
