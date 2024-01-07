@@ -710,75 +710,75 @@ class RlkMonthyReport(models.TransientModel):
 
     def add_workbook_format(self, workbook):
         colors = {
-            'white_orange': '#FFFFDB',
+            'white_orange': '#DDD9C4',
             'orange': '#FFC300',
             'red': '#FF0000',
-            'yellow': '#F6FA03',
+            'yellow': '#FFC000',
             'pink': '#FFC0CB',
-            'violet': '#EE82EE',
-            'green': '#00FF7F',
+            'violet': '#E6B8B7',
+            'green': '#00B050',
             'light_green': '#90EE90',
-            'dark_green': '#8FBC8F',
-            'blue': '#B0E0E6',
-            'brown': '#FFEFD5',
+            'dark_green': '#C4D79B',
+            'blue': '#DBE5F1',
+            'brown': '#DDD9C3',
             'salmon': '#FFA07A',
             'beige': '#F5F5DC',
         }
 
         wbf = {}
-        wbf['header'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFFF','font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFFF','font_color': '#000000', })
         wbf['header'].set_border()
 
-        wbf['header_brown'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['brown'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_brown'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['brown'],'font_color': '#000000', })
         wbf['header_brown'].set_border()
 
-        wbf['header_salmon'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['salmon'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_salmon'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['salmon'],'font_color': '#000000', })
         wbf['header_salmon'].set_border()
 
-        wbf['header_beige'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['beige'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_beige'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['beige'],'font_color': '#000000', })
         wbf['header_beige'].set_border()
 
-        wbf['header_blue'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_blue'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['blue'],'font_color': '#000000', })
         wbf['header_blue'].set_border()
 
-        wbf['header_blue2'] = workbook.add_format({'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_blue2'] = workbook.add_format({'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', })
         wbf['header_blue2'].set_border()
 
-        wbf['header_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['green'],'font_color': '#000000', })
         wbf['header_green'].set_border()
 
-        wbf['header_light_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['light_green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_light_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['light_green'],'font_color': '#000000', })
         wbf['header_light_green'].set_border()
 
-        wbf['header_dark_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['dark_green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_dark_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['dark_green'],'font_color': '#000000', })
         wbf['header_dark_green'].set_border()
 
-        wbf['header_pink'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['pink'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_pink'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['pink'],'font_color': '#000000', })
         wbf['header_pink'].set_border()
 
-        wbf['header_violet'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['violet'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_violet'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['violet'],'font_color': '#000000', })
         wbf['header_violet'].set_border()
 
-        wbf['header_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['orange'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['orange'],'font_color': '#000000', })
         wbf['header_orange'].set_border()
 
-        wbf['header_white_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['white_orange'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_white_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['white_orange'],'font_color': '#000000', })
         wbf['header_white_orange'].set_border()
 
-        wbf['header_yellow'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['yellow'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_yellow'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['yellow'],'font_color': '#000000', })
         wbf['header_yellow'].set_border()
         
-        wbf['header_no'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFDB','font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_no'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#DDD9C4','font_color': '#000000', })
         wbf['header_no'].set_border()
         wbf['header_no'].set_align('vcenter')
                 
-        wbf['footer'] = workbook.add_format({'align':'left', 'font_name': 'Georgia'})
+        wbf['footer'] = workbook.add_format({'align':'left', })
         
-        wbf['content_datetime'] = workbook.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss', 'font_name': 'Georgia'})
+        wbf['content_datetime'] = workbook.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss', })
         wbf['content_datetime'].set_left()
         wbf['content_datetime'].set_right()
         
-        wbf['content_date'] = workbook.add_format({'num_format': 'yyyy-mm-dd', 'font_name': 'Georgia'})
+        wbf['content_date'] = workbook.add_format({'num_format': 'yyyy-mm-dd', })
         wbf['content_date'].set_left()
         wbf['content_date'].set_right() 
 
@@ -787,7 +787,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 16,
-            'font_name': 'Georgia',
             'bg_color': '#FFC0CB',
         })
 
@@ -796,8 +795,7 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 14,
-            'font_name': 'Georgia',
-            'bg_color': '#FFEFD5',
+            'bg_color': '#DDD9C3',
         })
         
         wbf['title_doc'] = workbook.add_format({
@@ -805,7 +803,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 20,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
 
@@ -814,7 +811,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 14,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
 
@@ -823,7 +819,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 12,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
         wbf['title_doc3'].set_top()
@@ -831,139 +826,139 @@ class RlkMonthyReport(models.TransientModel):
         wbf['title_doc3'].set_left()
         wbf['title_doc3'].set_right()  
         
-        wbf['company'] = workbook.add_format({'align': 'left', 'font_name': 'Georgia'})
+        wbf['company'] = workbook.add_format({'align': 'left', })
         wbf['company'].set_font_size(11)
         
         wbf['content'] = workbook.add_format()
         wbf['content'].set_left()
         wbf['content'].set_right() 
 
-        wbf['content2'] = workbook.add_format({'align': 'center', 'font_name': 'Georgia'})
+        wbf['content2'] = workbook.add_format({'align': 'center', })
         wbf['content2'].set_left()
         wbf['content2'].set_right()
 
-        wbf['total_content'] = workbook.add_format({'font_size': 9, 'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['total_content'] = workbook.add_format({'font_size': 9, 'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', })
         wbf['total_content'].set_border() 
 
-        wbf['total_content_float'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'center','num_format': '#,##0', 'font_name': 'Georgia','bg_color': colors['blue'], 'font_color': '#000000'})
+        wbf['total_content_float'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'center','num_format': '#,##0', 'bg_color': colors['blue'], 'font_color': '#000000'})
         wbf['total_content_float'].set_border() 
 
-        wbf['total_content_float_price'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia','bg_color': colors['blue'], 'font_color': '#000000'})
+        wbf['total_content_float_price'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'right','num_format': '#,##0.00', 'bg_color': colors['blue'], 'font_color': '#000000'})
         wbf['total_content_float_price'].set_border() 
         
-        wbf['content_float'] = workbook.add_format({'font_size': 9, 'align': 'center','num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['content_float'] = workbook.add_format({'font_size': 9, 'align': 'center','num_format': '#,##0', })
         wbf['content_float'].set_right() 
         wbf['content_float'].set_left()
 
-        wbf['content_float_price'] = workbook.add_format({'font_size': 9, 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['content_float_price'] = workbook.add_format({'font_size': 9, 'align': 'right','num_format': '#,##0.00', })
         wbf['content_float_price'].set_right() 
         wbf['content_float_price'].set_left()
 
-        wbf['content_number'] = workbook.add_format({'align': 'right', 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['content_number'] = workbook.add_format({'align': 'right', 'num_format': '#,##0', })
         wbf['content_number'].set_right() 
         wbf['content_number'].set_left() 
         
-        wbf['content_percent'] = workbook.add_format({'align': 'right','num_format': '0.00%', 'font_name': 'Georgia'})
+        wbf['content_percent'] = workbook.add_format({'align': 'right','num_format': '0.00%', })
         wbf['content_percent'].set_right() 
         wbf['content_percent'].set_left() 
                 
-        wbf['total_float'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float'].set_top()
         wbf['total_float'].set_bottom()            
         wbf['total_float'].set_left()
         wbf['total_float'].set_right()         
         
-        wbf['total_number'] = workbook.add_format({'align':'right','bg_color': colors['white_orange'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number'] = workbook.add_format({'align':'right','bg_color': colors['white_orange'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number'].set_top()
         wbf['total_number'].set_bottom()            
         wbf['total_number'].set_left()
         wbf['total_number'].set_right()
         
-        wbf['total'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'center', })
         wbf['total'].set_left()
         wbf['total'].set_right()
         wbf['total'].set_top()
         wbf['total'].set_bottom()
 
-        wbf['total_float_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float_yellow'].set_top()
         wbf['total_float_yellow'].set_bottom()
         wbf['total_float_yellow'].set_left()
         wbf['total_float_yellow'].set_right()
         
-        wbf['total_number_yellow'] = workbook.add_format({'align':'right','bg_color': colors['yellow'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number_yellow'] = workbook.add_format({'align':'right','bg_color': colors['yellow'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number_yellow'].set_top()
         wbf['total_number_yellow'].set_bottom()
         wbf['total_number_yellow'].set_left()
         wbf['total_number_yellow'].set_right()
         
-        wbf['total_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'center', })
         wbf['total_yellow'].set_left()
         wbf['total_yellow'].set_right()
         wbf['total_yellow'].set_top()
         wbf['total_yellow'].set_bottom()
 
-        wbf['total_float_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float_orange'].set_top()
         wbf['total_float_orange'].set_bottom()            
         wbf['total_float_orange'].set_left()
         wbf['total_float_orange'].set_right()         
         
-        wbf['total_number_orange'] = workbook.add_format({'align':'right','bg_color': colors['orange'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number_orange'] = workbook.add_format({'align':'right','bg_color': colors['orange'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number_orange'].set_top()
         wbf['total_number_orange'].set_bottom()            
         wbf['total_number_orange'].set_left()
         wbf['total_number_orange'].set_right()
         
-        wbf['total_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'center', })
         wbf['total_orange'].set_left()
         wbf['total_orange'].set_right()
         wbf['total_orange'].set_top()
         wbf['total_orange'].set_bottom()
 
-        wbf['total_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align':'right', 'font_name': 'Georgia'})
+        wbf['total_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align':'right', })
         wbf['total_pink'].set_left()
         wbf['total_pink'].set_right()
         wbf['total_pink'].set_top()
         wbf['total_pink'].set_bottom()
 
-        wbf['total_float_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'right','num_format': '#,##0.00', })
         wbf['total_float_pink'].set_left()
         wbf['total_float_pink'].set_right()
         wbf['total_float_pink'].set_top()
         wbf['total_float_pink'].set_bottom()
 
-        wbf['total_float_pink2'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'center','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_pink2'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'center','num_format': '#,##0.00', })
         wbf['total_float_pink2'].set_left()
         wbf['total_float_pink2'].set_right()
         wbf['total_float_pink2'].set_top()
         wbf['total_float_pink2'].set_bottom() 
 
-        wbf['total_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align':'right', 'font_name': 'Georgia'})
+        wbf['total_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align':'right', })
         wbf['total_violet'].set_left()
         wbf['total_violet'].set_right()
         wbf['total_violet'].set_top()
         wbf['total_violet'].set_bottom()
 
-        wbf['total_float_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'right','num_format': '#,##0.00', })
         wbf['total_float_violet'].set_left()
         wbf['total_float_violet'].set_right()
         wbf['total_float_violet'].set_top()
         wbf['total_float_violet'].set_bottom()
 
-        wbf['total_float_violet2'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'center','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_violet2'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'center','num_format': '#,##0.00', })
         wbf['total_float_violet2'].set_left()
         wbf['total_float_violet2'].set_right()
         wbf['total_float_violet2'].set_top()
         wbf['total_float_violet2'].set_bottom() 
         
-        wbf['header_detail_space'] = workbook.add_format({'font_name': 'Georgia'})
+        wbf['header_detail_space'] = workbook.add_format({})
         wbf['header_detail_space'].set_left()
         wbf['header_detail_space'].set_right()
         wbf['header_detail_space'].set_top()
         wbf['header_detail_space'].set_bottom()
         
-        wbf['header_detail'] = workbook.add_format({'bg_color': '#E0FFC2', 'font_name': 'Georgia'})
+        wbf['header_detail'] = workbook.add_format({'bg_color': '#E0FFC2', })
         wbf['header_detail'].set_left()
         wbf['header_detail'].set_right()
         wbf['header_detail'].set_top()

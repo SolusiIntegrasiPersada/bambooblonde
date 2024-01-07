@@ -559,9 +559,11 @@ class RlkMonthyReport(models.TransientModel):
         # filter sales orders based on date range
         pos_orders = self.env['pos.order.line'].search([
             ('order_id.state', 'not in', ['draft','cancel']),
-            ('order_id.date_order', '>=', self.last_start_date),
+            ('order_id.date_order', '>=', self.start_date),
             ('order_id.date_order', '<=', self.end_date)
         ])
+
+        data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free and not x.product_id.is_shooping_bag)
 
         grandtotal_qty_sold = 0
         grandtotal_retail_sold = 0
@@ -665,17 +667,62 @@ class RlkMonthyReport(models.TransientModel):
         grandtotal_onlne_cost_stock = 0
 
         report_data = {}
-        for line in pos_orders:
+
+        # grouped_data = {}
+        # for data in data_pos_orders:
+        #     prod = data.product_id
+        #     class_id = prod.class_product
+        #     category = prod.product_category_categ_id
+        #     parent_category = prod.product_model_categ_id
+        #     qty_sold = data.qty
+        #     order_date = data.order_id.date_order
+        #     qty_received_qty = self.env['stock.move.line'].search([
+        #         ('product_id.product_category_categ_id', '=', category.id),
+        #         ('product_id.product_model_categ_id', '=', parent_category.id),
+        #         ('picking_id.picking_type_id.code', '=', 'incoming'),
+        #         ('location_dest_id.warehouse_id.code', 'in', [
+        #             'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+        #             'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
+        #             'BBPTG', 'BBKTA', 'Onlne'
+        #         ]),
+        #         ('state', '=', 'done'),
+        #         ('date', '>=', self.start_date),
+        #         ('date', '<=', self.end_date),
+        #     ]).mapped('qty_done')
+        #     qty_received = sum(qty_received_qty)
+        #
+        #     group_key = (class_id.id, category.id, parent_category.id)
+        #
+        #     if group_key not in grouped_data:
+        #         grouped_data[group_key] = {
+        #             'class_id': class_id.name,
+        #             'category_id': category.name,
+        #             'parent_id': parent_category.name,
+        #             'qty_sold': qty_sold,
+        #             'order_date': order_date,
+        #             'product': [prod.display_name],
+        #             'qty_received': qty_received,
+        #         }
+        #     else:
+        #         grouped_data[group_key]['qty_sold'] += qty_sold
+        #         grouped_data[group_key]['qty_received'] = qty_received
+        #         grouped_data[group_key]['product'].append(prod.display_name)
+
+        for line in data_pos_orders:
             prod = line.product_id
             class_id = prod.class_product
-            category = prod.product_tmpl_id.categ_id
-            parent_category = category.parent_id
-            cost_price = line.cost_in_order  or 0
+            category = prod.product_category_categ_id
+            parent_category = prod.product_model_categ_id
+            cost_price = line.cost_in_order or 0
             retail_price = prod.lst_price
             qty_sold = line.qty
+
             retail_sold = qty_sold * retail_price
             cost_sold = qty_sold * cost_price
             warehouse = line.order_id.picking_type_id.warehouse_id
+
+
+
             # qty_stock = sum(line.product_id.stock_quant_ids.filtered(lambda x: x.location_id.usage == 'internal' and x.location_id == warehouse and x.in_date >= self.last_start_date and x.in_date <= self.end_date).mapped('quantity'))
             # qty_stock_wh = sum(line.product_id.stock_quant_ids.filtered(lambda x: x.location_id.usage == 'internal' and x.location_id.warehouse_id.code == 'WHBB' and x.in_date.date() >= self.last_start_date and x.in_date.date() <= self.end_date).mapped('quantity'))
             stock_quant = self.env['stock.quant'].sudo().search([
@@ -689,8 +736,21 @@ class RlkMonthyReport(models.TransientModel):
             qty_stock = prod.qty_available
             # qty_stock = sum(line.product_id.qty_available for line in lines)
             # qty_stock = sum(line.product_id.product_tmpl_id.qty_available for line in lines)
-            qty_received = sum(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.location_dest_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.state == 'done' and x.date.date() >= self.last_start_date and x.date.date() <= self.end_date).mapped('product_uom_qty'))
-            
+            # qty_received = sum(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.location_dest_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.state == 'done' and x.date.date() >= self.last_start_date and x.date.date() <= self.end_date).mapped('product_uom_qty'))
+            qty_received_qty = self.env['stock.move.line'].search([
+                ('product_id.product_category_categ_id', '=', category.id),
+                ('product_id.product_model_categ_id', '=', parent_category.id),
+                ('picking_id.picking_type_id.code', '=', 'incoming'),
+                ('location_dest_id.warehouse_id.code', 'in', [
+                    'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+                    'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
+                    'BBPTG', 'BBKTA', 'Onlne'
+                ]),
+                ('state', '=', 'done'),
+                ('date', '>=', self.start_date),
+                ('date', '<=', self.end_date),
+            ]).mapped('qty_done')
+            qty_received = sum(qty_received_qty)
 
             retail_stock = qty_stock * retail_price
             cost_stock = qty_stock * cost_price
@@ -766,13 +826,13 @@ class RlkMonthyReport(models.TransientModel):
                     report_data[key]['total_retail_stock_now'] += retail_stock
                     report_data[key]['total_cost_stock_now'] += cost_stock
 
-                    report_data[key]['total_qty_receiving'] += qty_received
+                    report_data[key]['total_qty_receiving'] = qty_received
                     report_data[key]['total_retail_receiving'] += retail_received
                     report_data[key]['total_cost_receiving'] += cost_received
 
-                    report_data[key]['total_qty_wh'] += qty_stock_wh
-                    report_data[key]['total_retail_wh'] += retail_stock_wh
-                    report_data[key]['total_cost_wh'] += cost_stock_wh
+                    report_data[key]['total_qty_stock_now'] += qty_stock_wh
+                    report_data[key]['total_retail_stock_now'] += retail_stock_wh
+                    report_data[key]['total_cost_stock_now'] += cost_stock_wh
 
                     report_data[key]['w_qty_sold'][warehouse_key] += qty_sold
                     report_data[key]['w_qty_stock'][warehouse_key] += qty_stock
@@ -1153,7 +1213,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbrw_qty_sold': bbbrw_qty_sold,
                     'bbpdg_qty_sold': bbpdg_qty_sold,
                     'bbsyv_qty_sold': bbsyv_qty_sold,
-                    'bbsyv_qty_sold': bbsyv_qty_sold,
                     'bbglr_qty_sold': bbglr_qty_sold,
                     'bbblg_qty_sold': bbblg_qty_sold,
                     'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -1168,7 +1227,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbrw_retail_sold': bbbrw_retail_sold,
                     'bbpdg_retail_sold': bbpdg_retail_sold,
                     'bbsyv_retail_sold': bbsyv_retail_sold,
-                    'bbsyv_retail_sold': bbsyv_retail_sold,
                     'bbglr_retail_sold': bbglr_retail_sold,
                     'bbblg_retail_sold': bbblg_retail_sold,
                     'bbsnr_retail_sold': bbsnr_retail_sold,
@@ -1182,7 +1240,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbwk_cost_sold': bbbwk_cost_sold,
                     'bbbrw_cost_sold': bbbrw_cost_sold,
                     'bbpdg_cost_sold': bbpdg_cost_sold,
-                    'bbsyv_cost_sold': bbsyv_cost_sold,
                     'bbsyv_cost_sold': bbsyv_cost_sold,
                     'bbglr_cost_sold': bbglr_cost_sold,
                     'bbblg_cost_sold': bbblg_cost_sold,
@@ -1263,7 +1320,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                 grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
                 grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
-                grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                 grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                 grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
                 grouped_colors[key]['bbsnr_qty_sold'] += bbsnr_qty_sold
@@ -1277,7 +1333,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbwk_retail_sold'] += bbbwk_retail_sold
                 grouped_colors[key]['bbbrw_retail_sold'] += bbbrw_retail_sold
                 grouped_colors[key]['bbpdg_retail_sold'] += bbpdg_retail_sold
-                grouped_colors[key]['bbsyv_retail_sold'] += bbsyv_retail_sold
                 grouped_colors[key]['bbsyv_retail_sold'] += bbsyv_retail_sold
                 grouped_colors[key]['bbglr_retail_sold'] += bbglr_retail_sold
                 grouped_colors[key]['bbblg_retail_sold'] += bbblg_retail_sold
@@ -1293,7 +1348,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_cost_sold'] += bbbrw_cost_sold
                 grouped_colors[key]['bbpdg_cost_sold'] += bbpdg_cost_sold
                 grouped_colors[key]['bbsyv_cost_sold'] += bbsyv_cost_sold
-                grouped_colors[key]['bbsyv_cost_sold'] += bbsyv_cost_sold
                 grouped_colors[key]['bbglr_cost_sold'] += bbglr_cost_sold
                 grouped_colors[key]['bbblg_cost_sold'] += bbblg_cost_sold
                 grouped_colors[key]['bbsnr_cost_sold'] += bbsnr_cost_sold
@@ -1307,7 +1361,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbwk_qty_stock'] += bbbwk_qty_stock
                 grouped_colors[key]['bbbrw_qty_stock'] += bbbrw_qty_stock
                 grouped_colors[key]['bbpdg_qty_stock'] += bbpdg_qty_stock
-                grouped_colors[key]['bbsyv_qty_stock'] += bbsyv_qty_stock
                 grouped_colors[key]['bbglr_qty_stock'] += bbglr_qty_stock
                 grouped_colors[key]['bbblg_qty_stock'] += bbblg_qty_stock
                 grouped_colors[key]['bbsnr_qty_stock'] += bbsnr_qty_stock
@@ -1322,7 +1375,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_retail_stock'] += bbbrw_retail_stock
                 grouped_colors[key]['bbpdg_retail_stock'] += bbpdg_retail_stock
                 grouped_colors[key]['bbsyv_retail_stock'] += bbsyv_retail_stock
-                grouped_colors[key]['bbsyv_retail_stock'] += bbsyv_retail_stock
                 grouped_colors[key]['bbglr_retail_stock'] += bbglr_retail_stock
                 grouped_colors[key]['bbblg_retail_stock'] += bbblg_retail_stock
                 grouped_colors[key]['bbsnr_retail_stock'] += bbsnr_retail_stock
@@ -1336,7 +1388,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbwk_cost_stock'] += bbbwk_cost_stock
                 grouped_colors[key]['bbbrw_cost_stock'] += bbbrw_cost_stock
                 grouped_colors[key]['bbpdg_cost_stock'] += bbpdg_cost_stock
-                grouped_colors[key]['bbsyv_cost_stock'] += bbsyv_cost_stock
                 grouped_colors[key]['bbsyv_cost_stock'] += bbsyv_cost_stock
                 grouped_colors[key]['bbglr_cost_stock'] += bbglr_cost_stock
                 grouped_colors[key]['bbblg_cost_stock'] += bbblg_cost_stock
@@ -1380,7 +1431,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbrw_qty_sold': bbbrw_qty_sold,
                     'bbpdg_qty_sold': bbpdg_qty_sold,
                     'bbsyv_qty_sold': bbsyv_qty_sold,
-                    'bbsyv_qty_sold': bbsyv_qty_sold,
                     'bbglr_qty_sold': bbglr_qty_sold,
                     'bbblg_qty_sold': bbblg_qty_sold,
                     'bbsnr_qty_sold': bbsnr_qty_sold,
@@ -1395,7 +1445,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbrw_retail_sold': bbbrw_retail_sold,
                     'bbpdg_retail_sold': bbpdg_retail_sold,
                     'bbsyv_retail_sold': bbsyv_retail_sold,
-                    'bbsyv_retail_sold': bbsyv_retail_sold,
                     'bbglr_retail_sold': bbglr_retail_sold,
                     'bbblg_retail_sold': bbblg_retail_sold,
                     'bbsnr_retail_sold': bbsnr_retail_sold,
@@ -1409,7 +1458,6 @@ class RlkMonthyReport(models.TransientModel):
                     'bbbwk_cost_sold': bbbwk_cost_sold,
                     'bbbrw_cost_sold': bbbrw_cost_sold,
                     'bbpdg_cost_sold': bbpdg_cost_sold,
-                    'bbsyv_cost_sold': bbsyv_cost_sold,
                     'bbsyv_cost_sold': bbsyv_cost_sold,
                     'bbglr_cost_sold': bbglr_cost_sold,
                     'bbblg_cost_sold': bbblg_cost_sold,
@@ -1488,7 +1536,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_qty_sold'] += bbbrw_qty_sold
                 grouped_colors[key]['bbpdg_qty_sold'] += bbpdg_qty_sold
                 grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
-                grouped_colors[key]['bbsyv_qty_sold'] += bbsyv_qty_sold
                 grouped_colors[key]['bbglr_qty_sold'] += bbglr_qty_sold
                 grouped_colors[key]['bbblg_qty_sold'] += bbblg_qty_sold
                 grouped_colors[key]['bbsnr_qty_sold'] += bbsnr_qty_sold
@@ -1503,7 +1550,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_retail_sold'] += bbbrw_retail_sold
                 grouped_colors[key]['bbpdg_retail_sold'] += bbpdg_retail_sold
                 grouped_colors[key]['bbsyv_retail_sold'] += bbsyv_retail_sold
-                grouped_colors[key]['bbsyv_retail_sold'] += bbsyv_retail_sold
                 grouped_colors[key]['bbglr_retail_sold'] += bbglr_retail_sold
                 grouped_colors[key]['bbblg_retail_sold'] += bbblg_retail_sold
                 grouped_colors[key]['bbsnr_retail_sold'] += bbsnr_retail_sold
@@ -1517,7 +1563,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbwk_cost_sold'] += bbbwk_cost_sold
                 grouped_colors[key]['bbbrw_cost_sold'] += bbbrw_cost_sold
                 grouped_colors[key]['bbpdg_cost_sold'] += bbpdg_cost_sold
-                grouped_colors[key]['bbsyv_cost_sold'] += bbsyv_cost_sold
                 grouped_colors[key]['bbsyv_cost_sold'] += bbsyv_cost_sold
                 grouped_colors[key]['bbglr_cost_sold'] += bbglr_cost_sold
                 grouped_colors[key]['bbblg_cost_sold'] += bbblg_cost_sold
@@ -1547,7 +1592,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbrw_retail_stock'] += bbbrw_retail_stock
                 grouped_colors[key]['bbpdg_retail_stock'] += bbpdg_retail_stock
                 grouped_colors[key]['bbsyv_retail_stock'] += bbsyv_retail_stock
-                grouped_colors[key]['bbsyv_retail_stock'] += bbsyv_retail_stock
                 grouped_colors[key]['bbglr_retail_stock'] += bbglr_retail_stock
                 grouped_colors[key]['bbblg_retail_stock'] += bbblg_retail_stock
                 grouped_colors[key]['bbsnr_retail_stock'] += bbsnr_retail_stock
@@ -1561,7 +1605,6 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbbwk_cost_stock'] += bbbwk_cost_stock
                 grouped_colors[key]['bbbrw_cost_stock'] += bbbrw_cost_stock
                 grouped_colors[key]['bbpdg_cost_stock'] += bbpdg_cost_stock
-                grouped_colors[key]['bbsyv_cost_stock'] += bbsyv_cost_stock
                 grouped_colors[key]['bbsyv_cost_stock'] += bbsyv_cost_stock
                 grouped_colors[key]['bbglr_cost_stock'] += bbglr_cost_stock
                 grouped_colors[key]['bbblg_cost_stock'] += bbblg_cost_stock
@@ -3274,75 +3317,76 @@ class RlkMonthyReport(models.TransientModel):
 
     def add_workbook_format(self, workbook):
         colors = {
-            'white_orange': '#FFFFDB',
+            'white_orange': '#DDD9C4',
             'orange': '#FFC300',
             'red': '#FF0000',
-            'yellow': '#F6FA03',
+            'yellow': '#FFC000',
             'pink': '#FFC0CB',
-            'violet': '#EE82EE',
-            'green': '#00FF7F',
+            'violet': '#E6B8B7',
+            'green': '#00B050',
             'light_green': '#90EE90',
-            'dark_green': '#8FBC8F',
-            'blue': '#B0E0E6',
-            'brown': '#FFEFD5',
+            'dark_green': '#C4D79B',
+            'blue': '#DBE5F1',
+            'brown': '#DDD9C3',
             'salmon': '#FFA07A',
             'beige': '#F5F5DC',
+            'blue_old': '#B8CCE4',
         }
 
         wbf = {}
-        wbf['header'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFFF','font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFFF','font_color': '#000000', })
         wbf['header'].set_border()
 
-        wbf['header_brown'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['brown'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_brown'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['brown'],'font_color': '#000000', })
         wbf['header_brown'].set_border()
 
-        wbf['header_salmon'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['salmon'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_salmon'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['salmon'],'font_color': '#000000', })
         wbf['header_salmon'].set_border()
 
-        wbf['header_beige'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['beige'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_beige'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['beige'],'font_color': '#000000', })
         wbf['header_beige'].set_border()
 
-        wbf['header_blue'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_blue'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['blue'],'font_color': '#000000', })
         wbf['header_blue'].set_border()
 
-        wbf['header_blue2'] = workbook.add_format({'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_blue2'] = workbook.add_format({'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', })
         wbf['header_blue2'].set_border()
 
-        wbf['header_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['green'],'font_color': '#000000', })
         wbf['header_green'].set_border()
 
-        wbf['header_light_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['light_green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_light_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['light_green'],'font_color': '#000000', })
         wbf['header_light_green'].set_border()
 
-        wbf['header_dark_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['dark_green'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_dark_green'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['dark_green'],'font_color': '#000000', })
         wbf['header_dark_green'].set_border()
 
-        wbf['header_pink'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['pink'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_pink'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['pink'],'font_color': '#000000', })
         wbf['header_pink'].set_border()
 
-        wbf['header_violet'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['violet'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_violet'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['violet'],'font_color': '#000000', })
         wbf['header_violet'].set_border()
 
-        wbf['header_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['orange'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['orange'],'font_color': '#000000', })
         wbf['header_orange'].set_border()
 
-        wbf['header_white_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['white_orange'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_white_orange'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['white_orange'],'font_color': '#000000', })
         wbf['header_white_orange'].set_border()
 
-        wbf['header_yellow'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['yellow'],'font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_yellow'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': colors['yellow'],'font_color': '#000000', })
         wbf['header_yellow'].set_border()
         
-        wbf['header_no'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFDB','font_color': '#000000', 'font_name': 'Georgia'})
+        wbf['header_no'] = workbook.add_format({'bold': 1,'align': 'center','bg_color': '#FFFFDB','font_color': '#000000', })
         wbf['header_no'].set_border()
         wbf['header_no'].set_align('vcenter')
                 
-        wbf['footer'] = workbook.add_format({'align':'left', 'font_name': 'Georgia'})
+        wbf['footer'] = workbook.add_format({'align':'left', })
         
-        wbf['content_datetime'] = workbook.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss', 'font_name': 'Georgia'})
+        wbf['content_datetime'] = workbook.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss', })
         wbf['content_datetime'].set_left()
         wbf['content_datetime'].set_right()
         
-        wbf['content_date'] = workbook.add_format({'num_format': 'yyyy-mm-dd', 'font_name': 'Georgia'})
+        wbf['content_date'] = workbook.add_format({'num_format': 'yyyy-mm-dd', })
         wbf['content_date'].set_left()
         wbf['content_date'].set_right() 
 
@@ -3351,7 +3395,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 16,
-            'font_name': 'Georgia',
             'bg_color': '#FFC0CB',
         })
 
@@ -3360,7 +3403,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 14,
-            'font_name': 'Georgia',
             'bg_color': '#FFEFD5',
         })
         
@@ -3369,7 +3411,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 20,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
 
@@ -3378,7 +3419,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 14,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
 
@@ -3387,7 +3427,6 @@ class RlkMonthyReport(models.TransientModel):
             'align': 'left',
             'valign': 'vcenter',
             'font_size': 12,
-            'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
         wbf['title_doc3'].set_top()
@@ -3395,139 +3434,139 @@ class RlkMonthyReport(models.TransientModel):
         wbf['title_doc3'].set_left()
         wbf['title_doc3'].set_right()  
         
-        wbf['company'] = workbook.add_format({'align': 'left', 'font_name': 'Georgia'})
+        wbf['company'] = workbook.add_format({'align': 'left', })
         wbf['company'].set_font_size(11)
         
         wbf['content'] = workbook.add_format()
         wbf['content'].set_left()
         wbf['content'].set_right() 
 
-        wbf['content2'] = workbook.add_format({'align': 'center', 'font_name': 'Georgia'})
+        wbf['content2'] = workbook.add_format({'align': 'center', })
         wbf['content2'].set_left()
         wbf['content2'].set_right()
 
-        wbf['total_content'] = workbook.add_format({'font_size': 9, 'bold': 1,'align': 'left','bg_color': colors['blue'],'font_color': '#000000', 'font_name': 'Georgia'})
-        wbf['total_content'].set_border() 
+        wbf['total_content'] = workbook.add_format({'font_size': 9, 'bold': 1,'align': 'left','bg_color': colors['blue_old'],'font_color': '#000000', })
+        wbf['total_content'].set_border()
 
-        wbf['total_content_float'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'center','num_format': '#,##0', 'font_name': 'Georgia','bg_color': colors['blue'], 'font_color': '#000000'})
+        wbf['total_content_float'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'center','num_format': '#,##0', 'bg_color': colors['blue_old'], 'font_color': '#000000'})
         wbf['total_content_float'].set_border() 
 
-        wbf['total_content_float_price'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia','bg_color': colors['blue'], 'font_color': '#000000'})
+        wbf['total_content_float_price'] = workbook.add_format({'font_size': 9,'bold': True, 'align': 'right','num_format': '#,##0.00', 'bg_color': colors['blue_old'], 'font_color': '#000000'})
         wbf['total_content_float_price'].set_border() 
         
-        wbf['content_float'] = workbook.add_format({'font_size': 9, 'align': 'center','num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['content_float'] = workbook.add_format({'font_size': 9, 'align': 'center','num_format': '#,##0', })
         wbf['content_float'].set_right() 
         wbf['content_float'].set_left()
 
-        wbf['content_float_price'] = workbook.add_format({'font_size': 9, 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['content_float_price'] = workbook.add_format({'font_size': 9, 'align': 'right','num_format': '#,##0.00', })
         wbf['content_float_price'].set_right() 
         wbf['content_float_price'].set_left()
 
-        wbf['content_number'] = workbook.add_format({'align': 'right', 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['content_number'] = workbook.add_format({'align': 'right', 'num_format': '#,##0', })
         wbf['content_number'].set_right() 
         wbf['content_number'].set_left() 
         
-        wbf['content_percent'] = workbook.add_format({'align': 'right','num_format': '0.00%', 'font_name': 'Georgia'})
+        wbf['content_percent'] = workbook.add_format({'align': 'right','num_format': '0.00%', })
         wbf['content_percent'].set_right() 
         wbf['content_percent'].set_left() 
                 
-        wbf['total_float'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float'].set_top()
         wbf['total_float'].set_bottom()            
         wbf['total_float'].set_left()
         wbf['total_float'].set_right()         
         
-        wbf['total_number'] = workbook.add_format({'align':'right','bg_color': colors['white_orange'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number'] = workbook.add_format({'align':'right','bg_color': colors['white_orange'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number'].set_top()
         wbf['total_number'].set_bottom()            
         wbf['total_number'].set_left()
         wbf['total_number'].set_right()
         
-        wbf['total'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total'] = workbook.add_format({'bold':1, 'bg_color':colors['white_orange'], 'align':'center', })
         wbf['total'].set_left()
         wbf['total'].set_right()
         wbf['total'].set_top()
         wbf['total'].set_bottom()
 
-        wbf['total_float_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float_yellow'].set_top()
         wbf['total_float_yellow'].set_bottom()
         wbf['total_float_yellow'].set_left()
         wbf['total_float_yellow'].set_right()
         
-        wbf['total_number_yellow'] = workbook.add_format({'align':'right','bg_color': colors['yellow'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number_yellow'] = workbook.add_format({'align':'right','bg_color': colors['yellow'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number_yellow'].set_top()
         wbf['total_number_yellow'].set_bottom()
         wbf['total_number_yellow'].set_left()
         wbf['total_number_yellow'].set_right()
         
-        wbf['total_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total_yellow'] = workbook.add_format({'bold':1, 'bg_color':colors['yellow'], 'align':'center', })
         wbf['total_yellow'].set_left()
         wbf['total_yellow'].set_right()
         wbf['total_yellow'].set_top()
         wbf['total_yellow'].set_bottom()
 
-        wbf['total_float_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'right', 'num_format':'#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'right', 'num_format':'#,##0.00', })
         wbf['total_float_orange'].set_top()
         wbf['total_float_orange'].set_bottom()            
         wbf['total_float_orange'].set_left()
         wbf['total_float_orange'].set_right()         
         
-        wbf['total_number_orange'] = workbook.add_format({'align':'right','bg_color': colors['orange'],'bold':1, 'num_format': '#,##0', 'font_name': 'Georgia'})
+        wbf['total_number_orange'] = workbook.add_format({'align':'right','bg_color': colors['orange'],'bold':1, 'num_format': '#,##0', })
         wbf['total_number_orange'].set_top()
         wbf['total_number_orange'].set_bottom()            
         wbf['total_number_orange'].set_left()
         wbf['total_number_orange'].set_right()
         
-        wbf['total_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'center', 'font_name': 'Georgia'})
+        wbf['total_orange'] = workbook.add_format({'bold':1, 'bg_color':colors['orange'], 'align':'center', })
         wbf['total_orange'].set_left()
         wbf['total_orange'].set_right()
         wbf['total_orange'].set_top()
         wbf['total_orange'].set_bottom()
 
-        wbf['total_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align':'right', 'font_name': 'Georgia'})
+        wbf['total_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align':'right', })
         wbf['total_pink'].set_left()
         wbf['total_pink'].set_right()
         wbf['total_pink'].set_top()
         wbf['total_pink'].set_bottom()
 
-        wbf['total_float_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_pink'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'right','num_format': '#,##0.00', })
         wbf['total_float_pink'].set_left()
         wbf['total_float_pink'].set_right()
         wbf['total_float_pink'].set_top()
         wbf['total_float_pink'].set_bottom()
 
-        wbf['total_float_pink2'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'center','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_pink2'] = workbook.add_format({'bold':1, 'bg_color':colors['pink'], 'align': 'center','num_format': '#,##0.00', })
         wbf['total_float_pink2'].set_left()
         wbf['total_float_pink2'].set_right()
         wbf['total_float_pink2'].set_top()
         wbf['total_float_pink2'].set_bottom() 
 
-        wbf['total_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align':'right', 'font_name': 'Georgia'})
+        wbf['total_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align':'right', })
         wbf['total_violet'].set_left()
         wbf['total_violet'].set_right()
         wbf['total_violet'].set_top()
         wbf['total_violet'].set_bottom()
 
-        wbf['total_float_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'right','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_violet'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'right','num_format': '#,##0.00', })
         wbf['total_float_violet'].set_left()
         wbf['total_float_violet'].set_right()
         wbf['total_float_violet'].set_top()
         wbf['total_float_violet'].set_bottom()
 
-        wbf['total_float_violet2'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'center','num_format': '#,##0.00', 'font_name': 'Georgia'})
+        wbf['total_float_violet2'] = workbook.add_format({'bold':1, 'bg_color':colors['violet'], 'align': 'center','num_format': '#,##0.00', })
         wbf['total_float_violet2'].set_left()
         wbf['total_float_violet2'].set_right()
         wbf['total_float_violet2'].set_top()
         wbf['total_float_violet2'].set_bottom() 
         
-        wbf['header_detail_space'] = workbook.add_format({'font_name': 'Georgia'})
+        wbf['header_detail_space'] = workbook.add_format({})
         wbf['header_detail_space'].set_left()
         wbf['header_detail_space'].set_right()
         wbf['header_detail_space'].set_top()
         wbf['header_detail_space'].set_bottom()
         
-        wbf['header_detail'] = workbook.add_format({'bg_color': '#E0FFC2', 'font_name': 'Georgia'})
+        wbf['header_detail'] = workbook.add_format({'bg_color': '#E0FFC2', })
         wbf['header_detail'].set_left()
         wbf['header_detail'].set_right()
         wbf['header_detail'].set_top()
