@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Resource: stock.warehouse -->
+        <record id="production_warehouse" model="stock.warehouse">
+            <field name="partner_id" ref="base.main_partner"/>
+            <field name="name">Production Warehouse</field>
+            <field name="code">PW</field>
+        </record>
+    </data>
+</odoo>

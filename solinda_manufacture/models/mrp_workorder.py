@@ -271,10 +271,9 @@ class MrpWorkorder(models.Model):
         If it triggered from create PO, then finish = false
         """
         for record in self:
-            virtual_location = self.env['stock.location'].search(
-                [('usage', '=', 'production'), ('company_id', '=', record.company_id.id)])
-            location_id = virtual_location.id if finish else record.production_id.location_src_id.id
-            location_dest_id = record.production_id.location_src_id.id if finish else virtual_location.id
+            production_location = self.env.ref('solinda_manufacture.production_warehouse').lot_stock_id
+            location_id = production_location.id if finish else record.production_id.location_src_id.id
+            location_dest_id = record.production_id.location_src_id.id if finish else production_location.id
             date = record.in_date if finish else record.out_date
             qty_receive = sum(record.order_id.picking_ids.move_ids_without_package.mapped('quantity_done'))
             qty = qty_receive if finish else record.total_dyeing
