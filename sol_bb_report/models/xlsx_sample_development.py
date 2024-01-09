@@ -1,5 +1,6 @@
 from odoo import models, fields
 from odoo.tools import html2plaintext
+from datetime import datetime, timedelta
 
 import io
 import base64
@@ -107,9 +108,10 @@ class XlsxSampleDevelopment(models.Model):
                     list_size = ['SIZE', 'SIZES', 'UKURAN']
                     picture = io.BytesIO(base64.b64decode(prl.image_128)) if prl.image_128 else False
                     name = prl.name
-                    color = ', '.join(
-                        prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped(
-                            'name')) or ''
+                    # color = ', '.join(
+                    #     prl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped(
+                    #         'name')) or ''
+                    color = pw_2_ids.colour
                     fabric = list(set(prl.env['purchase.order.line'].sudo().search([
                             ('order_id.date_order', '>=', datas.get('from_date')),
                             ('order_id.date_order', '<=', datas.get('to_date')),
@@ -153,7 +155,8 @@ class XlsxSampleDevelopment(models.Model):
                     taboo_company_id = self.env['res.company'].sudo().search([('id', '!=', self.env.company.id)]).id
                     taboo_product = self.env['product.product'].search(
                         [('product_tmpl_id', '=', prl.id)]).with_context(force_company=taboo_company_id)
-                    taboo_cost = taboo_product.mapped('standard_price')[0]
+                    # taboo_cost = taboo_product.mapped('standard_price')[0]
+                    taboo_cost = pw_2_ids.price_unit
                     minimum_retail = (taboo_cost + (taboo_cost * 45 / 100)) * 2 or 0.0
                     total = order_qty * taboo_cost
                     delivery_date = '' if len(pw_2_ids) < 1 else pw_2_ids[0].order_id.effective_date.strftime(
@@ -196,7 +199,7 @@ class XlsxSampleDevelopment(models.Model):
                 # sheet.write(row, 10, sum_total, formatDetailCurrencyTableReOrderNoBorder)
 
                     sheet.write(row, column + 1, name, formatDetailTable)
-                    sheet.write(row, column + 2, '', formatDetailTable)
+                    sheet.write(row, column + 2, color, formatDetailTable)
                     sheet.write(row, column + 3, '', formatDetailTable)
                     sheet.write(row, column + 4, '', formatDetailTable)
                     sheet.write(row, column + 5, '', formatDetailTable)
@@ -280,8 +283,8 @@ class XlsxSampleDevelopment(models.Model):
                     if diff_date_in_week < 1:
                         continue
 
-                    last_pw_ids = self.env['purchase.order.line'].sudo().search([
-                        ('order_id.date_order', '<=', datas.get('to_date')),
+                    last_pw_ids = self.env['purchase.order.line'].search([
+                        ('order_id.date_order', '<=', datas.get('from_date')),
                         ('order_id.state', 'in', ['purchase', 'done']),
                         ('product_id.product_tmpl_id', '=', product_tmpl.id),
                         # ('product_id.variant_seller_ids', '!=', False),
@@ -294,6 +297,7 @@ class XlsxSampleDevelopment(models.Model):
                     #     ('product_id.product_tmpl_id', '=', product_tmpl.id),
                     #     ('product_id.variant_seller_ids', '!=', False)
                     # ])
+
                     purchase_pw = last_pw_ids.mapped('order_id')
                     list_ppw = []
                     for line in purchase_pw:
@@ -345,16 +349,19 @@ class XlsxSampleDevelopment(models.Model):
                         warna = ', '.join(list(set(pw_2_ids.mapped('colour')))) if len(pw_2_ids) > 0 else '' or ''
                         qty_sold = sum(sol_ids.mapped('qty')) if len(sol_ids) > 0 else 0 or 0
                         order_qty = sum(pw_2_ids.mapped('product_qty')) if len(pw_2_ids) > 0 else 0 or 0
-                        in_stock = int(product.qty_available) or 0
+                        # in_stock = int(product.qty_available) or 0
+                        in_stock = pw_2_ids.product_id.qty_available
+
                         if in_stock < 1:
                             continue
                         # last_order_qty = ', '.join(list_ppw)
                         formula = ''
-                        if sizes and warna:
-                            sheet.write(row, 4, f'{sizes} ({warna})', formatDetailTableReOrder)
-                            list_warna.append(warna)
-                        else:
-                            sheet.write(row, 4, sizes, formatDetailTableReOrder)
+                        # if sizes and warna:
+                        #     sheet.write(row, 4, f'{sizes} ({warna})', formatDetailTableReOrder)
+                        #     list_warna.append(warna)
+                        # else:
+                        sheet.write(row, 4, sizes, formatDetailTableReOrder)
+                        # if sizes:
                         sheet.write(row, 5, qty_sold, formatDetailTableReOrder)
                         sheet.write(row, 6, in_stock, formatDetailTableReOrder)
                         # sheet.write(row, 7, last_order_qty, formatDetailTableReOrder)
@@ -375,8 +382,10 @@ class XlsxSampleDevelopment(models.Model):
                     list_color = ['COLOR', 'COLOUR', 'COLOURS', 'COLORS', 'WARNA', 'CORAK']
                     # color = ', '.join(list(set(pw_2_ids.mapped('colour')))) if len(pw_2_ids) > 0 else ''
                     # color = ', '.join(product_tmpl.attribute_line_ids.filtered(lambda x: x.attribute_id.name in list_color).value_ids.mapped('name')) or ''
-                    color = ', '.join(list_warna) or ''
-                    taboo_cost = product_tmpl.standard_price or 0.0
+                    # color = ', '.join(list_warna) or ''
+                    color = pw_2_ids.colour
+                    # taboo_cost = product_tmpl.standard_price or 0.0
+                    taboo_cost = pw_2_ids.price_unit
                     minimum_retail = (taboo_cost + (taboo_cost * 45 / 100)) * 2 or 0.0
                     retail_price = product_tmpl.list_price or 0.0
                     total = total_order_qty * taboo_cost
