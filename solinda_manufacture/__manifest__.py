@@ -38,7 +38,7 @@
         'report/action_report.xml',
         'report/production_detail.xml',
         'report/sample_detail.xml',
-        'views/templates.xml',
+        'views/cost_structure_report.xml',
         'views/mrp_payment.xml',
     ],
 }

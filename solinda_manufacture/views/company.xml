@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-
         <record id="res_company_view_comp_form_inherit" model="ir.ui.view">
             <field name="name">res.company.view.form.inherit</field>
             <field name="model">res.company</field>
@@ -12,7 +11,5 @@
                 </xpath>
             </field>
         </record>
-
     </data>
-
 </odoo>
