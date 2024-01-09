@@ -33,26 +33,27 @@ class PurchaseOrder(models.Model):
         type = []
         price_tot = 0
         for line in self.order_line:
-            name = line.product_id.name
-            colour = line.colour.strip()
-            size = line.size.strip()
-            fabric = line.fabric_por.name
-            lining = line.lining_por.name
-            qty = line.product_qty
-            price = line.price_unit
+            if not line.display_type:
+                name = line.product_id.name
+                colour = line.colour.strip()
+                size = line.size.strip()
+                fabric = line.fabric_por.name
+                lining = line.lining_por.name
+                qty = line.product_qty
+                price = line.price_unit
 
-            key = (name, colour)
-            if key in consolidated_lines:
-                consolidated_lines[key]['sizes'].append(size)
-                consolidated_lines[key]['qtyy'].append(qty)
-            else:
-                consolidated_lines[key] = {
-                    'sizes': [size],
-                    'fabric': fabric,
-                    'lining': lining,
-                    'qtyy': [qty],
-                    'price': price
-                }
+                key = (name, colour)
+                if key in consolidated_lines:
+                    consolidated_lines[key]['sizes'].append(size)
+                    consolidated_lines[key]['qtyy'].append(qty)
+                else:
+                    consolidated_lines[key] = {
+                        'sizes': [size],
+                        'fabric': fabric,
+                        'lining': lining,
+                        'qtyy': [qty],
+                        'price': price
+                    }
 
         consolidated_data = []
         for (name, colour), item_data in consolidated_lines.items():
