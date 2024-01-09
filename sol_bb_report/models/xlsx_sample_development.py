@@ -60,6 +60,13 @@ class XlsxSampleDevelopment(models.Model):
                 for x in [12]:
                     sheet.set_column(x, x, 25)
 
+                # pw_ids = self.env['purchase.order.line'].sudo().search([
+                #     ('order_id.date_order', '>=', datas.get('from_date')),
+                #     ('order_id.date_order', '<=', datas.get('to_date')),
+                #     # ('order_id.picking_type_id.barcode', '=', 'WHBB-RECEIPTS'),
+                #     ('order_id.order_type', '=', 'new_order'),
+                #     # ('order_id.state', '=', 'draft')
+                # ])
                 pw_ids = self.env['purchase.order.line'].sudo().search([
                     ('order_id.date_order', '>=', datas.get('from_date')),
                     ('order_id.date_order', '<=', datas.get('to_date')),
@@ -280,8 +287,8 @@ class XlsxSampleDevelopment(models.Model):
                     ], order='date asc', limit=1)
                     diff_date_in_week = int(round(
                         (fields.Date.today() - stock_move_ids.date.date()).days / 7,0)) if stock_move_ids.date else 0
-                    if diff_date_in_week < 1:
-                        continue
+                    # if diff_date_in_week < 1:
+                    #     continue
 
                     last_pw_ids = self.env['purchase.order.line'].search([
                         ('order_id.date_order', '<=', datas.get('from_date')),
