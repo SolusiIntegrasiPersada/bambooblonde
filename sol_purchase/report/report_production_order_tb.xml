@@ -107,7 +107,7 @@
                     <tbody style="font-size: 12px;">
                         <t t-set="no" t-value="1"/>
                         <t t-foreach="doc.order_line" t-as="order">
-                            <t t-if="not order.display_type">
+                            <t t-if="not order.display_type and (order.product_id.detailed_type != 'service')">
                                 <tr style="height: 18px;">
                                       <td
                                           style="width: 6.2213%; text-align: center; border: 1px solid black; height: 18px; padding:5px;">

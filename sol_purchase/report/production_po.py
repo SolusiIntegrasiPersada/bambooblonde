@@ -33,7 +33,7 @@ class PurchaseOrder(models.Model):
         type = []
         price_tot = 0
         for line in self.order_line:
-            if not line.display_type:
+            if not line.display_type and line.product_id.detailed_type != 'service':
                 name = line.product_id.name
                 colour = line.colour.strip()
                 size = line.size.strip()
