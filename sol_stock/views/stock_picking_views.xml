@@ -5,11 +5,16 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <form position="inside">
                     <field name="_barcode_scanned" widget="barcode_handler"/>
                 </form>
-                <!--                <xpath expr="//header" position="inside">-->
-                <!--                    <button name="action_print_quotation_receive" string="Print Report Receiving" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'mrp_operation')]}"/>-->
+                <xpath expr="//button[@name='action_open_label_layout']" position="after">
+                    <button name="action_report_supplier" string="Print Receiving Supplier" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                </xpath>
+
                 <!--                    <button name="action_print_quotation_internal" string="Print Report Internal Transfer" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'internal')]}"/>-->
                 <!--                    <button name="action_print_quotation_return" string="Print Report Return" type="object" class="oe_highlight" attrs="{'invisible': [('picking_type_code', 'not in', 'mrp_operation')]}"/>-->
                 <!--                </xpath>-->

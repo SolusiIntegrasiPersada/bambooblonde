@@ -116,6 +116,18 @@
     </record>
 
 
+    <record id="action_report_receive_supplier" model="ir.actions.report">
+      <field name="name">Print Receive Supplier</field>
+      <field name="model">stock.picking</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">sol_stock.report_receive_supplier</field>
+      <field name="report_file">sol_stock.report_receive_supplier</field>
+      <field name="paperformat_id" ref="sol_stock.report_paperformat_a4_portrait"/>
+      <field name="print_report_name">'RCV SUPPLIER - %s - %s' % (object.partner_id.name or '', object.name)</field>
+      <field name="binding_model_id" ref="stock.model_stock_picking"/>
+      <field name="binding_type">report</field>
+    </record>
+
   </data>
   
 

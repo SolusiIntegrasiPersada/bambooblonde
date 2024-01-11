@@ -41,5 +41,6 @@
         'report/report_return.xml',
         'report/report_production.xml',
         'report/report_foc.xml',
+        'report/report_receive_supp.xml',
     ],
 }

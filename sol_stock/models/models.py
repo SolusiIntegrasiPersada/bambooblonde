@@ -28,6 +28,9 @@ class StockPicking(models.Model):
     is_foc_type = fields.Boolean('FOC', related='picking_type_id.is_foc_type')
     total_product_uom_qty = fields.Float(string='Total Product Uom Qty', compute='_compute_total_product_uom_qty')
 
+    def action_report_supplier(self):
+        return self.env.ref('sol_stock.action_report_receive_supplier').report_action(self)
+
     @api.constrains('location_id', 'location_dest_id')
     def _check_location(self):
         for rec in self:
