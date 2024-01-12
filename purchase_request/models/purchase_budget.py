@@ -55,7 +55,8 @@ class PurchaseBudget(models.Model):
             remaining_amount = record.budget_amount - usage_amount
             record.usage_amount = usage_amount
             record.remaining_amount = remaining_amount
-    
+
+
 class CategoryBudget(models.Model):
     _name = 'category.budget'
     _description = 'Category Budget'
@@ -71,20 +72,24 @@ class CategoryBudget(models.Model):
     total_value = fields.Float(string='Total', compute='_compute_stock_purchase')
 
     def get_purchase_domain(self, type):
-        current_month = datetime(year=datetime.today().year, month=int(self.budget_id.month), day=1)
-        start_month = current_month - timedelta(days=self.budget_id.budget_days)
+        start_month = datetime(year=datetime.today().year, month=int(self.budget_id.month), day=1)
+        end_month = start_month + timedelta(days=self.budget_id.budget_days)
         if type == 'po':
-            domain = [('date_planned', '>=', start_month), ('date_planned', '<=', current_month)]
+            domain = [('order_id.date_approve', '>=', start_month), ('order_id.date_approve', '<=', end_month)]
         else:
-            domain = [('create_date', '>=', start_month), ('create_date', '<=', current_month)]
+            domain = [('create_date', '>=', start_month), ('create_date', '<=', end_month)]
         return domain
 
     @api.onchange('category_id')
     def _onchange_category_id(self):
         if not self.category_id:
             domain = self.get_purchase_domain(type='po')
-            category_ids = self.env['purchase.order.line'].search(domain).mapped('product_id.product_tmpl_id.categ_id.id')
-            return {'domain': {'category_id': [('id', 'in', category_ids)]}} if category_ids else {}
+            category_ids = self.env['purchase.order.line'].search(domain).mapped(
+                'product_id.product_tmpl_id.categ_id')
+            sub_category_ids = category_ids.filtered(
+                lambda s: s.parent_id.category_product == 'category'
+            ).mapped('parent_id.id')
+            return {'domain': {'category_id': [('id', 'in', sub_category_ids)]}} if sub_category_ids else {}
 
     @api.depends('category_id', 'budget_id.budget_amount')
     def _compute_budget_guide(self):
@@ -92,8 +97,6 @@ class CategoryBudget(models.Model):
             if record.category_id:
                 domain = record.get_purchase_domain(type='pos')
                 domain += [('product_id.product_tmpl_id.categ_id.id', '=', record.category_id.id)]
-
-                # sales_amount = sum(self.env['pos.order.line'].search(domain).mapped('price_unit'))
                 cost_amount = sum(self.env['pos.order.line'].search(domain).mapped('product_id.standard_price'))
                 record.budget_guide = ((cost_amount / (record.budget_id.budget_days / 30)) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
 
