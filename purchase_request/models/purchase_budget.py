@@ -95,9 +95,10 @@ class CategoryBudget(models.Model):
     def _compute_budget_guide(self):
         for record in self:
             if record.category_id:
-                domain = record.get_purchase_domain(type='pos')
-                domain += [('product_id.product_tmpl_id.categ_id.id', '=', record.category_id.id)]
-                cost_amount = sum(self.env['pos.order.line'].search(domain).mapped('product_id.standard_price'))
+                domain = record.get_purchase_domain(type='po')
+                category_ids = self.env['product.category'].search([('parent_id', '=', record.category_id.id)]).mapped('id')
+                domain += [('product_id.product_tmpl_id.categ_id.id', 'in', category_ids)]
+                cost_amount = sum(self.env['purchase.order.line'].search(domain).mapped('product_id.standard_price'))
                 record.budget_guide = ((cost_amount / (record.budget_id.budget_days / 30)) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
 
     def _inverse_budget_guide(self):
@@ -113,18 +114,20 @@ class CategoryBudget(models.Model):
         for record in self:
             stock_percentage, purchase_qty, total_value = 0, 0, 0
             if record.category_id:
+                category_ids = self.env['product.category'].search(
+                    [('parent_id', '=', record.category_id.id)]).mapped('id')
                 product_ids = self.env['product.product'].search(
-                    [('product_tmpl_id.categ_id.id', '=', record.category_id.id)]).mapped('id')
+                    [('product_tmpl_id.categ_id.id', 'in', category_ids)]).mapped('id')
                 domain = record.get_purchase_domain(type='po')
                 domain += [('product_id', 'in', product_ids), ('state', '=', 'purchase')]
                 purchase_obj = self.env['purchase.order.line'].search(domain)
 
-                product_cost = self.env['stock.quant'].search(
-                    [('product_id', 'in', product_ids)]).mapped('product_id.standard_price')
-
-                stock_percentage = (sum(product_cost) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
+                budget_ids = record.budget_id.budget_ids
+                budget_ids._compute_budget_guide()
+                total_cost = sum(budget_ids.mapped('budget_amount'))
+                stock_percentage = record.budget_amount / total_cost if total_cost else 0
                 purchase_qty = sum(purchase_obj.mapped('product_qty')) or 0
-                total_value = sum(purchase_obj.mapped('price_unit')) or 0
+                total_value = sum([l.product_qty * l.price_unit for l in purchase_obj])
 
             record.update({
                 'stock_percentage': stock_percentage,
