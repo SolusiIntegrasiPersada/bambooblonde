@@ -176,27 +176,31 @@ class WhatsStockinSoldReport(models.TransientModel):
             row += 1
             no = 1
 
-            domain = [
-                ('order_id.state', 'not in', ['draft', 'cancel']),
-                ('order_id.date_order', '>=', self.start_period),
-                ('order_id.date_order', '<=', self.end_period),
-            ]
+            domain_product = self.env['product.product'].with_context(to_date=self.end_period).search([
+                ('type', '=', 'product'),
+            ])
+
+            # domain = [
+            #     ('order_id.state', 'not in', ['draft', 'cancel']),
+            #     ('order_id.date_order', '>=', self.start_period),
+            #     ('order_id.date_order', '<=', self.end_period),
+            # ]
 
             if self.class_product_id and self.product_category_id:
-                domain += [
-                    ('product_id.class_product', '=', self.class_product_id.id),
-                    ('product_id.product_category_categ_id', '=', self.product_category_id.id),
+                domain_product += [
+                    ('class_product', '=', self.class_product_id.id),
+                    ('product_category_categ_id', '=', self.product_category_id.id),
                 ]
             elif self.class_product_id:
-                domain.append(('product_id.class_product', '=', self.class_product_id.id))
+                domain_product.append(('class_product', '=', self.class_product_id.id))
             elif self.product_category_id:
-                domain.append(('product_id.product_category_categ_id', '=', self.product_category_id.id))
+                domain_product.append(('product_category_categ_id', '=', self.product_category_id.id))
 
-            pos_orders = self.env['pos.order.line'].search(domain)
+            # pos_orders = self.env['pos.order.line'].search(domain)
 
             report_data = {}
 
-            data_pos_orders = pos_orders.filtered(lambda x: not x.product_id.is_produk_diskon and not x.product_id.is_produk_promotion and not x.product_id.is_produk_promotion_free)
+            data_pos_orders = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free)
 
             for line in data_pos_orders:
                 notes = ''
@@ -208,7 +212,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 purchase_count = 0
                 purchase_list = []
                 for move in self.env['stock.move'].search([
-                        ('product_id', '=', line.product_id.id),
+                        ('product_id', '=', line.id),
                         ('state', 'in', ['assigned','done']),
                         ('location_dest_id.usage', '=', 'internal'),
                         ('picking_id.purchase_id.date_planned', '>=', self.start_period),
@@ -225,7 +229,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                     notes = self.end_period.strftime('%B') + ', ' + str(qty_received) + 'pcs'
                 else:
                     for move in self.env['stock.move'].search([
-                            ('product_id', '=', line.product_id.id),
+                            ('product_id', '=', line.id),
                             ('state', '=', 'assigned'),
                             ('location_dest_id.usage', '=', 'internal'),
                             ('picking_id.purchase_id.date_planned', '<=', self.end_period)]):
@@ -234,18 +238,23 @@ class WhatsStockinSoldReport(models.TransientModel):
                     if incoming_qty > 0:
                         notes = 'just comming last week'
 
-                prod = line.product_id
+                list_color = ['COLOR', 'COLOUR', 'COLOURS', 'COLORS', 'WARNA', 'CORAK']
+                list_size = ['SIZE', 'UKURAN']
+
+                prod = line
                 class_id = prod.class_product
                 category = prod.product_model_categ_id
                 parent_category = prod.product_category_categ_id
-                style = str(prod.name) + '-' + str(line.color)
                 stockname = prod.name
                 stockid = prod.default_code
-                color = line.color
+                color_size_ids = prod.product_template_variant_value_ids.mapped('display_name') or ''
+                get_color = [c.split(': ')[1] for c in color_size_ids if any(attr in c for attr in list_color)]
+                get_size = [s.split(': ')[1] for s in color_size_ids if any(attr in s for attr in list_size)]
+                color = get_color[0] if get_color else ''
+                size = get_size[0] if get_size else ''
                 barcode = prod.barcode
-                size = line.size
-                # notes = line.order_id.note
-                cost_price = line.cost_in_order or 0
+                style = str(stockname) + '-' + str(color)
+                cost_price = prod.standard_price
                 retail_price = prod.lst_price
                 # qty_sold = line.qty
                 # qty_stock = prod.qty_available
@@ -299,7 +308,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 # warehouse = line.order_id.picking_type_id.warehouse_id
                 # age = int((fields.Date.today() - line.order_id.date_order.date()).days / 7)
                 today = datetime.now()
-                moves = sorted(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.state == 'done' and x.product_id == line.product_id), key=lambda x: x.date)
+                moves = sorted(line.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.state == 'done' and x.product_id == prod), key=lambda x: x.date)
                 # age_in_weeks = ((today - moves[0].date).days) // 7 if moves else 0
                 age_in_weeks = ceil(((today - moves[0].date).days) / 7) if moves else 0
                 age = int(age_in_weeks)
