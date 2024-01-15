@@ -75,7 +75,11 @@ class CategoryBudget(models.Model):
         start_month = datetime(year=datetime.today().year, month=int(self.budget_id.month), day=1)
         end_month = start_month + timedelta(days=self.budget_id.budget_days)
         if type == 'po':
-            domain = [('order_id.date_approve', '>=', start_month), ('order_id.date_approve', '<=', end_month)]
+            domain = [
+                ('order_id.date_approve', '>=', start_month),
+                ('order_id.date_approve', '<=', end_month),
+                ('order_id.state', 'in', ['purchase', 'done'])
+            ]
         else:
             domain = [('create_date', '>=', start_month), ('create_date', '<=', end_month)]
         return domain
@@ -119,7 +123,7 @@ class CategoryBudget(models.Model):
                 product_ids = self.env['product.product'].search(
                     [('product_tmpl_id.categ_id.id', 'in', category_ids)]).mapped('id')
                 domain = record.get_purchase_domain(type='po')
-                domain += [('product_id', 'in', product_ids), ('state', '=', 'purchase')]
+                domain += [('product_id', 'in', product_ids)]
                 purchase_obj = self.env['purchase.order.line'].search(domain)
 
                 budget_ids = record.budget_id.budget_ids
