@@ -66,7 +66,7 @@ class CategoryBudget(models.Model):
 
     budget_id = fields.Many2one('purchase.budget', string='Purchase Budget', ondelete='cascade')
     category_id = fields.Many2one('product.category', string='Product Category')
-    budget_guide = fields.Float(string='Budget Guide', compute='_compute_budget_guide', inverse='_inverse_budget_guide')
+    budget_guide = fields.Float(string='Budget Guide', compute='_compute_budget', inverse='_inverse_budget', store=True)
     budget_amount = fields.Float(string='Budget', compute='_compute_budget_amount')
     actual_percentage = fields.Float(string='Actual', compute='_compute_actual_percentage')
     stock_amount = fields.Float(string='In Stock Amount', compute='_compute_stock_purchase')
@@ -99,7 +99,7 @@ class CategoryBudget(models.Model):
             return {'domain': {'category_id': [('id', 'in', sub_category_ids)]}} if sub_category_ids else {}
 
     @api.depends('category_id', 'budget_id.budget_amount')
-    def _compute_budget_guide(self):
+    def _compute_budget(self):
         for record in self:
             if record.category_id:
                 domain = record.get_purchase_domain(type='po')
@@ -107,12 +107,13 @@ class CategoryBudget(models.Model):
                 domain += [('product_id.product_tmpl_id.categ_id.id', 'in', category_ids)]
                 cost_amount = self.env['purchase.order.line'].search(domain)
                 total_cost = sum([l.product_qty * l.product_id.standard_price for l in cost_amount])
+
                 record.budget_guide = ((total_cost / record.budget_id.budget_days) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
 
-    def _inverse_budget_guide(self):
+    def _inverse_budget(self):
         for record in self:
-            if self.env.context.get('manual_budget'):
-                record.budget_amount = record.budget_guide * record.budget_id.budget_amount
+            if record.budget_guide:
+                record.update({'budget_amount': record.budget_guide * record.budget_id.budget_amount})
 
     @api.depends('budget_guide', 'budget_id.budget_amount')
     def _compute_budget_amount(self):
