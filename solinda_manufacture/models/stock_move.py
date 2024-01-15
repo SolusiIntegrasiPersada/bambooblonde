@@ -10,6 +10,7 @@ class StockMove(models.Model):
     total_cost = fields.Float(string='Total Cost', compute='_compute_total_cost')
     supplier = fields.Many2one(comodel_name='res.partner', string='Supplier')
     color = fields.Many2one(comodel_name='dpt.color', string='Color')
+    cost_share = fields.Float(compute='_compute_cost_share', store=True)
     color_id = fields.Many2one(
         comodel_name='product.attribute.value',
         string='Color',
@@ -160,16 +161,17 @@ class StockMove(models.Model):
                     line.total_buy if line.total_buy else line.product_uom_qty)
             })
 
-    @api.depends('production_id')
+    @api.depends('production_id.move_byproduct_ids')
     @api.onchange('product_id', 'product_uom_qty')
-    def calculate_cost_share(self):
+    def _compute_cost_share(self):
         for record in self:
             product_tmpl_id = record.product_id.product_tmpl_id.id
             production_tmpl_id = record.production_id.product_tmpl_id.id
             if product_tmpl_id == production_tmpl_id:
                 byproducts_qty = sum(record.production_id.move_byproduct_ids.filtered(
-                    lambda m: m.product_id.product_tmpl_id.id == production_tmpl_id
+                    lambda m: m.product_id.product_tmpl_id.id == production_tmpl_id and m.id != record.id
                 ).mapped('product_uom_qty'))
+                byproducts_qty += record.product_uom_qty
                 record.cost_share = (record.product_uom_qty / byproducts_qty) * 100 if byproducts_qty else 0
 
 
