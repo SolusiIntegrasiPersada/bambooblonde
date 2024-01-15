@@ -1,6 +1,8 @@
 # Copyright 2018-2019 ForgeFlow, S.L.
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0)
 
+import calendar
+
 from datetime import datetime, timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -66,13 +68,14 @@ class CategoryBudget(models.Model):
     category_id = fields.Many2one('product.category', string='Product Category')
     budget_guide = fields.Float(string='Budget Guide', compute='_compute_budget_guide', inverse='_inverse_budget_guide')
     budget_amount = fields.Float(string='Budget', compute='_compute_budget_amount')
-    actual_percentage = fields.Float(string='Actual')
-    stock_percentage = fields.Float(string='In Stock', compute='_compute_stock_purchase')
+    actual_percentage = fields.Float(string='Actual', compute='_compute_actual_percentage')
+    stock_amount = fields.Float(string='In Stock Amount', compute='_compute_stock_purchase')
+    stock_percentage = fields.Float(string='In Stock', compute='_compute_stock_percentage')
     purchase_qty = fields.Integer(string='Order', compute='_compute_stock_purchase')
     total_value = fields.Float(string='Total', compute='_compute_stock_purchase')
 
     def get_purchase_domain(self, type):
-        start_month = datetime(year=datetime.today().year, month=int(self.budget_id.month), day=1)
+        start_month = datetime(year=self.budget_id.year, month=int(self.budget_id.month), day=1)
         end_month = start_month + timedelta(days=self.budget_id.budget_days)
         if type == 'po':
             domain = [
@@ -102,11 +105,14 @@ class CategoryBudget(models.Model):
                 domain = record.get_purchase_domain(type='po')
                 category_ids = self.env['product.category'].search([('parent_id', '=', record.category_id.id)]).mapped('id')
                 domain += [('product_id.product_tmpl_id.categ_id.id', 'in', category_ids)]
-                cost_amount = sum(self.env['purchase.order.line'].search(domain).mapped('product_id.standard_price'))
-                record.budget_guide = ((cost_amount / (record.budget_id.budget_days / 30)) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
+                cost_amount = self.env['purchase.order.line'].search(domain)
+                total_cost = sum([l.product_qty * l.product_id.standard_price for l in cost_amount])
+                record.budget_guide = ((total_cost / record.budget_id.budget_days) / record.budget_id.budget_amount) if record.budget_id.budget_amount else 0
 
     def _inverse_budget_guide(self):
-        pass
+        for record in self:
+            if self.env.context.get('manual_budget'):
+                record.budget_amount = record.budget_guide * record.budget_id.budget_amount
 
     @api.depends('budget_guide', 'budget_id.budget_amount')
     def _compute_budget_amount(self):
@@ -116,25 +122,42 @@ class CategoryBudget(models.Model):
     @api.depends('category_id')
     def _compute_stock_purchase(self):
         for record in self:
-            stock_percentage, purchase_qty, total_value = 0, 0, 0
+            stock_amount, purchase_qty, total_value = 0, 0, 0
             if record.category_id:
                 category_ids = self.env['product.category'].search(
                     [('parent_id', '=', record.category_id.id)]).mapped('id')
-                product_ids = self.env['product.product'].search(
-                    [('product_tmpl_id.categ_id.id', 'in', category_ids)]).mapped('id')
+                product_obj = self.env['product.product'].search(
+                    [('product_tmpl_id.categ_id.id', 'in', category_ids)])
                 domain = record.get_purchase_domain(type='po')
-                domain += [('product_id', 'in', product_ids)]
+                domain += [('product_id', 'in', product_obj.mapped('id'))]
                 purchase_obj = self.env['purchase.order.line'].search(domain)
 
-                budget_ids = record.budget_id.budget_ids
-                budget_ids._compute_budget_guide()
-                total_cost = sum(budget_ids.mapped('budget_amount'))
-                stock_percentage = record.budget_amount / total_cost if total_cost else 0
+                stock_amount = 0
+                products = self.env['product.product'].search([('id', 'in', product_obj.mapped('id'))])
+                to_date = datetime(
+                    year=record.budget_id.year,
+                    month=int(record.budget_id.month),
+                    day=calendar.monthrange(record.budget_id.year, int(record.budget_id.month))[1]
+                )
+                for prod in products:
+                    stock_amount += prod.with_context({'to_date': to_date}).qty_available * prod.standard_price
+
                 purchase_qty = sum(purchase_obj.mapped('product_qty')) or 0
                 total_value = sum([l.product_qty * l.price_unit for l in purchase_obj])
 
             record.update({
-                'stock_percentage': stock_percentage,
+                'stock_amount': stock_amount,
                 'purchase_qty': purchase_qty,
-                'total_value': total_value
+                'total_value': total_value,
             })
+
+    @api.depends('total_value', 'budget_id.usage_amount')
+    def _compute_actual_percentage(self):
+        for record in self:
+            record.actual_percentage = record.total_value / record.budget_id.usage_amount if record.budget_id.usage_amount else 0
+
+    @api.depends('stock_amount', 'budget_id.budget_ids')
+    def _compute_stock_percentage(self):
+        for record in self:
+            total_stock_amount = sum(record.budget_id.budget_ids.mapped('stock_amount'))
+            record.stock_percentage = record.stock_amount / total_stock_amount if total_stock_amount else 0

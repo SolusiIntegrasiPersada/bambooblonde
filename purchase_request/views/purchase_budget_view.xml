@@ -32,9 +32,10 @@
                                 <tree editable="bottom">
                                     <field name="category_id"
                                            options="{'no_show':True,'no_create':True,'no_open':True}"/>
-                                    <field name="budget_guide" widget="percentage"/>
+                                    <field name="budget_guide" widget="percentage" context="{'manual_budget': True}"/>
                                     <field name="budget_amount" widget="monetary" sum="budget"/>
                                     <field name="actual_percentage" widget="percentage"/>
+                                    <field name="stock_amount" widget="monetary"/>
                                     <field name="stock_percentage" widget="percentage"/>
                                     <field name="purchase_qty" sum="purchase"/>
                                     <field name="total_value" widget="monetary" sum="total"/>
