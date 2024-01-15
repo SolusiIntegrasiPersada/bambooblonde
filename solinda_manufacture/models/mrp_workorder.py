@@ -304,4 +304,21 @@ class MrpWorkorder(models.Model):
         """
         res = super(MrpWorkorder, self).button_finish()
         self.create_workorder_moves(finish=True)
+        for record in self:
+            po_price = record.order_id.order_line.price_subtotal if record.order_id else 0.0
+            record.write({'costs_hour': po_price})
+            for wc in record.time_ids:
+                wc.write({'duration': 1})
+        return res
+
+    def _compute_duration(self):
+        """
+        Inherit the function to store the duration as one
+        :return:
+        """
+        res = super()._compute_duration()
+        for record in self:
+            record.duration = 1
+            record.duration_unit = 1
+        self._create_or_update_analytic_entry()
         return res

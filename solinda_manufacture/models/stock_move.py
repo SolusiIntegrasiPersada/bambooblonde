@@ -160,6 +160,17 @@ class StockMove(models.Model):
                     line.total_buy if line.total_buy else line.product_uom_qty)
             })
 
+    @api.depends('production_id')
+    @api.onchange('product_id', 'product_uom_qty')
+    def calculate_cost_share(self):
+        for record in self:
+            product_tmpl_id = record.product_id.product_tmpl_id.id
+            production_tmpl_id = record.production_id.product_tmpl_id.id
+            if product_tmpl_id == production_tmpl_id:
+                byproducts_qty = sum(record.production_id.move_byproduct_ids.filtered(
+                    lambda m: m.product_id.product_tmpl_id.id == production_tmpl_id
+                ).mapped('product_uom_qty'))
+                record.cost_share = (record.product_uom_qty / byproducts_qty) * 100 if byproducts_qty else 0
 
 
 class StockMoveLine(models.Model):
