@@ -288,7 +288,7 @@ class WhatsStockinSoldReport(models.TransientModel):
                 # qty_stock = sum(line.product_id.qty_available for line in lines)
                 # qty_stock = sum(line.product_id.product_tmpl_id.qty_available for line in lines)
 
-                warehouse_quantities = prod.stock_quant_ids.filtered(
+                warehouse_quantities = line.stock_quant_ids.filtered(
                     lambda x: x.location_id.usage == 'internal' and
                               x.location_id.warehouse_id.code in (
                               'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
