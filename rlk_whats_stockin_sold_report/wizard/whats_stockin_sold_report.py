@@ -303,6 +303,8 @@ class WhatsStockinSoldReport(models.TransientModel):
                                      for wh in set(warehouse_quantities.mapped('location_id.warehouse_id'))}
 
                 total_qty_stock = sum(qty_stock_per_warehouse.values())
+                if total_qty_stock == 0 and total_qty_sold == 0:
+                    continue
                 # total_qty_sold += qty_sold
 
                 # warehouse = line.order_id.picking_type_id.warehouse_id
@@ -1126,6 +1128,8 @@ class WhatsStockinSoldReport(models.TransientModel):
 
                 total_qty_stock = sum(qty_stock_per_warehouse.values())
                 # total_qty_sold += qty_sold
+                if total_qty_stock == 0 and total_qty_sold == 0:
+                    continue
 
                 # warehouse = line.order_id.picking_type_id.warehouse_id
                 # age = int((fields.Date.today() - line.order_id.date_order.date()).days / 7)
