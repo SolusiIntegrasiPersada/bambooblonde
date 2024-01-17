@@ -1,4 +1,4 @@
-import math
+from decimal import *
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
@@ -177,7 +177,8 @@ class StockMove(models.Model):
                 ).mapped('product_uom_qty'))
                 byproducts_qty += record.product_uom_qty
                 try:
-                    cost_share = math.floor(((record.product_uom_qty / byproducts_qty) * 100) / 100.0)
+                    byproducts_share = (record.product_uom_qty / byproducts_qty) * 100
+                    cost_share = Decimal(byproducts_share).quantize(Decimal('.01'), rounding=ROUND_DOWN)
                 except:
                     cost_share = 0.0
                 record.cost_share = cost_share or 0
