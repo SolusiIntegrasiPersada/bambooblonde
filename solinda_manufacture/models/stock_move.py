@@ -1,3 +1,5 @@
+import math
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from datetime import datetime
@@ -27,10 +29,12 @@ class StockMove(models.Model):
     workorder_notes = fields.Char(string='Workorder')
 
     # Conversion Yard to M
-    uom_cost = fields.Many2one('uom.uom', string="UoM", default=lambda self: self.env['uom.uom'].search([('name', '=', 'm')], limit=1))
+    uom_cost = fields.Many2one('uom.uom', string="UoM",
+                               default=lambda self: self.env['uom.uom'].search([('name', '=', 'm')], limit=1))
     uom_total_buy = fields.Many2one('uom.uom', string="UoM", domain="[('category_id', '=', product_uom_category_id)]")
     to_consume_conversion = fields.Float(string="Conversion", compute="_conversion_to_yard")
-    to_consume_uom = fields.Many2one('uom.uom', string="UoM", default=lambda self: self.env['uom.uom'].search([('name', '=', 'yard')], limit=1))
+    to_consume_uom = fields.Many2one('uom.uom', string="UoM",
+                                     default=lambda self: self.env['uom.uom'].search([('name', '=', 'yard')], limit=1))
 
     @api.depends('product_uom_qty')
     def _conversion_to_yard(self):
@@ -126,30 +130,30 @@ class StockMove(models.Model):
                     move.update({
                         'raw_material_production_id': None
                     })
-            
-            if i.company_id.id == 1 :
+
+            if i.company_id.id == 1:
                 sql_query = """
-                    select id from stock_picking where origin = %s and company_id = 1
+                    SELECT id FROM stock_picking WHERE origin = %s AND company_id = 1
                     """
                 self.env.cr.execute(sql_query, (po.name,))
                 id_picking = self.env.cr.dictfetchall()
                 id_picking = id_picking[0]['id']
 
                 sql_query = """
-                    update stock_picking set location_dest_id = %s where id = %s
+                    UPDATE stock_picking SET location_dest_id = %s WHERE id = %s
                     """
-                self.env.cr.execute(sql_query, (8,id_picking,))
+                self.env.cr.execute(sql_query, (8, id_picking,))
 
                 sql_query = """
-                    update stock_move set location_dest_id = %s where picking_id = %s
+                    UPDATE stock_move SET location_dest_id = %s WHERE picking_id = %s
                     """
-                self.env.cr.execute(sql_query, (8,id_picking,))
+                self.env.cr.execute(sql_query, (8, id_picking,))
 
                 sql_query = """
-                    update stock_move_line set location_dest_id = %s where picking_id = %s
+                    UPDATE stock_move_line SET location_dest_id = %s WHERE picking_id = %s
                     """
-                self.env.cr.execute(sql_query, (8,id_picking,))
-                x=1
+                self.env.cr.execute(sql_query, (8, id_picking,))
+                x = 1
 
             return i.show_po()
 
@@ -172,7 +176,11 @@ class StockMove(models.Model):
                     lambda m: m.product_id.product_tmpl_id.id == production_tmpl_id and m.id != record.id
                 ).mapped('product_uom_qty'))
                 byproducts_qty += record.product_uom_qty
-                record.cost_share = (record.product_uom_qty / byproducts_qty) * 100 if byproducts_qty else 0
+                try:
+                    cost_share = math.floor(((record.product_uom_qty / byproducts_qty) * 100) / 100.0)
+                except:
+                    cost_share = 0.0
+                record.cost_share = cost_share or 0
 
 
 class StockMoveLine(models.Model):
