@@ -17,6 +17,19 @@ class MrpProduction(models.Model):
     stock_picking_id = fields.Many2one('stock.picking', string="Stock")
     count_service = fields.Integer(string="Count", compute="_compute_count_service")
 
+    def _cal_price(self, consumed_moves):
+        for record in self:
+            if record.product_qty:
+                costs = sum(record.workorder_ids.mapped('total_cost'))
+                if costs:
+                    byproducts_qty = sum(record.move_byproduct_ids.filtered(
+                        lambda m: m.product_id.product_tmpl_id.id == record.product_tmpl_id.id
+                                  and m.product_id.id != record.product_id.id
+                    ).mapped('product_uom_qty'))
+                    record.extra_cost = costs / byproducts_qty
+
+        return super()._cal_price(consumed_moves)
+
     @api.depends('move_finished_ids')
     def _compute_move_byproduct_ids(self):
         for order in self:
@@ -36,7 +49,6 @@ class MrpProduction(models.Model):
         for line in self:
             total_material = 0
             total_operation = 0
-            total = 0
             for move in line.move_raw_ids:
                 total_material += move.total_cost
             for op in line.workorder_ids:
@@ -73,39 +85,22 @@ class MrpProduction(models.Model):
 
     def update_qty_consume_with_variant(self):
         for move in self.move_raw_ids:
-            qty_consume = 0
-            qty_po = 0
-            qty_pr = 0
-            po_qty = 0
-            # for var in self.mrp_bom_variant_ids:
-            #     if move.product_id.id == var.product_id.id:
-            #         po_qty += var.po_qty
             move.po_qty = self.purchase_id.total_purchase_qty
             move.product_uom_qty = move.po_qty * move.hk
-            # move.quantity_done = move.product_uom_qty
             move.supplier = move.bom_line_id.supplier
             move.color_id = move.bom_line_id.color
             move.cost_material = move.bom_line_id.cost_material
 
     def update_qty_consume_with_variant_pr(self):
         for move in self.move_raw_ids:
-            qty_consume = 0
-            qty_po = 0
-            qty_pr = 0
-            po_qty = 0
-            # for var in self.mrp_bom_variant_ids:
-            #     if move.product_id.id == var.product_id.id:
-            #         po_qty += var.po_qty
             move.po_qty = self.purchase_request_id.total_purchase_qty
             move.product_uom_qty = move.po_qty * move.hk
-            # move.quantity_done = move.product_uom_qty
             move.supplier = move.bom_line_id.supplier
             move.color_id = move.bom_line_id.color
             move.cost_material = move.bom_line_id.cost_material
 
     def update_qty_consume_with_variant_wo(self):
         for move in self.move_raw_ids:
-            qty_consume = 0
             po_qty = 0
             for var in self.mrp_bom_variant_ids:
                 if move.product_id.id == var.product_id.id:
@@ -113,7 +108,6 @@ class MrpProduction(models.Model):
             move.po_qty = po_qty
             move.product_uom_qty = move.po_qty * move.hk
             move.quantity_done = move.product_uom_qty
-            # self.qty_po = po_qty
 
     def update_qty_variant(self):
         if self.mrp_bom_variant_ids:
@@ -121,7 +115,6 @@ class MrpProduction(models.Model):
 
         variant_ids = []
         for i in self:
-            # purchase_obj = self.purchase_id.search([('')])
             for b in i.bom_id.bom_line_variant_ids:
                 qty_po = 0
                 sizes = b.sizes.strip('()')
@@ -145,8 +138,6 @@ class MrpProduction(models.Model):
                     # 'shrinkage' : b.shrinkage,
                     # 'total_qty' : total_qty,
                 }))
-
-
         i.mrp_bom_variant_ids = variant_ids
 
     def update_qty_variant_pr(self):
@@ -155,7 +146,6 @@ class MrpProduction(models.Model):
 
         variant_ids = []
         for i in self:
-            # purchase_obj = self.purchase_id.search([('')])
             for b in i.bom_id.bom_line_variant_ids:
                 qty_po = 0
                 sizes = b.sizes.strip('()')
@@ -176,11 +166,7 @@ class MrpProduction(models.Model):
                     'ratio': b.ratio,
                     'sizes': b.sizes,
                     'color': b.color,
-                    # 'shrinkage' : b.shrinkage,
-                    # 'total_qty' : total_qty,
                 }))
-
-
         i.mrp_bom_variant_ids = variant_ids
 
     def _create_workorder(self):

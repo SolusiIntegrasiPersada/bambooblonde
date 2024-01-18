@@ -165,10 +165,10 @@ class StockMove(models.Model):
                     line.total_buy if line.total_buy else line.product_uom_qty)
             })
 
-    @api.depends('production_id.move_byproduct_ids')
-    @api.onchange('product_id', 'product_uom_qty')
+    @api.depends('production_id.move_byproduct_ids', 'product_id', 'product_uom_qty')
     def _compute_cost_share(self):
         for record in self:
+            cost_share = 0.0
             product_tmpl_id = record.product_id.product_tmpl_id.id
             production_tmpl_id = record.production_id.product_tmpl_id.id
             if product_tmpl_id == production_tmpl_id:
@@ -178,10 +178,10 @@ class StockMove(models.Model):
                 byproducts_qty += record.product_uom_qty
                 try:
                     byproducts_share = (record.product_uom_qty / byproducts_qty) * 100
-                    cost_share = Decimal(byproducts_share).quantize(Decimal('.01'), rounding=ROUND_DOWN)
+                    cost_share = float(Decimal(byproducts_share).quantize(Decimal('.01'), rounding=ROUND_DOWN))
                 except:
-                    cost_share = 0.0
-                record.cost_share = cost_share or 0
+                    pass
+            record.cost_share = cost_share or 0
 
 
 class StockMoveLine(models.Model):
