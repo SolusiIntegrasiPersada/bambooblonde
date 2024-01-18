@@ -172,6 +172,8 @@ class StockMove(models.Model):
             product_tmpl_id = record.product_id.product_tmpl_id.id
             production_tmpl_id = record.production_id.product_tmpl_id.id
             if product_tmpl_id == production_tmpl_id:
+                if record.product_id.id == record.production_id.product_id.id:
+                    continue
                 byproducts_qty = sum(record.production_id.move_byproduct_ids.filtered(
                     lambda m: m.product_id.product_tmpl_id.id == production_tmpl_id and m.id != record.id
                 ).mapped('product_uom_qty'))

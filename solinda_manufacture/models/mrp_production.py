@@ -20,13 +20,14 @@ class MrpProduction(models.Model):
     def _cal_price(self, consumed_moves):
         for record in self:
             if record.product_qty:
-                costs = sum(record.workorder_ids.mapped('total_cost'))
+                costs = sum(record.workorder_ids.mapped('order_id.amount_total'))
                 if costs:
-                    byproducts_qty = sum(record.move_byproduct_ids.filtered(
-                        lambda m: m.product_id.product_tmpl_id.id == record.product_tmpl_id.id
-                                  and m.product_id.id != record.product_id.id
-                    ).mapped('product_uom_qty'))
-                    record.extra_cost = costs / byproducts_qty
+                    finished_move = self.move_finished_ids.filtered(
+                        lambda x: x.product_id == self.product_id and x.state not in (
+                            'done', 'cancel') and x.quantity_done > 0)
+                    qty_done = finished_move.product_uom._compute_quantity(
+                        finished_move.quantity_done, finished_move.product_id.uom_id)
+                    record.extra_cost = costs / qty_done
 
         return super()._cal_price(consumed_moves)
 
@@ -149,7 +150,8 @@ class MrpProduction(models.Model):
             for b in i.bom_id.bom_line_variant_ids:
                 qty_po = 0
                 sizes = b.sizes.strip('()')
-                purchase_request = self.env["purchase.request"].search([('id', '=', self.purchase_request_id.id)], limit=1)
+                purchase_request = self.env["purchase.request"].search([('id', '=', self.purchase_request_id.id)],
+                                                                       limit=1)
                 order_line_sizes = [(line.size.strip(' '), line.product_qty) for line in purchase_request.line_ids]
 
                 for size, product_qty in order_line_sizes:
@@ -178,7 +180,8 @@ class MrpProduction(models.Model):
             product_qty = production.product_uom_id._compute_quantity(
                 production.product_qty, production.bom_id.product_uom_id)
             exploded_boms, dummy = production.bom_id.explode(
-                production.product_id, product_qty / production.bom_id.product_qty, picking_type=production.bom_id.picking_type_id)
+                production.product_id, product_qty / production.bom_id.product_qty,
+                picking_type=production.bom_id.picking_type_id)
 
             for bom, bom_data in exploded_boms:
                 # If the operations of the parent BoM and phantom BoM are the same, don't recreate work orders.
@@ -347,4 +350,3 @@ class MrpProductionBomVariant(models.Model):
     cost = fields.Float(string="Cost", related='product_id.standard_price')
     total_material = fields.Float(string="Total Material", compute=_compute_total_material)
     shrinkage = fields.Float(string='Shkg(%)')
-
