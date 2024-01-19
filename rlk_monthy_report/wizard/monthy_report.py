@@ -675,69 +675,82 @@ class RlkMonthyReport(models.TransientModel):
 
 
 
-        # grouped_data = {}
-        # for data in data_product:
-        #     prod = data
-        #     class_id = prod.class_product
-        #     category = prod.product_category_categ_id
-        #     parent_category = prod.product_model_categ_id
-        #     name = prod.display_name
-        #     # qty_sold = data.qty
-        #     # order_date = data.order_id.date_order
-        #     qty_sold_per_warehouse = {}
-        #     pol = self.env['pos.order.line'].search([
-        #         # ('order_id.picking_ids.move_lines.product_id', '=', prod.id),
-        #         # ('product_id.class_product', '=', class_id.id),
-        #         ('product_id', '=', prod.id),
-        #         # ('order_id.state', 'not in', ['draft', 'cancel']),
-        #         ('order_id.date_order', '>=', self.start_date),
-        #         ('order_id.date_order', '<=', self.end_date),
-        #         ('order_id.picking_ids.state', 'in', ['assigned', 'done']),
-        #         (
-        #             'order_id.picking_ids.location_id.warehouse_id.code', 'in',
-        #             ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
-        #              'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG',
-        #              'BBSNR', 'BBPTG', 'BBKTA', 'Onlne'))
-        #     ])
-        #     # for lines in pol:
-        #     #     qty_sold = {wh.code: line.qty for line in lines.pol
-        #     #                           for wh in self.env['stock.warehouse'].search([])
-        #     #                           for order in line.order_id.picking_ids
-        #     #                           if order.location_id.warehouse_id.code == wh.code}
-        #     for line in pol:
-        #         for order in line.order_id.picking_ids:
-        #             wh_code = order.location_id.warehouse_id.code
-        #             qty_sold_per_warehouse[wh_code] = qty_sold_per_warehouse.get(wh_code, 0) + line.qty
-        #
-        #     # qty_sold = qty_sold_per_warehouse
-        #     # qty_sold = sum(qty_sold_per_warehouse.values())
-        #     # qty_sold = sum(entry['qty'] for entry in qty_sold_quantities)
-        #
-        #     group_key = (class_id.id, category.id, parent_category.id)
-        #
-        #     if group_key not in grouped_data:
-        #         grouped_data[group_key] = {
-        #             'class_id': class_id.name,
-        #             'category_id': category.name,
-        #             'parent_id': parent_category.name,
-        #             # 'qty_sold': qty_sold,
-        #             'total_qty_sold': 0,
-        #             # 'order_date': order_date,
-        #             'product': [prod.display_name],
-        #             'wh': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
-        #                          'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
-        #
-        #         }
-        #     else:
-        #         # grouped_data[group_key]['qty_sold'] += qty_sold
-        #         grouped_data[group_key]['product'].append(prod.display_name)
-        #
-        #     for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
-        #         if warehouse_key in (
-        #         'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
-        #         'BBKTA', 'Onlne'):
-        #             grouped_data[group_key]['total_qty_sold'] += quantity_sold
-        #             grouped_data[group_key]['wh'][warehouse_key] += quantity_sold
+        grouped_data = {}
+        for data in data_product:
+            prod = data
+            class_id = prod.class_product
+            category = prod.product_category_categ_id
+            parent_category = prod.product_model_categ_id
+            name = prod.display_name
+            # qty_sold = data.qty
+            # order_date = data.order_id.date_order
+            qty_sold_per_warehouse = {}
+            pol = self.env['pos.order.line'].search([
+                # ('order_id.picking_ids.move_lines.product_id', '=', prod.id),
+                # ('product_id.class_product', '=', class_id.id),
+                ('product_id', '=', prod.id),
+                # ('order_id.state', 'not in', ['draft', 'cancel']),
+                ('order_id.date_order', '>=', self.start_date),
+                ('order_id.date_order', '<=', self.end_date),
+                ('order_id.picking_ids.state', 'in', ['assigned', 'done']),
+                (
+                    'order_id.picking_ids.location_id.warehouse_id.code', 'in',
+                    ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+                     'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG',
+                     'BBSNR', 'BBPTG', 'BBKTA', 'Onlne'))
+            ])
+            # for lines in pol:
+            #     qty_sold = {wh.code: line.qty for line in lines.pol
+            #                           for wh in self.env['stock.warehouse'].search([])
+            #                           for order in line.order_id.picking_ids
+            #                           if order.location_id.warehouse_id.code == wh.code}
+            for line in pol:
+                for order in line.order_id.picking_ids:
+                    wh_code = order.location_id.warehouse_id.code
+                    qty_sold_per_warehouse[wh_code] = qty_sold_per_warehouse.get(wh_code, 0) + line.qty
+            sold_per_warehouse = sum(qty_sold_per_warehouse.values())
+            retail_pos = sum(pol.product_id.mapped('lst_price'))
+            cost_pos = sum(pol.product_id.mapped('standard_price'))
+            retail_sold = sold_per_warehouse * retail_pos
+            cost_sold = sold_per_warehouse * cost_pos
+
+            # qty_sold = qty_sold_per_warehouse
+            # qty_sold = sum(qty_sold_per_warehouse.values())
+            # qty_sold = sum(entry['qty'] for entry in qty_sold_quantities)
+
+            group_key = (class_id.id, category.id, parent_category.id)
+
+            if group_key not in grouped_data:
+                grouped_data[group_key] = {
+                    'class_id': class_id.name,
+                    'category_id': category.name,
+                    'parent_id': parent_category.name,
+                    # 'qty_sold': qty_sold,
+                    'retail_sold': retail_sold,
+                    'cost_sold': cost_sold,
+                    'total_qty_sold': 0,
+                    # 'order_date': order_date,
+                    'product': [prod.display_name],
+                    'wh': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
+                                 'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
+                    'wh_cost_sold': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
+                           'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
+                    'wh_retail_sold': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
+                           'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
+                }
+            else:
+                # grouped_data[group_key]['qty_sold'] += qty_sold
+                grouped_data[group_key]['retail_sold'] += retail_sold
+                grouped_data[group_key]['cost_sold'] += cost_sold
+                grouped_data[group_key]['product'].append(prod.display_name)
+
+            for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
+                if warehouse_key in (
+                'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
+                'BBKTA', 'Onlne'):
+                    grouped_data[group_key]['wh'][warehouse_key] += quantity_sold
+                    grouped_data[group_key]['wh_cost_sold'][warehouse_key] += cost_sold
+                    grouped_data[group_key]['wh_retail_sold'][warehouse_key] += retail_sold
 
         report_data = {}
 
