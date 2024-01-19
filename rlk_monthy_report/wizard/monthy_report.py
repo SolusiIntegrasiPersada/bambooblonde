@@ -659,30 +659,59 @@ class RlkMonthyReport(models.TransientModel):
         grandtotal_bbkta_cost_stock = 0
         grandtotal_onlne_cost_stock = 0
 
+        # pos_orders = self.env['pos.order.line'].search([
+        #     ('order_id.state', 'not in', ['draft', 'cancel']),
+        #     ('order_id.date_order', '>=', self.start_date),
+        #     ('order_id.date_order', '<=', self.end_date)
+        # ])
+
+
+        domain_product = self.env['product.product'].with_context(to_date=self.end_date).search([
+            ('type', '=', 'product'),
+            # ('product_category_categ_id', '=', 711),
+            # ('product_model_categ_id', '=', 9),
+        ])
+        data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
+
 
 
         # grouped_data = {}
-        # for data in data_pos_orders:
-        #     prod = data.product_id
+        # for data in data_product:
+        #     prod = data
         #     class_id = prod.class_product
         #     category = prod.product_category_categ_id
         #     parent_category = prod.product_model_categ_id
-        #     qty_sold = data.qty
-        #     order_date = data.order_id.date_order
-        #     qty_received_qty = self.env['stock.move.line'].search([
-        #         ('product_id.product_category_categ_id', '=', category.id),
-        #         ('product_id.product_model_categ_id', '=', parent_category.id),
-        #         ('picking_id.picking_type_id.code', '=', 'incoming'),
-        #         ('location_dest_id.warehouse_id.code', 'in', [
-        #             'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
-        #             'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
-        #             'BBPTG', 'BBKTA', 'Onlne'
-        #         ]),
-        #         ('state', '=', 'done'),
-        #         ('date', '>=', self.start_date),
-        #         ('date', '<=', self.end_date),
-        #     ]).mapped('qty_done')
-        #     qty_received = sum(qty_received_qty)
+        #     name = prod.display_name
+        #     # qty_sold = data.qty
+        #     # order_date = data.order_id.date_order
+        #     qty_sold_per_warehouse = {}
+        #     pol = self.env['pos.order.line'].search([
+        #         # ('order_id.picking_ids.move_lines.product_id', '=', prod.id),
+        #         # ('product_id.class_product', '=', class_id.id),
+        #         ('product_id', '=', prod.id),
+        #         # ('order_id.state', 'not in', ['draft', 'cancel']),
+        #         ('order_id.date_order', '>=', self.start_date),
+        #         ('order_id.date_order', '<=', self.end_date),
+        #         ('order_id.picking_ids.state', 'in', ['assigned', 'done']),
+        #         (
+        #             'order_id.picking_ids.location_id.warehouse_id.code', 'in',
+        #             ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+        #              'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG',
+        #              'BBSNR', 'BBPTG', 'BBKTA', 'Onlne'))
+        #     ])
+        #     # for lines in pol:
+        #     #     qty_sold = {wh.code: line.qty for line in lines.pol
+        #     #                           for wh in self.env['stock.warehouse'].search([])
+        #     #                           for order in line.order_id.picking_ids
+        #     #                           if order.location_id.warehouse_id.code == wh.code}
+        #     for line in pol:
+        #         for order in line.order_id.picking_ids:
+        #             wh_code = order.location_id.warehouse_id.code
+        #             qty_sold_per_warehouse[wh_code] = qty_sold_per_warehouse.get(wh_code, 0) + line.qty
+        #
+        #     # qty_sold = qty_sold_per_warehouse
+        #     # qty_sold = sum(qty_sold_per_warehouse.values())
+        #     # qty_sold = sum(entry['qty'] for entry in qty_sold_quantities)
         #
         #     group_key = (class_id.id, category.id, parent_category.id)
         #
@@ -691,25 +720,24 @@ class RlkMonthyReport(models.TransientModel):
         #             'class_id': class_id.name,
         #             'category_id': category.name,
         #             'parent_id': parent_category.name,
-        #             'qty_sold': qty_sold,
-        #             'order_date': order_date,
+        #             # 'qty_sold': qty_sold,
+        #             'total_qty_sold': 0,
+        #             # 'order_date': order_date,
         #             'product': [prod.display_name],
-        #             'qty_received': qty_received,
+        #             'wh': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
+        #                          'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
+        #
         #         }
         #     else:
-        #         grouped_data[group_key]['qty_sold'] += qty_sold
-        #         grouped_data[group_key]['qty_received'] = qty_received
+        #         # grouped_data[group_key]['qty_sold'] += qty_sold
         #         grouped_data[group_key]['product'].append(prod.display_name)
-
-        # pos_orders = self.env['pos.order.line'].search([
-        #     ('order_id.state', 'not in', ['draft', 'cancel']),
-        #     ('order_id.date_order', '>=', self.start_date),
-        #     ('order_id.date_order', '<=', self.end_date)
-        # ])
-        domain_product = self.env['product.product'].with_context(to_date=self.end_date).search([
-            ('type', '=', 'product'),
-        ])
-        data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
+        #
+        #     for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
+        #         if warehouse_key in (
+        #         'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
+        #         'BBKTA', 'Onlne'):
+        #             grouped_data[group_key]['total_qty_sold'] += quantity_sold
+        #             grouped_data[group_key]['wh'][warehouse_key] += quantity_sold
 
         report_data = {}
 
@@ -722,21 +750,26 @@ class RlkMonthyReport(models.TransientModel):
             cost_price = prod.standard_price or 0
             retail_price = prod.lst_price
 
-
-            qty_sold_quantities = self.env['pos.order'].search([
-                ('picking_ids.move_lines.product_id', '=', prod.id),
-                ('date_order', '>=', self.start_date),
-                ('date_order', '<=', self.end_date),
-                ('picking_ids.state', 'in', ['assigned', 'done']),
-                ('picking_ids.location_id.warehouse_id.code', 'in', ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
-                                                                     'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
-                                                                     'BBPTG', 'BBKTA', 'Onlne'))
+            qty_sold_per_warehouse = {}
+            pol = self.env['pos.order.line'].search([
+                # ('order_id.picking_ids.move_lines.product_id', '=', prod.id),
+                # ('product_id.class_product', '=', class_id.id),
+                ('product_id', '=', prod.id),
+                # ('order_id.state', 'not in', ['draft', 'cancel']),
+                ('order_id.date_order', '>=', self.start_date),
+                ('order_id.date_order', '<=', self.end_date),
+                ('order_id.picking_ids.state', 'in', ['assigned', 'done']),
+                (
+                    'order_id.picking_ids.location_id.warehouse_id.code', 'in',
+                    ('WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW',
+                     'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG',
+                     'BBSNR', 'BBPTG', 'BBKTA', 'Onlne'))
             ])
-            qty_sold_per_warehouse = {wh.code: sum(move.product_uom_qty for move in move_lines)
-                                      for wh in self.env['stock.warehouse'].search([])
-                                      for move_lines in qty_sold_quantities.picking_ids.move_lines
-                                      if move_lines.location_id.warehouse_id.code == wh.code}
-            total_qty_sold = sum(qty_sold_per_warehouse.values())
+            for lines in pol:
+                for order in lines.order_id.picking_ids:
+                    wh_code = order.location_id.warehouse_id.code
+                    qty_sold_per_warehouse[wh_code] = qty_sold_per_warehouse.get(wh_code, 0) + lines.qty
+
 
             warehouse_quantities = line.stock_quant_ids.filtered(
                 lambda x: x.location_id.usage == 'internal' and
@@ -744,15 +777,14 @@ class RlkMonthyReport(models.TransientModel):
                               'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
                               'BBPTG', 'BBKTA', 'Onlne')
             )
-
             qty_stock_per_warehouse = {wh.code: sum(
                 quant.quantity for quant in warehouse_quantities if quant.location_id.warehouse_id.code == wh.code)
                 for wh in set(warehouse_quantities.mapped('location_id.warehouse_id'))}
 
             total_qty_stock = sum(qty_stock_per_warehouse.values())
 
-            qty_sold = total_qty_sold
-            # qty_stock = total_qty_stock
+            qty_sold = sum(qty_sold_per_warehouse.values())
+            qty_stock = total_qty_stock
             retail_sold = qty_sold * retail_price
             cost_sold = qty_sold * cost_price
             # warehouse = line.order_id.picking_type_id.warehouse_id
@@ -768,7 +800,7 @@ class RlkMonthyReport(models.TransientModel):
             for quant in stock_quant:
                 qty_stock_wh += quant.quantity
 
-            qty_stock = prod.qty_available
+            # qty_stock = prod.qty_available
             # qty_stock = sum(line.product_id.qty_available for line in lines)
             # qty_stock = sum(line.product_id.product_tmpl_id.qty_available for line in lines)
             # qty_received = sum(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.location_dest_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.state == 'done' and x.date.date() >= self.last_start_date and x.date.date() <= self.end_date).mapped('product_uom_qty'))
@@ -856,13 +888,39 @@ class RlkMonthyReport(models.TransientModel):
             #         report_data[key]['total_cost_stock_now'] += cost_stock
 
 
-            # for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
-            #     if warehouse_key in (
-            #     'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
-            #     'BBKTA', 'Onlne'):
-            #         report_data[key]['total_qty_sold'] += qty_sold
-            #         report_data[key]['total_retail_sold'] += retail_sold
-            #         report_data[key]['total_cost_sold'] += cost_sold
+            for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
+                if warehouse_key in (
+                'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
+                'BBKTA', 'Onlne'):
+                    grandtotal_qty_sold += quantity_sold
+                    report_data[key]['w_qty_sold'][warehouse_key] += quantity_sold
+                    report_data[key]['total_qty_sold'] += quantity_sold
+                    if warehouse_key == 'WHBB':
+                        grandtotal_whbb_qty_sold += qty_sold
+                    elif warehouse_key == 'BBFLG':
+                        grandtotal_bbflg_qty_sold += qty_sold
+                    elif warehouse_key == 'BBBBG':
+                        grandtotal_bbbbg_qty_sold += qty_sold
+                    elif warehouse_key == 'BBBWK':
+                        grandtotal_bbbwk_qty_sold += qty_sold
+                    elif warehouse_key == 'BBBRW':
+                        grandtotal_bbbrw_qty_sold += qty_sold
+                    elif warehouse_key == 'BBPDG':
+                        grandtotal_bbpdg_qty_sold += qty_sold
+                    elif warehouse_key == 'BBSYV':
+                        grandtotal_bbsyv_qty_sold += qty_sold
+                    elif warehouse_key == 'BBGLR':
+                        grandtotal_bbglr_qty_sold += qty_sold
+                    elif warehouse_key == 'BBBLG':
+                        grandtotal_bbblg_qty_sold += qty_sold
+                    elif warehouse_key == 'BBSNR':
+                        grandtotal_bbsnr_qty_sold += qty_sold
+                    elif warehouse_key == 'BBPTG':
+                        grandtotal_bbptg_qty_sold += qty_sold
+                    elif warehouse_key == 'BBKTA':
+                        grandtotal_bbkta_qty_sold += qty_sold
+                    elif warehouse_key == 'Onlne':
+                        grandtotal_onlne_qty_sold += qty_sold
 
 
             # warehouse_key = warehouse.code
@@ -870,7 +928,7 @@ class RlkMonthyReport(models.TransientModel):
                 if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne'):
                 # if line.order_id.date_order.date() >= self.start_date.replace(day=1) and line.order_id.date_order.date() <= self.end_date.replace(day=calendar.monthrange(self.end_date.year, self.end_date.month)[1]):
             # else:
-                    grandtotal_qty_sold += qty_sold
+
                     grandtotal_retail_sold += retail_sold
                     grandtotal_cost_sold += cost_sold
 
@@ -886,7 +944,7 @@ class RlkMonthyReport(models.TransientModel):
                     grandtotal_retail_wh += retail_stock_wh
                     grandtotal_cost_wh += cost_stock_wh
 
-                    report_data[key]['total_qty_sold'] += qty_sold
+                    # report_data[key]['total_qty_sold'] += qty_sold
                     report_data[key]['total_retail_sold'] += retail_sold
                     report_data[key]['total_cost_sold'] += cost_sold
 
@@ -898,16 +956,16 @@ class RlkMonthyReport(models.TransientModel):
                     report_data[key]['total_retail_receiving'] += retail_received
                     report_data[key]['total_cost_receiving'] += cost_received
 
-                    report_data[key]['total_qty_stock_now'] += qty_stock_wh
-                    report_data[key]['total_retail_stock_now'] += retail_stock_wh
-                    report_data[key]['total_cost_stock_now'] += cost_stock_wh
+                    report_data[key]['total_qty_wh'] += qty_stock_wh
+                    report_data[key]['total_retail_wh'] += retail_stock_wh
+                    report_data[key]['total_cost_wh'] += cost_stock_wh
 
                     # report_data[key]['w_qty_sold'][warehouse_key] += qty_sold
                     report_data[key]['w_qty_stock'][warehouse_key] += qty_stock
-                    #
-                    # report_data[key]['w_retail_sold'][warehouse_key] += retail_sold
-                    # report_data[key]['w_cost_sold'][warehouse_key] += cost_sold
-                    #
+
+                    report_data[key]['w_retail_sold'][warehouse_key] += retail_sold
+                    report_data[key]['w_cost_sold'][warehouse_key] += cost_sold
+
                     report_data[key]['w_retail_stock'][warehouse_key] += retail_stock
                     report_data[key]['w_cost_stock'][warehouse_key] += cost_stock
 
