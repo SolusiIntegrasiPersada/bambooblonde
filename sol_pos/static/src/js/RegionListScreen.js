@@ -1,5 +1,5 @@
 
-odoo.define('sol_region_pos.RegionScreenList', function(require) {
+odoo.define('sol_pos.RegionScreenList', function(require) {
     'use strict';
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');

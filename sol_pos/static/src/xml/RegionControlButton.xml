@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="RegionControlButton" owl="1">  
         <div class="control-button">
-            <i class="fa fa-globe"></i>
+            <i class="fa fa-globe"/>
             <t t-if="env.pos.get_order().get_region()">
                 <t t-esc="env.pos.get_region().name" />
             </t>

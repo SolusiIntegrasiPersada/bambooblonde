@@ -10,7 +10,7 @@ odoo.define("pos_absolute_discount.screens", function (require) {
     const PaymentScreen = require('point_of_sale.PaymentScreen');
     const ProductScreen = require("point_of_sale.ProductScreen");
     const Registries = require("point_of_sale.Registries");
-	const RegionControlButton = require('sol_region_pos.RegionControlButton');
+	const RegionControlButton = require('sol_pos.RegionControlButton');
 	models.load_fields("product.product", ["is_shooping_bag", "is_price_pos_editable"]);
 
     const PosChrome = (Chrome) =>

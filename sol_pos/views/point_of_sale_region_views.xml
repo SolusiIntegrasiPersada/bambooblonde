@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <!-- INHERIT VIEW IN POS AREA -->
+
+        <!-- TREE -->
+        <record id="view_pos_order_tree_inherit_pos" model="ir.ui.view">
+            <field name="name">pos.order.view.list.inherit</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="region_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- FORM -->
+        <record id="view_pos_pos_form_inherit_pos" model="ir.ui.view">
+            <field name="name">pos.order.view.form.inherit</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="region_id" attrs="{'readonly': [('state','=','invoiced')]}"
+                           options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- INHERIT VIEW IN POS AREA -->
+
+        <!-- ======================================================== -->
+
+        <!-- DATA VISITOR REGION AREA -->
+        <record id="visitor_region1" model="visitor.region">
+            <field name="sequence">1</field>
+            <field name="name">Asian</field>
+        </record>
+
+        <record id="visitor_region2" model="visitor.region">
+            <field name="sequence">2</field>
+            <field name="name">Ina</field>
+        </record>
+
+        <record id="visitor_region3" model="visitor.region">
+            <field name="sequence">3</field>
+            <field name="name">We</field>
+        </record>
+
+        <record id="visitor_region4" model="visitor.region">
+            <field name="sequence">4</field>
+            <field name="name">Japa</field>
+        </record>
+
+        <record id="visitor_region5" model="visitor.region">
+            <field name="sequence">5</field>
+            <field name="name">Aus</field>
+        </record>
+        <!-- DATA VISITOR REGION AREA -->
+
+        <!-- ======================================================== -->
+
+        <!-- VISITOR REGION AREA -->
+        <record id="visitor_region_view_tree" model="ir.ui.view">
+            <field name="name">visitor.region.view.tree</field>
+            <field name="model">visitor.region</field>
+            <field name="arch" type="xml">
+                <tree string="Nationality" editable='top'>
+                    <field name="sequence" string="Region ID"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="visitor_region_action" model="ir.actions.act_window">
+            <field name="name">Nationality</field>
+            <field name="res_model">visitor.region</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="visitor_region_menu" name="Nationality" action="visitor_region_action"
+                  groups="point_of_sale.group_pos_manager" parent="point_of_sale.menu_point_config_product"
+                  sequence="10"/>
+        <!-- VISITOR REGION AREA -->
+
+    </data>
+</odoo>

@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_visitor_region,sol_region_pos.visitor_region,model_visitor_region,point_of_sale.group_pos_manager,1,1,1,1
-access_visitor_region_user,sol_region_pos.visitor_region_user,model_visitor_region,base.group_user,1,0,0,0

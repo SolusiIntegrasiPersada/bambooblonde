@@ -1,4 +1,4 @@
-odoo.define('sol_region_pos.RegionControlButton', function (require) {
+odoo.define('sol_pos.RegionControlButton', function (require) {
     'use strict';
     const PosComponent = require('point_of_sale.PosComponent');
     const ProductScreen = require('point_of_sale.ProductScreen');

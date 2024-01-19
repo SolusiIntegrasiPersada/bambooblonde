@@ -6,6 +6,13 @@ class PosOrder(models.Model):
     _inherit = "pos.order"
 
     note = fields.Text(string='Internal Notes', required=True)
+    region_id = fields.Many2one('visitor.region', string='Nationality', required=True)
+
+    @api.model
+    def _order_fields(self, ui_order):
+        order_fields = super(PosOrder, self)._order_fields(ui_order)
+        order_fields['region_id'] = ui_order['region_id']['id'] if ui_order['region_id'] else False
+        return order_fields
 
     def _prepare_invoice_line(self, order_line):
         res = super(PosOrder, self)._prepare_invoice_line(order_line)
@@ -40,11 +47,11 @@ class PosOrder(models.Model):
         order_fields = super(PosOrder, self)._order_fields(ui_order)
         order_fields['note'] = ui_order.get('note')
         return order_fields
-    
+
     @api.model
     def create_from_ui(self, orders, draft=False):
         order_ids = super(PosOrder, self).create_from_ui(orders, draft)
-        
+
         for order in self.sudo().browse([o["id"] for o in order_ids]):
             for line in order.lines:
                 if line.product_id.is_voucher:
@@ -61,15 +68,7 @@ class PosOrder(models.Model):
                         'discount_fixed_amount': line.price_unit,
                         'sold_in_pos_id': order.id,
                     })
-                     
-                    # vals = {'program_id': coupon_program.id}
-                    # if  line.qty > 0:
-                    #     for count in range(0, int(line.qty)):
-                    #         coupon = self.env['coupon.coupon'].create(vals)
-
         return order_ids
-
-
 
 
 class PosOrderLine(models.Model):
@@ -77,15 +76,14 @@ class PosOrderLine(models.Model):
 
     absolute_discount = fields.Float(string="Discount per Unit (abs)", default=0.0)
     cost_in_order = fields.Float(string="Cost in Order", default=0.0)
-    
-    
+
     @api.model
     def create(self, values):
-        result = super(PosOrderLine,self).create(values)
-        
-        for line in result :
+        result = super(PosOrderLine, self).create(values)
+
+        for line in result:
             line.cost_in_order = line.product_id.standard_price
-        
+
         return result
 
     @api.depends(
