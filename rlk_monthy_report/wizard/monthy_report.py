@@ -823,6 +823,7 @@ class RlkMonthyReport(models.TransientModel):
             # qty_received = sum(line.product_id.stock_move_ids.filtered(lambda x: x.picking_type_id.code == 'incoming' and x.location_dest_id.warehouse_id.code in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne') and x.state == 'done' and x.date.date() >= self.last_start_date and x.date.date() <= self.end_date).mapped('product_uom_qty'))
             qty_received_qty = self.env['stock.move.line'].search([
                 ('product_id.class_product', '=', class_id.id),
+                ('product_id', '=', prod.id),
                 ('product_id.product_category_categ_id', '=', category.id),
                 ('product_id.product_model_categ_id', '=', parent_category.id),
                 ('picking_id.picking_type_id.code', '=', 'incoming'),
@@ -834,13 +835,18 @@ class RlkMonthyReport(models.TransientModel):
                 ('state', '=', 'done'),
                 ('date', '>=', self.start_date),
                 ('date', '<=', self.end_date),
-            ]).mapped('qty_done')
-            qty_received = sum(qty_received_qty)
+            ])
+            qty_receiving = qty_received_qty.mapped('qty_done')
+            retail_qty_receiving = qty_received_qty.mapped('product_id.lst_price')
+            cost_qty_receiving = qty_received_qty.mapped('product_id.standard_price')
+
+            qty_received = sum(qty_receiving)
+            retail_received = sum(retail_qty_receiving) * qty_received
+            cost_received = sum(cost_qty_receiving) * qty_received
 
             retail_stock = qty_stock * retail_price
             cost_stock = qty_stock * cost_price
-            retail_received = qty_received * retail_price
-            cost_received = qty_received * cost_price
+
 
             retail_stock_wh = qty_stock_wh * retail_price
             cost_stock_wh = qty_stock_wh * cost_price
@@ -880,9 +886,9 @@ class RlkMonthyReport(models.TransientModel):
                     'total_retail_stock_last': retail_stock_last,
                     'total_cost_stock_last': cost_stock_last,
 
-                    'total_qty_receiving': 0,
-                    'total_retail_receiving': 0,
-                    'total_cost_receiving': 0,
+                    'total_qty_receiving': qty_received,
+                    'total_retail_receiving': retail_received,
+                    'total_cost_receiving': cost_received,
 
                     'total_qty_wh': 0,
                     'total_retail_wh': 0,
@@ -908,6 +914,10 @@ class RlkMonthyReport(models.TransientModel):
                 report_data[key]['total_retail_stock_last'] += retail_stock_last
                 report_data[key]['total_cost_stock_last'] += cost_stock_last
 
+                report_data[key]['total_qty_receiving'] += qty_received
+                report_data[key]['total_retail_receiving'] += retail_received
+                report_data[key]['total_cost_receiving'] += cost_received
+
             grandtotal_retail_sold += retail_sold
             grandtotal_cost_sold += cost_sold
 
@@ -918,6 +928,10 @@ class RlkMonthyReport(models.TransientModel):
             grandtotal_qty_stock_last += qty_stock_last
             grandtotal_retail_stock_last += retail_stock_last
             grandtotal_cost_stock_last += cost_stock_last
+
+            grandtotal_qty_received += qty_received
+            grandtotal_retail_received += retail_received
+            grandtotal_cost_received += cost_received
 
 
 
@@ -976,17 +990,9 @@ class RlkMonthyReport(models.TransientModel):
                 # if line.order_id.date_order.date() >= self.start_date.replace(day=1) and line.order_id.date_order.date() <= self.end_date.replace(day=calendar.monthrange(self.end_date.year, self.end_date.month)[1]):
             # else:
 
-                    grandtotal_qty_received = qty_received
-                    grandtotal_retail_received += retail_received
-                    grandtotal_cost_received += cost_received
-
                     grandtotal_qty_wh += qty_stock_wh
                     grandtotal_retail_wh += retail_stock_wh
                     grandtotal_cost_wh += cost_stock_wh
-
-                    report_data[key]['total_qty_receiving'] = qty_received
-                    report_data[key]['total_retail_receiving'] += retail_received
-                    report_data[key]['total_cost_receiving'] += cost_received
 
                     report_data[key]['total_qty_wh'] += qty_stock_wh
                     report_data[key]['total_retail_wh'] += retail_stock_wh
