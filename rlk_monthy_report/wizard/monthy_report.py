@@ -668,8 +668,8 @@ class RlkMonthyReport(models.TransientModel):
 
         domain_product = self.env['product.product'].with_context(to_date=self.end_date).search([
             ('type', '=', 'product'),
-            # ('product_category_categ_id', '=', 508),
-            # ('product_model_categ_id', '=', 484),
+            # ('product_category_categ_id', '=', 709),
+            # ('product_model_categ_id', '=', 9),
         ])
         data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
 
@@ -813,7 +813,7 @@ class RlkMonthyReport(models.TransientModel):
                         ('name_warehouse_id.code', '=', 'WHBB'),
                         ('product_id', '=', prod.id),
                     ])
-            stock_quant_qty = stock_quant.mapped('available_quantity')
+            stock_quant_qty = stock_quant.mapped('inventory_quantity_auto_apply')
             stock_quant_retail = stock_quant.mapped('product_id.lst_price')
             stock_quant_cost = stock_quant.mapped('product_id.standard_price')
 
