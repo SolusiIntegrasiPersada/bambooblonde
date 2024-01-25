@@ -668,8 +668,8 @@ class RlkMonthyReport(models.TransientModel):
 
         domain_product = self.env['product.product'].with_context(to_date=self.end_date).search([
             ('type', '=', 'product'),
-            # ('product_category_categ_id', '=', 709),
-            # ('product_model_categ_id', '=', 9),
+            # ('product_category_categ_id', '=', 508),
+            # ('product_model_categ_id', '=', 484),
         ])
         data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
 
@@ -813,9 +813,17 @@ class RlkMonthyReport(models.TransientModel):
                         ('name_warehouse_id.code', '=', 'WHBB'),
                         ('product_id', '=', prod.id),
                     ])
-            qty_stock_wh = 0
-            for quant in stock_quant:
-                qty_stock_wh += quant.quantity
+            stock_quant_qty = stock_quant.mapped('available_quantity')
+            stock_quant_retail = stock_quant.mapped('product_id.lst_price')
+            stock_quant_cost = stock_quant.mapped('product_id.standard_price')
+
+            qty_stock_wh = sum(stock_quant_qty)
+            retail_stock_wh = qty_stock_wh * sum(stock_quant_retail)
+            cost_stock_wh = qty_stock_wh * sum(stock_quant_cost)
+
+            # qty_stock_wh = 0
+            # for quant in stock_quant:
+            #     qty_stock_wh += quant.quantity
 
             # qty_stock = prod.qty_available
             # qty_stock = sum(line.product_id.qty_available for line in lines)
@@ -846,10 +854,6 @@ class RlkMonthyReport(models.TransientModel):
 
             retail_stock = qty_stock * retail_price
             cost_stock = qty_stock * cost_price
-
-
-            retail_stock_wh = qty_stock_wh * retail_price
-            cost_stock_wh = qty_stock_wh * cost_price
 
             last_stock = self.env['product.product'].with_context(to_date=self.last_end_date).search([
                 ('type', '=', 'product'),
@@ -890,9 +894,9 @@ class RlkMonthyReport(models.TransientModel):
                     'total_retail_receiving': retail_received,
                     'total_cost_receiving': cost_received,
 
-                    'total_qty_wh': 0,
-                    'total_retail_wh': 0,
-                    'total_cost_wh': 0,
+                    'total_qty_wh': qty_stock_wh,
+                    'total_retail_wh': retail_stock_wh,
+                    'total_cost_wh': cost_stock_wh,
 
                     'w_qty_sold': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0, 'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Onlne': 0},
                     'w_qty_stock': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0, 'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Onlne': 0},
@@ -918,6 +922,10 @@ class RlkMonthyReport(models.TransientModel):
                 report_data[key]['total_retail_receiving'] += retail_received
                 report_data[key]['total_cost_receiving'] += cost_received
 
+                report_data[key]['total_qty_wh'] += qty_stock_wh
+                report_data[key]['total_retail_wh'] += retail_stock_wh
+                report_data[key]['total_cost_wh'] += cost_stock_wh
+
             grandtotal_retail_sold += retail_sold
             grandtotal_cost_sold += cost_sold
 
@@ -932,6 +940,10 @@ class RlkMonthyReport(models.TransientModel):
             grandtotal_qty_received += qty_received
             grandtotal_retail_received += retail_received
             grandtotal_cost_received += cost_received
+
+            grandtotal_qty_wh += qty_stock_wh
+            grandtotal_retail_wh += retail_stock_wh
+            grandtotal_cost_wh += cost_stock_wh
 
 
 
@@ -989,14 +1001,6 @@ class RlkMonthyReport(models.TransientModel):
                 if warehouse_key in ('WHBB','BBFLG','BBBBG','BBBWK','BBBRW','BBPDG','BBSYV','BBGLR','BBBLG','BBSNR','BBPTG','BBKTA','Onlne'):
                 # if line.order_id.date_order.date() >= self.start_date.replace(day=1) and line.order_id.date_order.date() <= self.end_date.replace(day=calendar.monthrange(self.end_date.year, self.end_date.month)[1]):
             # else:
-
-                    grandtotal_qty_wh += qty_stock_wh
-                    grandtotal_retail_wh += retail_stock_wh
-                    grandtotal_cost_wh += cost_stock_wh
-
-                    report_data[key]['total_qty_wh'] += qty_stock_wh
-                    report_data[key]['total_retail_wh'] += retail_stock_wh
-                    report_data[key]['total_cost_wh'] += cost_stock_wh
 
                     # report_data[key]['w_qty_sold'][warehouse_key] += qty_sold
                     report_data[key]['w_qty_stock'][warehouse_key] += qty_stock
