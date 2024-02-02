@@ -668,8 +668,8 @@ class RlkMonthyReport(models.TransientModel):
 
         domain_product = self.env['product.product'].with_context(to_date=self.end_date).search([
             ('type', '=', 'product'),
-            # ('product_category_categ_id', '=', 709),
-            # ('product_model_categ_id', '=', 9),
+            ('product_category_categ_id', '=', 508),
+            ('product_model_categ_id', '=', 484),
         ])
         data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
 

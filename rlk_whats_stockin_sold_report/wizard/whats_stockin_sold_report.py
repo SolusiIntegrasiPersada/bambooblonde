@@ -176,31 +176,29 @@ class WhatsStockinSoldReport(models.TransientModel):
             row += 1
             no = 1
 
-            domain_product = self.env['product.product'].with_context(to_date=self.end_period).search([
-                ('type', '=', 'product'),
-            ])
+            # domain_product = self.env['pos.order.line'].search(domain)
 
-            # domain = [
-            #     ('order_id.state', 'not in', ['draft', 'cancel']),
-            #     ('order_id.date_order', '>=', self.start_period),
-            #     ('order_id.date_order', '<=', self.end_period),
-            # ]
+
+
+            domain = [
+                ('type', '=', 'product'),
+            ]
 
             if self.class_product_id and self.product_category_id:
-                domain_product += [
+                domain += [
                     ('class_product', '=', self.class_product_id.id),
                     ('product_category_categ_id', '=', self.product_category_id.id),
                 ]
             elif self.class_product_id:
-                domain_product.append(('class_product', '=', self.class_product_id.id))
+                domain += [('class_product', '=', self.class_product_id.id)]
             elif self.product_category_id:
-                domain_product.append(('product_category_categ_id', '=', self.product_category_id.id))
+                domain += [('product_category_categ_id', '=', self.product_category_id.id)]
 
-            # pos_orders = self.env['pos.order.line'].search(domain)
+            product_product = self.env['product.product'].with_context(to_date=self.end_period).search(domain)
 
             report_data = {}
 
-            data_pos_orders = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free)
+            data_pos_orders = product_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free)
 
             for line in data_pos_orders:
                 notes = ''
@@ -446,6 +444,12 @@ class WhatsStockinSoldReport(models.TransientModel):
 
                 if key not in grouped_colors:
                     grouped_colors[key] = {
+                        'class_name': class_name,
+                        'parent_category': parent_category,
+                        'category': category,
+                        'style': style,
+                        'stockname': stockname,
+                        'color': color,
                         'stockid': stockid,
                         'total_qty_sold': total_qty_sold,
                         'total_qty_stock': total_qty_stock,
@@ -577,6 +581,159 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbkta_qty_stock'] += bbkta_qty_stock
                     grouped_colors[key]['online_qty_stock'] += online_qty_stock
 
+
+            grouped_class = {}
+            for data_class in grouped_colors.values():
+                cl_class_name = data_class['class_name']
+                cl_parent_category = data_class['parent_category']
+                cl_category = data_class['category']
+                cl_style = data_class['style']
+                cl_stockname = data_class['stockname']
+                cl_color = data_class['color']
+                cl_stockid = data_class['stockid']
+                cl_total_qty_sold = data_class['total_qty_sold']
+                cl_total_qty_stock = data_class['total_qty_stock']
+                cl_whbb_qty_sold = data_class['whbb_qty_sold']
+                cl_bbflg_qty_sold = data_class['bbflg_qty_sold']
+                cl_bbbbg_qty_sold = data_class['bbbbg_qty_sold']
+                cl_bbbwk_qty_sold = data_class['bbbwk_qty_sold']
+                cl_bbbrw_qty_sold = data_class['bbbrw_qty_sold']
+                cl_bbpdg_qty_sold = data_class['bbpdg_qty_sold']
+                cl_bbsyv_qty_sold = data_class['bbsyv_qty_sold']
+                cl_bbglr_qty_sold = data_class['bbglr_qty_sold']
+                cl_bbblg_qty_sold = data_class['bbblg_qty_sold']
+                cl_bbsnr_qty_sold = data_class['bbsnr_qty_sold']
+                cl_bbptg_qty_sold = data_class['bbptg_qty_sold']
+                cl_bbkta_qty_sold = data_class['bbkta_qty_sold']
+                cl_online_qty_sold = data_class['online_qty_sold']
+                cl_whbb_qty_stock = data_class['whbb_qty_stock']
+                cl_bbflg_qty_stock = data_class['bbflg_qty_stock']
+                cl_bbbbg_qty_stock = data_class['bbbbg_qty_stock']
+                cl_bbbwk_qty_stock = data_class['bbbwk_qty_stock']
+                cl_bbbrw_qty_stock = data_class['bbbrw_qty_stock']
+                cl_bbpdg_qty_stock = data_class['bbpdg_qty_stock']
+                cl_bbsyv_qty_stock = data_class['bbsyv_qty_stock']
+                cl_bbglr_qty_stock = data_class['bbglr_qty_stock']
+                cl_bbblg_qty_stock = data_class['bbblg_qty_stock']
+                cl_bbsnr_qty_stock = data_class['bbsnr_qty_stock']
+                cl_bbptg_qty_stock = data_class['bbptg_qty_stock']
+                cl_bbkta_qty_stock = data_class['bbkta_qty_stock']
+                cl_online_qty_stock = data_class['online_qty_stock']
+                cl_children = data_class['children']
+
+                key = cl_class_name
+
+                if key not in grouped_class:
+                    grouped_class[key] = {
+                        'class_name': cl_class_name,
+                        'total_qty_sold': cl_total_qty_sold,
+                        'total_qty_stock': cl_total_qty_stock,
+                        'whbb_qty_sold': cl_whbb_qty_sold,
+                        'bbflg_qty_sold': cl_bbflg_qty_sold,
+                        'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                        'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                        'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                        'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                        'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                        'bbglr_qty_sold': cl_bbglr_qty_sold,
+                        'bbblg_qty_sold': cl_bbblg_qty_sold,
+                        'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                        'bbptg_qty_sold': cl_bbptg_qty_sold,
+                        'bbkta_qty_sold': cl_bbkta_qty_sold,
+                        'online_qty_sold': cl_online_qty_sold,
+                        'whbb_qty_stock': cl_whbb_qty_stock,
+                        'bbflg_qty_stock': cl_bbflg_qty_stock,
+                        'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                        'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                        'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                        'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                        'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                        'bbglr_qty_stock': cl_bbglr_qty_stock,
+                        'bbblg_qty_stock': cl_bbblg_qty_stock,
+                        'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                        'bbptg_qty_stock': cl_bbptg_qty_stock,
+                        'bbkta_qty_stock': cl_bbkta_qty_stock,
+                        'online_qty_stock': cl_online_qty_stock,
+                        'children_category': {},
+                    }
+                else:
+                    grouped_class[key]['total_qty_sold'] += cl_total_qty_sold
+                    grouped_class[key]['total_qty_stock'] += cl_total_qty_stock
+                    grouped_class[key]['whbb_qty_sold'] += cl_whbb_qty_sold
+                    grouped_class[key]['bbflg_qty_sold'] += cl_bbflg_qty_sold
+                    grouped_class[key]['bbbbg_qty_sold'] += cl_bbbbg_qty_sold
+                    grouped_class[key]['bbbwk_qty_sold'] += cl_bbbwk_qty_sold
+                    grouped_class[key]['bbbrw_qty_sold'] += cl_bbbrw_qty_sold
+                    grouped_class[key]['bbpdg_qty_sold'] += cl_bbpdg_qty_sold
+                    grouped_class[key]['bbsyv_qty_sold'] += cl_bbsyv_qty_sold
+                    grouped_class[key]['bbglr_qty_sold'] += cl_bbglr_qty_sold
+                    grouped_class[key]['bbblg_qty_sold'] += cl_bbblg_qty_sold
+                    grouped_class[key]['bbsnr_qty_sold'] += cl_bbsnr_qty_sold
+                    grouped_class[key]['bbptg_qty_sold'] += cl_bbptg_qty_sold
+                    grouped_class[key]['bbkta_qty_sold'] += cl_bbkta_qty_sold
+                    grouped_class[key]['online_qty_sold'] += cl_online_qty_sold
+                    grouped_class[key]['whbb_qty_stock'] += cl_whbb_qty_stock
+                    grouped_class[key]['bbflg_qty_stock'] += cl_bbflg_qty_stock
+                    grouped_class[key]['bbbbg_qty_stock'] += cl_bbbbg_qty_stock
+                    grouped_class[key]['bbbwk_qty_stock'] += cl_bbbwk_qty_stock
+                    grouped_class[key]['bbbrw_qty_stock'] += cl_bbbrw_qty_stock
+                    grouped_class[key]['bbpdg_qty_stock'] += cl_bbpdg_qty_stock
+                    grouped_class[key]['bbsyv_qty_stock'] += cl_bbsyv_qty_stock
+                    grouped_class[key]['bbglr_qty_stock'] += cl_bbglr_qty_stock
+                    grouped_class[key]['bbblg_qty_stock'] += cl_bbblg_qty_stock
+                    grouped_class[key]['bbsnr_qty_stock'] += cl_bbsnr_qty_stock
+                    grouped_class[key]['bbptg_qty_stock'] += cl_bbptg_qty_stock
+                    grouped_class[key]['bbkta_qty_stock'] += cl_bbkta_qty_stock
+                    grouped_class[key]['online_qty_stock'] += cl_online_qty_stock
+
+                category_data = grouped_class[key]
+                subkey = (cl_parent_category, cl_category, cl_style, cl_stockname, cl_color)
+
+                if subkey not in grouped_class[key]['children_category']:
+                    grouped_class[key]['children_category'][subkey] = {
+                        'class_name': cl_class_name,
+                        'parent_category': cl_parent_category,
+                        'category': cl_category,
+                        'style': cl_style,
+                        'stockname': cl_stockname,
+                        'color': cl_color,
+                        'stockid': cl_stockid,
+                        # 'notes': cl_notes,
+                        # 'barcode': cl_barcode,
+                        # 'cost_price': cl_cost_price,
+                        # 'retail_price': cl_retail_price,
+                        'total_qty_sold': cl_total_qty_sold,
+                        'total_qty_stock': cl_total_qty_stock,
+                        'whbb_qty_sold': cl_whbb_qty_sold,
+                        'bbflg_qty_sold': cl_bbflg_qty_sold,
+                        'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                        'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                        'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                        'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                        'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                        'bbglr_qty_sold': cl_bbglr_qty_sold,
+                        'bbblg_qty_sold': cl_bbblg_qty_sold,
+                        'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                        'bbptg_qty_sold': cl_bbptg_qty_sold,
+                        'bbkta_qty_sold': cl_bbkta_qty_sold,
+                        'online_qty_sold': cl_online_qty_sold,
+                        'whbb_qty_stock': cl_whbb_qty_stock,
+                        'bbflg_qty_stock': cl_bbflg_qty_stock,
+                        'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                        'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                        'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                        'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                        'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                        'bbglr_qty_stock': cl_bbglr_qty_stock,
+                        'bbblg_qty_stock': cl_bbblg_qty_stock,
+                        'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                        'bbptg_qty_stock': cl_bbptg_qty_stock,
+                        'bbkta_qty_stock': cl_bbkta_qty_stock,
+                        'online_qty_stock': cl_online_qty_stock,
+                        # 'age': cl_age,
+                        'children': cl_children,
+                    }
+
             # Print the result
             row = 4
             gt_total_qty_sold = 0
@@ -608,138 +765,222 @@ class WhatsStockinSoldReport(models.TransientModel):
             gt_bbkta_qty_stock = 0
             gt_online_qty_stock = 0
 
-            for key, value in grouped_colors.items():
+            for key, value in grouped_class.items():
+                children_category = value['children_category']
 
-                class_name, parent_category, category, style, stockname, color = key
-                total_qty_sold, total_qty_stock, whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, online_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, online_qty_stock = value['total_qty_sold'], value['total_qty_stock'], value['whbb_qty_sold'], value['bbflg_qty_sold'], value['bbbbg_qty_sold'], value['bbbwk_qty_sold'], value['bbbrw_qty_sold'], value['bbpdg_qty_sold'], value['bbsyv_qty_sold'], value['bbglr_qty_sold'], value['bbblg_qty_sold'], value['bbsnr_qty_sold'], value['bbptg_qty_sold'], value['bbkta_qty_sold'], value['online_qty_sold'],  value['whbb_qty_stock'], value['bbflg_qty_stock'], value['bbbbg_qty_stock'], value['bbbwk_qty_stock'], value['bbbrw_qty_stock'], value['bbpdg_qty_stock'], value['bbsyv_qty_stock'], value['bbglr_qty_stock'], value['bbblg_qty_stock'], value['bbsnr_qty_stock'], value['bbptg_qty_stock'], value['bbkta_qty_stock'], value['online_qty_stock']
-                qty_sold_total = whbb_qty_sold + bbflg_qty_sold + bbbbg_qty_sold + bbbwk_qty_sold + bbbrw_qty_sold + bbpdg_qty_sold + bbsyv_qty_sold + bbglr_qty_sold + bbblg_qty_sold + bbsnr_qty_sold + bbptg_qty_sold + bbkta_qty_sold + online_qty_sold
-                qty_stock_total = whbb_qty_stock + bbflg_qty_stock + bbbbg_qty_stock + bbbwk_qty_stock + bbbrw_qty_stock + bbpdg_qty_stock + bbsyv_qty_stock + bbglr_qty_stock + bbblg_qty_stock + bbsnr_qty_stock + bbptg_qty_stock + bbkta_qty_stock + online_qty_stock
+                cl_class_name = value['class_name']
+                cl_total_qty_sold = value['total_qty_sold']
+                cl_total_qty_stock = value['total_qty_stock']
+                cl_whbb_qty_sold = value['whbb_qty_sold']
+                cl_bbflg_qty_sold = value['bbflg_qty_sold']
+                cl_bbbbg_qty_sold = value['bbbbg_qty_sold']
+                cl_bbbwk_qty_sold = value['bbbwk_qty_sold']
+                cl_bbbrw_qty_sold = value['bbbrw_qty_sold']
+                cl_bbpdg_qty_sold = value['bbpdg_qty_sold']
+                cl_bbsyv_qty_sold = value['bbsyv_qty_sold']
+                cl_bbglr_qty_sold = value['bbglr_qty_sold']
+                cl_bbblg_qty_sold = value['bbblg_qty_sold']
+                cl_bbsnr_qty_sold = value['bbsnr_qty_sold']
+                cl_bbptg_qty_sold = value['bbptg_qty_sold']
+                cl_bbkta_qty_sold = value['bbkta_qty_sold']
+                cl_online_qty_sold = value['online_qty_sold']
+                cl_whbb_qty_stock = value['whbb_qty_stock']
+                cl_bbflg_qty_stock = value['bbflg_qty_stock']
+                cl_bbbbg_qty_stock = value['bbbbg_qty_stock']
+                cl_bbbwk_qty_stock = value['bbbwk_qty_stock']
+                cl_bbbrw_qty_stock = value['bbbrw_qty_stock']
+                cl_bbpdg_qty_stock = value['bbpdg_qty_stock']
+                cl_bbsyv_qty_stock = value['bbsyv_qty_stock']
+                cl_bbglr_qty_stock = value['bbglr_qty_stock']
+                cl_bbblg_qty_stock = value['bbblg_qty_stock']
+                cl_bbsnr_qty_stock = value['bbsnr_qty_stock']
+                cl_bbptg_qty_stock = value['bbptg_qty_stock']
+                cl_bbkta_qty_stock = value['bbkta_qty_stock']
+                cl_online_qty_stock = value['online_qty_stock']
+                
+                for subkey, categ_value in children_category.items():
 
-                dt_class_name = class_name
-                dt_parent_category = parent_category
-                dt_category = category
-                dt_style = str(style) + ' Total'
-                dt_total_qty_sold = total_qty_sold
-                dt_total_qty_stock = total_qty_stock
-                dt_whbb_qty_sold = whbb_qty_sold
-                dt_bbflg_qty_sold = bbflg_qty_sold
-                dt_bbbbg_qty_sold = bbbbg_qty_sold
-                dt_bbbwk_qty_sold = bbbwk_qty_sold
-                dt_bbbrw_qty_sold = bbbrw_qty_sold
-                dt_bbpdg_qty_sold = bbpdg_qty_sold
-                dt_bbsyv_qty_sold = bbsyv_qty_sold
-                dt_bbglr_qty_sold = bbglr_qty_sold
-                dt_bbblg_qty_sold = bbblg_qty_sold
-                dt_bbsnr_qty_sold = bbsnr_qty_sold
-                dt_bbptg_qty_sold = bbptg_qty_sold
-                dt_bbkta_qty_sold = bbkta_qty_sold
-                dt_online_qty_sold = online_qty_sold
-                dt_whbb_qty_stock = whbb_qty_stock
-                dt_bbflg_qty_stock = bbflg_qty_stock
-                dt_bbbbg_qty_stock = bbbbg_qty_stock
-                dt_bbbwk_qty_stock = bbbwk_qty_stock
-                dt_bbbrw_qty_stock = bbbrw_qty_stock
-                dt_bbpdg_qty_stock = bbpdg_qty_stock
-                dt_bbsyv_qty_stock = bbsyv_qty_stock
-                dt_bbglr_qty_stock = bbglr_qty_stock
-                dt_bbblg_qty_stock = bbblg_qty_stock
-                dt_bbsnr_qty_stock = bbsnr_qty_stock
-                dt_bbptg_qty_stock = bbptg_qty_stock
-                dt_bbkta_qty_stock = bbkta_qty_stock
-                dt_online_qty_stock = online_qty_stock
+                    parent_category, category, style, stockname, color = subkey
+                    # class_name, parent_category, category = key
 
+                    total_qty_sold, total_qty_stock, whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, online_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, online_qty_stock = \
+                    categ_value['total_qty_sold'], categ_value['total_qty_stock'], categ_value['whbb_qty_sold'], categ_value['bbflg_qty_sold'], \
+                    categ_value['bbbbg_qty_sold'], categ_value['bbbwk_qty_sold'], categ_value['bbbrw_qty_sold'], categ_value['bbpdg_qty_sold'], \
+                    categ_value['bbsyv_qty_sold'], categ_value['bbglr_qty_sold'], categ_value['bbblg_qty_sold'], categ_value['bbsnr_qty_sold'], \
+                    categ_value['bbptg_qty_sold'], categ_value['bbkta_qty_sold'], categ_value['online_qty_sold'], categ_value['whbb_qty_stock'], \
+                    categ_value['bbflg_qty_stock'], categ_value['bbbbg_qty_stock'], categ_value['bbbwk_qty_stock'], categ_value[
+                        'bbbrw_qty_stock'], categ_value['bbpdg_qty_stock'], categ_value['bbsyv_qty_stock'], categ_value[
+                        'bbglr_qty_stock'], categ_value['bbblg_qty_stock'], categ_value['bbsnr_qty_stock'], categ_value[
+                        'bbptg_qty_stock'], categ_value['bbkta_qty_stock'], categ_value['online_qty_stock']
+                    qty_sold_total = whbb_qty_sold + bbflg_qty_sold + bbbbg_qty_sold + bbbwk_qty_sold + bbbrw_qty_sold + bbpdg_qty_sold + bbsyv_qty_sold + bbglr_qty_sold + bbblg_qty_sold + bbsnr_qty_sold + bbptg_qty_sold + bbkta_qty_sold + online_qty_sold
+                    qty_stock_total = whbb_qty_stock + bbflg_qty_stock + bbbbg_qty_stock + bbbwk_qty_stock + bbbrw_qty_stock + bbpdg_qty_stock + bbsyv_qty_stock + bbglr_qty_stock + bbblg_qty_stock + bbsnr_qty_stock + bbptg_qty_stock + bbkta_qty_stock + online_qty_stock
 
-                children = value['children']
-                for size, size_value in children.items():
-                    d_class_name = class_name
-                    d_parent_category = parent_category
-                    d_category = category
-                    d_style = style
-                    d_stockname = stockname
-                    d_stockid = value['stockid']
-                    d_color = color
-                    d_age = size_value['age']
-                    d_barcode = size_value['barcode']
-                    d_size = size
-                    d_notes = size_value['notes']
-                    d_cost_price = size_value['cost_price']
-                    d_retail_price = size_value['retail_price']
-                    d_total_qty_sold = size_value['total_qty_sold']
-                    d_total_qty_stock = size_value['total_qty_stock']
-                    d_whbb_qty_sold = size_value['whbb_qty_sold']
-                    d_bbflg_qty_sold = size_value['bbflg_qty_sold']
-                    d_bbbbg_qty_sold = size_value['bbbbg_qty_sold']
-                    d_bbbwk_qty_sold = size_value['bbbwk_qty_sold']
-                    d_bbbrw_qty_sold = size_value['bbbrw_qty_sold']
-                    d_bbpdg_qty_sold = size_value['bbpdg_qty_sold']
-                    d_bbsyv_qty_sold = size_value['bbsyv_qty_sold']
-                    d_bbglr_qty_sold = size_value['bbglr_qty_sold']
-                    d_bbblg_qty_sold = size_value['bbblg_qty_sold']
-                    d_bbsnr_qty_sold = size_value['bbsnr_qty_sold']
-                    d_bbptg_qty_sold = size_value['bbptg_qty_sold']
-                    d_bbkta_qty_sold = size_value['bbkta_qty_sold']
-                    d_online_qty_sold = size_value['online_qty_sold']
-                    d_whbb_qty_stock = size_value['whbb_qty_stock']
-                    d_bbflg_qty_stock = size_value['bbflg_qty_stock']
-                    d_bbbbg_qty_stock = size_value['bbbbg_qty_stock']
-                    d_bbbwk_qty_stock = size_value['bbbwk_qty_stock']
-                    d_bbbrw_qty_stock = size_value['bbbrw_qty_stock']
-                    d_bbpdg_qty_stock = size_value['bbpdg_qty_stock']
-                    d_bbsyv_qty_stock = size_value['bbsyv_qty_stock']
-                    d_bbglr_qty_stock = size_value['bbglr_qty_stock']
-                    d_bbblg_qty_stock = size_value['bbblg_qty_stock']
-                    d_bbsnr_qty_stock = size_value['bbsnr_qty_stock']
-                    d_bbptg_qty_stock = size_value['bbptg_qty_stock']
-                    d_bbkta_qty_stock = size_value['bbkta_qty_stock']
-                    d_online_qty_stock = size_value['online_qty_stock']
+                    dt_class_name = categ_value['class_name']
+                    dt_parent_category = parent_category
+                    dt_category = category
+                    dt_style = str(style) + ' Total'
+                    dt_total_qty_sold = total_qty_sold
+                    dt_total_qty_stock = total_qty_stock
+                    dt_whbb_qty_sold = whbb_qty_sold
+                    dt_bbflg_qty_sold = bbflg_qty_sold
+                    dt_bbbbg_qty_sold = bbbbg_qty_sold
+                    dt_bbbwk_qty_sold = bbbwk_qty_sold
+                    dt_bbbrw_qty_sold = bbbrw_qty_sold
+                    dt_bbpdg_qty_sold = bbpdg_qty_sold
+                    dt_bbsyv_qty_sold = bbsyv_qty_sold
+                    dt_bbglr_qty_sold = bbglr_qty_sold
+                    dt_bbblg_qty_sold = bbblg_qty_sold
+                    dt_bbsnr_qty_sold = bbsnr_qty_sold
+                    dt_bbptg_qty_sold = bbptg_qty_sold
+                    dt_bbkta_qty_sold = bbkta_qty_sold
+                    dt_online_qty_sold = online_qty_sold
+                    dt_whbb_qty_stock = whbb_qty_stock
+                    dt_bbflg_qty_stock = bbflg_qty_stock
+                    dt_bbbbg_qty_stock = bbbbg_qty_stock
+                    dt_bbbwk_qty_stock = bbbwk_qty_stock
+                    dt_bbbrw_qty_stock = bbbrw_qty_stock
+                    dt_bbpdg_qty_stock = bbpdg_qty_stock
+                    dt_bbsyv_qty_stock = bbsyv_qty_stock
+                    dt_bbglr_qty_stock = bbglr_qty_stock
+                    dt_bbblg_qty_stock = bbblg_qty_stock
+                    dt_bbsnr_qty_stock = bbsnr_qty_stock
+                    dt_bbptg_qty_stock = bbptg_qty_stock
+                    dt_bbkta_qty_stock = bbkta_qty_stock
+                    dt_online_qty_stock = online_qty_stock
+                    children = categ_value['children']
 
-                    worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
-                    worksheet.write(row, 1, d_category or ' ', wbf['content'])
-                    worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
-                    worksheet.write(row, 3, d_style or ' ', wbf['content'])
-                    worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
-                    worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
-                    worksheet.write(row, 6, d_color or ' ', wbf['content'])
-                    worksheet.write(row, 7, d_age or ' ', wbf['content2'])
-                    worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
-                    worksheet.write(row, 9, d_size or ' ', wbf['content2'])
-                    worksheet.write(row, 10, d_notes or ' ', wbf['content'])
-                    worksheet.write(row, 11, d_cost_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 12, d_retail_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 13, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 14, d_total_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 15, d_whbb_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 16, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 17, d_bbflg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 18, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 19, d_bbbbg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 20, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 21, d_bbbwk_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 22, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 23, d_bbbrw_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 24, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 25, d_bbpdg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 26, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 27, d_bbsyv_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 28, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 29, d_bbglr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 30, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 31, d_bbblg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 32, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 33, d_bbsnr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 34, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 35, d_bbptg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 36, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 37, d_bbkta_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 38, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 39, d_online_qty_stock or ' ', wbf['content_float'])
+                    for size, size_value in children.items():
+                        d_class_name = categ_value['class_name']
+                        d_parent_category = categ_value['parent_category']
+                        d_category = categ_value['category']
+                        d_style = categ_value['style']
+                        d_stockname = categ_value['stockname']
+                        d_stockid = categ_value['stockid']
+                        d_color = categ_value['color']
+                        d_age = size_value['age']
+                        d_barcode = size_value['barcode']
+                        d_size = size
+                        d_notes = size_value['notes']
+                        d_cost_price = size_value['cost_price']
+                        d_retail_price = size_value['retail_price']
+                        d_total_qty_sold = size_value['total_qty_sold']
+                        d_total_qty_stock = size_value['total_qty_stock']
+                        d_whbb_qty_sold = size_value['whbb_qty_sold']
+                        d_bbflg_qty_sold = size_value['bbflg_qty_sold']
+                        d_bbbbg_qty_sold = size_value['bbbbg_qty_sold']
+                        d_bbbwk_qty_sold = size_value['bbbwk_qty_sold']
+                        d_bbbrw_qty_sold = size_value['bbbrw_qty_sold']
+                        d_bbpdg_qty_sold = size_value['bbpdg_qty_sold']
+                        d_bbsyv_qty_sold = size_value['bbsyv_qty_sold']
+                        d_bbglr_qty_sold = size_value['bbglr_qty_sold']
+                        d_bbblg_qty_sold = size_value['bbblg_qty_sold']
+                        d_bbsnr_qty_sold = size_value['bbsnr_qty_sold']
+                        d_bbptg_qty_sold = size_value['bbptg_qty_sold']
+                        d_bbkta_qty_sold = size_value['bbkta_qty_sold']
+                        d_online_qty_sold = size_value['online_qty_sold']
+                        d_whbb_qty_stock = size_value['whbb_qty_stock']
+                        d_bbflg_qty_stock = size_value['bbflg_qty_stock']
+                        d_bbbbg_qty_stock = size_value['bbbbg_qty_stock']
+                        d_bbbwk_qty_stock = size_value['bbbwk_qty_stock']
+                        d_bbbrw_qty_stock = size_value['bbbrw_qty_stock']
+                        d_bbpdg_qty_stock = size_value['bbpdg_qty_stock']
+                        d_bbsyv_qty_stock = size_value['bbsyv_qty_stock']
+                        d_bbglr_qty_stock = size_value['bbglr_qty_stock']
+                        d_bbblg_qty_stock = size_value['bbblg_qty_stock']
+                        d_bbsnr_qty_stock = size_value['bbsnr_qty_stock']
+                        d_bbptg_qty_stock = size_value['bbptg_qty_stock']
+                        d_bbkta_qty_stock = size_value['bbkta_qty_stock']
+                        d_online_qty_stock = size_value['online_qty_stock']
+
+                        worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
+                        worksheet.write(row, 1, d_category or ' ', wbf['content'])
+                        worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
+                        worksheet.write(row, 3, d_style or ' ', wbf['content'])
+                        worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
+                        worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
+                        worksheet.write(row, 6, d_color or ' ', wbf['content'])
+                        worksheet.write(row, 7, d_age or ' ', wbf['content2'])
+                        worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
+                        worksheet.write(row, 9, d_size or ' ', wbf['content2'])
+                        worksheet.write(row, 10, d_notes or ' ', wbf['content'])
+                        worksheet.write(row, 11, d_cost_price or ' ', wbf['content_float_price'])
+                        worksheet.write(row, 12, d_retail_price or ' ', wbf['content_float_price'])
+                        worksheet.write(row, 13, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 14, d_total_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 15, d_whbb_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 16, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 17, d_bbflg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 18, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 19, d_bbbbg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 20, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 21, d_bbbwk_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 22, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 23, d_bbbrw_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 24, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 25, d_bbpdg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 26, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 27, d_bbsyv_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 28, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 29, d_bbglr_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 30, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 31, d_bbblg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 32, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 33, d_bbsnr_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 34, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 35, d_bbptg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 36, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 37, d_bbkta_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 38, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 39, d_online_qty_stock or ' ', wbf['content_float'])
+                        row += 1
+
+                    worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
+                    worksheet.write(row, 1, dt_category  or ' ', wbf['total_content'])
+                    worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
+                    worksheet.write(row, 3, ' ', wbf['total_content'])
+                    worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
+                    worksheet.write(row, 5, ' ', wbf['total_content'])
+                    worksheet.write(row, 6, ' ', wbf['total_content'])
+                    worksheet.write(row, 7, ' ', wbf['total_content'])
+                    worksheet.write(row, 8, ' ', wbf['total_content'])
+                    worksheet.write(row, 9, ' ', wbf['total_content'])
+                    worksheet.write(row, 10, ' ', wbf['total_content'])
+                    worksheet.write(row, 11, ' ', wbf['total_content_float_price'])
+                    worksheet.write(row, 12, ' ', wbf['total_content_float_price'])
+                    worksheet.write(row, 13, dt_total_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 14, dt_total_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 15, dt_whbb_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 16, dt_bbflg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 17, dt_bbflg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 18, dt_bbbbg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 19, dt_bbbbg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 20, dt_bbbwk_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 21, dt_bbbwk_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 22, dt_bbbrw_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 23, dt_bbbrw_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 24, dt_bbpdg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 25, dt_bbpdg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 26, dt_bbsyv_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 27, dt_bbsyv_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 28, dt_bbglr_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 29, dt_bbglr_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 30, dt_bbblg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 31, dt_bbblg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 32, dt_bbsnr_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 33, dt_bbsnr_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 34, dt_bbptg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 35, dt_bbptg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 36, dt_bbkta_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 37, dt_bbkta_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 38, dt_online_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 39, dt_online_qty_stock or ' ', wbf['total_content_float'])
                     row += 1
 
-                worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
-                worksheet.write(row, 1, dt_category  or ' ', wbf['total_content'])
-                worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
+                worksheet.write(row, 0, cl_class_name + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 1, ' ', wbf['total_content'])
+                worksheet.write(row, 2, ' ', wbf['total_content'])
                 worksheet.write(row, 3, ' ', wbf['total_content'])
-                worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 4, ' ', wbf['total_content'])
                 worksheet.write(row, 5, ' ', wbf['total_content'])
                 worksheet.write(row, 6, ' ', wbf['total_content'])
                 worksheet.write(row, 7, ' ', wbf['total_content'])
@@ -748,63 +989,64 @@ class WhatsStockinSoldReport(models.TransientModel):
                 worksheet.write(row, 10, ' ', wbf['total_content'])
                 worksheet.write(row, 11, ' ', wbf['total_content_float_price'])
                 worksheet.write(row, 12, ' ', wbf['total_content_float_price'])
-                worksheet.write(row, 13, dt_total_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 14, dt_total_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 15, dt_whbb_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 16, dt_bbflg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 17, dt_bbflg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 18, dt_bbbbg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 19, dt_bbbbg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 20, dt_bbbwk_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 21, dt_bbbwk_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 22, dt_bbbrw_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 23, dt_bbbrw_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 24, dt_bbpdg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 25, dt_bbpdg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 26, dt_bbsyv_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 27, dt_bbsyv_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 28, dt_bbglr_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 29, dt_bbglr_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 30, dt_bbblg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 31, dt_bbblg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 32, dt_bbsnr_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 33, dt_bbsnr_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 34, dt_bbptg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 35, dt_bbptg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 36, dt_bbkta_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 37, dt_bbkta_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 38, dt_online_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 39, dt_online_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 13, cl_total_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 14, cl_total_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 15, cl_whbb_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 16, cl_bbflg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 17, cl_bbflg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 18, cl_bbbbg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 19, cl_bbbbg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 20, cl_bbbwk_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 21, cl_bbbwk_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 22, cl_bbbrw_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 23, cl_bbbrw_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 24, cl_bbpdg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 25, cl_bbpdg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 26, cl_bbsyv_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 27, cl_bbsyv_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 28, cl_bbglr_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 29, cl_bbglr_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 30, cl_bbblg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 31, cl_bbblg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 32, cl_bbsnr_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 33, cl_bbsnr_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 34, cl_bbptg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 35, cl_bbptg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 36, cl_bbkta_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 37, cl_bbkta_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 38, cl_online_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 39, cl_online_qty_stock or ' ', wbf['total_content_float'])
                 row += 1
-
-                gt_total_qty_sold += dt_total_qty_sold
-                gt_total_qty_stock += dt_total_qty_stock
-                gt_whbb_qty_sold += dt_whbb_qty_sold
-                gt_bbflg_qty_sold += dt_bbflg_qty_sold
-                gt_bbbbg_qty_sold += dt_bbbbg_qty_sold
-                gt_bbbwk_qty_sold += dt_bbbwk_qty_sold
-                gt_bbbrw_qty_sold += dt_bbbrw_qty_sold
-                gt_bbpdg_qty_sold += dt_bbpdg_qty_sold
-                gt_bbsyv_qty_sold += dt_bbsyv_qty_sold
-                gt_bbglr_qty_sold += dt_bbglr_qty_sold
-                gt_bbblg_qty_sold += dt_bbblg_qty_sold
-                gt_bbsnr_qty_sold += dt_bbsnr_qty_sold
-                gt_bbptg_qty_sold += dt_bbptg_qty_sold
-                gt_bbkta_qty_sold += dt_bbkta_qty_sold
-                gt_online_qty_sold += dt_online_qty_sold
-                gt_whbb_qty_stock += dt_whbb_qty_stock
-                gt_bbflg_qty_stock += dt_bbflg_qty_stock
-                gt_bbbbg_qty_stock += dt_bbbbg_qty_stock
-                gt_bbbwk_qty_stock += dt_bbbwk_qty_stock
-                gt_bbbrw_qty_stock += dt_bbbrw_qty_stock
-                gt_bbpdg_qty_stock += dt_bbpdg_qty_stock
-                gt_bbsyv_qty_stock += dt_bbsyv_qty_stock
-                gt_bbglr_qty_stock += dt_bbglr_qty_stock
-                gt_bbblg_qty_stock += dt_bbblg_qty_stock
-                gt_bbsnr_qty_stock += dt_bbsnr_qty_stock
-                gt_bbptg_qty_stock += dt_bbptg_qty_stock
-                gt_bbkta_qty_stock += dt_bbkta_qty_stock
-                gt_online_qty_stock += dt_online_qty_stock
+                
+                
+                gt_total_qty_sold += cl_total_qty_sold
+                gt_total_qty_stock += cl_total_qty_stock
+                gt_whbb_qty_sold += cl_whbb_qty_sold
+                gt_bbflg_qty_sold += cl_bbflg_qty_sold
+                gt_bbbbg_qty_sold += cl_bbbbg_qty_sold
+                gt_bbbwk_qty_sold += cl_bbbwk_qty_sold
+                gt_bbbrw_qty_sold += cl_bbbrw_qty_sold
+                gt_bbpdg_qty_sold += cl_bbpdg_qty_sold
+                gt_bbsyv_qty_sold += cl_bbsyv_qty_sold
+                gt_bbglr_qty_sold += cl_bbglr_qty_sold
+                gt_bbblg_qty_sold += cl_bbblg_qty_sold
+                gt_bbsnr_qty_sold += cl_bbsnr_qty_sold
+                gt_bbptg_qty_sold += cl_bbptg_qty_sold
+                gt_bbkta_qty_sold += cl_bbkta_qty_sold
+                gt_online_qty_sold += cl_online_qty_sold
+                gt_whbb_qty_stock += cl_whbb_qty_stock
+                gt_bbflg_qty_stock += cl_bbflg_qty_stock
+                gt_bbbbg_qty_stock += cl_bbbbg_qty_stock
+                gt_bbbwk_qty_stock += cl_bbbwk_qty_stock
+                gt_bbbrw_qty_stock += cl_bbbrw_qty_stock
+                gt_bbpdg_qty_stock += cl_bbpdg_qty_stock
+                gt_bbsyv_qty_stock += cl_bbsyv_qty_stock
+                gt_bbglr_qty_stock += cl_bbglr_qty_stock
+                gt_bbblg_qty_stock += cl_bbblg_qty_stock
+                gt_bbsnr_qty_stock += cl_bbsnr_qty_stock
+                gt_bbptg_qty_stock += cl_bbptg_qty_stock
+                gt_bbkta_qty_stock += cl_bbkta_qty_stock
+                gt_online_qty_stock += cl_online_qty_stock
 
             worksheet.write(row, 0, 'GRAND TOTAL', wbf['total_content'])
             worksheet.write(row, 1, ' ', wbf['total_content'])
@@ -996,31 +1238,25 @@ class WhatsStockinSoldReport(models.TransientModel):
             row += 1
             no = 1
 
-            domain_product = self.env['product.product'].with_context(to_date=self.end_period).search([
+            domain = [
                 ('type', '=', 'product'),
-            ])
-
-            # domain = [
-            #     ('order_id.state', 'not in', ['draft', 'cancel']),
-            #     ('order_id.date_order', '>=', self.start_period),
-            #     ('order_id.date_order', '<=', self.end_period),
-            # ]
+            ]
 
             if self.class_product_id and self.product_category_id:
-                domain_product += [
+                domain += [
                     ('class_product', '=', self.class_product_id.id),
                     ('product_category_categ_id', '=', self.product_category_id.id),
                 ]
             elif self.class_product_id:
-                domain_product.append(('class_product', '=', self.class_product_id.id))
+                domain += [('class_product', '=', self.class_product_id.id)]
             elif self.product_category_id:
-                domain_product.append(('product_category_categ_id', '=', self.product_category_id.id))
+                domain += [('product_category_categ_id', '=', self.product_category_id.id)]
 
-            # pos_orders = self.env['pos.order.line'].search(domain)
+            product_product = self.env['product.product'].with_context(to_date=self.end_period).search(domain)
 
             report_data = {}
 
-            data_pos_orders = domain_product.filtered(
+            data_pos_orders = product_product.filtered(
                 lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free)
 
             for line in data_pos_orders:
@@ -1275,6 +1511,12 @@ class WhatsStockinSoldReport(models.TransientModel):
 
                 if key not in grouped_colors:
                     grouped_colors[key] = {
+                        'class_name': class_name,
+                        'parent_category': parent_category,
+                        'category': category,
+                        'style': style,
+                        'stockname': stockname,
+                        'color': color,
                         'stockid': stockid,
                         'total_qty_sold': total_qty_sold,
                         'total_qty_stock': total_qty_stock,
@@ -1406,6 +1648,163 @@ class WhatsStockinSoldReport(models.TransientModel):
                     grouped_colors[key]['bbkta_qty_stock'] += bbkta_qty_stock
                     grouped_colors[key]['online_qty_stock'] += online_qty_stock
 
+
+            grouped_class = {}
+            for data_class in grouped_colors.values():
+                cl_class_name = data_class['class_name']
+                cl_parent_category = data_class['parent_category']
+                cl_category = data_class['category']
+                cl_style = data_class['style']
+                cl_stockname = data_class['stockname']
+                cl_color = data_class['color']
+                cl_stockid = data_class['stockid']
+                cl_total_qty_sold = data_class['total_qty_sold']
+                cl_total_qty_stock = data_class['total_qty_stock']
+                cl_whbb_qty_sold = data_class['whbb_qty_sold']
+                cl_bbflg_qty_sold = data_class['bbflg_qty_sold']
+                cl_bbbbg_qty_sold = data_class['bbbbg_qty_sold']
+                cl_bbbwk_qty_sold = data_class['bbbwk_qty_sold']
+                cl_bbbrw_qty_sold = data_class['bbbrw_qty_sold']
+                cl_bbpdg_qty_sold = data_class['bbpdg_qty_sold']
+                cl_bbsyv_qty_sold = data_class['bbsyv_qty_sold']
+                cl_bbglr_qty_sold = data_class['bbglr_qty_sold']
+                cl_bbblg_qty_sold = data_class['bbblg_qty_sold']
+                cl_bbsnr_qty_sold = data_class['bbsnr_qty_sold']
+                cl_bbptg_qty_sold = data_class['bbptg_qty_sold']
+                cl_bbkta_qty_sold = data_class['bbkta_qty_sold']
+                cl_online_qty_sold = data_class['online_qty_sold']
+                cl_whbb_qty_stock = data_class['whbb_qty_stock']
+                cl_bbflg_qty_stock = data_class['bbflg_qty_stock']
+                cl_bbbbg_qty_stock = data_class['bbbbg_qty_stock']
+                cl_bbbwk_qty_stock = data_class['bbbwk_qty_stock']
+                cl_bbbrw_qty_stock = data_class['bbbrw_qty_stock']
+                cl_bbpdg_qty_stock = data_class['bbpdg_qty_stock']
+                cl_bbsyv_qty_stock = data_class['bbsyv_qty_stock']
+                cl_bbglr_qty_stock = data_class['bbglr_qty_stock']
+                cl_bbblg_qty_stock = data_class['bbblg_qty_stock']
+                cl_bbsnr_qty_stock = data_class['bbsnr_qty_stock']
+                cl_bbptg_qty_stock = data_class['bbptg_qty_stock']
+                cl_bbkta_qty_stock = data_class['bbkta_qty_stock']
+                cl_online_qty_stock = data_class['online_qty_stock']
+                cl_children = data_class['children']
+
+                key = cl_class_name
+
+                if key not in grouped_class:
+                    grouped_class[key] = {
+                        'class_name': cl_class_name,
+                        'total_qty_sold': cl_total_qty_sold,
+                        'total_qty_stock': cl_total_qty_stock,
+                        'whbb_qty_sold': cl_whbb_qty_sold,
+                        'bbflg_qty_sold': cl_bbflg_qty_sold,
+                        'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                        'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                        'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                        'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                        'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                        'bbglr_qty_sold': cl_bbglr_qty_sold,
+                        'bbblg_qty_sold': cl_bbblg_qty_sold,
+                        'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                        'bbptg_qty_sold': cl_bbptg_qty_sold,
+                        'bbkta_qty_sold': cl_bbkta_qty_sold,
+                        'online_qty_sold': cl_online_qty_sold,
+                        'whbb_qty_stock': cl_whbb_qty_stock,
+                        'bbflg_qty_stock': cl_bbflg_qty_stock,
+                        'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                        'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                        'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                        'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                        'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                        'bbglr_qty_stock': cl_bbglr_qty_stock,
+                        'bbblg_qty_stock': cl_bbblg_qty_stock,
+                        'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                        'bbptg_qty_stock': cl_bbptg_qty_stock,
+                        'bbkta_qty_stock': cl_bbkta_qty_stock,
+                        'online_qty_stock': cl_online_qty_stock,
+                        'children_category': {},
+                    }
+                else:
+                    grouped_class[key]['total_qty_sold'] += cl_total_qty_sold
+                    grouped_class[key]['total_qty_stock'] += cl_total_qty_stock
+                    grouped_class[key]['whbb_qty_sold'] += cl_whbb_qty_sold
+                    grouped_class[key]['bbflg_qty_sold'] += cl_bbflg_qty_sold
+                    grouped_class[key]['bbbbg_qty_sold'] += cl_bbbbg_qty_sold
+                    grouped_class[key]['bbbwk_qty_sold'] += cl_bbbwk_qty_sold
+                    grouped_class[key]['bbbrw_qty_sold'] += cl_bbbrw_qty_sold
+                    grouped_class[key]['bbpdg_qty_sold'] += cl_bbpdg_qty_sold
+                    grouped_class[key]['bbsyv_qty_sold'] += cl_bbsyv_qty_sold
+                    grouped_class[key]['bbglr_qty_sold'] += cl_bbglr_qty_sold
+                    grouped_class[key]['bbblg_qty_sold'] += cl_bbblg_qty_sold
+                    grouped_class[key]['bbsnr_qty_sold'] += cl_bbsnr_qty_sold
+                    grouped_class[key]['bbptg_qty_sold'] += cl_bbptg_qty_sold
+                    grouped_class[key]['bbkta_qty_sold'] += cl_bbkta_qty_sold
+                    grouped_class[key]['online_qty_sold'] += cl_online_qty_sold
+                    grouped_class[key]['whbb_qty_stock'] += cl_whbb_qty_stock
+                    grouped_class[key]['bbflg_qty_stock'] += cl_bbflg_qty_stock
+                    grouped_class[key]['bbbbg_qty_stock'] += cl_bbbbg_qty_stock
+                    grouped_class[key]['bbbwk_qty_stock'] += cl_bbbwk_qty_stock
+                    grouped_class[key]['bbbrw_qty_stock'] += cl_bbbrw_qty_stock
+                    grouped_class[key]['bbpdg_qty_stock'] += cl_bbpdg_qty_stock
+                    grouped_class[key]['bbsyv_qty_stock'] += cl_bbsyv_qty_stock
+                    grouped_class[key]['bbglr_qty_stock'] += cl_bbglr_qty_stock
+                    grouped_class[key]['bbblg_qty_stock'] += cl_bbblg_qty_stock
+                    grouped_class[key]['bbsnr_qty_stock'] += cl_bbsnr_qty_stock
+                    grouped_class[key]['bbptg_qty_stock'] += cl_bbptg_qty_stock
+                    grouped_class[key]['bbkta_qty_stock'] += cl_bbkta_qty_stock
+                    grouped_class[key]['online_qty_stock'] += cl_online_qty_stock
+
+                category_data = grouped_class[key]
+                subkey = (cl_parent_category, cl_category, cl_style, cl_stockname, cl_color)
+
+                if subkey not in grouped_class[key]['children_category']:
+                    grouped_class[key]['children_category'][subkey] = {
+                        'class_name': cl_class_name,
+                        'parent_category': cl_parent_category,
+                        'category': cl_category,
+                        'style': cl_style,
+                        'stockname': cl_stockname,
+                        # 'picture': cl_picture,
+                        'color': cl_color,
+                        'stockid': cl_stockid,
+                        # 'notes': cl_notes,
+                        # 'barcode': cl_barcode,
+                        # 'cost_price': cl_cost_price,
+                        # 'retail_price': cl_retail_price,
+                        'total_qty_sold': cl_total_qty_sold,
+                        'total_qty_stock': cl_total_qty_stock,
+                        'whbb_qty_sold': cl_whbb_qty_sold,
+                        'bbflg_qty_sold': cl_bbflg_qty_sold,
+                        'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                        'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                        'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                        'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                        'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                        'bbglr_qty_sold': cl_bbglr_qty_sold,
+                        'bbblg_qty_sold': cl_bbblg_qty_sold,
+                        'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                        'bbptg_qty_sold': cl_bbptg_qty_sold,
+                        'bbkta_qty_sold': cl_bbkta_qty_sold,
+                        'online_qty_sold': cl_online_qty_sold,
+                        'whbb_qty_stock': cl_whbb_qty_stock,
+                        'bbflg_qty_stock': cl_bbflg_qty_stock,
+                        'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                        'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                        'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                        'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                        'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                        'bbglr_qty_stock': cl_bbglr_qty_stock,
+                        'bbblg_qty_stock': cl_bbblg_qty_stock,
+                        'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                        'bbptg_qty_stock': cl_bbptg_qty_stock,
+                        'bbkta_qty_stock': cl_bbkta_qty_stock,
+                        'online_qty_stock': cl_online_qty_stock,
+                        # 'age': cl_age,
+                        'children': cl_children,
+                    }
+
+
+
+
             # Print the result
             row = 4
             gt_total_qty_sold = 0
@@ -1437,154 +1836,240 @@ class WhatsStockinSoldReport(models.TransientModel):
             gt_bbkta_qty_stock = 0
             gt_online_qty_stock = 0
 
-            for key, value in grouped_colors.items():
+            for key, value in grouped_class.items():
+                children_category = value['children_category']
 
-                class_name, parent_category, category, style, stockname, color = key
-                total_qty_sold, total_qty_stock, whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, online_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, online_qty_stock = \
-                value['total_qty_sold'], value['total_qty_stock'], value['whbb_qty_sold'], value['bbflg_qty_sold'], value[
-                    'bbbbg_qty_sold'], value['bbbwk_qty_sold'], value['bbbrw_qty_sold'], value['bbpdg_qty_sold'], value[
-                    'bbsyv_qty_sold'], value['bbglr_qty_sold'], value['bbblg_qty_sold'], value['bbsnr_qty_sold'], value[
-                    'bbptg_qty_sold'], value['bbkta_qty_sold'], value['online_qty_sold'], value['whbb_qty_stock'], value[
-                    'bbflg_qty_stock'], value['bbbbg_qty_stock'], value['bbbwk_qty_stock'], value['bbbrw_qty_stock'], value[
-                    'bbpdg_qty_stock'], value['bbsyv_qty_stock'], value['bbglr_qty_stock'], value['bbblg_qty_stock'], value[
-                    'bbsnr_qty_stock'], value['bbptg_qty_stock'], value['bbkta_qty_stock'], value['online_qty_stock']
-                qty_sold_total = whbb_qty_sold + bbflg_qty_sold + bbbbg_qty_sold + bbbwk_qty_sold + bbbrw_qty_sold + bbpdg_qty_sold + bbsyv_qty_sold + bbglr_qty_sold + bbblg_qty_sold + bbsnr_qty_sold + bbptg_qty_sold + bbkta_qty_sold + online_qty_sold
-                qty_stock_total = whbb_qty_stock + bbflg_qty_stock + bbbbg_qty_stock + bbbwk_qty_stock + bbbrw_qty_stock + bbpdg_qty_stock + bbsyv_qty_stock + bbglr_qty_stock + bbblg_qty_stock + bbsnr_qty_stock + bbptg_qty_stock + bbkta_qty_stock + online_qty_stock
+                cl_class_name = value['class_name']
+                cl_total_qty_sold = value['total_qty_sold']
+                cl_total_qty_stock = value['total_qty_stock']
+                cl_whbb_qty_sold = value['whbb_qty_sold']
+                cl_bbflg_qty_sold = value['bbflg_qty_sold']
+                cl_bbbbg_qty_sold = value['bbbbg_qty_sold']
+                cl_bbbwk_qty_sold = value['bbbwk_qty_sold']
+                cl_bbbrw_qty_sold = value['bbbrw_qty_sold']
+                cl_bbpdg_qty_sold = value['bbpdg_qty_sold']
+                cl_bbsyv_qty_sold = value['bbsyv_qty_sold']
+                cl_bbglr_qty_sold = value['bbglr_qty_sold']
+                cl_bbblg_qty_sold = value['bbblg_qty_sold']
+                cl_bbsnr_qty_sold = value['bbsnr_qty_sold']
+                cl_bbptg_qty_sold = value['bbptg_qty_sold']
+                cl_bbkta_qty_sold = value['bbkta_qty_sold']
+                cl_online_qty_sold = value['online_qty_sold']
+                cl_whbb_qty_stock = value['whbb_qty_stock']
+                cl_bbflg_qty_stock = value['bbflg_qty_stock']
+                cl_bbbbg_qty_stock = value['bbbbg_qty_stock']
+                cl_bbbwk_qty_stock = value['bbbwk_qty_stock']
+                cl_bbbrw_qty_stock = value['bbbrw_qty_stock']
+                cl_bbpdg_qty_stock = value['bbpdg_qty_stock']
+                cl_bbsyv_qty_stock = value['bbsyv_qty_stock']
+                cl_bbglr_qty_stock = value['bbglr_qty_stock']
+                cl_bbblg_qty_stock = value['bbblg_qty_stock']
+                cl_bbsnr_qty_stock = value['bbsnr_qty_stock']
+                cl_bbptg_qty_stock = value['bbptg_qty_stock']
+                cl_bbkta_qty_stock = value['bbkta_qty_stock']
+                cl_online_qty_stock = value['online_qty_stock']
 
-                dt_class_name = class_name
-                dt_parent_category = parent_category
-                dt_category = category
-                dt_style = str(style) + ' Total'
-                dt_total_qty_sold = total_qty_sold
-                dt_total_qty_stock = total_qty_stock
-                dt_whbb_qty_sold = whbb_qty_sold
-                dt_bbflg_qty_sold = bbflg_qty_sold
-                dt_bbbbg_qty_sold = bbbbg_qty_sold
-                dt_bbbwk_qty_sold = bbbwk_qty_sold
-                dt_bbbrw_qty_sold = bbbrw_qty_sold
-                dt_bbpdg_qty_sold = bbpdg_qty_sold
-                dt_bbsyv_qty_sold = bbsyv_qty_sold
-                dt_bbglr_qty_sold = bbglr_qty_sold
-                dt_bbblg_qty_sold = bbblg_qty_sold
-                dt_bbsnr_qty_sold = bbsnr_qty_sold
-                dt_bbptg_qty_sold = bbptg_qty_sold
-                dt_bbkta_qty_sold = bbkta_qty_sold
-                dt_online_qty_sold = online_qty_sold
-                dt_whbb_qty_stock = whbb_qty_stock
-                dt_bbflg_qty_stock = bbflg_qty_stock
-                dt_bbbbg_qty_stock = bbbbg_qty_stock
-                dt_bbbwk_qty_stock = bbbwk_qty_stock
-                dt_bbbrw_qty_stock = bbbrw_qty_stock
-                dt_bbpdg_qty_stock = bbpdg_qty_stock
-                dt_bbsyv_qty_stock = bbsyv_qty_stock
-                dt_bbglr_qty_stock = bbglr_qty_stock
-                dt_bbblg_qty_stock = bbblg_qty_stock
-                dt_bbsnr_qty_stock = bbsnr_qty_stock
-                dt_bbptg_qty_stock = bbptg_qty_stock
-                dt_bbkta_qty_stock = bbkta_qty_stock
-                dt_online_qty_stock = online_qty_stock
+                for subkey, categ_value in children_category.items():
 
-                children = value['children']
-                for size, size_value in children.items():
-                    d_class_name = class_name
-                    d_parent_category = parent_category
-                    d_category = category
-                    d_style = style
-                    d_picture = size_value['picture']
-                    d_stockname = stockname
-                    d_stockid = value['stockid']
-                    d_color = color
-                    d_age = size_value['age']
-                    d_barcode = size_value['barcode']
-                    d_size = size
-                    d_notes = size_value['notes']
-                    d_cost_price = size_value['cost_price']
-                    d_retail_price = size_value['retail_price']
-                    d_total_qty_sold = size_value['total_qty_sold']
-                    d_total_qty_stock = size_value['total_qty_stock']
-                    d_whbb_qty_sold = size_value['whbb_qty_sold']
-                    d_bbflg_qty_sold = size_value['bbflg_qty_sold']
-                    d_bbbbg_qty_sold = size_value['bbbbg_qty_sold']
-                    d_bbbwk_qty_sold = size_value['bbbwk_qty_sold']
-                    d_bbbrw_qty_sold = size_value['bbbrw_qty_sold']
-                    d_bbpdg_qty_sold = size_value['bbpdg_qty_sold']
-                    d_bbsyv_qty_sold = size_value['bbsyv_qty_sold']
-                    d_bbglr_qty_sold = size_value['bbglr_qty_sold']
-                    d_bbblg_qty_sold = size_value['bbblg_qty_sold']
-                    d_bbsnr_qty_sold = size_value['bbsnr_qty_sold']
-                    d_bbptg_qty_sold = size_value['bbptg_qty_sold']
-                    d_bbkta_qty_sold = size_value['bbkta_qty_sold']
-                    d_online_qty_sold = size_value['online_qty_sold']
-                    d_whbb_qty_stock = size_value['whbb_qty_stock']
-                    d_bbflg_qty_stock = size_value['bbflg_qty_stock']
-                    d_bbbbg_qty_stock = size_value['bbbbg_qty_stock']
-                    d_bbbwk_qty_stock = size_value['bbbwk_qty_stock']
-                    d_bbbrw_qty_stock = size_value['bbbrw_qty_stock']
-                    d_bbpdg_qty_stock = size_value['bbpdg_qty_stock']
-                    d_bbsyv_qty_stock = size_value['bbsyv_qty_stock']
-                    d_bbglr_qty_stock = size_value['bbglr_qty_stock']
-                    d_bbblg_qty_stock = size_value['bbblg_qty_stock']
-                    d_bbsnr_qty_stock = size_value['bbsnr_qty_stock']
-                    d_bbptg_qty_stock = size_value['bbptg_qty_stock']
-                    d_bbkta_qty_stock = size_value['bbkta_qty_stock']
-                    d_online_qty_stock = size_value['online_qty_stock']
+                    parent_category, category, style, stockname, color = subkey
+                    # class_name, parent_category, category = key
 
-                    worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
-                    worksheet.write(row, 1, d_category or ' ', wbf['content'])
-                    worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
-                    worksheet.write(row, 3, d_style or ' ', wbf['content'])
-                    worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
-                    worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
-                    worksheet.write(row, 6, d_color or ' ', wbf['content'])
-                    worksheet.write(row, 7, d_age or ' ', wbf['content2'])
-                    worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
-                    worksheet.write(row, 9, d_size or ' ', wbf['content2'])
-                    if d_picture:
-                        worksheet.write(row, 10, '', wbf['content'])
-                        worksheet.insert_image(row, 10, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
-                                                                     'y_scale': 0.15, 'object_position': 1,
-                                                                     'x_offset': 30, 'y_offset': 5})
-                    else:
-                        worksheet.write(row, 10, '', wbf['content'])
-                    worksheet.write(row, 11, d_notes or ' ', wbf['content'])
-                    worksheet.write(row, 12, d_cost_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 13, d_retail_price or ' ', wbf['content_float_price'])
-                    worksheet.write(row, 14, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 15, d_total_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 16, d_whbb_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 17, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 18, d_bbflg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 19, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 20, d_bbbbg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 21, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 22, d_bbbwk_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 23, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 24, d_bbbrw_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 25, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 26, d_bbpdg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 27, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 28, d_bbsyv_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 29, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 30, d_bbglr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 31, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 32, d_bbblg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 33, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 34, d_bbsnr_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 35, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 36, d_bbptg_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 37, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 38, d_bbkta_qty_stock or ' ', wbf['content_float'])
-                    worksheet.write(row, 39, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
-                    worksheet.write(row, 40, d_online_qty_stock or ' ', wbf['content_float'])
+                    total_qty_sold, total_qty_stock, whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, online_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, online_qty_stock = \
+                        categ_value['total_qty_sold'], categ_value['total_qty_stock'], categ_value['whbb_qty_sold'], \
+                        categ_value['bbflg_qty_sold'], \
+                            categ_value['bbbbg_qty_sold'], categ_value['bbbwk_qty_sold'], categ_value['bbbrw_qty_sold'], \
+                        categ_value['bbpdg_qty_sold'], \
+                            categ_value['bbsyv_qty_sold'], categ_value['bbglr_qty_sold'], categ_value['bbblg_qty_sold'], \
+                        categ_value['bbsnr_qty_sold'], \
+                            categ_value['bbptg_qty_sold'], categ_value['bbkta_qty_sold'], categ_value[
+                            'online_qty_sold'], categ_value['whbb_qty_stock'], \
+                            categ_value['bbflg_qty_stock'], categ_value['bbbbg_qty_stock'], categ_value[
+                            'bbbwk_qty_stock'], categ_value[
+                            'bbbrw_qty_stock'], categ_value['bbpdg_qty_stock'], categ_value['bbsyv_qty_stock'], \
+                        categ_value[
+                            'bbglr_qty_stock'], categ_value['bbblg_qty_stock'], categ_value['bbsnr_qty_stock'], \
+                        categ_value[
+                            'bbptg_qty_stock'], categ_value['bbkta_qty_stock'], categ_value['online_qty_stock']
+                    qty_sold_total = whbb_qty_sold + bbflg_qty_sold + bbbbg_qty_sold + bbbwk_qty_sold + bbbrw_qty_sold + bbpdg_qty_sold + bbsyv_qty_sold + bbglr_qty_sold + bbblg_qty_sold + bbsnr_qty_sold + bbptg_qty_sold + bbkta_qty_sold + online_qty_sold
+                    qty_stock_total = whbb_qty_stock + bbflg_qty_stock + bbbbg_qty_stock + bbbwk_qty_stock + bbbrw_qty_stock + bbpdg_qty_stock + bbsyv_qty_stock + bbglr_qty_stock + bbblg_qty_stock + bbsnr_qty_stock + bbptg_qty_stock + bbkta_qty_stock + online_qty_stock
 
-                    worksheet.set_row(row, 70)
+                    dt_class_name = categ_value['class_name']
+                    dt_parent_category = parent_category
+                    dt_category = category
+                    dt_style = str(style) + ' Total'
+                    dt_total_qty_sold = total_qty_sold
+                    dt_total_qty_stock = total_qty_stock
+                    dt_whbb_qty_sold = whbb_qty_sold
+                    dt_bbflg_qty_sold = bbflg_qty_sold
+                    dt_bbbbg_qty_sold = bbbbg_qty_sold
+                    dt_bbbwk_qty_sold = bbbwk_qty_sold
+                    dt_bbbrw_qty_sold = bbbrw_qty_sold
+                    dt_bbpdg_qty_sold = bbpdg_qty_sold
+                    dt_bbsyv_qty_sold = bbsyv_qty_sold
+                    dt_bbglr_qty_sold = bbglr_qty_sold
+                    dt_bbblg_qty_sold = bbblg_qty_sold
+                    dt_bbsnr_qty_sold = bbsnr_qty_sold
+                    dt_bbptg_qty_sold = bbptg_qty_sold
+                    dt_bbkta_qty_sold = bbkta_qty_sold
+                    dt_online_qty_sold = online_qty_sold
+                    dt_whbb_qty_stock = whbb_qty_stock
+                    dt_bbflg_qty_stock = bbflg_qty_stock
+                    dt_bbbbg_qty_stock = bbbbg_qty_stock
+                    dt_bbbwk_qty_stock = bbbwk_qty_stock
+                    dt_bbbrw_qty_stock = bbbrw_qty_stock
+                    dt_bbpdg_qty_stock = bbpdg_qty_stock
+                    dt_bbsyv_qty_stock = bbsyv_qty_stock
+                    dt_bbglr_qty_stock = bbglr_qty_stock
+                    dt_bbblg_qty_stock = bbblg_qty_stock
+                    dt_bbsnr_qty_stock = bbsnr_qty_stock
+                    dt_bbptg_qty_stock = bbptg_qty_stock
+                    dt_bbkta_qty_stock = bbkta_qty_stock
+                    dt_online_qty_stock = online_qty_stock
+                    children = categ_value['children']
+
+                    for size, size_value in children.items():
+                        d_class_name = categ_value['class_name']
+                        d_parent_category = categ_value['parent_category']
+                        d_category = categ_value['category']
+                        d_style = categ_value['style']
+                        d_stockname = categ_value['stockname']
+                        d_stockid = categ_value['stockid']
+                        d_color = categ_value['color']
+                        d_age = size_value['age']
+                        d_picture = size_value['picture']
+                        d_barcode = size_value['barcode']
+                        d_size = size
+                        d_notes = size_value['notes']
+                        d_cost_price = size_value['cost_price']
+                        d_retail_price = size_value['retail_price']
+                        d_total_qty_sold = size_value['total_qty_sold']
+                        d_total_qty_stock = size_value['total_qty_stock']
+                        d_whbb_qty_sold = size_value['whbb_qty_sold']
+                        d_bbflg_qty_sold = size_value['bbflg_qty_sold']
+                        d_bbbbg_qty_sold = size_value['bbbbg_qty_sold']
+                        d_bbbwk_qty_sold = size_value['bbbwk_qty_sold']
+                        d_bbbrw_qty_sold = size_value['bbbrw_qty_sold']
+                        d_bbpdg_qty_sold = size_value['bbpdg_qty_sold']
+                        d_bbsyv_qty_sold = size_value['bbsyv_qty_sold']
+                        d_bbglr_qty_sold = size_value['bbglr_qty_sold']
+                        d_bbblg_qty_sold = size_value['bbblg_qty_sold']
+                        d_bbsnr_qty_sold = size_value['bbsnr_qty_sold']
+                        d_bbptg_qty_sold = size_value['bbptg_qty_sold']
+                        d_bbkta_qty_sold = size_value['bbkta_qty_sold']
+                        d_online_qty_sold = size_value['online_qty_sold']
+                        d_whbb_qty_stock = size_value['whbb_qty_stock']
+                        d_bbflg_qty_stock = size_value['bbflg_qty_stock']
+                        d_bbbbg_qty_stock = size_value['bbbbg_qty_stock']
+                        d_bbbwk_qty_stock = size_value['bbbwk_qty_stock']
+                        d_bbbrw_qty_stock = size_value['bbbrw_qty_stock']
+                        d_bbpdg_qty_stock = size_value['bbpdg_qty_stock']
+                        d_bbsyv_qty_stock = size_value['bbsyv_qty_stock']
+                        d_bbglr_qty_stock = size_value['bbglr_qty_stock']
+                        d_bbblg_qty_stock = size_value['bbblg_qty_stock']
+                        d_bbsnr_qty_stock = size_value['bbsnr_qty_stock']
+                        d_bbptg_qty_stock = size_value['bbptg_qty_stock']
+                        d_bbkta_qty_stock = size_value['bbkta_qty_stock']
+                        d_online_qty_stock = size_value['online_qty_stock']
+
+                        worksheet.write(row, 0, d_class_name or ' ', wbf['content'])
+                        worksheet.write(row, 1, d_category or ' ', wbf['content'])
+                        worksheet.write(row, 2, d_parent_category or ' ', wbf['content'])
+                        worksheet.write(row, 3, d_style or ' ', wbf['content'])
+                        worksheet.write(row, 4, d_stockname or ' ', wbf['content'])
+                        worksheet.write(row, 5, d_stockid or ' ', wbf['content'])
+                        worksheet.write(row, 6, d_color or ' ', wbf['content'])
+                        worksheet.write(row, 7, d_age or ' ', wbf['content2'])
+                        worksheet.write(row, 8, d_barcode or ' ', wbf['content'])
+                        worksheet.write(row, 9, d_size or ' ', wbf['content2'])
+                        if d_picture:
+                            worksheet.write(row, 10, '', wbf['content'])
+                            worksheet.insert_image(row, 10, 'image.png', {'image_data': d_picture, 'x_scale': 0.21,
+                                                                          'y_scale': 0.15, 'object_position': 1,
+                                                                          'x_offset': 30, 'y_offset': 5})
+                        else:
+                            worksheet.write(row, 10, '', wbf['content'])
+                        worksheet.write(row, 11, d_notes or ' ', wbf['content'])
+                        worksheet.write(row, 12, d_cost_price or ' ', wbf['content_float_price'])
+                        worksheet.write(row, 13, d_retail_price or ' ', wbf['content_float_price'])
+                        worksheet.write(row, 14, d_total_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 15, d_total_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 16, d_whbb_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 17, d_bbflg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 18, d_bbflg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 19, d_bbbbg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 20, d_bbbbg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 21, d_bbbwk_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 22, d_bbbwk_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 23, d_bbbrw_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 24, d_bbbrw_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 25, d_bbpdg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 26, d_bbpdg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 27, d_bbsyv_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 28, d_bbsyv_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 29, d_bbglr_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 30, d_bbglr_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 31, d_bbblg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 32, d_bbblg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 33, d_bbsnr_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 34, d_bbsnr_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 35, d_bbptg_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 36, d_bbptg_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 37, d_bbkta_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 38, d_bbkta_qty_stock or ' ', wbf['content_float'])
+                        worksheet.write(row, 39, d_online_qty_sold or ' ', wbf['total_content_float_brown'])
+                        worksheet.write(row, 40, d_online_qty_stock or ' ', wbf['content_float'])
+
+                        worksheet.set_row(row, 70)
+                        row += 1
+
+                    worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
+                    worksheet.write(row, 1, dt_category or ' ', wbf['total_content'])
+                    worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
+                    worksheet.write(row, 3, ' ', wbf['total_content'])
+                    worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
+                    worksheet.write(row, 5, ' ', wbf['total_content'])
+                    worksheet.write(row, 6, ' ', wbf['total_content'])
+                    worksheet.write(row, 7, ' ', wbf['total_content'])
+                    worksheet.write(row, 8, ' ', wbf['total_content'])
+                    worksheet.write(row, 9, ' ', wbf['total_content'])
+                    worksheet.write(row, 10, ' ', wbf['total_content'])
+                    worksheet.write(row, 11, ' ', wbf['total_content'])
+                    worksheet.write(row, 12, ' ', wbf['total_content_float_price'])
+                    worksheet.write(row, 13, ' ', wbf['total_content_float_price'])
+                    worksheet.write(row, 14, dt_total_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 15, dt_total_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 16, dt_whbb_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 17, dt_bbflg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 18, dt_bbflg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 19, dt_bbbbg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 20, dt_bbbbg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 21, dt_bbbwk_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 22, dt_bbbwk_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 23, dt_bbbrw_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 24, dt_bbbrw_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 25, dt_bbpdg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 26, dt_bbpdg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 27, dt_bbsyv_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 28, dt_bbsyv_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 29, dt_bbglr_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 30, dt_bbglr_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 31, dt_bbblg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 32, dt_bbblg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 33, dt_bbsnr_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 34, dt_bbsnr_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 35, dt_bbptg_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 36, dt_bbptg_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 37, dt_bbkta_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 38, dt_bbkta_qty_stock or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 39, dt_online_qty_sold or ' ', wbf['total_content_float'])
+                    worksheet.write(row, 40, dt_online_qty_stock or ' ', wbf['total_content_float'])
                     row += 1
 
-                worksheet.write(row, 0, dt_class_name or ' ', wbf['total_content'])
-                worksheet.write(row, 1, dt_category or ' ', wbf['total_content'])
-                worksheet.write(row, 2, dt_parent_category or ' ', wbf['total_content'])
+                worksheet.write(row, 0, cl_class_name + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 1, ' ', wbf['total_content'])
+                worksheet.write(row, 2, ' ', wbf['total_content'])
                 worksheet.write(row, 3, ' ', wbf['total_content'])
-                worksheet.write(row, 4, style + ' Total' or ' ', wbf['total_content'])
+                worksheet.write(row, 4, ' ', wbf['total_content'])
                 worksheet.write(row, 5, ' ', wbf['total_content'])
                 worksheet.write(row, 6, ' ', wbf['total_content'])
                 worksheet.write(row, 7, ' ', wbf['total_content'])
@@ -1594,63 +2079,63 @@ class WhatsStockinSoldReport(models.TransientModel):
                 worksheet.write(row, 11, ' ', wbf['total_content'])
                 worksheet.write(row, 12, ' ', wbf['total_content_float_price'])
                 worksheet.write(row, 13, ' ', wbf['total_content_float_price'])
-                worksheet.write(row, 14, dt_total_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 15, dt_total_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 16, dt_whbb_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 17, dt_bbflg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 18, dt_bbflg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 19, dt_bbbbg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 20, dt_bbbbg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 21, dt_bbbwk_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 22, dt_bbbwk_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 23, dt_bbbrw_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 24, dt_bbbrw_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 25, dt_bbpdg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 26, dt_bbpdg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 27, dt_bbsyv_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 28, dt_bbsyv_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 29, dt_bbglr_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 30, dt_bbglr_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 31, dt_bbblg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 32, dt_bbblg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 33, dt_bbsnr_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 34, dt_bbsnr_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 35, dt_bbptg_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 36, dt_bbptg_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 37, dt_bbkta_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 38, dt_bbkta_qty_stock or ' ', wbf['total_content_float'])
-                worksheet.write(row, 39, dt_online_qty_sold or ' ', wbf['total_content_float'])
-                worksheet.write(row, 40, dt_online_qty_stock or ' ', wbf['total_content_float'])
-                row += 1
+                worksheet.write(row, 14, cl_total_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 15, cl_total_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 16, cl_whbb_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 17, cl_bbflg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 18, cl_bbflg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 19, cl_bbbbg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 20, cl_bbbbg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 21, cl_bbbwk_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 22, cl_bbbwk_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 23, cl_bbbrw_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 24, cl_bbbrw_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 25, cl_bbpdg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 26, cl_bbpdg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 27, cl_bbsyv_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 28, cl_bbsyv_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 29, cl_bbglr_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 30, cl_bbglr_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 31, cl_bbblg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 32, cl_bbblg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 33, cl_bbsnr_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 34, cl_bbsnr_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 35, cl_bbptg_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 36, cl_bbptg_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 37, cl_bbkta_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 38, cl_bbkta_qty_stock or ' ', wbf['total_content_float'])
+                worksheet.write(row, 39, cl_online_qty_sold or ' ', wbf['total_content_float'])
+                worksheet.write(row, 40, cl_online_qty_stock or ' ', wbf['total_content_float'])
 
-                gt_total_qty_sold += dt_total_qty_sold
-                gt_total_qty_stock += dt_total_qty_stock
-                gt_whbb_qty_sold += dt_whbb_qty_sold
-                gt_bbflg_qty_sold += dt_bbflg_qty_sold
-                gt_bbbbg_qty_sold += dt_bbbbg_qty_sold
-                gt_bbbwk_qty_sold += dt_bbbwk_qty_sold
-                gt_bbbrw_qty_sold += dt_bbbrw_qty_sold
-                gt_bbpdg_qty_sold += dt_bbpdg_qty_sold
-                gt_bbsyv_qty_sold += dt_bbsyv_qty_sold
-                gt_bbglr_qty_sold += dt_bbglr_qty_sold
-                gt_bbblg_qty_sold += dt_bbblg_qty_sold
-                gt_bbsnr_qty_sold += dt_bbsnr_qty_sold
-                gt_bbptg_qty_sold += dt_bbptg_qty_sold
-                gt_bbkta_qty_sold += dt_bbkta_qty_sold
-                gt_online_qty_sold += dt_online_qty_sold
-                gt_whbb_qty_stock += dt_whbb_qty_stock
-                gt_bbflg_qty_stock += dt_bbflg_qty_stock
-                gt_bbbbg_qty_stock += dt_bbbbg_qty_stock
-                gt_bbbwk_qty_stock += dt_bbbwk_qty_stock
-                gt_bbbrw_qty_stock += dt_bbbrw_qty_stock
-                gt_bbpdg_qty_stock += dt_bbpdg_qty_stock
-                gt_bbsyv_qty_stock += dt_bbsyv_qty_stock
-                gt_bbglr_qty_stock += dt_bbglr_qty_stock
-                gt_bbblg_qty_stock += dt_bbblg_qty_stock
-                gt_bbsnr_qty_stock += dt_bbsnr_qty_stock
-                gt_bbptg_qty_stock += dt_bbptg_qty_stock
-                gt_bbkta_qty_stock += dt_bbkta_qty_stock
-                gt_online_qty_stock += dt_online_qty_stock
+                gt_total_qty_sold += cl_total_qty_sold
+                gt_total_qty_stock += cl_total_qty_stock
+                gt_whbb_qty_sold += cl_whbb_qty_sold
+                gt_bbflg_qty_sold += cl_bbflg_qty_sold
+                gt_bbbbg_qty_sold += cl_bbbbg_qty_sold
+                gt_bbbwk_qty_sold += cl_bbbwk_qty_sold
+                gt_bbbrw_qty_sold += cl_bbbrw_qty_sold
+                gt_bbpdg_qty_sold += cl_bbpdg_qty_sold
+                gt_bbsyv_qty_sold += cl_bbsyv_qty_sold
+                gt_bbglr_qty_sold += cl_bbglr_qty_sold
+                gt_bbblg_qty_sold += cl_bbblg_qty_sold
+                gt_bbsnr_qty_sold += cl_bbsnr_qty_sold
+                gt_bbptg_qty_sold += cl_bbptg_qty_sold
+                gt_bbkta_qty_sold += cl_bbkta_qty_sold
+                gt_online_qty_sold += cl_online_qty_sold
+                gt_whbb_qty_stock += cl_whbb_qty_stock
+                gt_bbflg_qty_stock += cl_bbflg_qty_stock
+                gt_bbbbg_qty_stock += cl_bbbbg_qty_stock
+                gt_bbbwk_qty_stock += cl_bbbwk_qty_stock
+                gt_bbbrw_qty_stock += cl_bbbrw_qty_stock
+                gt_bbpdg_qty_stock += cl_bbpdg_qty_stock
+                gt_bbsyv_qty_stock += cl_bbsyv_qty_stock
+                gt_bbglr_qty_stock += cl_bbglr_qty_stock
+                gt_bbblg_qty_stock += cl_bbblg_qty_stock
+                gt_bbsnr_qty_stock += cl_bbsnr_qty_stock
+                gt_bbptg_qty_stock += cl_bbptg_qty_stock
+                gt_bbkta_qty_stock += cl_bbkta_qty_stock
+                gt_online_qty_stock += cl_online_qty_stock
+
 
             worksheet.write(row, 0, 'GRAND TOTAL', wbf['total_content'])
             worksheet.write(row, 1, ' ', wbf['total_content'])
