@@ -1350,6 +1350,10 @@ class RlkMonthyReport(models.TransientModel):
 
             if key not in grouped_colors:
                 grouped_colors[key] = {
+                    'class_name': class_name,
+                    'parent_category': parent_category,
+                    # 'category': category,
+
                     'total_qty_sold': total_qty_sold,
                     'total_retail_sold': total_retail_sold,
                     'total_cost_sold': total_cost_sold,
@@ -1565,6 +1569,7 @@ class RlkMonthyReport(models.TransientModel):
 
             if category not in grouped_colors[key]['children']:
                 grouped_colors[key]['children'][category] = {
+                    'category': category,
                     'cost_price': cost_price,
                     'retail_price': retail_price,
 
@@ -1776,6 +1781,449 @@ class RlkMonthyReport(models.TransientModel):
                 grouped_colors[key]['bbptg_cost_stock'] += bbptg_cost_stock
                 grouped_colors[key]['bbkta_cost_stock'] += bbkta_cost_stock
                 grouped_colors[key]['onlne_cost_stock'] += onlne_cost_stock
+
+
+        grouped_class = {}
+        for data_class in grouped_colors.values():
+            cl_class_name = data_class['class_name']
+            cl_parent_category = data_class['parent_category']
+            # cl_category = data_class['category']
+            cl_total_qty_sold = data_class['total_qty_sold']
+            cl_total_retail_sold = data_class['total_retail_sold']
+            cl_total_cost_sold = data_class['total_cost_sold']
+
+            cl_total_qty_stock_now = data_class['total_qty_stock_now']
+            cl_total_retail_stock_now = data_class['total_retail_stock_now']
+            cl_total_cost_stock_now = data_class['total_cost_stock_now']
+
+            cl_total_qty_stock_last = data_class['total_qty_stock_last']
+            cl_total_retail_stock_last = data_class['total_retail_stock_last']
+            cl_total_cost_stock_last = data_class['total_cost_stock_last']
+
+            cl_total_qty_receiving = data_class['total_qty_receiving']
+            cl_total_retail_receiving = data_class['total_retail_receiving']
+            cl_total_cost_receiving = data_class['total_cost_receiving']
+
+            cl_total_qty_wh = data_class['total_qty_wh']
+            cl_total_retail_wh = data_class['total_retail_wh']
+            cl_total_cost_wh = data_class['total_cost_wh']
+
+            cl_whbb_qty_sold = data_class['whbb_qty_sold']
+            cl_bbflg_qty_sold = data_class['bbflg_qty_sold']
+            cl_bbbbg_qty_sold = data_class['bbbbg_qty_sold']
+            cl_bbbwk_qty_sold = data_class['bbbwk_qty_sold']
+            cl_bbbrw_qty_sold = data_class['bbbrw_qty_sold']
+            cl_bbpdg_qty_sold = data_class['bbpdg_qty_sold']
+            cl_bbsyv_qty_sold = data_class['bbsyv_qty_sold']
+            cl_bbglr_qty_sold = data_class['bbglr_qty_sold']
+            cl_bbblg_qty_sold = data_class['bbblg_qty_sold']
+            cl_bbsnr_qty_sold = data_class['bbsnr_qty_sold']
+            cl_bbptg_qty_sold = data_class['bbptg_qty_sold']
+            cl_bbkta_qty_sold = data_class['bbkta_qty_sold']
+            cl_onlne_qty_sold = data_class['onlne_qty_sold']
+
+            cl_whbb_retail_sold = data_class['whbb_retail_sold']
+            cl_bbflg_retail_sold = data_class['bbflg_retail_sold']
+            cl_bbbbg_retail_sold = data_class['bbbbg_retail_sold']
+            cl_bbbwk_retail_sold = data_class['bbbwk_retail_sold']
+            cl_bbbrw_retail_sold = data_class['bbbrw_retail_sold']
+            cl_bbpdg_retail_sold = data_class['bbpdg_retail_sold']
+            cl_bbsyv_retail_sold = data_class['bbsyv_retail_sold']
+            cl_bbglr_retail_sold = data_class['bbglr_retail_sold']
+            cl_bbblg_retail_sold = data_class['bbblg_retail_sold']
+            cl_bbsnr_retail_sold = data_class['bbsnr_retail_sold']
+            cl_bbptg_retail_sold = data_class['bbptg_retail_sold']
+            cl_bbkta_retail_sold = data_class['bbkta_retail_sold']
+            cl_onlne_retail_sold = data_class['onlne_retail_sold']
+
+            cl_whbb_cost_sold = data_class['whbb_cost_sold']
+            cl_bbflg_cost_sold = data_class['bbflg_cost_sold']
+            cl_bbbbg_cost_sold = data_class['bbbbg_cost_sold']
+            cl_bbbwk_cost_sold = data_class['bbbwk_cost_sold']
+            cl_bbbrw_cost_sold = data_class['bbbrw_cost_sold']
+            cl_bbpdg_cost_sold = data_class['bbpdg_cost_sold']
+            cl_bbsyv_cost_sold = data_class['bbsyv_cost_sold']
+            cl_bbglr_cost_sold = data_class['bbglr_cost_sold']
+            cl_bbblg_cost_sold = data_class['bbblg_cost_sold']
+            cl_bbsnr_cost_sold = data_class['bbsnr_cost_sold']
+            cl_bbptg_cost_sold = data_class['bbptg_cost_sold']
+            cl_bbkta_cost_sold = data_class['bbkta_cost_sold']
+            cl_onlne_cost_sold = data_class['onlne_cost_sold']
+
+            cl_whbb_qty_stock = data_class['whbb_qty_stock']
+            cl_bbflg_qty_stock = data_class['bbflg_qty_stock']
+            cl_bbbbg_qty_stock = data_class['bbbbg_qty_stock']
+            cl_bbbwk_qty_stock = data_class['bbbwk_qty_stock']
+            cl_bbbrw_qty_stock = data_class['bbbrw_qty_stock']
+            cl_bbpdg_qty_stock = data_class['bbpdg_qty_stock']
+            cl_bbsyv_qty_stock = data_class['bbsyv_qty_stock']
+            cl_bbglr_qty_stock = data_class['bbglr_qty_stock']
+            cl_bbblg_qty_stock = data_class['bbblg_qty_stock']
+            cl_bbsnr_qty_stock = data_class['bbsnr_qty_stock']
+            cl_bbptg_qty_stock = data_class['bbptg_qty_stock']
+            cl_bbkta_qty_stock = data_class['bbkta_qty_stock']
+            cl_onlne_qty_stock = data_class['onlne_qty_stock']
+
+            cl_whbb_retail_stock = data_class['whbb_retail_stock']
+            cl_bbflg_retail_stock = data_class['bbflg_retail_stock']
+            cl_bbbbg_retail_stock = data_class['bbbbg_retail_stock']
+            cl_bbbwk_retail_stock = data_class['bbbwk_retail_stock']
+            cl_bbbrw_retail_stock = data_class['bbbrw_retail_stock']
+            cl_bbpdg_retail_stock = data_class['bbpdg_retail_stock']
+            cl_bbsyv_retail_stock = data_class['bbsyv_retail_stock']
+            cl_bbglr_retail_stock = data_class['bbglr_retail_stock']
+            cl_bbblg_retail_stock = data_class['bbblg_retail_stock']
+            cl_bbsnr_retail_stock = data_class['bbsnr_retail_stock']
+            cl_bbptg_retail_stock = data_class['bbptg_retail_stock']
+            cl_bbkta_retail_stock = data_class['bbkta_retail_stock']
+            cl_onlne_retail_stock = data_class['onlne_retail_stock']
+
+            cl_whbb_cost_stock = data_class['whbb_cost_stock']
+            cl_bbflg_cost_stock = data_class['bbflg_cost_stock']
+            cl_bbbbg_cost_stock = data_class['bbbbg_cost_stock']
+            cl_bbbwk_cost_stock = data_class['bbbwk_cost_stock']
+            cl_bbbrw_cost_stock = data_class['bbbrw_cost_stock']
+            cl_bbpdg_cost_stock = data_class['bbpdg_cost_stock']
+            cl_bbsyv_cost_stock = data_class['bbsyv_cost_stock']
+            cl_bbglr_cost_stock = data_class['bbglr_cost_stock']
+            cl_bbblg_cost_stock = data_class['bbblg_cost_stock']
+            cl_bbsnr_cost_stock = data_class['bbsnr_cost_stock']
+            cl_bbptg_cost_stock = data_class['bbptg_cost_stock']
+            cl_bbkta_cost_stock = data_class['bbkta_cost_stock']
+            cl_onlne_cost_stock = data_class['onlne_cost_stock']
+            cl_children = data_class['children']
+
+            key = cl_class_name
+
+            if key not in grouped_class:
+                grouped_class[key] = {
+                    'class_name': cl_class_name,
+                    'total_qty_sold': cl_total_qty_sold,
+                    'total_retail_sold': cl_total_retail_sold,
+                    'total_cost_sold': cl_total_cost_sold,
+
+                    'total_qty_stock_now': cl_total_qty_stock_now,
+                    'total_retail_stock_now': cl_total_retail_stock_now,
+                    'total_cost_stock_now': cl_total_cost_stock_now,
+
+                    'total_qty_stock_last': cl_total_qty_stock_last,
+                    'total_retail_stock_last': cl_total_retail_stock_last,
+                    'total_cost_stock_last': cl_total_cost_stock_last,
+
+                    'total_qty_receiving': cl_total_qty_receiving,
+                    'total_retail_receiving': cl_total_retail_receiving,
+                    'total_cost_receiving': cl_total_cost_receiving,
+
+                    'total_qty_wh': cl_total_qty_wh,
+                    'total_retail_wh': cl_total_retail_wh,
+                    'total_cost_wh': cl_total_cost_wh,
+
+                    'whbb_qty_sold': cl_whbb_qty_sold,
+                    'bbflg_qty_sold': cl_bbflg_qty_sold,
+                    'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                    'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                    'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                    'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                    'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                    'bbglr_qty_sold': cl_bbglr_qty_sold,
+                    'bbblg_qty_sold': cl_bbblg_qty_sold,
+                    'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                    'bbptg_qty_sold': cl_bbptg_qty_sold,
+                    'bbkta_qty_sold': cl_bbkta_qty_sold,
+                    'onlne_qty_sold': cl_onlne_qty_sold,
+
+                    'whbb_retail_sold': cl_whbb_retail_sold,
+                    'bbflg_retail_sold': cl_bbflg_retail_sold,
+                    'bbbbg_retail_sold': cl_bbbbg_retail_sold,
+                    'bbbwk_retail_sold': cl_bbbwk_retail_sold,
+                    'bbbrw_retail_sold': cl_bbbrw_retail_sold,
+                    'bbpdg_retail_sold': cl_bbpdg_retail_sold,
+                    'bbsyv_retail_sold': cl_bbsyv_retail_sold,
+                    'bbglr_retail_sold': cl_bbglr_retail_sold,
+                    'bbblg_retail_sold': cl_bbblg_retail_sold,
+                    'bbsnr_retail_sold': cl_bbsnr_retail_sold,
+                    'bbptg_retail_sold': cl_bbptg_retail_sold,
+                    'bbkta_retail_sold': cl_bbkta_retail_sold,
+                    'onlne_retail_sold': cl_onlne_retail_sold,
+
+                    'whbb_cost_sold': cl_whbb_cost_sold,
+                    'bbflg_cost_sold': cl_bbflg_cost_sold,
+                    'bbbbg_cost_sold': cl_bbbbg_cost_sold,
+                    'bbbwk_cost_sold': cl_bbbwk_cost_sold,
+                    'bbbrw_cost_sold': cl_bbbrw_cost_sold,
+                    'bbpdg_cost_sold': cl_bbpdg_cost_sold,
+                    'bbsyv_cost_sold': cl_bbsyv_cost_sold,
+                    'bbglr_cost_sold': cl_bbglr_cost_sold,
+                    'bbblg_cost_sold': cl_bbblg_cost_sold,
+                    'bbsnr_cost_sold': cl_bbsnr_cost_sold,
+                    'bbptg_cost_sold': cl_bbptg_cost_sold,
+                    'bbkta_cost_sold': cl_bbkta_cost_sold,
+                    'onlne_cost_sold': cl_onlne_cost_sold,
+
+                    'whbb_qty_stock': cl_whbb_qty_stock,
+                    'bbflg_qty_stock': cl_bbflg_qty_stock,
+                    'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                    'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                    'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                    'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                    'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                    'bbglr_qty_stock': cl_bbglr_qty_stock,
+                    'bbblg_qty_stock': cl_bbblg_qty_stock,
+                    'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                    'bbptg_qty_stock': cl_bbptg_qty_stock,
+                    'bbkta_qty_stock': cl_bbkta_qty_stock,
+                    'onlne_qty_stock': cl_onlne_qty_stock,
+
+                    'whbb_retail_stock': cl_whbb_retail_stock,
+                    'bbflg_retail_stock': cl_bbflg_retail_stock,
+                    'bbbbg_retail_stock': cl_bbbbg_retail_stock,
+                    'bbbwk_retail_stock': cl_bbbwk_retail_stock,
+                    'bbbrw_retail_stock': cl_bbbrw_retail_stock,
+                    'bbpdg_retail_stock': cl_bbpdg_retail_stock,
+                    'bbsyv_retail_stock': cl_bbsyv_retail_stock,
+                    'bbglr_retail_stock': cl_bbglr_retail_stock,
+                    'bbblg_retail_stock': cl_bbblg_retail_stock,
+                    'bbsnr_retail_stock': cl_bbsnr_retail_stock,
+                    'bbptg_retail_stock': cl_bbptg_retail_stock,
+                    'bbkta_retail_stock': cl_bbkta_retail_stock,
+                    'onlne_retail_stock': cl_onlne_retail_stock,
+
+                    'whbb_cost_stock': cl_whbb_cost_stock,
+                    'bbflg_cost_stock': cl_bbflg_cost_stock,
+                    'bbbbg_cost_stock': cl_bbbbg_cost_stock,
+                    'bbbwk_cost_stock': cl_bbbwk_cost_stock,
+                    'bbbrw_cost_stock': cl_bbbrw_cost_stock,
+                    'bbpdg_cost_stock': cl_bbpdg_cost_stock,
+                    'bbsyv_cost_stock': cl_bbsyv_cost_stock,
+                    'bbglr_cost_stock': cl_bbglr_cost_stock,
+                    'bbblg_cost_stock': cl_bbblg_cost_stock,
+                    'bbsnr_cost_stock': cl_bbsnr_cost_stock,
+                    'bbptg_cost_stock': cl_bbptg_cost_stock,
+                    'bbkta_cost_stock': cl_bbkta_cost_stock,
+                    'onlne_cost_stock': cl_onlne_cost_stock,
+                    'children_category': {}
+                }
+            else:
+                grouped_class[key]['total_qty_sold'] += cl_total_qty_sold
+                grouped_class[key]['total_retail_sold'] += cl_total_retail_sold
+                grouped_class[key]['total_cost_sold'] += cl_total_cost_sold
+
+                grouped_class[key]['total_qty_stock_now'] += cl_total_qty_stock_now
+                grouped_class[key]['total_retail_stock_now'] += cl_total_retail_stock_now
+                grouped_class[key]['total_cost_stock_now'] += cl_total_cost_stock_now
+
+                grouped_class[key]['total_qty_stock_last'] += cl_total_qty_stock_last
+                grouped_class[key]['total_retail_stock_last'] += cl_total_retail_stock_last
+                grouped_class[key]['total_cost_stock_last'] += cl_total_cost_stock_last
+
+                grouped_class[key]['total_qty_receiving'] += cl_total_qty_receiving
+                grouped_class[key]['total_retail_receiving'] += cl_total_retail_receiving
+                grouped_class[key]['total_cost_receiving'] += cl_total_cost_receiving
+
+                grouped_class[key]['total_qty_wh'] += cl_total_qty_wh
+                grouped_class[key]['total_retail_wh'] += cl_total_retail_wh
+                grouped_class[key]['total_cost_wh'] += cl_total_cost_wh
+
+                grouped_class[key]['whbb_qty_sold'] += cl_whbb_qty_sold
+                grouped_class[key]['bbflg_qty_sold'] += cl_bbflg_qty_sold
+                grouped_class[key]['bbbbg_qty_sold'] += cl_bbbbg_qty_sold
+                grouped_class[key]['bbbwk_qty_sold'] += cl_bbbwk_qty_sold
+                grouped_class[key]['bbbrw_qty_sold'] += cl_bbbrw_qty_sold
+                grouped_class[key]['bbpdg_qty_sold'] += cl_bbpdg_qty_sold
+                grouped_class[key]['bbsyv_qty_sold'] += cl_bbsyv_qty_sold
+                grouped_class[key]['bbglr_qty_sold'] += cl_bbglr_qty_sold
+                grouped_class[key]['bbblg_qty_sold'] += cl_bbblg_qty_sold
+                grouped_class[key]['bbsnr_qty_sold'] += cl_bbsnr_qty_sold
+                grouped_class[key]['bbptg_qty_sold'] += cl_bbptg_qty_sold
+                grouped_class[key]['bbkta_qty_sold'] += cl_bbkta_qty_sold
+                grouped_class[key]['onlne_qty_sold'] += cl_onlne_qty_sold
+
+                grouped_class[key]['whbb_retail_sold'] += cl_whbb_retail_sold
+                grouped_class[key]['bbflg_retail_sold'] += cl_bbflg_retail_sold
+                grouped_class[key]['bbbbg_retail_sold'] += cl_bbbbg_retail_sold
+                grouped_class[key]['bbbwk_retail_sold'] += cl_bbbwk_retail_sold
+                grouped_class[key]['bbbrw_retail_sold'] += cl_bbbrw_retail_sold
+                grouped_class[key]['bbpdg_retail_sold'] += cl_bbpdg_retail_sold
+                grouped_class[key]['bbsyv_retail_sold'] += cl_bbsyv_retail_sold
+                grouped_class[key]['bbglr_retail_sold'] += cl_bbglr_retail_sold
+                grouped_class[key]['bbblg_retail_sold'] += cl_bbblg_retail_sold
+                grouped_class[key]['bbsnr_retail_sold'] += cl_bbsnr_retail_sold
+                grouped_class[key]['bbptg_retail_sold'] += cl_bbptg_retail_sold
+                grouped_class[key]['bbkta_retail_sold'] += cl_bbkta_retail_sold
+                grouped_class[key]['onlne_retail_sold'] += cl_onlne_retail_sold
+
+                grouped_class[key]['whbb_cost_sold'] += cl_whbb_cost_sold
+                grouped_class[key]['bbflg_cost_sold'] += cl_bbflg_cost_sold
+                grouped_class[key]['bbbbg_cost_sold'] += cl_bbbbg_cost_sold
+                grouped_class[key]['bbbwk_cost_sold'] += cl_bbbwk_cost_sold
+                grouped_class[key]['bbbrw_cost_sold'] += cl_bbbrw_cost_sold
+                grouped_class[key]['bbpdg_cost_sold'] += cl_bbpdg_cost_sold
+                grouped_class[key]['bbsyv_cost_sold'] += cl_bbsyv_cost_sold
+                grouped_class[key]['bbglr_cost_sold'] += cl_bbglr_cost_sold
+                grouped_class[key]['bbblg_cost_sold'] += cl_bbblg_cost_sold
+                grouped_class[key]['bbsnr_cost_sold'] += cl_bbsnr_cost_sold
+                grouped_class[key]['bbptg_cost_sold'] += cl_bbptg_cost_sold
+                grouped_class[key]['bbkta_cost_sold'] += cl_bbkta_cost_sold
+                grouped_class[key]['onlne_cost_sold'] += cl_onlne_cost_sold
+
+                grouped_class[key]['whbb_qty_stock'] += cl_whbb_qty_stock
+                grouped_class[key]['bbflg_qty_stock'] += cl_bbflg_qty_stock
+                grouped_class[key]['bbbbg_qty_stock'] += cl_bbbbg_qty_stock
+                grouped_class[key]['bbbwk_qty_stock'] += cl_bbbwk_qty_stock
+                grouped_class[key]['bbbrw_qty_stock'] += cl_bbbrw_qty_stock
+                grouped_class[key]['bbpdg_qty_stock'] += cl_bbpdg_qty_stock
+                grouped_class[key]['bbglr_qty_stock'] += cl_bbglr_qty_stock
+                grouped_class[key]['bbblg_qty_stock'] += cl_bbblg_qty_stock
+                grouped_class[key]['bbsnr_qty_stock'] += cl_bbsnr_qty_stock
+                grouped_class[key]['bbptg_qty_stock'] += cl_bbptg_qty_stock
+                grouped_class[key]['bbkta_qty_stock'] += cl_bbkta_qty_stock
+                grouped_class[key]['onlne_qty_stock'] += cl_onlne_qty_stock
+
+                grouped_class[key]['whbb_retail_stock'] += cl_whbb_retail_stock
+                grouped_class[key]['bbflg_retail_stock'] += cl_bbflg_retail_stock
+                grouped_class[key]['bbbbg_retail_stock'] += cl_bbbbg_retail_stock
+                grouped_class[key]['bbbwk_retail_stock'] += cl_bbbwk_retail_stock
+                grouped_class[key]['bbbrw_retail_stock'] += cl_bbbrw_retail_stock
+                grouped_class[key]['bbpdg_retail_stock'] += cl_bbpdg_retail_stock
+                grouped_class[key]['bbsyv_retail_stock'] += cl_bbsyv_retail_stock
+                grouped_class[key]['bbglr_retail_stock'] += cl_bbglr_retail_stock
+                grouped_class[key]['bbblg_retail_stock'] += cl_bbblg_retail_stock
+                grouped_class[key]['bbsnr_retail_stock'] += cl_bbsnr_retail_stock
+                grouped_class[key]['bbptg_retail_stock'] += cl_bbptg_retail_stock
+                grouped_class[key]['bbkta_retail_stock'] += cl_bbkta_retail_stock
+                grouped_class[key]['onlne_retail_stock'] += cl_onlne_retail_stock
+
+                grouped_class[key]['whbb_cost_stock'] += cl_whbb_cost_stock
+                grouped_class[key]['bbflg_cost_stock'] += cl_bbflg_cost_stock
+                grouped_class[key]['bbbbg_cost_stock'] += cl_bbbbg_cost_stock
+                grouped_class[key]['bbbwk_cost_stock'] += cl_bbbwk_cost_stock
+                grouped_class[key]['bbbrw_cost_stock'] += cl_bbbrw_cost_stock
+                grouped_class[key]['bbpdg_cost_stock'] += cl_bbpdg_cost_stock
+                grouped_class[key]['bbsyv_cost_stock'] += cl_bbsyv_cost_stock
+                grouped_class[key]['bbglr_cost_stock'] += cl_bbglr_cost_stock
+                grouped_class[key]['bbblg_cost_stock'] += cl_bbblg_cost_stock
+                grouped_class[key]['bbsnr_cost_stock'] += cl_bbsnr_cost_stock
+                grouped_class[key]['bbptg_cost_stock'] += cl_bbptg_cost_stock
+                grouped_class[key]['bbkta_cost_stock'] += cl_bbkta_cost_stock
+                grouped_class[key]['onlne_cost_stock'] += cl_onlne_cost_stock
+
+            category_data = grouped_class[key]
+            subkey = (cl_parent_category)
+
+            if subkey not in grouped_class[key]['children_category']:
+                grouped_class[key]['children_category'][subkey] = {
+                    'class_name': cl_class_name,
+                    'parent_category': cl_parent_category,
+                    # 'cost_price': cl_cost_price,
+                    # 'retail_price': cl_retail_price,
+
+                    'total_qty_sold': cl_total_qty_sold,
+                    'total_retail_sold': cl_total_retail_sold,
+                    'total_cost_sold': cl_total_cost_sold,
+
+                    'total_qty_stock_now': cl_total_qty_stock_now,
+                    'total_retail_stock_now': cl_total_retail_stock_now,
+                    'total_cost_stock_now': cl_total_cost_stock_now,
+
+                    'total_qty_stock_last': cl_total_qty_stock_last,
+                    'total_retail_stock_last': cl_total_retail_stock_last,
+                    'total_cost_stock_last': cl_total_cost_stock_last,
+
+                    'total_qty_receiving': cl_total_qty_receiving,
+                    'total_retail_receiving': cl_total_retail_receiving,
+                    'total_cost_receiving': cl_total_cost_receiving,
+
+                    'total_qty_wh': cl_total_qty_wh,
+                    'total_retail_wh': cl_total_retail_wh,
+                    'total_cost_wh': cl_total_cost_wh,
+
+                    'whbb_qty_sold': cl_whbb_qty_sold,
+                    'bbflg_qty_sold': cl_bbflg_qty_sold,
+                    'bbbbg_qty_sold': cl_bbbbg_qty_sold,
+                    'bbbwk_qty_sold': cl_bbbwk_qty_sold,
+                    'bbbrw_qty_sold': cl_bbbrw_qty_sold,
+                    'bbpdg_qty_sold': cl_bbpdg_qty_sold,
+                    'bbsyv_qty_sold': cl_bbsyv_qty_sold,
+                    'bbglr_qty_sold': cl_bbglr_qty_sold,
+                    'bbblg_qty_sold': cl_bbblg_qty_sold,
+                    'bbsnr_qty_sold': cl_bbsnr_qty_sold,
+                    'bbptg_qty_sold': cl_bbptg_qty_sold,
+                    'bbkta_qty_sold': cl_bbkta_qty_sold,
+                    'onlne_qty_sold': cl_onlne_qty_sold,
+
+                    'whbb_retail_sold': cl_whbb_retail_sold,
+                    'bbflg_retail_sold': cl_bbflg_retail_sold,
+                    'bbbbg_retail_sold': cl_bbbbg_retail_sold,
+                    'bbbwk_retail_sold': cl_bbbwk_retail_sold,
+                    'bbbrw_retail_sold': cl_bbbrw_retail_sold,
+                    'bbpdg_retail_sold': cl_bbpdg_retail_sold,
+                    'bbsyv_retail_sold': cl_bbsyv_retail_sold,
+                    'bbglr_retail_sold': cl_bbglr_retail_sold,
+                    'bbblg_retail_sold': cl_bbblg_retail_sold,
+                    'bbsnr_retail_sold': cl_bbsnr_retail_sold,
+                    'bbptg_retail_sold': cl_bbptg_retail_sold,
+                    'bbkta_retail_sold': cl_bbkta_retail_sold,
+                    'onlne_retail_sold': cl_onlne_retail_sold,
+
+                    'whbb_cost_sold': cl_whbb_cost_sold,
+                    'bbflg_cost_sold': cl_bbflg_cost_sold,
+                    'bbbbg_cost_sold': cl_bbbbg_cost_sold,
+                    'bbbwk_cost_sold': cl_bbbwk_cost_sold,
+                    'bbbrw_cost_sold': cl_bbbrw_cost_sold,
+                    'bbpdg_cost_sold': cl_bbpdg_cost_sold,
+                    'bbsyv_cost_sold': cl_bbsyv_cost_sold,
+                    'bbglr_cost_sold': cl_bbglr_cost_sold,
+                    'bbblg_cost_sold': cl_bbblg_cost_sold,
+                    'bbsnr_cost_sold': cl_bbsnr_cost_sold,
+                    'bbptg_cost_sold': cl_bbptg_cost_sold,
+                    'bbkta_cost_sold': cl_bbkta_cost_sold,
+                    'onlne_cost_sold': cl_onlne_cost_sold,
+
+                    'whbb_qty_stock': cl_whbb_qty_stock,
+                    'bbflg_qty_stock': cl_bbflg_qty_stock,
+                    'bbbbg_qty_stock': cl_bbbbg_qty_stock,
+                    'bbbwk_qty_stock': cl_bbbwk_qty_stock,
+                    'bbbrw_qty_stock': cl_bbbrw_qty_stock,
+                    'bbpdg_qty_stock': cl_bbpdg_qty_stock,
+                    'bbsyv_qty_stock': cl_bbsyv_qty_stock,
+                    'bbglr_qty_stock': cl_bbglr_qty_stock,
+                    'bbblg_qty_stock': cl_bbblg_qty_stock,
+                    'bbsnr_qty_stock': cl_bbsnr_qty_stock,
+                    'bbptg_qty_stock': cl_bbptg_qty_stock,
+                    'bbkta_qty_stock': cl_bbkta_qty_stock,
+                    'onlne_qty_stock': cl_onlne_qty_stock,
+
+                    'whbb_retail_stock': cl_whbb_retail_stock,
+                    'bbflg_retail_stock': cl_bbflg_retail_stock,
+                    'bbbbg_retail_stock': cl_bbbbg_retail_stock,
+                    'bbbwk_retail_stock': cl_bbbwk_retail_stock,
+                    'bbbrw_retail_stock': cl_bbbrw_retail_stock,
+                    'bbpdg_retail_stock': cl_bbpdg_retail_stock,
+                    'bbsyv_retail_stock': cl_bbsyv_retail_stock,
+                    'bbglr_retail_stock': cl_bbglr_retail_stock,
+                    'bbblg_retail_stock': cl_bbblg_retail_stock,
+                    'bbsnr_retail_stock': cl_bbsnr_retail_stock,
+                    'bbptg_retail_stock': cl_bbptg_retail_stock,
+                    'bbkta_retail_stock': cl_bbkta_retail_stock,
+                    'onlne_retail_stock': cl_onlne_retail_stock,
+
+                    'whbb_cost_stock': cl_whbb_cost_stock,
+                    'bbflg_cost_stock': cl_bbflg_cost_stock,
+                    'bbbbg_cost_stock': cl_bbbbg_cost_stock,
+                    'bbbwk_cost_stock': cl_bbbwk_cost_stock,
+                    'bbbrw_cost_stock': cl_bbbrw_cost_stock,
+                    'bbpdg_cost_stock': cl_bbpdg_cost_stock,
+                    'bbsyv_cost_stock': cl_bbsyv_cost_stock,
+                    'bbglr_cost_stock': cl_bbglr_cost_stock,
+                    'bbblg_cost_stock': cl_bbblg_cost_stock,
+                    'bbsnr_cost_stock': cl_bbsnr_cost_stock,
+                    'bbptg_cost_stock': cl_bbptg_cost_stock,
+                    'bbkta_cost_stock': cl_bbkta_cost_stock,
+                    'onlne_cost_stock': cl_onlne_cost_stock,
+                    'children': cl_children,
+                }
+
+
 
         # Print the result
         row = 6
@@ -2089,1181 +2537,1779 @@ class RlkMonthyReport(models.TransientModel):
         dt_percent_cost_onlne_stock = 0
         dt_week_cover_onlne = 0
 
-        for key, value in grouped_colors.items():
+        cl_percent_qty_sold = 0
+        cl_percent_retail_sold = 0
+        cl_percent_cost_sold = 0
+        cl_percent_qty_receiving = 0
+        cl_percent_retail_receiving = 0
+        cl_percent_cost_receiving = 0
+        cl_percent_qty_stock_now = 0
+        cl_percent_retail_stock_now = 0
+        cl_percent_cost_stock_now = 0
+        cl_week_cover_all = 0
+        cl_percent_qty_stock_last = 0
+        cl_percent_retail_stock_last = 0
+        cl_percent_cost_stock_last = 0
+        cl_percent_qty_whbb_stock = 0
+        cl_percent_retail_whbb_stock = 0
+        cl_percent_cost_whbb_stock = 0
+        cl_percent_qty_bbflg_sold = 0
+        cl_percent_retail_bbflg_sold = 0
+        cl_percent_cost_bbflg_sold = 0
+        cl_percent_qty_bbflg_stock = 0
+        cl_percent_retail_bbflg_stock = 0
+        cl_percent_cost_bbflg_stock = 0
+        cl_week_cover_bbflg = 0
+        cl_percent_qty_bbbrw_sold = 0
+        cl_percent_retail_bbbrw_sold = 0
+        cl_percent_cost_bbbrw_sold = 0
+        cl_percent_qty_bbbrw_stock = 0
+        cl_percent_retail_bbbrw_stock = 0
+        cl_percent_cost_bbbrw_stock = 0
+        cl_week_cover_bbbrw = 0
+        cl_percent_qty_bbbwk_sold = 0
+        cl_percent_retail_bbbwk_sold = 0
+        cl_percent_cost_bbbwk_sold = 0
+        cl_percent_qty_bbbwk_stock = 0
+        cl_percent_retail_bbbwk_stock = 0
+        cl_percent_cost_bbbwk_stock = 0
+        cl_week_cover_bbbwk = 0
+        cl_percent_qty_bbglr_sold = 0
+        cl_percent_retail_bbglr_sold = 0
+        cl_percent_cost_bbglr_sold = 0
+        cl_percent_qty_bbglr_stock = 0
+        cl_percent_retail_bbglr_stock = 0
+        cl_percent_cost_bbglr_stock = 0
+        cl_week_cover_bbglr = 0
+        cl_percent_qty_bbsyv_sold = 0
+        cl_percent_retail_bbsyv_sold = 0
+        cl_percent_cost_bbsyv_sold = 0
+        cl_percent_qty_bbsyv_stock = 0
+        cl_percent_retail_bbsyv_stock = 0
+        cl_percent_cost_bbsyv_stock = 0
+        cl_week_cover_bbsyv = 0
+        cl_percent_qty_bbbbg_sold = 0
+        cl_percent_retail_bbbbg_sold = 0
+        cl_percent_cost_bbbbg_sold = 0
+        cl_percent_qty_bbbbg_stock = 0
+        cl_percent_retail_bbbbg_stock = 0
+        cl_percent_cost_bbbbg_stock = 0
+        cl_week_cover_bbbbg = 0
+        cl_percent_qty_bbsnr_sold = 0
+        cl_percent_retail_bbsnr_sold = 0
+        cl_percent_cost_bbsnr_sold = 0
+        cl_percent_qty_bbsnr_stock = 0
+        cl_percent_retail_bbsnr_stock = 0
+        cl_percent_cost_bbsnr_stock = 0
+        cl_week_cover_bbsnr = 0
+        cl_percent_qty_bbblg_sold = 0
+        cl_percent_retail_bbblg_sold = 0
+        cl_percent_cost_bbblg_sold = 0
+        cl_percent_qty_bbblg_stock = 0
+        cl_percent_retail_bbblg_stock = 0
+        cl_percent_cost_bbblg_stock = 0
+        cl_week_cover_bbblg = 0
+        cl_percent_qty_bbpdg_sold = 0
+        cl_percent_retail_bbpdg_sold = 0
+        cl_percent_cost_bbpdg_sold = 0
+        cl_percent_qty_bbpdg_stock = 0
+        cl_percent_retail_bbpdg_stock = 0
+        cl_percent_cost_bbpdg_stock = 0
+        cl_week_cover_bbpdg = 0
+        cl_percent_qty_bbkta_sold = 0
+        cl_percent_retail_bbkta_sold = 0
+        cl_percent_cost_bbkta_sold = 0
+        cl_percent_qty_bbkta_stock = 0
+        cl_percent_retail_bbkta_stock = 0
+        cl_percent_cost_bbkta_stock = 0
+        cl_week_cover_bbkta = 0
+        cl_percent_qty_bbptg_sold = 0
+        cl_percent_retail_bbptg_sold = 0
+        cl_percent_cost_bbptg_sold = 0
+        cl_percent_qty_bbptg_stock = 0
+        cl_percent_retail_bbptg_stock = 0
+        cl_percent_cost_bbptg_stock = 0
+        cl_week_cover_bbptg = 0
+        cl_percent_qty_onlne_sold = 0
+        cl_percent_retail_onlne_sold = 0
+        cl_percent_cost_onlne_sold = 0
+        cl_percent_qty_onlne_stock = 0
+        cl_percent_retail_onlne_stock = 0
+        cl_percent_cost_onlne_stock = 0
+        cl_week_cover_onlne = 0
 
-            class_name, parent_category = key
-            total_qty_sold, total_retail_sold, total_cost_sold, total_qty_stock_now, total_retail_stock_now, total_cost_stock_now, total_qty_stock_last, total_retail_stock_last, total_cost_stock_last, total_qty_receiving, total_retail_receiving, total_cost_receiving, total_qty_wh, total_retail_wh, total_cost_wh = value['total_qty_sold'], value['total_retail_sold'], value['total_cost_sold'], value['total_qty_stock_now'], value['total_retail_stock_now'], value['total_cost_stock_now'], value['total_qty_stock_last'], value['total_retail_stock_last'], value['total_cost_stock_last'], value['total_qty_receiving'], value['total_retail_receiving'], value['total_cost_receiving'], value['total_qty_wh'], value['total_retail_wh'], value['total_cost_wh']
-            
-            whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, onlne_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, onlne_qty_stock = value['whbb_qty_sold'], value['bbflg_qty_sold'], value['bbbbg_qty_sold'], value['bbbwk_qty_sold'], value['bbbrw_qty_sold'], value['bbpdg_qty_sold'], value['bbsyv_qty_sold'], value['bbglr_qty_sold'], value['bbblg_qty_sold'], value['bbsnr_qty_sold'], value['bbptg_qty_sold'], value['bbkta_qty_sold'], value['onlne_qty_sold'],  value['whbb_qty_stock'], value['bbflg_qty_stock'], value['bbbbg_qty_stock'], value['bbbwk_qty_stock'], value['bbbrw_qty_stock'], value['bbpdg_qty_stock'], value['bbsyv_qty_stock'], value['bbglr_qty_stock'], value['bbblg_qty_stock'], value['bbsnr_qty_stock'], value['bbptg_qty_stock'], value['bbkta_qty_stock'], value['onlne_qty_stock']
-            whbb_retail_sold, bbflg_retail_sold, bbbbg_retail_sold, bbbwk_retail_sold, bbbrw_retail_sold, bbpdg_retail_sold, bbsyv_retail_sold, bbglr_retail_sold, bbblg_retail_sold, bbsnr_retail_sold, bbptg_retail_sold, bbkta_retail_sold, onlne_retail_sold, whbb_retail_stock, bbflg_retail_stock, bbbbg_retail_stock, bbbwk_retail_stock, bbbrw_retail_stock, bbpdg_retail_stock, bbsyv_retail_stock, bbglr_retail_stock, bbblg_retail_stock, bbsnr_retail_stock, bbptg_retail_stock, bbkta_retail_stock, onlne_retail_stock = value['whbb_retail_sold'], value['bbflg_retail_sold'], value['bbbbg_retail_sold'], value['bbbwk_retail_sold'], value['bbbrw_retail_sold'], value['bbpdg_retail_sold'], value['bbsyv_retail_sold'], value['bbglr_retail_sold'], value['bbblg_retail_sold'], value['bbsnr_retail_sold'], value['bbptg_retail_sold'], value['bbkta_retail_sold'], value['onlne_retail_sold'],  value['whbb_retail_stock'], value['bbflg_retail_stock'], value['bbbbg_retail_stock'], value['bbbwk_retail_stock'], value['bbbrw_retail_stock'], value['bbpdg_retail_stock'], value['bbsyv_retail_stock'], value['bbglr_retail_stock'], value['bbblg_retail_stock'], value['bbsnr_retail_stock'], value['bbptg_retail_stock'], value['bbkta_retail_stock'], value['onlne_retail_stock']
-            whbb_cost_sold, bbflg_cost_sold, bbbbg_cost_sold, bbbwk_cost_sold, bbbrw_cost_sold, bbpdg_cost_sold, bbsyv_cost_sold, bbglr_cost_sold, bbblg_cost_sold, bbsnr_cost_sold, bbptg_cost_sold, bbkta_cost_sold, onlne_cost_sold, whbb_cost_stock, bbflg_cost_stock, bbbbg_cost_stock, bbbwk_cost_stock, bbbrw_cost_stock, bbpdg_cost_stock, bbsyv_cost_stock, bbglr_cost_stock, bbblg_cost_stock, bbsnr_cost_stock, bbptg_cost_stock, bbkta_cost_stock, onlne_cost_stock = value['whbb_cost_sold'], value['bbflg_cost_sold'], value['bbbbg_cost_sold'], value['bbbwk_cost_sold'], value['bbbrw_cost_sold'], value['bbpdg_cost_sold'], value['bbsyv_cost_sold'], value['bbglr_cost_sold'], value['bbblg_cost_sold'], value['bbsnr_cost_sold'], value['bbptg_cost_sold'], value['bbkta_cost_sold'], value['onlne_cost_sold'],  value['whbb_cost_stock'], value['bbflg_cost_stock'], value['bbbbg_cost_stock'], value['bbbwk_cost_stock'], value['bbbrw_cost_stock'], value['bbpdg_cost_stock'], value['bbsyv_cost_stock'], value['bbglr_cost_stock'], value['bbblg_cost_stock'], value['bbsnr_cost_stock'], value['bbptg_cost_stock'], value['bbkta_cost_stock'], value['onlne_cost_stock']
+        for key, value in grouped_class.items():
+
+            # class_name, parent_category = key
+            # total_qty_sold, total_retail_sold, total_cost_sold, total_qty_stock_now, total_retail_stock_now, total_cost_stock_now, total_qty_stock_last, total_retail_stock_last, total_cost_stock_last, total_qty_receiving, total_retail_receiving, total_cost_receiving, total_qty_wh, total_retail_wh, total_cost_wh = value['total_qty_sold'], value['total_retail_sold'], value['total_cost_sold'], value['total_qty_stock_now'], value['total_retail_stock_now'], value['total_cost_stock_now'], value['total_qty_stock_last'], value['total_retail_stock_last'], value['total_cost_stock_last'], value['total_qty_receiving'], value['total_retail_receiving'], value['total_cost_receiving'], value['total_qty_wh'], value['total_retail_wh'], value['total_cost_wh']
+            #
+            # whbb_qty_sold, bbflg_qty_sold, bbbbg_qty_sold, bbbwk_qty_sold, bbbrw_qty_sold, bbpdg_qty_sold, bbsyv_qty_sold, bbglr_qty_sold, bbblg_qty_sold, bbsnr_qty_sold, bbptg_qty_sold, bbkta_qty_sold, onlne_qty_sold, whbb_qty_stock, bbflg_qty_stock, bbbbg_qty_stock, bbbwk_qty_stock, bbbrw_qty_stock, bbpdg_qty_stock, bbsyv_qty_stock, bbglr_qty_stock, bbblg_qty_stock, bbsnr_qty_stock, bbptg_qty_stock, bbkta_qty_stock, onlne_qty_stock = value['whbb_qty_sold'], value['bbflg_qty_sold'], value['bbbbg_qty_sold'], value['bbbwk_qty_sold'], value['bbbrw_qty_sold'], value['bbpdg_qty_sold'], value['bbsyv_qty_sold'], value['bbglr_qty_sold'], value['bbblg_qty_sold'], value['bbsnr_qty_sold'], value['bbptg_qty_sold'], value['bbkta_qty_sold'], value['onlne_qty_sold'],  value['whbb_qty_stock'], value['bbflg_qty_stock'], value['bbbbg_qty_stock'], value['bbbwk_qty_stock'], value['bbbrw_qty_stock'], value['bbpdg_qty_stock'], value['bbsyv_qty_stock'], value['bbglr_qty_stock'], value['bbblg_qty_stock'], value['bbsnr_qty_stock'], value['bbptg_qty_stock'], value['bbkta_qty_stock'], value['onlne_qty_stock']
+            # whbb_retail_sold, bbflg_retail_sold, bbbbg_retail_sold, bbbwk_retail_sold, bbbrw_retail_sold, bbpdg_retail_sold, bbsyv_retail_sold, bbglr_retail_sold, bbblg_retail_sold, bbsnr_retail_sold, bbptg_retail_sold, bbkta_retail_sold, onlne_retail_sold, whbb_retail_stock, bbflg_retail_stock, bbbbg_retail_stock, bbbwk_retail_stock, bbbrw_retail_stock, bbpdg_retail_stock, bbsyv_retail_stock, bbglr_retail_stock, bbblg_retail_stock, bbsnr_retail_stock, bbptg_retail_stock, bbkta_retail_stock, onlne_retail_stock = value['whbb_retail_sold'], value['bbflg_retail_sold'], value['bbbbg_retail_sold'], value['bbbwk_retail_sold'], value['bbbrw_retail_sold'], value['bbpdg_retail_sold'], value['bbsyv_retail_sold'], value['bbglr_retail_sold'], value['bbblg_retail_sold'], value['bbsnr_retail_sold'], value['bbptg_retail_sold'], value['bbkta_retail_sold'], value['onlne_retail_sold'],  value['whbb_retail_stock'], value['bbflg_retail_stock'], value['bbbbg_retail_stock'], value['bbbwk_retail_stock'], value['bbbrw_retail_stock'], value['bbpdg_retail_stock'], value['bbsyv_retail_stock'], value['bbglr_retail_stock'], value['bbblg_retail_stock'], value['bbsnr_retail_stock'], value['bbptg_retail_stock'], value['bbkta_retail_stock'], value['onlne_retail_stock']
+            # whbb_cost_sold, bbflg_cost_sold, bbbbg_cost_sold, bbbwk_cost_sold, bbbrw_cost_sold, bbpdg_cost_sold, bbsyv_cost_sold, bbglr_cost_sold, bbblg_cost_sold, bbsnr_cost_sold, bbptg_cost_sold, bbkta_cost_sold, onlne_cost_sold, whbb_cost_stock, bbflg_cost_stock, bbbbg_cost_stock, bbbwk_cost_stock, bbbrw_cost_stock, bbpdg_cost_stock, bbsyv_cost_stock, bbglr_cost_stock, bbblg_cost_stock, bbsnr_cost_stock, bbptg_cost_stock, bbkta_cost_stock, onlne_cost_stock = value['whbb_cost_sold'], value['bbflg_cost_sold'], value['bbbbg_cost_sold'], value['bbbwk_cost_sold'], value['bbbrw_cost_sold'], value['bbpdg_cost_sold'], value['bbsyv_cost_sold'], value['bbglr_cost_sold'], value['bbblg_cost_sold'], value['bbsnr_cost_sold'], value['bbptg_cost_sold'], value['bbkta_cost_sold'], value['onlne_cost_sold'],  value['whbb_cost_stock'], value['bbflg_cost_stock'], value['bbbbg_cost_stock'], value['bbbwk_cost_stock'], value['bbbrw_cost_stock'], value['bbpdg_cost_stock'], value['bbsyv_cost_stock'], value['bbglr_cost_stock'], value['bbblg_cost_stock'], value['bbsnr_cost_stock'], value['bbptg_cost_stock'], value['bbkta_cost_stock'], value['onlne_cost_stock']
             # qty_sold_total = whbb_qty_sold + bbflg_qty_sold + bbbbg_qty_sold + bbbwk_qty_sold + bbbrw_qty_sold + bbpdg_qty_sold + bbsyv_qty_sold + bbglr_qty_sold + bbblg_qty_sold + bbsnr_qty_sold + bbptg_qty_sold + bbkta_qty_sold + onlne_qty_sold
             # qty_stock_total = whbb_qty_stock + bbflg_qty_stock + bbbbg_qty_stock + bbbwk_qty_stock + bbbrw_qty_stock + bbpdg_qty_stock + bbsyv_qty_stock + bbglr_qty_stock + bbblg_qty_stock + bbsnr_qty_stock + bbptg_qty_stock + bbkta_qty_stock + onlne_qty_stock
-            
-            dt_class_name = class_name
-            dt_parent_category = parent_category
-            dt_category = category
+            children_category = value['children_category']
 
-            dt_total_qty_sold = total_qty_sold
-            dt_total_retail_sold = total_retail_sold
-            dt_total_cost_sold = total_cost_sold
+            cl_class_name = value['class_name']
+            cl_total_qty_sold = value['total_qty_sold']
+            cl_total_retail_sold = value['total_retail_sold']
+            cl_total_cost_sold = value['total_cost_sold']
 
-            dt_total_qty_stock_now = total_qty_stock_now
-            dt_total_retail_stock_now = total_retail_stock_now
-            dt_total_cost_stock_now = total_cost_stock_now
+            cl_total_qty_stock_now = value['total_qty_stock_now']
+            cl_total_retail_stock_now = value['total_retail_stock_now']
+            cl_total_cost_stock_now = value['total_cost_stock_now']
 
-            dt_total_qty_stock_last = total_qty_stock_last
-            dt_total_retail_stock_last = total_retail_stock_last
-            dt_total_cost_stock_last = total_cost_stock_last
+            cl_total_qty_stock_last = value['total_qty_stock_last']
+            cl_total_retail_stock_last = value['total_retail_stock_last']
+            cl_total_cost_stock_last = value['total_cost_stock_last']
 
-            dt_total_qty_receiving = total_qty_receiving
-            dt_total_retail_receiving = total_retail_receiving
-            dt_total_cost_receiving = total_cost_receiving
+            cl_total_qty_receiving = value['total_qty_receiving']
+            cl_total_retail_receiving = value['total_retail_receiving']
+            cl_total_cost_receiving = value['total_cost_receiving']
 
-            dt_whbb_qty_sold = whbb_qty_sold
-            dt_bbflg_qty_sold = bbflg_qty_sold
-            dt_bbbbg_qty_sold = bbbbg_qty_sold
-            dt_bbbwk_qty_sold = bbbwk_qty_sold
-            dt_bbbrw_qty_sold = bbbrw_qty_sold
-            dt_bbpdg_qty_sold = bbpdg_qty_sold
-            dt_bbsyv_qty_sold = bbsyv_qty_sold
-            dt_bbglr_qty_sold = bbglr_qty_sold
-            dt_bbblg_qty_sold = bbblg_qty_sold
-            dt_bbsnr_qty_sold = bbsnr_qty_sold
-            dt_bbptg_qty_sold = bbptg_qty_sold
-            dt_bbkta_qty_sold = bbkta_qty_sold
-            dt_onlne_qty_sold = onlne_qty_sold
+            cl_whbb_qty_sold = value['whbb_qty_sold']
+            cl_bbflg_qty_sold = value['bbflg_qty_sold']
+            cl_bbbbg_qty_sold = value['bbbbg_qty_sold']
+            cl_bbbwk_qty_sold = value['bbbwk_qty_sold']
+            cl_bbbrw_qty_sold = value['bbbrw_qty_sold']
+            cl_bbpdg_qty_sold = value['bbpdg_qty_sold']
+            cl_bbsyv_qty_sold = value['bbsyv_qty_sold']
+            cl_bbglr_qty_sold = value['bbglr_qty_sold']
+            cl_bbblg_qty_sold = value['bbblg_qty_sold']
+            cl_bbsnr_qty_sold = value['bbsnr_qty_sold']
+            cl_bbptg_qty_sold = value['bbptg_qty_sold']
+            cl_bbkta_qty_sold = value['bbkta_qty_sold']
+            cl_onlne_qty_sold = value['onlne_qty_sold']
 
-            dt_whbb_retail_sold = whbb_retail_sold
-            dt_bbflg_retail_sold = bbflg_retail_sold
-            dt_bbbbg_retail_sold = bbbbg_retail_sold
-            dt_bbbwk_retail_sold = bbbwk_retail_sold
-            dt_bbbrw_retail_sold = bbbrw_retail_sold
-            dt_bbpdg_retail_sold = bbpdg_retail_sold
-            dt_bbsyv_retail_sold = bbsyv_retail_sold
-            dt_bbglr_retail_sold = bbglr_retail_sold
-            dt_bbblg_retail_sold = bbblg_retail_sold
-            dt_bbsnr_retail_sold = bbsnr_retail_sold
-            dt_bbptg_retail_sold = bbptg_retail_sold
-            dt_bbkta_retail_sold = bbkta_retail_sold
-            dt_onlne_retail_sold = onlne_retail_sold
+            cl_whbb_retail_sold = value['whbb_retail_sold']
+            cl_bbflg_retail_sold = value['bbflg_retail_sold']
+            cl_bbbbg_retail_sold = value['bbbbg_retail_sold']
+            cl_bbbwk_retail_sold = value['bbbwk_retail_sold']
+            cl_bbbrw_retail_sold = value['bbbrw_retail_sold']
+            cl_bbpdg_retail_sold = value['bbpdg_retail_sold']
+            cl_bbsyv_retail_sold = value['bbsyv_retail_sold']
+            cl_bbglr_retail_sold = value['bbglr_retail_sold']
+            cl_bbblg_retail_sold = value['bbblg_retail_sold']
+            cl_bbsnr_retail_sold = value['bbsnr_retail_sold']
+            cl_bbptg_retail_sold = value['bbptg_retail_sold']
+            cl_bbkta_retail_sold = value['bbkta_retail_sold']
+            cl_onlne_retail_sold = value['onlne_retail_sold']
 
-            dt_whbb_cost_sold = whbb_cost_sold
-            dt_bbflg_cost_sold = bbflg_cost_sold
-            dt_bbbbg_cost_sold = bbbbg_cost_sold
-            dt_bbbwk_cost_sold = bbbwk_cost_sold
-            dt_bbbrw_cost_sold = bbbrw_cost_sold
-            dt_bbpdg_cost_sold = bbpdg_cost_sold
-            dt_bbsyv_cost_sold = bbsyv_cost_sold
-            dt_bbglr_cost_sold = bbglr_cost_sold
-            dt_bbblg_cost_sold = bbblg_cost_sold
-            dt_bbsnr_cost_sold = bbsnr_cost_sold
-            dt_bbptg_cost_sold = bbptg_cost_sold
-            dt_bbkta_cost_sold = bbkta_cost_sold
-            dt_onlne_cost_sold = onlne_cost_sold
+            cl_whbb_cost_sold = value['whbb_cost_sold']
+            cl_bbflg_cost_sold = value['bbflg_cost_sold']
+            cl_bbbbg_cost_sold = value['bbbbg_cost_sold']
+            cl_bbbwk_cost_sold = value['bbbwk_cost_sold']
+            cl_bbbrw_cost_sold = value['bbbrw_cost_sold']
+            cl_bbpdg_cost_sold = value['bbpdg_cost_sold']
+            cl_bbsyv_cost_sold = value['bbsyv_cost_sold']
+            cl_bbglr_cost_sold = value['bbglr_cost_sold']
+            cl_bbblg_cost_sold = value['bbblg_cost_sold']
+            cl_bbsnr_cost_sold = value['bbsnr_cost_sold']
+            cl_bbptg_cost_sold = value['bbptg_cost_sold']
+            cl_bbkta_cost_sold = value['bbkta_cost_sold']
+            cl_onlne_cost_sold = value['onlne_cost_sold']
 
-            # dt_whbb_qty_stock = whbb_qty_stock
-            dt_bbflg_qty_stock = bbflg_qty_stock
-            dt_bbbbg_qty_stock = bbbbg_qty_stock
-            dt_bbbwk_qty_stock = bbbwk_qty_stock
-            dt_bbbrw_qty_stock = bbbrw_qty_stock
-            dt_bbpdg_qty_stock = bbpdg_qty_stock
-            dt_bbsyv_qty_stock = bbsyv_qty_stock
-            dt_bbglr_qty_stock = bbglr_qty_stock
-            dt_bbblg_qty_stock = bbblg_qty_stock
-            dt_bbsnr_qty_stock = bbsnr_qty_stock
-            dt_bbptg_qty_stock = bbptg_qty_stock
-            dt_bbkta_qty_stock = bbkta_qty_stock
-            dt_onlne_qty_stock = onlne_qty_stock
+            # cl_whbb_qty_stock = whbb_qty_stock
+            cl_bbflg_qty_stock = value['bbflg_qty_stock']
+            cl_bbbbg_qty_stock = value['bbbbg_qty_stock']
+            cl_bbbwk_qty_stock = value['bbbwk_qty_stock']
+            cl_bbbrw_qty_stock = value['bbbrw_qty_stock']
+            cl_bbpdg_qty_stock = value['bbpdg_qty_stock']
+            cl_bbsyv_qty_stock = value['bbsyv_qty_stock']
+            cl_bbglr_qty_stock = value['bbglr_qty_stock']
+            cl_bbblg_qty_stock = value['bbblg_qty_stock']
+            cl_bbsnr_qty_stock = value['bbsnr_qty_stock']
+            cl_bbptg_qty_stock = value['bbptg_qty_stock']
+            cl_bbkta_qty_stock = value['bbkta_qty_stock']
+            cl_onlne_qty_stock = value['onlne_qty_stock']
 
-            # dt_whbb_retail_stock = whbb_retail_stock
-            dt_bbflg_retail_stock = bbflg_retail_stock
-            dt_bbbbg_retail_stock = bbbbg_retail_stock
-            dt_bbbwk_retail_stock = bbbwk_retail_stock
-            dt_bbbrw_retail_stock = bbbrw_retail_stock
-            dt_bbpdg_retail_stock = bbpdg_retail_stock
-            dt_bbsyv_retail_stock = bbsyv_retail_stock
-            dt_bbglr_retail_stock = bbglr_retail_stock
-            dt_bbblg_retail_stock = bbblg_retail_stock
-            dt_bbsnr_retail_stock = bbsnr_retail_stock
-            dt_bbptg_retail_stock = bbptg_retail_stock
-            dt_bbkta_retail_stock = bbkta_retail_stock
-            dt_onlne_retail_stock = onlne_retail_stock
+            # cl_whbb_retail_stock = whbb_retail_stock
+            cl_bbflg_retail_stock = value['bbflg_retail_stock']
+            cl_bbbbg_retail_stock = value['bbbbg_retail_stock']
+            cl_bbbwk_retail_stock = value['bbbwk_retail_stock']
+            cl_bbbrw_retail_stock = value['bbbrw_retail_stock']
+            cl_bbpdg_retail_stock = value['bbpdg_retail_stock']
+            cl_bbsyv_retail_stock = value['bbsyv_retail_stock']
+            cl_bbglr_retail_stock = value['bbglr_retail_stock']
+            cl_bbblg_retail_stock = value['bbblg_retail_stock']
+            cl_bbsnr_retail_stock = value['bbsnr_retail_stock']
+            cl_bbptg_retail_stock = value['bbptg_retail_stock']
+            cl_bbkta_retail_stock = value['bbkta_retail_stock']
+            cl_onlne_retail_stock = value['onlne_retail_stock']
 
-            # dt_whbb_cost_stock = whbb_cost_stock
-            dt_bbflg_cost_stock = bbflg_cost_stock
-            dt_bbbbg_cost_stock = bbbbg_cost_stock
-            dt_bbbwk_cost_stock = bbbwk_cost_stock
-            dt_bbbrw_cost_stock = bbbrw_cost_stock
-            dt_bbpdg_cost_stock = bbpdg_cost_stock
-            dt_bbsyv_cost_stock = bbsyv_cost_stock
-            dt_bbglr_cost_stock = bbglr_cost_stock
-            dt_bbblg_cost_stock = bbblg_cost_stock
-            dt_bbsnr_cost_stock = bbsnr_cost_stock
-            dt_bbptg_cost_stock = bbptg_cost_stock
-            dt_bbkta_cost_stock = bbkta_cost_stock
-            dt_onlne_cost_stock = onlne_cost_stock
+            # cl_whbb_cost_stock = whbb_cost_stock
+            cl_bbflg_cost_stock = value['bbflg_cost_stock']
+            cl_bbbbg_cost_stock = value['bbbbg_cost_stock']
+            cl_bbbwk_cost_stock = value['bbbwk_cost_stock']
+            cl_bbbrw_cost_stock = value['bbbrw_cost_stock']
+            cl_bbpdg_cost_stock = value['bbpdg_cost_stock']
+            cl_bbsyv_cost_stock = value['bbsyv_cost_stock']
+            cl_bbglr_cost_stock = value['bbglr_cost_stock']
+            cl_bbblg_cost_stock = value['bbblg_cost_stock']
+            cl_bbsnr_cost_stock = value['bbsnr_cost_stock']
+            cl_bbptg_cost_stock = value['bbptg_cost_stock']
+            cl_bbkta_cost_stock = value['bbkta_cost_stock']
+            cl_onlne_cost_stock = value['onlne_cost_stock']
 
-            dt_whbb_qty_stock = total_qty_wh
-            dt_whbb_retail_stock = total_retail_wh
-            dt_whbb_cost_stock = total_cost_wh
+            cl_whbb_qty_stock = value['total_qty_wh']
+            cl_whbb_retail_stock = value['total_retail_wh']
+            cl_whbb_cost_stock = value['total_cost_wh']
+           
 
-            children = value['children']
-            for category, categ_value in children.items():
-                d_class_name = class_name
-                d_parent_category = parent_category
-                d_category = category
+            for children_categ, child_value in children_category.items():
+                children = child_value['children']                
 
-                d_cost_price = categ_value['cost_price']
-                d_retail_price = categ_value['retail_price']
+                dt_class_name = child_value['class_name']
+                dt_parent_category = child_value['parent_category']
+                dt_total_qty_sold = child_value['total_qty_sold']
+                dt_total_retail_sold = child_value['total_retail_sold']
+                dt_total_cost_sold = child_value['total_cost_sold']
 
-                d_total_qty_sold = categ_value['total_qty_sold']
-                d_total_retail_sold = categ_value['total_retail_sold']
-                d_total_cost_sold = categ_value['total_cost_sold']
+                dt_total_qty_stock_now = child_value['total_qty_stock_now']
+                dt_total_retail_stock_now = child_value['total_retail_stock_now']
+                dt_total_cost_stock_now = child_value['total_cost_stock_now']
 
-                d_total_qty_stock_now = categ_value['total_qty_stock_now']
-                d_total_retail_stock_now = categ_value['total_retail_stock_now']
-                d_total_cost_stock_now = categ_value['total_cost_stock_now']
+                dt_total_qty_stock_last = child_value['total_qty_stock_last']
+                dt_total_retail_stock_last = child_value['total_retail_stock_last']
+                dt_total_cost_stock_last = child_value['total_cost_stock_last']
 
-                d_total_qty_stock_last = categ_value['total_qty_stock_last']
-                d_total_retail_stock_last = categ_value['total_retail_stock_last']
-                d_total_cost_stock_last = categ_value['total_cost_stock_last']
+                dt_total_qty_receiving = child_value['total_qty_receiving']
+                dt_total_retail_receiving = child_value['total_retail_receiving']
+                dt_total_cost_receiving = child_value['total_cost_receiving']
 
-                d_total_qty_receiving = categ_value['total_qty_receiving']
-                d_total_retail_receiving = categ_value['total_retail_receiving']
-                d_total_cost_receiving = categ_value['total_cost_receiving']
+                dt_whbb_qty_sold = child_value['whbb_qty_sold']
+                dt_bbflg_qty_sold = child_value['bbflg_qty_sold']
+                dt_bbbbg_qty_sold = child_value['bbbbg_qty_sold']
+                dt_bbbwk_qty_sold = child_value['bbbwk_qty_sold']
+                dt_bbbrw_qty_sold = child_value['bbbrw_qty_sold']
+                dt_bbpdg_qty_sold = child_value['bbpdg_qty_sold']
+                dt_bbsyv_qty_sold = child_value['bbsyv_qty_sold']
+                dt_bbglr_qty_sold = child_value['bbglr_qty_sold']
+                dt_bbblg_qty_sold = child_value['bbblg_qty_sold']
+                dt_bbsnr_qty_sold = child_value['bbsnr_qty_sold']
+                dt_bbptg_qty_sold = child_value['bbptg_qty_sold']
+                dt_bbkta_qty_sold = child_value['bbkta_qty_sold']
+                dt_onlne_qty_sold = child_value['onlne_qty_sold']
 
-                d_whbb_qty_sold = categ_value['whbb_qty_sold']
-                d_bbflg_qty_sold = categ_value['bbflg_qty_sold']
-                d_bbbbg_qty_sold = categ_value['bbbbg_qty_sold']
-                d_bbbwk_qty_sold = categ_value['bbbwk_qty_sold']
-                d_bbbrw_qty_sold = categ_value['bbbrw_qty_sold']
-                d_bbpdg_qty_sold = categ_value['bbpdg_qty_sold']
-                d_bbsyv_qty_sold = categ_value['bbsyv_qty_sold']
-                d_bbglr_qty_sold = categ_value['bbglr_qty_sold']
-                d_bbblg_qty_sold = categ_value['bbblg_qty_sold']
-                d_bbsnr_qty_sold = categ_value['bbsnr_qty_sold']
-                d_bbptg_qty_sold = categ_value['bbptg_qty_sold']
-                d_bbkta_qty_sold = categ_value['bbkta_qty_sold']
-                d_onlne_qty_sold = categ_value['onlne_qty_sold']
+                dt_whbb_retail_sold = child_value['whbb_retail_sold']
+                dt_bbflg_retail_sold = child_value['bbflg_retail_sold']
+                dt_bbbbg_retail_sold = child_value['bbbbg_retail_sold']
+                dt_bbbwk_retail_sold = child_value['bbbwk_retail_sold']
+                dt_bbbrw_retail_sold = child_value['bbbrw_retail_sold']
+                dt_bbpdg_retail_sold = child_value['bbpdg_retail_sold']
+                dt_bbsyv_retail_sold = child_value['bbsyv_retail_sold']
+                dt_bbglr_retail_sold = child_value['bbglr_retail_sold']
+                dt_bbblg_retail_sold = child_value['bbblg_retail_sold']
+                dt_bbsnr_retail_sold = child_value['bbsnr_retail_sold']
+                dt_bbptg_retail_sold = child_value['bbptg_retail_sold']
+                dt_bbkta_retail_sold = child_value['bbkta_retail_sold']
+                dt_onlne_retail_sold = child_value['onlne_retail_sold']
 
-                d_whbb_retail_sold = categ_value['whbb_retail_sold']
-                d_bbflg_retail_sold = categ_value['bbflg_retail_sold']
-                d_bbbbg_retail_sold = categ_value['bbbbg_retail_sold']
-                d_bbbwk_retail_sold = categ_value['bbbwk_retail_sold']
-                d_bbbrw_retail_sold = categ_value['bbbrw_retail_sold']
-                d_bbpdg_retail_sold = categ_value['bbpdg_retail_sold']
-                d_bbsyv_retail_sold = categ_value['bbsyv_retail_sold']
-                d_bbglr_retail_sold = categ_value['bbglr_retail_sold']
-                d_bbblg_retail_sold = categ_value['bbblg_retail_sold']
-                d_bbsnr_retail_sold = categ_value['bbsnr_retail_sold']
-                d_bbptg_retail_sold = categ_value['bbptg_retail_sold']
-                d_bbkta_retail_sold = categ_value['bbkta_retail_sold']
-                d_onlne_retail_sold = categ_value['onlne_retail_sold']
+                dt_whbb_cost_sold = child_value['whbb_cost_sold']
+                dt_bbflg_cost_sold = child_value['bbflg_cost_sold']
+                dt_bbbbg_cost_sold = child_value['bbbbg_cost_sold']
+                dt_bbbwk_cost_sold = child_value['bbbwk_cost_sold']
+                dt_bbbrw_cost_sold = child_value['bbbrw_cost_sold']
+                dt_bbpdg_cost_sold = child_value['bbpdg_cost_sold']
+                dt_bbsyv_cost_sold = child_value['bbsyv_cost_sold']
+                dt_bbglr_cost_sold = child_value['bbglr_cost_sold']
+                dt_bbblg_cost_sold = child_value['bbblg_cost_sold']
+                dt_bbsnr_cost_sold = child_value['bbsnr_cost_sold']
+                dt_bbptg_cost_sold = child_value['bbptg_cost_sold']
+                dt_bbkta_cost_sold = child_value['bbkta_cost_sold']
+                dt_onlne_cost_sold = child_value['onlne_cost_sold']
 
-                d_whbb_cost_sold = categ_value['whbb_cost_sold']
-                d_bbflg_cost_sold = categ_value['bbflg_cost_sold']
-                d_bbbbg_cost_sold = categ_value['bbbbg_cost_sold']
-                d_bbbwk_cost_sold = categ_value['bbbwk_cost_sold']
-                d_bbbrw_cost_sold = categ_value['bbbrw_cost_sold']
-                d_bbpdg_cost_sold = categ_value['bbpdg_cost_sold']
-                d_bbsyv_cost_sold = categ_value['bbsyv_cost_sold']
-                d_bbglr_cost_sold = categ_value['bbglr_cost_sold']
-                d_bbblg_cost_sold = categ_value['bbblg_cost_sold']
-                d_bbsnr_cost_sold = categ_value['bbsnr_cost_sold']
-                d_bbptg_cost_sold = categ_value['bbptg_cost_sold']
-                d_bbkta_cost_sold = categ_value['bbkta_cost_sold']
-                d_onlne_cost_sold = categ_value['onlne_cost_sold']
+                # dt_whbb_qty_stock = whbb_qty_stock
+                dt_bbflg_qty_stock = child_value['bbflg_qty_stock']
+                dt_bbbbg_qty_stock = child_value['bbbbg_qty_stock']
+                dt_bbbwk_qty_stock = child_value['bbbwk_qty_stock']
+                dt_bbbrw_qty_stock = child_value['bbbrw_qty_stock']
+                dt_bbpdg_qty_stock = child_value['bbpdg_qty_stock']
+                dt_bbsyv_qty_stock = child_value['bbsyv_qty_stock']
+                dt_bbglr_qty_stock = child_value['bbglr_qty_stock']
+                dt_bbblg_qty_stock = child_value['bbblg_qty_stock']
+                dt_bbsnr_qty_stock = child_value['bbsnr_qty_stock']
+                dt_bbptg_qty_stock = child_value['bbptg_qty_stock']
+                dt_bbkta_qty_stock = child_value['bbkta_qty_stock']
+                dt_onlne_qty_stock = child_value['onlne_qty_stock']
 
-                # d_whbb_qty_stock = categ_value['whbb_qty_stock']
-                d_bbflg_qty_stock = categ_value['bbflg_qty_stock']
-                d_bbbbg_qty_stock = categ_value['bbbbg_qty_stock']
-                d_bbbwk_qty_stock = categ_value['bbbwk_qty_stock']
-                d_bbbrw_qty_stock = categ_value['bbbrw_qty_stock']
-                d_bbpdg_qty_stock = categ_value['bbpdg_qty_stock']
-                d_bbsyv_qty_stock = categ_value['bbsyv_qty_stock']
-                d_bbglr_qty_stock = categ_value['bbglr_qty_stock']
-                d_bbblg_qty_stock = categ_value['bbblg_qty_stock']
-                d_bbsnr_qty_stock = categ_value['bbsnr_qty_stock']
-                d_bbptg_qty_stock = categ_value['bbptg_qty_stock']
-                d_bbkta_qty_stock = categ_value['bbkta_qty_stock']
-                d_onlne_qty_stock = categ_value['onlne_qty_stock']
+                # dt_whbb_retail_stock = whbb_retail_stock
+                dt_bbflg_retail_stock = child_value['bbflg_retail_stock']
+                dt_bbbbg_retail_stock = child_value['bbbbg_retail_stock']
+                dt_bbbwk_retail_stock = child_value['bbbwk_retail_stock']
+                dt_bbbrw_retail_stock = child_value['bbbrw_retail_stock']
+                dt_bbpdg_retail_stock = child_value['bbpdg_retail_stock']
+                dt_bbsyv_retail_stock = child_value['bbsyv_retail_stock']
+                dt_bbglr_retail_stock = child_value['bbglr_retail_stock']
+                dt_bbblg_retail_stock = child_value['bbblg_retail_stock']
+                dt_bbsnr_retail_stock = child_value['bbsnr_retail_stock']
+                dt_bbptg_retail_stock = child_value['bbptg_retail_stock']
+                dt_bbkta_retail_stock = child_value['bbkta_retail_stock']
+                dt_onlne_retail_stock = child_value['onlne_retail_stock']
 
-                # d_whbb_retail_stock = categ_value['whbb_retail_stock']
-                d_bbflg_retail_stock = categ_value['bbflg_retail_stock']
-                d_bbbbg_retail_stock = categ_value['bbbbg_retail_stock']
-                d_bbbwk_retail_stock = categ_value['bbbwk_retail_stock']
-                d_bbbrw_retail_stock = categ_value['bbbrw_retail_stock']
-                d_bbpdg_retail_stock = categ_value['bbpdg_retail_stock']
-                d_bbsyv_retail_stock = categ_value['bbsyv_retail_stock']
-                d_bbglr_retail_stock = categ_value['bbglr_retail_stock']
-                d_bbblg_retail_stock = categ_value['bbblg_retail_stock']
-                d_bbsnr_retail_stock = categ_value['bbsnr_retail_stock']
-                d_bbptg_retail_stock = categ_value['bbptg_retail_stock']
-                d_bbkta_retail_stock = categ_value['bbkta_retail_stock']
-                d_onlne_retail_stock = categ_value['onlne_retail_stock']
+                # dt_whbb_cost_stock = whbb_cost_stock
+                dt_bbflg_cost_stock = child_value['bbflg_cost_stock']
+                dt_bbbbg_cost_stock = child_value['bbbbg_cost_stock']
+                dt_bbbwk_cost_stock = child_value['bbbwk_cost_stock']
+                dt_bbbrw_cost_stock = child_value['bbbrw_cost_stock']
+                dt_bbpdg_cost_stock = child_value['bbpdg_cost_stock']
+                dt_bbsyv_cost_stock = child_value['bbsyv_cost_stock']
+                dt_bbglr_cost_stock = child_value['bbglr_cost_stock']
+                dt_bbblg_cost_stock = child_value['bbblg_cost_stock']
+                dt_bbsnr_cost_stock = child_value['bbsnr_cost_stock']
+                dt_bbptg_cost_stock = child_value['bbptg_cost_stock']
+                dt_bbkta_cost_stock = child_value['bbkta_cost_stock']
+                dt_onlne_cost_stock = child_value['onlne_cost_stock']
 
-                # d_whbb_cost_stock = categ_value['whbb_cost_stock']
-                d_bbflg_cost_stock = categ_value['bbflg_cost_stock']
-                d_bbbbg_cost_stock = categ_value['bbbbg_cost_stock']
-                d_bbbwk_cost_stock = categ_value['bbbwk_cost_stock']
-                d_bbbrw_cost_stock = categ_value['bbbrw_cost_stock']
-                d_bbpdg_cost_stock = categ_value['bbpdg_cost_stock']
-                d_bbsyv_cost_stock = categ_value['bbsyv_cost_stock']
-                d_bbglr_cost_stock = categ_value['bbglr_cost_stock']
-                d_bbblg_cost_stock = categ_value['bbblg_cost_stock']
-                d_bbsnr_cost_stock = categ_value['bbsnr_cost_stock']
-                d_bbptg_cost_stock = categ_value['bbptg_cost_stock']
-                d_bbkta_cost_stock = categ_value['bbkta_cost_stock']
-                d_onlne_cost_stock = categ_value['onlne_cost_stock']
-
-                d_whbb_qty_stock = categ_value['total_qty_wh']
-                d_whbb_retail_stock = categ_value['total_retail_wh']
-                d_whbb_cost_stock = categ_value['total_cost_wh']
-
-                percent_qty_sold = 0
-                if gt_qty_sold != 0:
-                    percent_qty_sold = round(d_total_qty_sold/gt_qty_sold, 2)
-                percent_retail_sold = 0
-                if gt_retail_sold != 0:
-                    percent_retail_sold = round(d_total_retail_sold/gt_retail_sold, 2)
-                percent_cost_sold = 0
-                if gt_cost_sold != 0:
-                    percent_cost_sold = round(d_total_cost_sold/gt_cost_sold, 2)
-
-
-                percent_qty_receiving = 0
-                if gt_qty_receiving != 0:
-                    percent_qty_receiving = round(d_total_qty_receiving/gt_qty_receiving, 2)
-                percent_retail_receiving = 0
-                if gt_retail_receiving != 0:
-                    percent_retail_receiving = round(d_total_retail_receiving/gt_retail_receiving, 2)
-                percent_cost_receiving = 0
-                if gt_cost_receiving != 0:
-                    percent_cost_receiving = round(d_total_cost_receiving/gt_cost_receiving, 2)
-
-                percent_qty_stock_now = 0
-                if gt_qty_stock_now != 0:
-                    percent_qty_stock_now = round(d_total_qty_stock_now/gt_qty_stock_now, 2)
-                percent_retail_stock_now = 0
-                if gt_retail_stock_now != 0:
-                    percent_retail_stock_now = round(d_total_retail_stock_now/gt_retail_stock_now, 2)
-                percent_cost_stock_now = 0
-                if gt_cost_stock_now != 0:
-                    percent_cost_stock_now = round(d_total_cost_stock_now/gt_cost_stock_now, 2)
-
-                week_cover_all = 0
-                if d_total_qty_sold != 0:
-                    week_cover_all = (d_total_qty_stock_now/d_total_qty_sold)*4.5
-
-                percent_qty_stock_last = 0
-                if gt_qty_stock_last != 0:
-                    percent_qty_stock_last = round(d_total_qty_stock_last/gt_qty_stock_last, 2)
-                percent_retail_stock_last = 0
-                if gt_retail_stock_last != 0:
-                    percent_retail_stock_last = round(d_total_retail_stock_last/gt_retail_stock_last, 2)
-                percent_cost_stock_last = 0
-                if gt_cost_stock_last != 0:
-                    percent_cost_stock_last = round(d_total_cost_stock_last/gt_cost_stock_last, 2)
-
-                percent_qty_whbb_stock = 0
-                if gt_whbb_qty_stock != 0:
-                    percent_qty_whbb_stock = round(d_whbb_qty_stock/gt_whbb_qty_stock, 2)
-                percent_retail_whbb_stock = 0
-                if gt_whbb_retail_stock != 0:
-                    percent_retail_whbb_stock = round(d_whbb_retail_stock/gt_whbb_retail_stock, 2)
-                percent_cost_whbb_stock = 0
-                if gt_whbb_cost_stock != 0:
-                    percent_cost_whbb_stock = round(d_whbb_cost_stock/gt_whbb_cost_stock, 2)
-
-                percent_qty_bbflg_sold = 0
-                if gt_bbflg_qty_sold != 0:
-                    percent_qty_bbflg_sold = round(d_bbflg_qty_sold/gt_bbflg_qty_sold, 2)
-                percent_retail_bbflg_sold = 0
-                if gt_bbflg_retail_sold != 0:
-                    percent_retail_bbflg_sold = round(d_bbflg_retail_sold/gt_bbflg_retail_sold, 2)
-                percent_cost_bbflg_sold = 0
-                if gt_bbflg_cost_sold != 0:
-                    percent_cost_bbflg_sold = round(d_bbflg_cost_sold/gt_bbflg_cost_sold, 2)
-                percent_qty_bbflg_stock = 0
-                if gt_bbflg_qty_stock != 0:
-                    percent_qty_bbflg_stock = round(d_bbflg_qty_stock/gt_bbflg_qty_stock, 2)
-                percent_retail_bbflg_stock = 0
-                if gt_bbflg_retail_stock != 0:
-                    percent_retail_bbflg_stock = round(d_bbflg_retail_stock/gt_bbflg_retail_stock, 2)
-                percent_cost_bbflg_stock = 0
-                if gt_bbflg_cost_stock != 0:
-                    percent_cost_bbflg_stock = round(d_bbflg_cost_stock/gt_bbflg_cost_stock, 2)
-
-                week_cover_bbflg = 0
-                if d_bbflg_qty_sold != 0:
-                    week_cover_bbflg = (d_bbflg_qty_stock/d_bbflg_qty_sold)*4.5
-
-                percent_qty_bbbrw_sold = 0
-                if gt_bbbrw_qty_sold != 0:
-                    percent_qty_bbbrw_sold = round(d_bbbrw_qty_sold/gt_bbbrw_qty_sold, 2)
-                percent_retail_bbbrw_sold = 0
-                if gt_bbbrw_retail_sold != 0:
-                    percent_retail_bbbrw_sold = round(d_bbbrw_retail_sold/gt_bbbrw_retail_sold, 2)
-                percent_cost_bbbrw_sold = 0
-                if gt_bbbrw_cost_sold != 0:
-                    percent_cost_bbbrw_sold = round(d_bbbrw_cost_sold/gt_bbbrw_cost_sold, 2)
-                percent_qty_bbbrw_stock = 0
-                if gt_bbbrw_qty_stock != 0:
-                    percent_qty_bbbrw_stock = round(d_bbbrw_qty_stock/gt_bbbrw_qty_stock, 2)
-                percent_retail_bbbrw_stock = 0
-                if gt_bbbrw_retail_stock != 0:
-                    percent_retail_bbbrw_stock = round(d_bbbrw_retail_stock/gt_bbbrw_retail_stock, 2)
-                percent_cost_bbbrw_stock = 0
-                if gt_bbbrw_cost_stock != 0:
-                    percent_cost_bbbrw_stock = round(d_bbbrw_cost_stock/gt_bbbrw_cost_stock, 2)
+                dt_whbb_qty_stock = child_value['total_qty_wh']
+                dt_whbb_retail_stock = child_value['total_retail_wh']
+                dt_whbb_cost_stock = child_value['total_cost_wh']
                 
-                week_cover_bbbrw = 0
-                if d_bbbrw_qty_sold != 0:
-                    week_cover_bbbrw = (d_bbbrw_qty_stock/d_bbbrw_qty_sold)*4.5
+                
+                for category, categ_value in children.items():
 
-                percent_qty_bbbwk_sold = 0
-                if gt_bbbwk_qty_sold != 0:
-                    percent_qty_bbbwk_sold = round(d_bbbwk_qty_sold/gt_bbbwk_qty_sold, 2)
-                percent_retail_bbbwk_sold = 0
-                if gt_bbbwk_retail_sold != 0:
-                    percent_retail_bbbwk_sold = round(d_bbbwk_retail_sold/gt_bbbwk_retail_sold, 2)
-                percent_cost_bbbwk_sold = 0
-                if gt_bbbwk_cost_sold != 0:
-                    percent_cost_bbbwk_sold = round(d_bbbwk_cost_sold/gt_bbbwk_cost_sold, 2)
-                percent_qty_bbbwk_stock = 0
-                if gt_bbbwk_qty_stock != 0:
-                    percent_qty_bbbwk_stock = round(d_bbbwk_qty_stock/gt_bbbwk_qty_stock, 2)
-                percent_retail_bbbwk_stock = 0
-                if gt_bbbwk_retail_stock != 0:
-                    percent_retail_bbbwk_stock = round(d_bbbwk_retail_stock/gt_bbbwk_retail_stock, 2)
-                percent_cost_bbbwk_stock = 0
-                if gt_bbbwk_cost_stock != 0:
-                    percent_cost_bbbwk_stock = round(d_bbbwk_cost_stock/gt_bbbwk_cost_stock, 2)
+                    d_class_name = child_value['class_name']
+                    d_parent_category = child_value['parent_category']
+                    d_category = categ_value['category']
 
-                week_cover_bbbwk = 0
-                if d_bbbwk_qty_sold != 0:
-                    week_cover_bbbwk = (d_bbbwk_qty_stock/d_bbbwk_qty_sold)*4.5
+                    # d_cost_price = categ_value['cost_price']
+                    # d_retail_price = categ_value['retail_price']
 
+                    d_total_qty_sold = categ_value['total_qty_sold']
+                    d_total_retail_sold = categ_value['total_retail_sold']
+                    d_total_cost_sold = categ_value['total_cost_sold']
 
-                percent_qty_bbglr_sold = 0
-                if gt_bbglr_qty_sold != 0:
-                    percent_qty_bbglr_sold = round(d_bbglr_qty_sold/gt_bbglr_qty_sold, 2)
-                percent_retail_bbglr_sold = 0
-                if gt_bbglr_retail_sold != 0:
-                    percent_retail_bbglr_sold = round(d_bbglr_retail_sold/gt_bbglr_retail_sold, 2)
-                percent_cost_bbglr_sold = 0
-                if gt_bbglr_cost_sold != 0:
-                    percent_cost_bbglr_sold = round(d_bbglr_cost_sold/gt_bbglr_cost_sold, 2)
-                percent_qty_bbglr_stock = 0
-                if gt_bbglr_qty_stock != 0:
-                    percent_qty_bbglr_stock = round(d_bbglr_qty_stock/gt_bbglr_qty_stock, 2)
-                percent_retail_bbglr_stock = 0
-                if gt_bbglr_retail_stock != 0:
-                    percent_retail_bbglr_stock = round(d_bbglr_retail_stock/gt_bbglr_retail_stock, 2)
-                percent_cost_bbglr_stock = 0
-                if gt_bbglr_cost_stock != 0:
-                    percent_cost_bbglr_stock = round(d_bbglr_cost_stock/gt_bbglr_cost_stock, 2)
+                    d_total_qty_stock_now = categ_value['total_qty_stock_now']
+                    d_total_retail_stock_now = categ_value['total_retail_stock_now']
+                    d_total_cost_stock_now = categ_value['total_cost_stock_now']
 
-                week_cover_bbglr = 0
-                if d_bbglr_qty_sold != 0:
-                    week_cover_bbglr = (d_bbglr_qty_stock/d_bbglr_qty_sold)*4.5
+                    d_total_qty_stock_last = categ_value['total_qty_stock_last']
+                    d_total_retail_stock_last = categ_value['total_retail_stock_last']
+                    d_total_cost_stock_last = categ_value['total_cost_stock_last']
 
-                percent_qty_bbsyv_sold = 0
-                if gt_bbsyv_qty_sold != 0:
-                    percent_qty_bbsyv_sold = round(d_bbsyv_qty_sold/gt_bbsyv_qty_sold, 2)
-                percent_retail_bbsyv_sold = 0
-                if gt_bbsyv_retail_sold != 0:
-                    percent_retail_bbsyv_sold = round(d_bbsyv_retail_sold/gt_bbsyv_retail_sold, 2)
-                percent_cost_bbsyv_sold = 0
-                if gt_bbsyv_cost_sold != 0:
-                    percent_cost_bbsyv_sold = round(d_bbsyv_cost_sold/gt_bbsyv_cost_sold, 2)
-                percent_qty_bbsyv_stock = 0
-                if gt_bbsyv_qty_stock != 0:
-                    percent_qty_bbsyv_stock = round(d_bbsyv_qty_stock/gt_bbsyv_qty_stock, 2)
-                percent_retail_bbsyv_stock = 0
-                if gt_bbsyv_retail_stock != 0:
-                    percent_retail_bbsyv_stock = round(d_bbsyv_retail_stock/gt_bbsyv_retail_stock, 2)
-                percent_cost_bbsyv_stock = 0
-                if gt_bbsyv_cost_stock != 0:
-                    percent_cost_bbsyv_stock = round(d_bbsyv_cost_stock/gt_bbsyv_cost_stock, 2)
+                    d_total_qty_receiving = categ_value['total_qty_receiving']
+                    d_total_retail_receiving = categ_value['total_retail_receiving']
+                    d_total_cost_receiving = categ_value['total_cost_receiving']
 
-                week_cover_bbsyv = 0
-                if d_bbsyv_qty_sold != 0:
-                    week_cover_bbsyv = (d_bbsyv_qty_stock/d_bbsyv_qty_sold)*4.5
+                    d_whbb_qty_sold = categ_value['whbb_qty_sold']
+                    d_bbflg_qty_sold = categ_value['bbflg_qty_sold']
+                    d_bbbbg_qty_sold = categ_value['bbbbg_qty_sold']
+                    d_bbbwk_qty_sold = categ_value['bbbwk_qty_sold']
+                    d_bbbrw_qty_sold = categ_value['bbbrw_qty_sold']
+                    d_bbpdg_qty_sold = categ_value['bbpdg_qty_sold']
+                    d_bbsyv_qty_sold = categ_value['bbsyv_qty_sold']
+                    d_bbglr_qty_sold = categ_value['bbglr_qty_sold']
+                    d_bbblg_qty_sold = categ_value['bbblg_qty_sold']
+                    d_bbsnr_qty_sold = categ_value['bbsnr_qty_sold']
+                    d_bbptg_qty_sold = categ_value['bbptg_qty_sold']
+                    d_bbkta_qty_sold = categ_value['bbkta_qty_sold']
+                    d_onlne_qty_sold = categ_value['onlne_qty_sold']
 
-                percent_qty_bbbbg_sold = 0
-                if gt_bbbbg_qty_sold != 0:
-                    percent_qty_bbbbg_sold = round(d_bbbbg_qty_sold/gt_bbbbg_qty_sold, 2)
-                percent_retail_bbbbg_sold = 0
-                if gt_bbbbg_retail_sold != 0:
-                    percent_retail_bbbbg_sold = round(d_bbbbg_retail_sold/gt_bbbbg_retail_sold, 2)
-                percent_cost_bbbbg_sold = 0
-                if gt_bbbbg_cost_sold != 0:
-                    percent_cost_bbbbg_sold = round(d_bbbbg_cost_sold/gt_bbbbg_cost_sold, 2)
-                percent_qty_bbbbg_stock = 0
-                if gt_bbbbg_qty_stock != 0:
-                    percent_qty_bbbbg_stock = round(d_bbbbg_qty_stock/gt_bbbbg_qty_stock, 2)
-                percent_retail_bbbbg_stock = 0
-                if gt_bbbbg_retail_stock != 0:
-                    percent_retail_bbbbg_stock = round(d_bbbbg_retail_stock/gt_bbbbg_retail_stock, 2)
-                percent_cost_bbbbg_stock = 0
-                if gt_bbbbg_cost_stock != 0:
-                    percent_cost_bbbbg_stock = round(d_bbbbg_cost_stock/gt_bbbbg_cost_stock, 2)
+                    d_whbb_retail_sold = categ_value['whbb_retail_sold']
+                    d_bbflg_retail_sold = categ_value['bbflg_retail_sold']
+                    d_bbbbg_retail_sold = categ_value['bbbbg_retail_sold']
+                    d_bbbwk_retail_sold = categ_value['bbbwk_retail_sold']
+                    d_bbbrw_retail_sold = categ_value['bbbrw_retail_sold']
+                    d_bbpdg_retail_sold = categ_value['bbpdg_retail_sold']
+                    d_bbsyv_retail_sold = categ_value['bbsyv_retail_sold']
+                    d_bbglr_retail_sold = categ_value['bbglr_retail_sold']
+                    d_bbblg_retail_sold = categ_value['bbblg_retail_sold']
+                    d_bbsnr_retail_sold = categ_value['bbsnr_retail_sold']
+                    d_bbptg_retail_sold = categ_value['bbptg_retail_sold']
+                    d_bbkta_retail_sold = categ_value['bbkta_retail_sold']
+                    d_onlne_retail_sold = categ_value['onlne_retail_sold']
 
-                week_cover_bbbbg = 0
-                if d_bbbbg_qty_sold != 0:
-                    week_cover_bbbbg = (d_bbbbg_qty_stock/d_bbbbg_qty_sold)*4.5
+                    d_whbb_cost_sold = categ_value['whbb_cost_sold']
+                    d_bbflg_cost_sold = categ_value['bbflg_cost_sold']
+                    d_bbbbg_cost_sold = categ_value['bbbbg_cost_sold']
+                    d_bbbwk_cost_sold = categ_value['bbbwk_cost_sold']
+                    d_bbbrw_cost_sold = categ_value['bbbrw_cost_sold']
+                    d_bbpdg_cost_sold = categ_value['bbpdg_cost_sold']
+                    d_bbsyv_cost_sold = categ_value['bbsyv_cost_sold']
+                    d_bbglr_cost_sold = categ_value['bbglr_cost_sold']
+                    d_bbblg_cost_sold = categ_value['bbblg_cost_sold']
+                    d_bbsnr_cost_sold = categ_value['bbsnr_cost_sold']
+                    d_bbptg_cost_sold = categ_value['bbptg_cost_sold']
+                    d_bbkta_cost_sold = categ_value['bbkta_cost_sold']
+                    d_onlne_cost_sold = categ_value['onlne_cost_sold']
 
-                percent_qty_bbsnr_sold = 0
-                if gt_bbsnr_qty_sold != 0:
-                    percent_qty_bbsnr_sold = round(d_bbsnr_qty_sold/gt_bbsnr_qty_sold, 2)
-                percent_retail_bbsnr_sold = 0
-                if gt_bbsnr_retail_sold != 0:
-                    percent_retail_bbsnr_sold = round(d_bbsnr_retail_sold/gt_bbsnr_retail_sold, 2)
-                percent_cost_bbsnr_sold = 0
-                if gt_bbsnr_cost_sold != 0:
-                    percent_cost_bbsnr_sold = round(d_bbsnr_cost_sold/gt_bbsnr_cost_sold, 2)
-                percent_qty_bbsnr_stock = 0
-                if gt_bbsnr_qty_stock != 0:
-                    percent_qty_bbsnr_stock = round(d_bbsnr_qty_stock/gt_bbsnr_qty_stock, 2)
-                percent_retail_bbsnr_stock = 0
-                if gt_bbsnr_retail_stock != 0:
-                    percent_retail_bbsnr_stock = round(d_bbsnr_retail_stock/gt_bbsnr_retail_stock, 2)
-                percent_cost_bbsnr_stock = 0
-                if gt_bbsnr_cost_stock != 0:
-                    percent_cost_bbsnr_stock = round(d_bbsnr_cost_stock/gt_bbsnr_cost_stock, 2)
+                    # d_whbb_qty_stock = categ_value['whbb_qty_stock']
+                    d_bbflg_qty_stock = categ_value['bbflg_qty_stock']
+                    d_bbbbg_qty_stock = categ_value['bbbbg_qty_stock']
+                    d_bbbwk_qty_stock = categ_value['bbbwk_qty_stock']
+                    d_bbbrw_qty_stock = categ_value['bbbrw_qty_stock']
+                    d_bbpdg_qty_stock = categ_value['bbpdg_qty_stock']
+                    d_bbsyv_qty_stock = categ_value['bbsyv_qty_stock']
+                    d_bbglr_qty_stock = categ_value['bbglr_qty_stock']
+                    d_bbblg_qty_stock = categ_value['bbblg_qty_stock']
+                    d_bbsnr_qty_stock = categ_value['bbsnr_qty_stock']
+                    d_bbptg_qty_stock = categ_value['bbptg_qty_stock']
+                    d_bbkta_qty_stock = categ_value['bbkta_qty_stock']
+                    d_onlne_qty_stock = categ_value['onlne_qty_stock']
 
-                week_cover_bbsnr = 0
-                if d_bbsnr_qty_sold != 0:
-                    week_cover_bbsnr = (d_bbsnr_qty_stock/d_bbsnr_qty_sold)*4.5
+                    # d_whbb_retail_stock = categ_value['whbb_retail_stock']
+                    d_bbflg_retail_stock = categ_value['bbflg_retail_stock']
+                    d_bbbbg_retail_stock = categ_value['bbbbg_retail_stock']
+                    d_bbbwk_retail_stock = categ_value['bbbwk_retail_stock']
+                    d_bbbrw_retail_stock = categ_value['bbbrw_retail_stock']
+                    d_bbpdg_retail_stock = categ_value['bbpdg_retail_stock']
+                    d_bbsyv_retail_stock = categ_value['bbsyv_retail_stock']
+                    d_bbglr_retail_stock = categ_value['bbglr_retail_stock']
+                    d_bbblg_retail_stock = categ_value['bbblg_retail_stock']
+                    d_bbsnr_retail_stock = categ_value['bbsnr_retail_stock']
+                    d_bbptg_retail_stock = categ_value['bbptg_retail_stock']
+                    d_bbkta_retail_stock = categ_value['bbkta_retail_stock']
+                    d_onlne_retail_stock = categ_value['onlne_retail_stock']
 
+                    # d_whbb_cost_stock = categ_value['whbb_cost_stock']
+                    d_bbflg_cost_stock = categ_value['bbflg_cost_stock']
+                    d_bbbbg_cost_stock = categ_value['bbbbg_cost_stock']
+                    d_bbbwk_cost_stock = categ_value['bbbwk_cost_stock']
+                    d_bbbrw_cost_stock = categ_value['bbbrw_cost_stock']
+                    d_bbpdg_cost_stock = categ_value['bbpdg_cost_stock']
+                    d_bbsyv_cost_stock = categ_value['bbsyv_cost_stock']
+                    d_bbglr_cost_stock = categ_value['bbglr_cost_stock']
+                    d_bbblg_cost_stock = categ_value['bbblg_cost_stock']
+                    d_bbsnr_cost_stock = categ_value['bbsnr_cost_stock']
+                    d_bbptg_cost_stock = categ_value['bbptg_cost_stock']
+                    d_bbkta_cost_stock = categ_value['bbkta_cost_stock']
+                    d_onlne_cost_stock = categ_value['onlne_cost_stock']
 
-                percent_qty_bbblg_sold = 0
-                if gt_bbblg_qty_sold != 0:
-                    percent_qty_bbblg_sold = round(d_bbblg_qty_sold/gt_bbblg_qty_sold, 2)
-                percent_retail_bbblg_sold = 0
-                if gt_bbblg_retail_sold != 0:
-                    percent_retail_bbblg_sold = round(d_bbblg_retail_sold/gt_bbblg_retail_sold, 2)
-                percent_cost_bbblg_sold = 0
-                if gt_bbblg_cost_sold != 0:
-                    percent_cost_bbblg_sold = round(d_bbblg_cost_sold/gt_bbblg_cost_sold, 2)
-                percent_qty_bbblg_stock = 0
-                if gt_bbblg_qty_stock != 0:
-                    percent_qty_bbblg_stock = round(d_bbblg_qty_stock/gt_bbblg_qty_stock, 2)
-                percent_retail_bbblg_stock = 0
-                if gt_bbblg_retail_stock != 0:
-                    percent_retail_bbblg_stock = round(d_bbblg_retail_stock/gt_bbblg_retail_stock, 2)
-                percent_cost_bbblg_stock = 0
-                if gt_bbblg_cost_stock != 0:
-                    percent_cost_bbblg_stock = round(d_bbblg_cost_stock/gt_bbblg_cost_stock, 2)
+                    d_whbb_qty_stock = categ_value['total_qty_wh']
+                    d_whbb_retail_stock = categ_value['total_retail_wh']
+                    d_whbb_cost_stock = categ_value['total_cost_wh']
 
-                week_cover_bbblg = 0
-                if d_bbblg_qty_sold != 0:
-                    week_cover_bbblg = (d_bbblg_qty_stock/d_bbblg_qty_sold)*4.5
-
-                percent_qty_bbpdg_sold = 0
-                if gt_bbpdg_qty_sold != 0:
-                    percent_qty_bbpdg_sold = round(d_bbpdg_qty_sold/gt_bbpdg_qty_sold, 2)
-                percent_retail_bbpdg_sold = 0
-                if gt_bbpdg_retail_sold != 0:
-                    percent_retail_bbpdg_sold = round(d_bbpdg_retail_sold/gt_bbpdg_retail_sold, 2)
-                percent_cost_bbpdg_sold = 0
-                if gt_bbpdg_cost_sold != 0:
-                    percent_cost_bbpdg_sold = round(d_bbpdg_cost_sold/gt_bbpdg_cost_sold, 2)
-                percent_qty_bbpdg_stock = 0
-                if gt_bbpdg_qty_stock != 0:
-                    percent_qty_bbpdg_stock = round(d_bbpdg_qty_stock/gt_bbpdg_qty_stock, 2)
-                percent_retail_bbpdg_stock = 0
-                if gt_bbpdg_retail_stock != 0:
-                    percent_retail_bbpdg_stock = round(d_bbpdg_retail_stock/gt_bbpdg_retail_stock, 2)
-                percent_cost_bbpdg_stock = 0
-                if gt_bbpdg_cost_stock != 0:
-                    percent_cost_bbpdg_stock = round(d_bbpdg_cost_stock/gt_bbpdg_cost_stock, 2)
-
-                week_cover_bbpdg = 0
-                if d_bbpdg_qty_sold != 0:
-                    week_cover_bbpdg = (d_bbpdg_qty_stock/d_bbpdg_qty_sold)*4.5
+                    percent_qty_sold = 0
+                    if gt_qty_sold != 0:
+                        percent_qty_sold = round(d_total_qty_sold/gt_qty_sold, 2)
+                    percent_retail_sold = 0
+                    if gt_retail_sold != 0:
+                        percent_retail_sold = round(d_total_retail_sold/gt_retail_sold, 2)
+                    percent_cost_sold = 0
+                    if gt_cost_sold != 0:
+                        percent_cost_sold = round(d_total_cost_sold/gt_cost_sold, 2)
 
 
-                percent_qty_bbkta_sold = 0
-                if gt_bbkta_qty_sold != 0:
-                    percent_qty_bbkta_sold = round(d_bbkta_qty_sold/gt_bbkta_qty_sold, 2)
-                percent_retail_bbkta_sold = 0
-                if gt_bbkta_retail_sold != 0:
-                    percent_retail_bbkta_sold = round(d_bbkta_retail_sold/gt_bbkta_retail_sold, 2)
-                percent_cost_bbkta_sold = 0
-                if gt_bbkta_cost_sold != 0:
-                    percent_cost_bbkta_sold = round(d_bbkta_cost_sold/gt_bbkta_cost_sold, 2)
-                percent_qty_bbkta_stock = 0
-                if gt_bbkta_qty_stock != 0:
-                    percent_qty_bbkta_stock = round(d_bbkta_qty_stock/gt_bbkta_qty_stock, 2)
-                percent_retail_bbkta_stock = 0
-                if gt_bbkta_retail_stock != 0:
-                    percent_retail_bbkta_stock = round(d_bbkta_retail_stock/gt_bbkta_retail_stock, 2)
-                percent_cost_bbkta_stock = 0
-                if gt_bbkta_cost_stock != 0:
-                    percent_cost_bbkta_stock = round(d_bbkta_cost_stock/gt_bbkta_cost_stock, 2)
+                    percent_qty_receiving = 0
+                    if gt_qty_receiving != 0:
+                        percent_qty_receiving = round(d_total_qty_receiving/gt_qty_receiving, 2)
+                    percent_retail_receiving = 0
+                    if gt_retail_receiving != 0:
+                        percent_retail_receiving = round(d_total_retail_receiving/gt_retail_receiving, 2)
+                    percent_cost_receiving = 0
+                    if gt_cost_receiving != 0:
+                        percent_cost_receiving = round(d_total_cost_receiving/gt_cost_receiving, 2)
 
-                week_cover_bbkta = 0
-                if d_bbkta_qty_sold != 0:
-                    week_cover_bbkta = (d_bbkta_qty_stock/d_bbkta_qty_sold)*4.5
+                    percent_qty_stock_now = 0
+                    if gt_qty_stock_now != 0:
+                        percent_qty_stock_now = round(d_total_qty_stock_now/gt_qty_stock_now, 2)
+                    percent_retail_stock_now = 0
+                    if gt_retail_stock_now != 0:
+                        percent_retail_stock_now = round(d_total_retail_stock_now/gt_retail_stock_now, 2)
+                    percent_cost_stock_now = 0
+                    if gt_cost_stock_now != 0:
+                        percent_cost_stock_now = round(d_total_cost_stock_now/gt_cost_stock_now, 2)
 
-                percent_qty_bbptg_sold = 0
-                if gt_bbptg_qty_sold != 0:
-                    percent_qty_bbptg_sold = round(d_bbptg_qty_sold/gt_bbptg_qty_sold, 2)
-                percent_retail_bbptg_sold = 0
-                if gt_bbptg_retail_sold != 0:
-                    percent_retail_bbptg_sold = round(d_bbptg_retail_sold/gt_bbptg_retail_sold, 2)
-                percent_cost_bbptg_sold = 0
-                if gt_bbptg_cost_sold != 0:
-                    percent_cost_bbptg_sold = round(d_bbptg_cost_sold/gt_bbptg_cost_sold, 2)
-                percent_qty_bbptg_stock = 0
-                if gt_bbptg_qty_stock != 0:
-                    percent_qty_bbptg_stock = round(d_bbptg_qty_stock/gt_bbptg_qty_stock, 2)
-                percent_retail_bbptg_stock = 0
-                if gt_bbptg_retail_stock != 0:
-                    percent_retail_bbptg_stock = round(d_bbptg_retail_stock/gt_bbptg_retail_stock, 2)
-                percent_cost_bbptg_stock = 0
-                if gt_bbptg_cost_stock != 0:
-                    percent_cost_bbptg_stock = round(d_bbptg_cost_stock/gt_bbptg_cost_stock, 2)
+                    week_cover_all = 0
+                    if d_total_qty_sold != 0:
+                        week_cover_all = (d_total_qty_stock_now/d_total_qty_sold)*4.5
 
-                week_cover_bbptg = 0
-                if d_bbptg_qty_sold != 0:
-                    week_cover_bbptg = (d_bbptg_qty_stock/d_bbptg_qty_sold)*4.5
+                    percent_qty_stock_last = 0
+                    if gt_qty_stock_last != 0:
+                        percent_qty_stock_last = round(d_total_qty_stock_last/gt_qty_stock_last, 2)
+                    percent_retail_stock_last = 0
+                    if gt_retail_stock_last != 0:
+                        percent_retail_stock_last = round(d_total_retail_stock_last/gt_retail_stock_last, 2)
+                    percent_cost_stock_last = 0
+                    if gt_cost_stock_last != 0:
+                        percent_cost_stock_last = round(d_total_cost_stock_last/gt_cost_stock_last, 2)
 
-                percent_qty_onlne_sold = 0
-                if gt_onlne_qty_sold != 0:
-                    percent_qty_onlne_sold = round(d_onlne_qty_sold/gt_onlne_qty_sold, 2)
-                percent_retail_onlne_sold = 0
-                if gt_onlne_retail_sold != 0:
-                    percent_retail_onlne_sold = round(d_onlne_retail_sold/gt_onlne_retail_sold, 2)
-                percent_cost_onlne_sold = 0
-                if gt_onlne_cost_sold != 0:
-                    percent_cost_onlne_sold = round(d_onlne_cost_sold/gt_onlne_cost_sold, 2)
-                percent_qty_onlne_stock = 0
-                if gt_onlne_qty_stock != 0:
-                    percent_qty_onlne_stock = round(d_onlne_qty_stock/gt_onlne_qty_stock, 2)
-                percent_retail_onlne_stock = 0
-                if gt_onlne_retail_stock != 0:
-                    percent_retail_onlne_stock = round(d_onlne_retail_stock/gt_onlne_retail_stock, 2)
-                percent_cost_onlne_stock = 0
-                if gt_onlne_cost_stock != 0:
-                    percent_cost_onlne_stock = round(d_onlne_cost_stock/gt_onlne_cost_stock, 2)
+                    percent_qty_whbb_stock = 0
+                    if gt_whbb_qty_stock != 0:
+                        percent_qty_whbb_stock = round(d_whbb_qty_stock/gt_whbb_qty_stock, 2)
+                    percent_retail_whbb_stock = 0
+                    if gt_whbb_retail_stock != 0:
+                        percent_retail_whbb_stock = round(d_whbb_retail_stock/gt_whbb_retail_stock, 2)
+                    percent_cost_whbb_stock = 0
+                    if gt_whbb_cost_stock != 0:
+                        percent_cost_whbb_stock = round(d_whbb_cost_stock/gt_whbb_cost_stock, 2)
 
-                week_cover_onlne = 0
-                if d_onlne_qty_sold != 0:
-                    week_cover_onlne = (d_onlne_qty_stock/d_onlne_qty_sold)*4.5
+                    percent_qty_bbflg_sold = 0
+                    if gt_bbflg_qty_sold != 0:
+                        percent_qty_bbflg_sold = round(d_bbflg_qty_sold/gt_bbflg_qty_sold, 2)
+                    percent_retail_bbflg_sold = 0
+                    if gt_bbflg_retail_sold != 0:
+                        percent_retail_bbflg_sold = round(d_bbflg_retail_sold/gt_bbflg_retail_sold, 2)
+                    percent_cost_bbflg_sold = 0
+                    if gt_bbflg_cost_sold != 0:
+                        percent_cost_bbflg_sold = round(d_bbflg_cost_sold/gt_bbflg_cost_sold, 2)
+                    percent_qty_bbflg_stock = 0
+                    if gt_bbflg_qty_stock != 0:
+                        percent_qty_bbflg_stock = round(d_bbflg_qty_stock/gt_bbflg_qty_stock, 2)
+                    percent_retail_bbflg_stock = 0
+                    if gt_bbflg_retail_stock != 0:
+                        percent_retail_bbflg_stock = round(d_bbflg_retail_stock/gt_bbflg_retail_stock, 2)
+                    percent_cost_bbflg_stock = 0
+                    if gt_bbflg_cost_stock != 0:
+                        percent_cost_bbflg_stock = round(d_bbflg_cost_stock/gt_bbflg_cost_stock, 2)
+
+                    week_cover_bbflg = 0
+                    if d_bbflg_qty_sold != 0:
+                        week_cover_bbflg = (d_bbflg_qty_stock/d_bbflg_qty_sold)*4.5
+
+                    percent_qty_bbbrw_sold = 0
+                    if gt_bbbrw_qty_sold != 0:
+                        percent_qty_bbbrw_sold = round(d_bbbrw_qty_sold/gt_bbbrw_qty_sold, 2)
+                    percent_retail_bbbrw_sold = 0
+                    if gt_bbbrw_retail_sold != 0:
+                        percent_retail_bbbrw_sold = round(d_bbbrw_retail_sold/gt_bbbrw_retail_sold, 2)
+                    percent_cost_bbbrw_sold = 0
+                    if gt_bbbrw_cost_sold != 0:
+                        percent_cost_bbbrw_sold = round(d_bbbrw_cost_sold/gt_bbbrw_cost_sold, 2)
+                    percent_qty_bbbrw_stock = 0
+                    if gt_bbbrw_qty_stock != 0:
+                        percent_qty_bbbrw_stock = round(d_bbbrw_qty_stock/gt_bbbrw_qty_stock, 2)
+                    percent_retail_bbbrw_stock = 0
+                    if gt_bbbrw_retail_stock != 0:
+                        percent_retail_bbbrw_stock = round(d_bbbrw_retail_stock/gt_bbbrw_retail_stock, 2)
+                    percent_cost_bbbrw_stock = 0
+                    if gt_bbbrw_cost_stock != 0:
+                        percent_cost_bbbrw_stock = round(d_bbbrw_cost_stock/gt_bbbrw_cost_stock, 2)
+
+                    week_cover_bbbrw = 0
+                    if d_bbbrw_qty_sold != 0:
+                        week_cover_bbbrw = (d_bbbrw_qty_stock/d_bbbrw_qty_sold)*4.5
+
+                    percent_qty_bbbwk_sold = 0
+                    if gt_bbbwk_qty_sold != 0:
+                        percent_qty_bbbwk_sold = round(d_bbbwk_qty_sold/gt_bbbwk_qty_sold, 2)
+                    percent_retail_bbbwk_sold = 0
+                    if gt_bbbwk_retail_sold != 0:
+                        percent_retail_bbbwk_sold = round(d_bbbwk_retail_sold/gt_bbbwk_retail_sold, 2)
+                    percent_cost_bbbwk_sold = 0
+                    if gt_bbbwk_cost_sold != 0:
+                        percent_cost_bbbwk_sold = round(d_bbbwk_cost_sold/gt_bbbwk_cost_sold, 2)
+                    percent_qty_bbbwk_stock = 0
+                    if gt_bbbwk_qty_stock != 0:
+                        percent_qty_bbbwk_stock = round(d_bbbwk_qty_stock/gt_bbbwk_qty_stock, 2)
+                    percent_retail_bbbwk_stock = 0
+                    if gt_bbbwk_retail_stock != 0:
+                        percent_retail_bbbwk_stock = round(d_bbbwk_retail_stock/gt_bbbwk_retail_stock, 2)
+                    percent_cost_bbbwk_stock = 0
+                    if gt_bbbwk_cost_stock != 0:
+                        percent_cost_bbbwk_stock = round(d_bbbwk_cost_stock/gt_bbbwk_cost_stock, 2)
+
+                    week_cover_bbbwk = 0
+                    if d_bbbwk_qty_sold != 0:
+                        week_cover_bbbwk = (d_bbbwk_qty_stock/d_bbbwk_qty_sold)*4.5
 
 
-                worksheet.write('A%s:B%s' %(row, row), d_class_name or '', wbf['content'])
-                worksheet.write('B%s:C%s' %(row, row), d_parent_category or '', wbf['content'])
-                worksheet.write('C%s:D%s' %(row, row), d_category or '', wbf['content'])
+                    percent_qty_bbglr_sold = 0
+                    if gt_bbglr_qty_sold != 0:
+                        percent_qty_bbglr_sold = round(d_bbglr_qty_sold/gt_bbglr_qty_sold, 2)
+                    percent_retail_bbglr_sold = 0
+                    if gt_bbglr_retail_sold != 0:
+                        percent_retail_bbglr_sold = round(d_bbglr_retail_sold/gt_bbglr_retail_sold, 2)
+                    percent_cost_bbglr_sold = 0
+                    if gt_bbglr_cost_sold != 0:
+                        percent_cost_bbglr_sold = round(d_bbglr_cost_sold/gt_bbglr_cost_sold, 2)
+                    percent_qty_bbglr_stock = 0
+                    if gt_bbglr_qty_stock != 0:
+                        percent_qty_bbglr_stock = round(d_bbglr_qty_stock/gt_bbglr_qty_stock, 2)
+                    percent_retail_bbglr_stock = 0
+                    if gt_bbglr_retail_stock != 0:
+                        percent_retail_bbglr_stock = round(d_bbglr_retail_stock/gt_bbglr_retail_stock, 2)
+                    percent_cost_bbglr_stock = 0
+                    if gt_bbglr_cost_stock != 0:
+                        percent_cost_bbglr_stock = round(d_bbglr_cost_stock/gt_bbglr_cost_stock, 2)
 
-                worksheet.write('D%s:E%s' %(row, row), d_total_qty_sold or 0, wbf['content_float'])
-                worksheet.write('E%s:F%s' %(row, row), str(round(percent_qty_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('F%s:G%s' %(row, row), d_total_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('G%s:H%s' %(row, row), str(round(percent_retail_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('H%s:I%s' %(row, row), d_total_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('I%s:J%s' %(row, row), str(round(percent_cost_sold, 2)) + '%' or '', wbf['content_float'])
+                    week_cover_bbglr = 0
+                    if d_bbglr_qty_sold != 0:
+                        week_cover_bbglr = (d_bbglr_qty_stock/d_bbglr_qty_sold)*4.5
 
-                worksheet.write('J%s:K%s' %(row, row), d_total_qty_stock_now or 0, wbf['content_float'])
-                worksheet.write('K%s:L%s' %(row, row), str(round(percent_qty_stock_now, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('L%s:M%s' %(row, row), d_total_retail_stock_now or 0, wbf['content_float_price'])
-                worksheet.write('M%s:N%s' %(row, row), str(round(percent_retail_stock_now, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('N%s:O%s' %(row, row), d_total_cost_stock_now or 0, wbf['content_float_price'])
-                worksheet.write('O%s:P%s' %(row, row), str(round(percent_cost_stock_now, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('P%s:Q%s' %(row, row), week_cover_all or 0, wbf['content_float'])
+                    percent_qty_bbsyv_sold = 0
+                    if gt_bbsyv_qty_sold != 0:
+                        percent_qty_bbsyv_sold = round(d_bbsyv_qty_sold/gt_bbsyv_qty_sold, 2)
+                    percent_retail_bbsyv_sold = 0
+                    if gt_bbsyv_retail_sold != 0:
+                        percent_retail_bbsyv_sold = round(d_bbsyv_retail_sold/gt_bbsyv_retail_sold, 2)
+                    percent_cost_bbsyv_sold = 0
+                    if gt_bbsyv_cost_sold != 0:
+                        percent_cost_bbsyv_sold = round(d_bbsyv_cost_sold/gt_bbsyv_cost_sold, 2)
+                    percent_qty_bbsyv_stock = 0
+                    if gt_bbsyv_qty_stock != 0:
+                        percent_qty_bbsyv_stock = round(d_bbsyv_qty_stock/gt_bbsyv_qty_stock, 2)
+                    percent_retail_bbsyv_stock = 0
+                    if gt_bbsyv_retail_stock != 0:
+                        percent_retail_bbsyv_stock = round(d_bbsyv_retail_stock/gt_bbsyv_retail_stock, 2)
+                    percent_cost_bbsyv_stock = 0
+                    if gt_bbsyv_cost_stock != 0:
+                        percent_cost_bbsyv_stock = round(d_bbsyv_cost_stock/gt_bbsyv_cost_stock, 2)
 
-                worksheet.write('Q%s:R%s' %(row, row), d_total_qty_stock_last or 0, wbf['content_float']) 
-                worksheet.write('R%s:S%s' %(row, row), str(round(percent_qty_stock_last, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('S%s:T%s' %(row, row), d_total_retail_stock_last or 0, wbf['content_float_price']) 
-                worksheet.write('T%s:U%s' %(row, row), str(round(percent_retail_stock_last, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('U%s:V%s' %(row, row), d_total_cost_stock_last or 0, wbf['content_float_price']) 
-                worksheet.write('V%s:W%s' %(row, row), str(round(percent_cost_stock_last, 2)) + '%' or '', wbf['content_float'])
+                    week_cover_bbsyv = 0
+                    if d_bbsyv_qty_sold != 0:
+                        week_cover_bbsyv = (d_bbsyv_qty_stock/d_bbsyv_qty_sold)*4.5
+
+                    percent_qty_bbbbg_sold = 0
+                    if gt_bbbbg_qty_sold != 0:
+                        percent_qty_bbbbg_sold = round(d_bbbbg_qty_sold/gt_bbbbg_qty_sold, 2)
+                    percent_retail_bbbbg_sold = 0
+                    if gt_bbbbg_retail_sold != 0:
+                        percent_retail_bbbbg_sold = round(d_bbbbg_retail_sold/gt_bbbbg_retail_sold, 2)
+                    percent_cost_bbbbg_sold = 0
+                    if gt_bbbbg_cost_sold != 0:
+                        percent_cost_bbbbg_sold = round(d_bbbbg_cost_sold/gt_bbbbg_cost_sold, 2)
+                    percent_qty_bbbbg_stock = 0
+                    if gt_bbbbg_qty_stock != 0:
+                        percent_qty_bbbbg_stock = round(d_bbbbg_qty_stock/gt_bbbbg_qty_stock, 2)
+                    percent_retail_bbbbg_stock = 0
+                    if gt_bbbbg_retail_stock != 0:
+                        percent_retail_bbbbg_stock = round(d_bbbbg_retail_stock/gt_bbbbg_retail_stock, 2)
+                    percent_cost_bbbbg_stock = 0
+                    if gt_bbbbg_cost_stock != 0:
+                        percent_cost_bbbbg_stock = round(d_bbbbg_cost_stock/gt_bbbbg_cost_stock, 2)
+
+                    week_cover_bbbbg = 0
+                    if d_bbbbg_qty_sold != 0:
+                        week_cover_bbbbg = (d_bbbbg_qty_stock/d_bbbbg_qty_sold)*4.5
+
+                    percent_qty_bbsnr_sold = 0
+                    if gt_bbsnr_qty_sold != 0:
+                        percent_qty_bbsnr_sold = round(d_bbsnr_qty_sold/gt_bbsnr_qty_sold, 2)
+                    percent_retail_bbsnr_sold = 0
+                    if gt_bbsnr_retail_sold != 0:
+                        percent_retail_bbsnr_sold = round(d_bbsnr_retail_sold/gt_bbsnr_retail_sold, 2)
+                    percent_cost_bbsnr_sold = 0
+                    if gt_bbsnr_cost_sold != 0:
+                        percent_cost_bbsnr_sold = round(d_bbsnr_cost_sold/gt_bbsnr_cost_sold, 2)
+                    percent_qty_bbsnr_stock = 0
+                    if gt_bbsnr_qty_stock != 0:
+                        percent_qty_bbsnr_stock = round(d_bbsnr_qty_stock/gt_bbsnr_qty_stock, 2)
+                    percent_retail_bbsnr_stock = 0
+                    if gt_bbsnr_retail_stock != 0:
+                        percent_retail_bbsnr_stock = round(d_bbsnr_retail_stock/gt_bbsnr_retail_stock, 2)
+                    percent_cost_bbsnr_stock = 0
+                    if gt_bbsnr_cost_stock != 0:
+                        percent_cost_bbsnr_stock = round(d_bbsnr_cost_stock/gt_bbsnr_cost_stock, 2)
+
+                    week_cover_bbsnr = 0
+                    if d_bbsnr_qty_sold != 0:
+                        week_cover_bbsnr = (d_bbsnr_qty_stock/d_bbsnr_qty_sold)*4.5
+
+
+                    percent_qty_bbblg_sold = 0
+                    if gt_bbblg_qty_sold != 0:
+                        percent_qty_bbblg_sold = round(d_bbblg_qty_sold/gt_bbblg_qty_sold, 2)
+                    percent_retail_bbblg_sold = 0
+                    if gt_bbblg_retail_sold != 0:
+                        percent_retail_bbblg_sold = round(d_bbblg_retail_sold/gt_bbblg_retail_sold, 2)
+                    percent_cost_bbblg_sold = 0
+                    if gt_bbblg_cost_sold != 0:
+                        percent_cost_bbblg_sold = round(d_bbblg_cost_sold/gt_bbblg_cost_sold, 2)
+                    percent_qty_bbblg_stock = 0
+                    if gt_bbblg_qty_stock != 0:
+                        percent_qty_bbblg_stock = round(d_bbblg_qty_stock/gt_bbblg_qty_stock, 2)
+                    percent_retail_bbblg_stock = 0
+                    if gt_bbblg_retail_stock != 0:
+                        percent_retail_bbblg_stock = round(d_bbblg_retail_stock/gt_bbblg_retail_stock, 2)
+                    percent_cost_bbblg_stock = 0
+                    if gt_bbblg_cost_stock != 0:
+                        percent_cost_bbblg_stock = round(d_bbblg_cost_stock/gt_bbblg_cost_stock, 2)
+
+                    week_cover_bbblg = 0
+                    if d_bbblg_qty_sold != 0:
+                        week_cover_bbblg = (d_bbblg_qty_stock/d_bbblg_qty_sold)*4.5
+
+                    percent_qty_bbpdg_sold = 0
+                    if gt_bbpdg_qty_sold != 0:
+                        percent_qty_bbpdg_sold = round(d_bbpdg_qty_sold/gt_bbpdg_qty_sold, 2)
+                    percent_retail_bbpdg_sold = 0
+                    if gt_bbpdg_retail_sold != 0:
+                        percent_retail_bbpdg_sold = round(d_bbpdg_retail_sold/gt_bbpdg_retail_sold, 2)
+                    percent_cost_bbpdg_sold = 0
+                    if gt_bbpdg_cost_sold != 0:
+                        percent_cost_bbpdg_sold = round(d_bbpdg_cost_sold/gt_bbpdg_cost_sold, 2)
+                    percent_qty_bbpdg_stock = 0
+                    if gt_bbpdg_qty_stock != 0:
+                        percent_qty_bbpdg_stock = round(d_bbpdg_qty_stock/gt_bbpdg_qty_stock, 2)
+                    percent_retail_bbpdg_stock = 0
+                    if gt_bbpdg_retail_stock != 0:
+                        percent_retail_bbpdg_stock = round(d_bbpdg_retail_stock/gt_bbpdg_retail_stock, 2)
+                    percent_cost_bbpdg_stock = 0
+                    if gt_bbpdg_cost_stock != 0:
+                        percent_cost_bbpdg_stock = round(d_bbpdg_cost_stock/gt_bbpdg_cost_stock, 2)
+
+                    week_cover_bbpdg = 0
+                    if d_bbpdg_qty_sold != 0:
+                        week_cover_bbpdg = (d_bbpdg_qty_stock/d_bbpdg_qty_sold)*4.5
+
+
+                    percent_qty_bbkta_sold = 0
+                    if gt_bbkta_qty_sold != 0:
+                        percent_qty_bbkta_sold = round(d_bbkta_qty_sold/gt_bbkta_qty_sold, 2)
+                    percent_retail_bbkta_sold = 0
+                    if gt_bbkta_retail_sold != 0:
+                        percent_retail_bbkta_sold = round(d_bbkta_retail_sold/gt_bbkta_retail_sold, 2)
+                    percent_cost_bbkta_sold = 0
+                    if gt_bbkta_cost_sold != 0:
+                        percent_cost_bbkta_sold = round(d_bbkta_cost_sold/gt_bbkta_cost_sold, 2)
+                    percent_qty_bbkta_stock = 0
+                    if gt_bbkta_qty_stock != 0:
+                        percent_qty_bbkta_stock = round(d_bbkta_qty_stock/gt_bbkta_qty_stock, 2)
+                    percent_retail_bbkta_stock = 0
+                    if gt_bbkta_retail_stock != 0:
+                        percent_retail_bbkta_stock = round(d_bbkta_retail_stock/gt_bbkta_retail_stock, 2)
+                    percent_cost_bbkta_stock = 0
+                    if gt_bbkta_cost_stock != 0:
+                        percent_cost_bbkta_stock = round(d_bbkta_cost_stock/gt_bbkta_cost_stock, 2)
+
+                    week_cover_bbkta = 0
+                    if d_bbkta_qty_sold != 0:
+                        week_cover_bbkta = (d_bbkta_qty_stock/d_bbkta_qty_sold)*4.5
+
+                    percent_qty_bbptg_sold = 0
+                    if gt_bbptg_qty_sold != 0:
+                        percent_qty_bbptg_sold = round(d_bbptg_qty_sold/gt_bbptg_qty_sold, 2)
+                    percent_retail_bbptg_sold = 0
+                    if gt_bbptg_retail_sold != 0:
+                        percent_retail_bbptg_sold = round(d_bbptg_retail_sold/gt_bbptg_retail_sold, 2)
+                    percent_cost_bbptg_sold = 0
+                    if gt_bbptg_cost_sold != 0:
+                        percent_cost_bbptg_sold = round(d_bbptg_cost_sold/gt_bbptg_cost_sold, 2)
+                    percent_qty_bbptg_stock = 0
+                    if gt_bbptg_qty_stock != 0:
+                        percent_qty_bbptg_stock = round(d_bbptg_qty_stock/gt_bbptg_qty_stock, 2)
+                    percent_retail_bbptg_stock = 0
+                    if gt_bbptg_retail_stock != 0:
+                        percent_retail_bbptg_stock = round(d_bbptg_retail_stock/gt_bbptg_retail_stock, 2)
+                    percent_cost_bbptg_stock = 0
+                    if gt_bbptg_cost_stock != 0:
+                        percent_cost_bbptg_stock = round(d_bbptg_cost_stock/gt_bbptg_cost_stock, 2)
+
+                    week_cover_bbptg = 0
+                    if d_bbptg_qty_sold != 0:
+                        week_cover_bbptg = (d_bbptg_qty_stock/d_bbptg_qty_sold)*4.5
+
+                    percent_qty_onlne_sold = 0
+                    if gt_onlne_qty_sold != 0:
+                        percent_qty_onlne_sold = round(d_onlne_qty_sold/gt_onlne_qty_sold, 2)
+                    percent_retail_onlne_sold = 0
+                    if gt_onlne_retail_sold != 0:
+                        percent_retail_onlne_sold = round(d_onlne_retail_sold/gt_onlne_retail_sold, 2)
+                    percent_cost_onlne_sold = 0
+                    if gt_onlne_cost_sold != 0:
+                        percent_cost_onlne_sold = round(d_onlne_cost_sold/gt_onlne_cost_sold, 2)
+                    percent_qty_onlne_stock = 0
+                    if gt_onlne_qty_stock != 0:
+                        percent_qty_onlne_stock = round(d_onlne_qty_stock/gt_onlne_qty_stock, 2)
+                    percent_retail_onlne_stock = 0
+                    if gt_onlne_retail_stock != 0:
+                        percent_retail_onlne_stock = round(d_onlne_retail_stock/gt_onlne_retail_stock, 2)
+                    percent_cost_onlne_stock = 0
+                    if gt_onlne_cost_stock != 0:
+                        percent_cost_onlne_stock = round(d_onlne_cost_stock/gt_onlne_cost_stock, 2)
+
+                    week_cover_onlne = 0
+                    if d_onlne_qty_sold != 0:
+                        week_cover_onlne = (d_onlne_qty_stock/d_onlne_qty_sold)*4.5
+
+
+                    worksheet.write('A%s:B%s' %(row, row), d_class_name or '', wbf['content'])
+                    worksheet.write('B%s:C%s' %(row, row), d_parent_category or '', wbf['content'])
+                    worksheet.write('C%s:D%s' %(row, row), d_category or '', wbf['content'])
+
+                    worksheet.write('D%s:E%s' %(row, row), d_total_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('E%s:F%s' %(row, row), str(round(percent_qty_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('F%s:G%s' %(row, row), d_total_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('G%s:H%s' %(row, row), str(round(percent_retail_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('H%s:I%s' %(row, row), d_total_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('I%s:J%s' %(row, row), str(round(percent_cost_sold, 2)) + '%' or '', wbf['content_float'])
+
+                    worksheet.write('J%s:K%s' %(row, row), d_total_qty_stock_now or 0, wbf['content_float'])
+                    worksheet.write('K%s:L%s' %(row, row), str(round(percent_qty_stock_now, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('L%s:M%s' %(row, row), d_total_retail_stock_now or 0, wbf['content_float_price'])
+                    worksheet.write('M%s:N%s' %(row, row), str(round(percent_retail_stock_now, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('N%s:O%s' %(row, row), d_total_cost_stock_now or 0, wbf['content_float_price'])
+                    worksheet.write('O%s:P%s' %(row, row), str(round(percent_cost_stock_now, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('P%s:Q%s' %(row, row), week_cover_all or 0, wbf['content_float'])
+
+                    worksheet.write('Q%s:R%s' %(row, row), d_total_qty_stock_last or 0, wbf['content_float'])
+                    worksheet.write('R%s:S%s' %(row, row), str(round(percent_qty_stock_last, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('S%s:T%s' %(row, row), d_total_retail_stock_last or 0, wbf['content_float_price'])
+                    worksheet.write('T%s:U%s' %(row, row), str(round(percent_retail_stock_last, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('U%s:V%s' %(row, row), d_total_cost_stock_last or 0, wbf['content_float_price'])
+                    worksheet.write('V%s:W%s' %(row, row), str(round(percent_cost_stock_last, 2)) + '%' or '', wbf['content_float'])
+
+                    worksheet.write('W%s:X%s' %(row, row), d_whbb_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('X%s:Y%s' %(row, row), str(round(percent_qty_whbb_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('Y%s:Z%s' %(row, row), d_whbb_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('Z%s:AA%s' %(row, row), str(round(percent_retail_whbb_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AA%s:AB%s' %(row, row), d_whbb_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('AB%s:AC%s' %(row, row), str(round(percent_cost_whbb_stock, 2)) + '%' or '', wbf['content_float'])
+
+                    # RECEIVING
+                    worksheet.write('AC%s:AD%s' %(row, row), d_total_qty_receiving or 0, wbf['content_float'])
+                    worksheet.write('AD%s:AE%s' %(row, row), str(round(percent_qty_receiving, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AE%s:AF%s' %(row, row), d_total_retail_receiving or 0, wbf['content_float_price'])
+                    worksheet.write('AF%s:AG%s' %(row, row), str(round(percent_retail_receiving, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AG%s:AH%s' %(row, row), d_total_cost_receiving or 0, wbf['content_float_price'])
+                    worksheet.write('AH%s:AI%s' %(row, row), str(round(percent_cost_receiving, 2)) + '%' or '', wbf['content_float'])
+
+                    worksheet.write('AI%s:AJ%s' %(row, row), d_bbflg_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('AJ%s:AK%s' %(row, row), str(round(percent_qty_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AK%s:AL%s' %(row, row), d_bbflg_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('AL%s:AM%s' %(row, row), str(round(percent_retail_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AM%s:AN%s' %(row, row), d_bbflg_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('AN%s:AO%s' %(row, row), str(round(percent_cost_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AO%s:AP%s' %(row, row), d_bbflg_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('AP%s:AQ%s' %(row, row), str(round(percent_qty_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AQ%s:AR%s' %(row, row), d_bbflg_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('AR%s:AS%s' %(row, row), str(round(percent_retail_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AS%s:AT%s' %(row, row), d_bbflg_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('AT%s:AU%s' %(row, row), str(round(percent_cost_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AU%s:AV%s' %(row, row), week_cover_bbflg or 0, wbf['content_float'])
+
+                    worksheet.write('AV%s:AW%s' %(row, row), d_bbbrw_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('AW%s:AX%s' %(row, row), str(round(percent_qty_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AX%s:AY%s' %(row, row), d_bbbrw_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('AY%s:AZ%s' %(row, row), str(round(percent_retail_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('AZ%s:BA%s' %(row, row), d_bbbrw_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('BA%s:BB%s' %(row, row), str(round(percent_cost_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BB%s:BC%s' %(row, row), d_bbbrw_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('BC%s:BD%s' %(row, row), str(round(percent_qty_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BD%s:BE%s' %(row, row), d_bbbrw_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('BE%s:BF%s' %(row, row), str(round(percent_retail_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BF%s:BG%s' %(row, row), d_bbbrw_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('BG%s:BH%s' %(row, row), str(round(percent_cost_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BH%s:BI%s' %(row, row), week_cover_bbbrw or 0, wbf['content_float'])
+
+                    worksheet.write('BI%s:BJ%s' %(row, row), d_bbbwk_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('BJ%s:BK%s' %(row, row), str(round(percent_qty_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BK%s:BL%s' %(row, row), d_bbbwk_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('BL%s:BM%s' %(row, row), str(round(percent_retail_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BM%s:BN%s' %(row, row), d_bbbwk_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('BN%s:BO%s' %(row, row), str(round(percent_cost_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BO%s:BP%s' %(row, row), d_bbbwk_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('BP%s:BQ%s' %(row, row), str(round(percent_qty_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BQ%s:BR%s' %(row, row), d_bbbwk_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('BR%s:BS%s' %(row, row), str(round(percent_retail_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BS%s:BT%s' %(row, row), d_bbbwk_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('BT%s:BU%s' %(row, row), str(round(percent_cost_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BU%s:BV%s' %(row, row), week_cover_bbbwk or 0, wbf['content_float'])
+
+                    worksheet.write('BV%s:BW%s' %(row, row), d_bbglr_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('BW%s:BX%s' %(row, row), str(round(percent_qty_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BX%s:BY%s' %(row, row), d_bbglr_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('BY%s:BZ%s' %(row, row), str(round(percent_retail_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('BZ%s:CA%s' %(row, row), d_bbglr_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('CA%s:CB%s' %(row, row), str(round(percent_cost_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CB%s:CC%s' %(row, row), d_bbglr_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('CC%s:CD%s' %(row, row), str(round(percent_qty_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CD%s:CE%s' %(row, row), d_bbglr_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('CE%s:CF%s' %(row, row), str(round(percent_retail_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CF%s:CG%s' %(row, row), d_bbglr_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('CG%s:CH%s' %(row, row), str(round(percent_cost_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CH%s:CI%s' %(row, row), week_cover_bbglr or 0, wbf['content_float'])
+
+                    worksheet.write('CI%s:BJ%s' %(row, row), d_bbsyv_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('CJ%s:CK%s' %(row, row), str(round(percent_qty_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CK%s:CL%s' %(row, row), d_bbsyv_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('CL%s:CM%s' %(row, row), str(round(percent_retail_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CM%s:CN%s' %(row, row), d_bbsyv_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('CN%s:CO%s' %(row, row), str(round(percent_cost_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CO%s:CP%s' %(row, row), d_bbsyv_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('CP%s:CQ%s' %(row, row), str(round(percent_qty_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CQ%s:CR%s' %(row, row), d_bbsyv_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('CR%s:CS%s' %(row, row), str(round(percent_retail_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CS%s:CT%s' %(row, row), d_bbsyv_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('CT%s:CU%s' %(row, row), str(round(percent_cost_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CU%s:CV%s' %(row, row), week_cover_bbsyv or 0, wbf['content_float'])
+
+                    worksheet.write('CV%s:CW%s' %(row, row), d_bbbbg_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('CW%s:CX%s' %(row, row), str(round(percent_qty_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CX%s:CY%s' %(row, row), d_bbbbg_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('CY%s:CZ%s' %(row, row), str(round(percent_retail_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('CZ%s:DA%s' %(row, row), d_bbbbg_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('DA%s:DB%s' %(row, row), str(round(percent_cost_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DB%s:DC%s' %(row, row), d_bbbbg_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('DC%s:DD%s' %(row, row), str(round(percent_qty_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DD%s:DE%s' %(row, row), d_bbbbg_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('DE%s:DF%s' %(row, row), str(round(percent_retail_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DF%s:DG%s' %(row, row), d_bbbbg_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('DG%s:DH%s' %(row, row), str(round(percent_cost_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DH%s:DI%s' %(row, row), week_cover_bbbbg or 0, wbf['content_float'])
+
+                    worksheet.write('DI%s:DJ%s' %(row, row), d_bbsnr_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('DJ%s:DK%s' %(row, row), str(round(percent_qty_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DK%s:DL%s' %(row, row), d_bbsnr_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('DL%s:DM%s' %(row, row), str(round(percent_retail_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DM%s:DN%s' %(row, row), d_bbsnr_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('DN%s:DO%s' %(row, row), str(round(percent_cost_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DO%s:DP%s' %(row, row), d_bbsnr_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('DP%s:DQ%s' %(row, row), str(round(percent_qty_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DQ%s:DR%s' %(row, row), d_bbsnr_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('DR%s:DS%s' %(row, row), str(round(percent_retail_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DS%s:DT%s' %(row, row), d_bbsnr_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('DT%s:DU%s' %(row, row), str(round(percent_cost_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DU%s:DV%s' %(row, row), week_cover_bbsnr or 0, wbf['content_float'])
+
+                    worksheet.write('DV%s:DW%s' %(row, row), d_bbblg_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('DW%s:DX%s' %(row, row), str(round(percent_qty_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DX%s:DY%s' %(row, row), d_bbblg_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('DY%s:DZ%s' %(row, row), str(round(percent_retail_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('DZ%s:EA%s' %(row, row), d_bbblg_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('EA%s:EB%s' %(row, row), str(round(percent_cost_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EB%s:EC%s' %(row, row), d_bbblg_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('EC%s:ED%s' %(row, row), str(round(percent_qty_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('ED%s:EE%s' %(row, row), d_bbblg_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('EE%s:EF%s' %(row, row), str(round(percent_retail_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EF%s:EG%s' %(row, row), d_bbblg_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('EG%s:EH%s' %(row, row), str(round(percent_cost_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EH%s:EI%s' %(row, row), week_cover_bbblg or 0, wbf['content_float'])
+
+                    worksheet.write('EI%s:EJ%s' %(row, row), d_bbpdg_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('EJ%s:EK%s' %(row, row), str(round(percent_qty_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EK%s:EL%s' %(row, row), d_bbpdg_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('EL%s:EM%s' %(row, row), str(round(percent_retail_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EM%s:EN%s' %(row, row), d_bbpdg_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('EN%s:EO%s' %(row, row), str(round(percent_cost_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EO%s:EP%s' %(row, row), d_bbpdg_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('EP%s:EQ%s' %(row, row), str(round(percent_qty_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EQ%s:ER%s' %(row, row), d_bbpdg_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('ER%s:ES%s' %(row, row), str(round(percent_retail_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('ES%s:ET%s' %(row, row), d_bbpdg_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('ET%s:EU%s' %(row, row), str(round(percent_cost_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EU%s:EV%s' %(row, row), week_cover_bbpdg or 0, wbf['content_float'])
+
+                    worksheet.write('EV%s:EW%s' %(row, row), d_bbkta_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('EW%s:EX%s' %(row, row), str(round(percent_qty_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EX%s:EY%s' %(row, row), d_bbkta_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('EY%s:EZ%s' %(row, row), str(round(percent_retail_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('EZ%s:FA%s' %(row, row), d_bbkta_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('FA%s:FB%s' %(row, row), str(round(percent_cost_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FB%s:FC%s' %(row, row), d_bbkta_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('FC%s:FD%s' %(row, row), str(round(percent_qty_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FD%s:FE%s' %(row, row), d_bbkta_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('FE%s:FF%s' %(row, row), str(round(percent_retail_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FF%s:FG%s' %(row, row), d_bbkta_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('FG%s:FH%s' %(row, row), str(round(percent_cost_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FH%s:FI%s' %(row, row), week_cover_bbkta or 0, wbf['content_float'])
+
+                    worksheet.write('FI%s:FJ%s' %(row, row), d_bbptg_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('FJ%s:FK%s' %(row, row), str(round(percent_qty_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FK%s:FL%s' %(row, row), d_bbptg_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('FL%s:FM%s' %(row, row), str(round(percent_retail_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FM%s:FN%s' %(row, row), d_bbptg_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('FN%s:FO%s' %(row, row), str(round(percent_cost_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FO%s:FP%s' %(row, row), d_bbptg_qty_stock or 0, wbf['content_float'])
+                    worksheet.write('FP%s:FQ%s' %(row, row), str(round(percent_qty_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FQ%s:FR%s' %(row, row), d_bbptg_retail_stock or 0, wbf['content_float_price'])
+                    worksheet.write('FR%s:FS%s' %(row, row), str(round(percent_retail_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FS%s:FT%s' %(row, row), d_bbptg_cost_stock or 0, wbf['content_float_price'])
+                    worksheet.write('FT%s:FU%s' %(row, row), str(round(percent_cost_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FU%s:FV%s' %(row, row), week_cover_bbptg or 0, wbf['content_float'])
+
+                    worksheet.write('FV%s:FW%s' %(row, row), d_onlne_qty_sold or 0, wbf['content_float'])
+                    worksheet.write('FW%s:FX%s' %(row, row), str(round(percent_qty_onlne_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FX%s:FY%s' %(row, row), d_onlne_retail_sold or 0, wbf['content_float_price'])
+                    worksheet.write('FY%s:FZ%s' %(row, row), str(round(percent_retail_onlne_sold, 2)) + '%' or '', wbf['content_float'])
+                    worksheet.write('FZ%s:GA%s' %(row, row), d_onlne_cost_sold or 0, wbf['content_float_price'])
+                    worksheet.write('GA%s:GB%s' %(row, row), str(round(percent_cost_onlne_sold, 2)) + '%' or '', wbf['content_float'])
+                    row+=1
+
+                    dt_percent_qty_sold += percent_qty_sold
+                    dt_percent_retail_sold += percent_retail_sold
+                    dt_percent_cost_sold += percent_cost_sold
+                    dt_percent_qty_receiving += percent_qty_receiving
+                    dt_percent_retail_receiving += percent_retail_receiving
+                    dt_percent_cost_receiving += percent_cost_receiving
+                    dt_percent_qty_stock_now += percent_qty_stock_now
+                    dt_percent_retail_stock_now += percent_retail_stock_now
+                    dt_percent_cost_stock_now += percent_cost_stock_now
+                    dt_week_cover_all += week_cover_all
+                    dt_percent_qty_stock_last += percent_qty_stock_last
+                    dt_percent_retail_stock_last += percent_retail_stock_last
+                    dt_percent_cost_stock_last += percent_cost_stock_last
+                    dt_percent_qty_whbb_stock += percent_qty_whbb_stock
+                    dt_percent_retail_whbb_stock += percent_retail_whbb_stock
+                    dt_percent_cost_whbb_stock += percent_cost_whbb_stock
+                    dt_percent_qty_bbflg_sold += percent_qty_bbflg_sold
+                    dt_percent_retail_bbflg_sold += percent_retail_bbflg_sold
+                    dt_percent_cost_bbflg_sold += percent_cost_bbflg_sold
+                    dt_percent_qty_bbflg_stock += percent_qty_bbflg_stock
+                    dt_percent_retail_bbflg_stock += percent_retail_bbflg_stock
+                    dt_percent_cost_bbflg_stock += percent_cost_bbflg_stock
+                    dt_week_cover_bbflg += week_cover_bbflg
+                    dt_percent_qty_bbbrw_sold += percent_qty_bbbrw_sold
+                    dt_percent_retail_bbbrw_sold += percent_retail_bbbrw_sold
+                    dt_percent_cost_bbbrw_sold += percent_cost_bbbrw_sold
+                    dt_percent_qty_bbbrw_stock += percent_qty_bbbrw_stock
+                    dt_percent_retail_bbbrw_stock += percent_retail_bbbrw_stock
+                    dt_percent_cost_bbbrw_stock += percent_cost_bbbrw_stock
+                    dt_week_cover_bbbrw += week_cover_bbbrw
+                    dt_percent_qty_bbbwk_sold += percent_qty_bbbwk_sold
+                    dt_percent_retail_bbbwk_sold += percent_retail_bbbwk_sold
+                    dt_percent_cost_bbbwk_sold += percent_cost_bbbwk_sold
+                    dt_percent_qty_bbbwk_stock += percent_qty_bbbwk_stock
+                    dt_percent_retail_bbbwk_stock += percent_retail_bbbwk_stock
+                    dt_percent_cost_bbbwk_stock += percent_cost_bbbwk_stock
+                    dt_week_cover_bbbwk += week_cover_bbbwk
+                    dt_percent_qty_bbglr_sold += percent_qty_bbglr_sold
+                    dt_percent_retail_bbglr_sold += percent_retail_bbglr_sold
+                    dt_percent_cost_bbglr_sold += percent_cost_bbglr_sold
+                    dt_percent_qty_bbglr_stock += percent_qty_bbglr_stock
+                    dt_percent_retail_bbglr_stock += percent_retail_bbglr_stock
+                    dt_percent_cost_bbglr_stock += percent_cost_bbglr_stock
+                    dt_week_cover_bbglr += week_cover_bbglr
+                    dt_percent_qty_bbsyv_sold += percent_qty_bbsyv_sold
+                    dt_percent_retail_bbsyv_sold += percent_retail_bbsyv_sold
+                    dt_percent_cost_bbsyv_sold += percent_cost_bbsyv_sold
+                    dt_percent_qty_bbsyv_stock += percent_qty_bbsyv_stock
+                    dt_percent_retail_bbsyv_stock += percent_retail_bbsyv_stock
+                    dt_percent_cost_bbsyv_stock += percent_cost_bbsyv_stock
+                    dt_week_cover_bbsyv += week_cover_bbsyv
+                    dt_percent_qty_bbbbg_sold += percent_qty_bbbbg_sold
+                    dt_percent_retail_bbbbg_sold += percent_retail_bbbbg_sold
+                    dt_percent_cost_bbbbg_sold += percent_cost_bbbbg_sold
+                    dt_percent_qty_bbbbg_stock += percent_qty_bbbbg_stock
+                    dt_percent_retail_bbbbg_stock += percent_retail_bbbbg_stock
+                    dt_percent_cost_bbbbg_stock += percent_cost_bbbbg_stock
+                    dt_week_cover_bbbbg += week_cover_bbbbg
+                    dt_percent_qty_bbsnr_sold += percent_qty_bbsnr_sold
+                    dt_percent_retail_bbsnr_sold += percent_retail_bbsnr_sold
+                    dt_percent_cost_bbsnr_sold += percent_cost_bbsnr_sold
+                    dt_percent_qty_bbsnr_stock += percent_qty_bbsnr_stock
+                    dt_percent_retail_bbsnr_stock += percent_retail_bbsnr_stock
+                    dt_percent_cost_bbsnr_stock += percent_cost_bbsnr_stock
+                    dt_week_cover_bbsnr += week_cover_bbsnr
+                    dt_percent_qty_bbblg_sold += percent_qty_bbblg_sold
+                    dt_percent_retail_bbblg_sold += percent_retail_bbblg_sold
+                    dt_percent_cost_bbblg_sold += percent_cost_bbblg_sold
+                    dt_percent_qty_bbblg_stock += percent_qty_bbblg_stock
+                    dt_percent_retail_bbblg_stock += percent_retail_bbblg_stock
+                    dt_percent_cost_bbblg_stock += percent_cost_bbblg_stock
+                    dt_week_cover_bbblg += week_cover_bbblg
+                    dt_percent_qty_bbpdg_sold += percent_qty_bbpdg_sold
+                    dt_percent_retail_bbpdg_sold += percent_retail_bbpdg_sold
+                    dt_percent_cost_bbpdg_sold += percent_cost_bbpdg_sold
+                    dt_percent_qty_bbpdg_stock += percent_qty_bbpdg_stock
+                    dt_percent_retail_bbpdg_stock += percent_retail_bbpdg_stock
+                    dt_percent_cost_bbpdg_stock += percent_cost_bbpdg_stock
+                    dt_week_cover_bbpdg += week_cover_bbpdg
+                    dt_percent_qty_bbkta_sold += percent_qty_bbkta_sold
+                    dt_percent_retail_bbkta_sold += percent_retail_bbkta_sold
+                    dt_percent_cost_bbkta_sold += percent_cost_bbkta_sold
+                    dt_percent_qty_bbkta_stock += percent_qty_bbkta_stock
+                    dt_percent_retail_bbkta_stock += percent_retail_bbkta_stock
+                    dt_percent_cost_bbkta_stock += percent_cost_bbkta_stock
+                    dt_week_cover_bbkta += week_cover_bbkta
+                    dt_percent_qty_bbptg_sold += percent_qty_bbptg_sold
+                    dt_percent_retail_bbptg_sold += percent_retail_bbptg_sold
+                    dt_percent_cost_bbptg_sold += percent_cost_bbptg_sold
+                    dt_percent_qty_bbptg_stock += percent_qty_bbptg_stock
+                    dt_percent_retail_bbptg_stock += percent_retail_bbptg_stock
+                    dt_percent_cost_bbptg_stock += percent_cost_bbptg_stock
+                    dt_week_cover_bbptg += week_cover_bbptg
+                    dt_percent_qty_onlne_sold += percent_qty_onlne_sold
+                    dt_percent_retail_onlne_sold += percent_retail_onlne_sold
+                    dt_percent_cost_onlne_sold += percent_cost_onlne_sold
+                    dt_percent_qty_onlne_stock += percent_qty_onlne_stock
+                    dt_percent_retail_onlne_stock += percent_retail_onlne_stock
+                    dt_percent_cost_onlne_stock += percent_cost_onlne_stock
+                    dt_week_cover_onlne += week_cover_onlne
+
+
+                worksheet.write('A%s:B%s' %(row, row), dt_class_name or '', wbf['total_content'])
+                worksheet.write('B%s:C%s' %(row, row), dt_parent_category or '', wbf['total_content'])
+                worksheet.write('C%s:D%s' %(row, row), '', wbf['total_content'])
+    
+                worksheet.write('D%s:E%s' %(row, row), dt_total_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('E%s:F%s' %(row, row), str(round(dt_percent_qty_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('F%s:G%s' %(row, row), dt_total_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('G%s:H%s' %(row, row), str(round(dt_percent_retail_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('H%s:I%s' %(row, row), dt_total_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('I%s:J%s' %(row, row), str(round(dt_percent_cost_sold, 2)) + '%' or '', wbf['total_content_float'])
+    
+                worksheet.write('J%s:K%s' %(row, row), dt_total_qty_stock_now or 0, wbf['total_content_float'])
+                worksheet.write('K%s:L%s' %(row, row), str(round(dt_percent_qty_stock_now, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('L%s:M%s' %(row, row), dt_total_retail_stock_now or 0, wbf['total_content_float_price'])
+                worksheet.write('M%s:N%s' %(row, row), str(round(dt_percent_retail_stock_now, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('N%s:O%s' %(row, row), dt_total_cost_stock_now or 0, wbf['total_content_float_price'])
+                worksheet.write('O%s:P%s' %(row, row), str(round(dt_percent_cost_stock_now, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('P%s:Q%s' %(row, row), dt_week_cover_all or 0, wbf['total_content_float'])
+    
+                worksheet.write('Q%s:R%s' %(row, row), dt_total_qty_stock_last or 0, wbf['total_content_float']) 
+                worksheet.write('R%s:S%s' %(row, row), str(round(dt_percent_qty_stock_last, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('S%s:T%s' %(row, row), dt_total_retail_stock_last or 0, wbf['total_content_float_price']) 
+                worksheet.write('T%s:U%s' %(row, row), str(round(dt_percent_retail_stock_last, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('U%s:V%s' %(row, row), dt_total_cost_stock_last or 0, wbf['total_content_float_price']) 
+                worksheet.write('V%s:W%s' %(row, row), str(round(dt_percent_cost_stock_last, 2)) + '%' or '', wbf['total_content_float'])
               
-                worksheet.write('W%s:X%s' %(row, row), d_whbb_qty_stock or 0, wbf['content_float'])
-                worksheet.write('X%s:Y%s' %(row, row), str(round(percent_qty_whbb_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('Y%s:Z%s' %(row, row), d_whbb_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('Z%s:AA%s' %(row, row), str(round(percent_retail_whbb_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AA%s:AB%s' %(row, row), d_whbb_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('AB%s:AC%s' %(row, row), str(round(percent_cost_whbb_stock, 2)) + '%' or '', wbf['content_float'])
-
+                worksheet.write('W%s:X%s' %(row, row), dt_whbb_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('X%s:Y%s' %(row, row), str(round(dt_percent_qty_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('Y%s:Z%s' %(row, row), dt_whbb_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('Z%s:AA%s' %(row, row), str(round(dt_percent_retail_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AA%s:AB%s' %(row, row), dt_whbb_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('AB%s:AC%s' %(row, row), str(round(dt_percent_cost_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
+    
                 # RECEIVING
-                worksheet.write('AC%s:AD%s' %(row, row), d_total_qty_receiving or 0, wbf['content_float'])
-                worksheet.write('AD%s:AE%s' %(row, row), str(round(percent_qty_receiving, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AE%s:AF%s' %(row, row), d_total_retail_receiving or 0, wbf['content_float_price'])
-                worksheet.write('AF%s:AG%s' %(row, row), str(round(percent_retail_receiving, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AG%s:AH%s' %(row, row), d_total_cost_receiving or 0, wbf['content_float_price'])
-                worksheet.write('AH%s:AI%s' %(row, row), str(round(percent_cost_receiving, 2)) + '%' or '', wbf['content_float'])
-
-                worksheet.write('AI%s:AJ%s' %(row, row), d_bbflg_qty_sold or 0, wbf['content_float'])
-                worksheet.write('AJ%s:AK%s' %(row, row), str(round(percent_qty_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AK%s:AL%s' %(row, row), d_bbflg_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('AL%s:AM%s' %(row, row), str(round(percent_retail_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AM%s:AN%s' %(row, row), d_bbflg_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('AN%s:AO%s' %(row, row), str(round(percent_cost_bbflg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AO%s:AP%s' %(row, row), d_bbflg_qty_stock or 0, wbf['content_float'])
-                worksheet.write('AP%s:AQ%s' %(row, row), str(round(percent_qty_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AQ%s:AR%s' %(row, row), d_bbflg_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('AR%s:AS%s' %(row, row), str(round(percent_retail_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AS%s:AT%s' %(row, row), d_bbflg_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('AT%s:AU%s' %(row, row), str(round(percent_cost_bbflg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AU%s:AV%s' %(row, row), week_cover_bbflg or 0, wbf['content_float'])
-
-                worksheet.write('AV%s:AW%s' %(row, row), d_bbbrw_qty_sold or 0, wbf['content_float'])
-                worksheet.write('AW%s:AX%s' %(row, row), str(round(percent_qty_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AX%s:AY%s' %(row, row), d_bbbrw_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('AY%s:AZ%s' %(row, row), str(round(percent_retail_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('AZ%s:BA%s' %(row, row), d_bbbrw_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('BA%s:BB%s' %(row, row), str(round(percent_cost_bbbrw_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BB%s:BC%s' %(row, row), d_bbbrw_qty_stock or 0, wbf['content_float'])
-                worksheet.write('BC%s:BD%s' %(row, row), str(round(percent_qty_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BD%s:BE%s' %(row, row), d_bbbrw_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('BE%s:BF%s' %(row, row), str(round(percent_retail_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BF%s:BG%s' %(row, row), d_bbbrw_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('BG%s:BH%s' %(row, row), str(round(percent_cost_bbbrw_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BH%s:BI%s' %(row, row), week_cover_bbbrw or 0, wbf['content_float'])
-
-                worksheet.write('BI%s:BJ%s' %(row, row), d_bbbwk_qty_sold or 0, wbf['content_float'])
-                worksheet.write('BJ%s:BK%s' %(row, row), str(round(percent_qty_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BK%s:BL%s' %(row, row), d_bbbwk_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('BL%s:BM%s' %(row, row), str(round(percent_retail_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BM%s:BN%s' %(row, row), d_bbbwk_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('BN%s:BO%s' %(row, row), str(round(percent_cost_bbbwk_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BO%s:BP%s' %(row, row), d_bbbwk_qty_stock or 0, wbf['content_float'])
-                worksheet.write('BP%s:BQ%s' %(row, row), str(round(percent_qty_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BQ%s:BR%s' %(row, row), d_bbbwk_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('BR%s:BS%s' %(row, row), str(round(percent_retail_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BS%s:BT%s' %(row, row), d_bbbwk_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('BT%s:BU%s' %(row, row), str(round(percent_cost_bbbwk_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BU%s:BV%s' %(row, row), week_cover_bbbwk or 0, wbf['content_float'])
-
-                worksheet.write('BV%s:BW%s' %(row, row), d_bbglr_qty_sold or 0, wbf['content_float'])
-                worksheet.write('BW%s:BX%s' %(row, row), str(round(percent_qty_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BX%s:BY%s' %(row, row), d_bbglr_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('BY%s:BZ%s' %(row, row), str(round(percent_retail_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('BZ%s:CA%s' %(row, row), d_bbglr_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('CA%s:CB%s' %(row, row), str(round(percent_cost_bbglr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CB%s:CC%s' %(row, row), d_bbglr_qty_stock or 0, wbf['content_float'])
-                worksheet.write('CC%s:CD%s' %(row, row), str(round(percent_qty_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CD%s:CE%s' %(row, row), d_bbglr_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('CE%s:CF%s' %(row, row), str(round(percent_retail_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CF%s:CG%s' %(row, row), d_bbglr_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('CG%s:CH%s' %(row, row), str(round(percent_cost_bbglr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CH%s:CI%s' %(row, row), week_cover_bbglr or 0, wbf['content_float'])
-
-                worksheet.write('CI%s:BJ%s' %(row, row), d_bbsyv_qty_sold or 0, wbf['content_float'])
-                worksheet.write('CJ%s:CK%s' %(row, row), str(round(percent_qty_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CK%s:CL%s' %(row, row), d_bbsyv_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('CL%s:CM%s' %(row, row), str(round(percent_retail_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CM%s:CN%s' %(row, row), d_bbsyv_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('CN%s:CO%s' %(row, row), str(round(percent_cost_bbsyv_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CO%s:CP%s' %(row, row), d_bbsyv_qty_stock or 0, wbf['content_float'])
-                worksheet.write('CP%s:CQ%s' %(row, row), str(round(percent_qty_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CQ%s:CR%s' %(row, row), d_bbsyv_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('CR%s:CS%s' %(row, row), str(round(percent_retail_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CS%s:CT%s' %(row, row), d_bbsyv_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('CT%s:CU%s' %(row, row), str(round(percent_cost_bbsyv_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CU%s:CV%s' %(row, row), week_cover_bbsyv or 0, wbf['content_float'])
-
-                worksheet.write('CV%s:CW%s' %(row, row), d_bbbbg_qty_sold or 0, wbf['content_float'])
-                worksheet.write('CW%s:CX%s' %(row, row), str(round(percent_qty_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CX%s:CY%s' %(row, row), d_bbbbg_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('CY%s:CZ%s' %(row, row), str(round(percent_retail_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('CZ%s:DA%s' %(row, row), d_bbbbg_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('DA%s:DB%s' %(row, row), str(round(percent_cost_bbbbg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DB%s:DC%s' %(row, row), d_bbbbg_qty_stock or 0, wbf['content_float'])
-                worksheet.write('DC%s:DD%s' %(row, row), str(round(percent_qty_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DD%s:DE%s' %(row, row), d_bbbbg_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('DE%s:DF%s' %(row, row), str(round(percent_retail_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DF%s:DG%s' %(row, row), d_bbbbg_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('DG%s:DH%s' %(row, row), str(round(percent_cost_bbbbg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DH%s:DI%s' %(row, row), week_cover_bbbbg or 0, wbf['content_float'])
-
-                worksheet.write('DI%s:DJ%s' %(row, row), d_bbsnr_qty_sold or 0, wbf['content_float'])
-                worksheet.write('DJ%s:DK%s' %(row, row), str(round(percent_qty_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DK%s:DL%s' %(row, row), d_bbsnr_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('DL%s:DM%s' %(row, row), str(round(percent_retail_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DM%s:DN%s' %(row, row), d_bbsnr_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('DN%s:DO%s' %(row, row), str(round(percent_cost_bbsnr_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DO%s:DP%s' %(row, row), d_bbsnr_qty_stock or 0, wbf['content_float'])
-                worksheet.write('DP%s:DQ%s' %(row, row), str(round(percent_qty_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DQ%s:DR%s' %(row, row), d_bbsnr_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('DR%s:DS%s' %(row, row), str(round(percent_retail_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DS%s:DT%s' %(row, row), d_bbsnr_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('DT%s:DU%s' %(row, row), str(round(percent_cost_bbsnr_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DU%s:DV%s' %(row, row), week_cover_bbsnr or 0, wbf['content_float'])
-
-                worksheet.write('DV%s:DW%s' %(row, row), d_bbblg_qty_sold or 0, wbf['content_float'])
-                worksheet.write('DW%s:DX%s' %(row, row), str(round(percent_qty_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DX%s:DY%s' %(row, row), d_bbblg_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('DY%s:DZ%s' %(row, row), str(round(percent_retail_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('DZ%s:EA%s' %(row, row), d_bbblg_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('EA%s:EB%s' %(row, row), str(round(percent_cost_bbblg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EB%s:EC%s' %(row, row), d_bbblg_qty_stock or 0, wbf['content_float'])
-                worksheet.write('EC%s:ED%s' %(row, row), str(round(percent_qty_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('ED%s:EE%s' %(row, row), d_bbblg_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('EE%s:EF%s' %(row, row), str(round(percent_retail_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EF%s:EG%s' %(row, row), d_bbblg_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('EG%s:EH%s' %(row, row), str(round(percent_cost_bbblg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EH%s:EI%s' %(row, row), week_cover_bbblg or 0, wbf['content_float'])
-
-                worksheet.write('EI%s:EJ%s' %(row, row), d_bbpdg_qty_sold or 0, wbf['content_float'])
-                worksheet.write('EJ%s:EK%s' %(row, row), str(round(percent_qty_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EK%s:EL%s' %(row, row), d_bbpdg_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('EL%s:EM%s' %(row, row), str(round(percent_retail_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EM%s:EN%s' %(row, row), d_bbpdg_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('EN%s:EO%s' %(row, row), str(round(percent_cost_bbpdg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EO%s:EP%s' %(row, row), d_bbpdg_qty_stock or 0, wbf['content_float'])
-                worksheet.write('EP%s:EQ%s' %(row, row), str(round(percent_qty_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EQ%s:ER%s' %(row, row), d_bbpdg_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('ER%s:ES%s' %(row, row), str(round(percent_retail_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('ES%s:ET%s' %(row, row), d_bbpdg_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('ET%s:EU%s' %(row, row), str(round(percent_cost_bbpdg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EU%s:EV%s' %(row, row), week_cover_bbpdg or 0, wbf['content_float'])
-
-                worksheet.write('EV%s:EW%s' %(row, row), d_bbkta_qty_sold or 0, wbf['content_float'])
-                worksheet.write('EW%s:EX%s' %(row, row), str(round(percent_qty_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EX%s:EY%s' %(row, row), d_bbkta_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('EY%s:EZ%s' %(row, row), str(round(percent_retail_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('EZ%s:FA%s' %(row, row), d_bbkta_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('FA%s:FB%s' %(row, row), str(round(percent_cost_bbkta_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FB%s:FC%s' %(row, row), d_bbkta_qty_stock or 0, wbf['content_float'])
-                worksheet.write('FC%s:FD%s' %(row, row), str(round(percent_qty_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FD%s:FE%s' %(row, row), d_bbkta_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('FE%s:FF%s' %(row, row), str(round(percent_retail_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FF%s:FG%s' %(row, row), d_bbkta_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('FG%s:FH%s' %(row, row), str(round(percent_cost_bbkta_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FH%s:FI%s' %(row, row), week_cover_bbkta or 0, wbf['content_float'])
-
-                worksheet.write('FI%s:FJ%s' %(row, row), d_bbptg_qty_sold or 0, wbf['content_float'])
-                worksheet.write('FJ%s:FK%s' %(row, row), str(round(percent_qty_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FK%s:FL%s' %(row, row), d_bbptg_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('FL%s:FM%s' %(row, row), str(round(percent_retail_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FM%s:FN%s' %(row, row), d_bbptg_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('FN%s:FO%s' %(row, row), str(round(percent_cost_bbptg_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FO%s:FP%s' %(row, row), d_bbptg_qty_stock or 0, wbf['content_float'])
-                worksheet.write('FP%s:FQ%s' %(row, row), str(round(percent_qty_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FQ%s:FR%s' %(row, row), d_bbptg_retail_stock or 0, wbf['content_float_price'])
-                worksheet.write('FR%s:FS%s' %(row, row), str(round(percent_retail_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FS%s:FT%s' %(row, row), d_bbptg_cost_stock or 0, wbf['content_float_price'])
-                worksheet.write('FT%s:FU%s' %(row, row), str(round(percent_cost_bbptg_stock, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FU%s:FV%s' %(row, row), week_cover_bbptg or 0, wbf['content_float'])
-
-                worksheet.write('FV%s:FW%s' %(row, row), d_onlne_qty_sold or 0, wbf['content_float'])
-                worksheet.write('FW%s:FX%s' %(row, row), str(round(percent_qty_onlne_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FX%s:FY%s' %(row, row), d_onlne_retail_sold or 0, wbf['content_float_price'])
-                worksheet.write('FY%s:FZ%s' %(row, row), str(round(percent_retail_onlne_sold, 2)) + '%' or '', wbf['content_float'])
-                worksheet.write('FZ%s:GA%s' %(row, row), d_onlne_cost_sold or 0, wbf['content_float_price'])
-                worksheet.write('GA%s:GB%s' %(row, row), str(round(percent_cost_onlne_sold, 2)) + '%' or '', wbf['content_float'])
+                worksheet.write('AC%s:AD%s' %(row, row), dt_total_qty_receiving or 0, wbf['total_content_float'])
+                worksheet.write('AD%s:AE%s' %(row, row), str(round(dt_percent_qty_receiving, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AE%s:AF%s' %(row, row), dt_total_retail_receiving or 0, wbf['total_content_float_price'])
+                worksheet.write('AF%s:AG%s' %(row, row), str(round(dt_percent_retail_receiving, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AG%s:AH%s' %(row, row), dt_total_cost_receiving or 0, wbf['total_content_float_price'])
+                worksheet.write('AH%s:AI%s' %(row, row), str(round(dt_percent_cost_receiving, 2)) + '%' or '', wbf['total_content_float'])
+    
+                worksheet.write('AI%s:AJ%s' %(row, row), dt_bbflg_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('AJ%s:AK%s' %(row, row), str(round(dt_percent_qty_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AK%s:AL%s' %(row, row), dt_bbflg_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('AL%s:AM%s' %(row, row), str(round(dt_percent_retail_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AM%s:AN%s' %(row, row), dt_bbflg_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('AN%s:AO%s' %(row, row), str(round(dt_percent_cost_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AO%s:AP%s' %(row, row), dt_bbflg_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('AP%s:AQ%s' %(row, row), str(round(dt_percent_qty_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AQ%s:AR%s' %(row, row), dt_bbflg_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('AR%s:AS%s' %(row, row), str(round(dt_percent_retail_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AS%s:AT%s' %(row, row), dt_bbflg_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('AT%s:AU%s' %(row, row), str(round(dt_percent_cost_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AU%s:AV%s' %(row, row), dt_week_cover_bbflg or 0, wbf['total_content_float'])
+    
+                worksheet.write('AV%s:AW%s' %(row, row), dt_bbbrw_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('AW%s:AX%s' %(row, row), str(round(dt_percent_qty_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AX%s:AY%s' %(row, row), dt_bbbrw_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('AY%s:AZ%s' %(row, row), str(round(dt_percent_retail_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('AZ%s:BA%s' %(row, row), dt_bbbrw_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('BA%s:BB%s' %(row, row), str(round(dt_percent_cost_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BB%s:BC%s' %(row, row), dt_bbbrw_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('BC%s:BD%s' %(row, row), str(round(dt_percent_qty_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BD%s:BE%s' %(row, row), dt_bbbrw_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('BE%s:BF%s' %(row, row), str(round(dt_percent_retail_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BF%s:BG%s' %(row, row), dt_bbbrw_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('BG%s:BH%s' %(row, row), str(round(dt_percent_cost_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BH%s:BI%s' %(row, row), dt_week_cover_bbbrw or 0, wbf['total_content_float'])
+    
+                worksheet.write('BI%s:BJ%s' %(row, row), dt_bbbwk_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('BJ%s:BK%s' %(row, row), str(round(dt_percent_qty_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BK%s:BL%s' %(row, row), dt_bbbwk_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('BL%s:BM%s' %(row, row), str(round(dt_percent_retail_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BM%s:BN%s' %(row, row), dt_bbbwk_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('BN%s:BO%s' %(row, row), str(round(dt_percent_cost_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BO%s:BP%s' %(row, row), dt_bbbwk_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('BP%s:BQ%s' %(row, row), str(round(dt_percent_qty_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BQ%s:BR%s' %(row, row), dt_bbbwk_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('BR%s:BS%s' %(row, row), str(round(dt_percent_retail_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BS%s:BT%s' %(row, row), dt_bbbwk_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('BT%s:BU%s' %(row, row), str(round(dt_percent_cost_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BU%s:BV%s' %(row, row), dt_week_cover_bbbwk or 0, wbf['total_content_float'])
+    
+                worksheet.write('BV%s:BW%s' %(row, row), dt_bbglr_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('BW%s:BX%s' %(row, row), str(round(dt_percent_qty_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BX%s:BY%s' %(row, row), dt_bbglr_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('BY%s:BZ%s' %(row, row), str(round(dt_percent_retail_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('BZ%s:CA%s' %(row, row), dt_bbglr_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('CA%s:CB%s' %(row, row), str(round(dt_percent_cost_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CB%s:CC%s' %(row, row), dt_bbglr_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('CC%s:CD%s' %(row, row), str(round(dt_percent_qty_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CD%s:CE%s' %(row, row), dt_bbglr_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('CE%s:CF%s' %(row, row), str(round(dt_percent_retail_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CF%s:CG%s' %(row, row), dt_bbglr_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('CG%s:CH%s' %(row, row), str(round(dt_percent_cost_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CH%s:CI%s' %(row, row), dt_week_cover_bbglr or 0, wbf['total_content_float'])
+    
+                worksheet.write('CI%s:BJ%s' %(row, row), dt_bbsyv_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('CJ%s:CK%s' %(row, row), str(round(dt_percent_qty_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CK%s:CL%s' %(row, row), dt_bbsyv_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('CL%s:CM%s' %(row, row), str(round(dt_percent_retail_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CM%s:CN%s' %(row, row), dt_bbsyv_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('CN%s:CO%s' %(row, row), str(round(dt_percent_cost_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CO%s:CP%s' %(row, row), dt_bbsyv_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('CP%s:CQ%s' %(row, row), str(round(dt_percent_qty_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CQ%s:CR%s' %(row, row), dt_bbsyv_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('CR%s:CS%s' %(row, row), str(round(dt_percent_retail_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CS%s:CT%s' %(row, row), dt_bbsyv_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('CT%s:CU%s' %(row, row), str(round(dt_percent_cost_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CU%s:CV%s' %(row, row), dt_week_cover_bbsyv or 0, wbf['total_content_float'])
+    
+                worksheet.write('CV%s:CW%s' %(row, row), dt_bbbbg_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('CW%s:CX%s' %(row, row), str(round(dt_percent_qty_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CX%s:CY%s' %(row, row), dt_bbbbg_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('CY%s:CZ%s' %(row, row), str(round(dt_percent_retail_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('CZ%s:DA%s' %(row, row), dt_bbbbg_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('DA%s:DB%s' %(row, row), str(round(dt_percent_cost_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DB%s:DC%s' %(row, row), dt_bbbbg_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('DC%s:DD%s' %(row, row), str(round(dt_percent_qty_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DD%s:DE%s' %(row, row), dt_bbbbg_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('DE%s:DF%s' %(row, row), str(round(dt_percent_retail_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DF%s:DG%s' %(row, row), dt_bbbbg_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('DG%s:DH%s' %(row, row), str(round(dt_percent_cost_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DH%s:DI%s' %(row, row), dt_week_cover_bbbbg or 0, wbf['total_content_float'])
+    
+                worksheet.write('DI%s:DJ%s' %(row, row), dt_bbsnr_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('DJ%s:DK%s' %(row, row), str(round(dt_percent_qty_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DK%s:DL%s' %(row, row), dt_bbsnr_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('DL%s:DM%s' %(row, row), str(round(dt_percent_retail_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DM%s:DN%s' %(row, row), dt_bbsnr_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('DN%s:DO%s' %(row, row), str(round(dt_percent_cost_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DO%s:DP%s' %(row, row), dt_bbsnr_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('DP%s:DQ%s' %(row, row), str(round(dt_percent_qty_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DQ%s:DR%s' %(row, row), dt_bbsnr_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('DR%s:DS%s' %(row, row), str(round(dt_percent_retail_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DS%s:DT%s' %(row, row), dt_bbsnr_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('DT%s:DU%s' %(row, row), str(round(dt_percent_cost_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DU%s:DV%s' %(row, row), dt_week_cover_bbsnr or 0, wbf['total_content_float'])
+    
+                worksheet.write('DV%s:DW%s' %(row, row), dt_bbblg_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('DW%s:DX%s' %(row, row), str(round(dt_percent_qty_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DX%s:DY%s' %(row, row), dt_bbblg_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('DY%s:DZ%s' %(row, row), str(round(dt_percent_retail_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('DZ%s:EA%s' %(row, row), dt_bbblg_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('EA%s:EB%s' %(row, row), str(round(dt_percent_cost_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EB%s:EC%s' %(row, row), dt_bbblg_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('EC%s:ED%s' %(row, row), str(round(dt_percent_qty_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('ED%s:EE%s' %(row, row), dt_bbblg_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('EE%s:EF%s' %(row, row), str(round(dt_percent_retail_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EF%s:EG%s' %(row, row), dt_bbblg_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('EG%s:EH%s' %(row, row), str(round(dt_percent_cost_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EH%s:EI%s' %(row, row), dt_week_cover_bbblg or 0, wbf['total_content_float'])
+    
+                worksheet.write('EI%s:EJ%s' %(row, row), dt_bbpdg_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('EJ%s:EK%s' %(row, row), str(round(dt_percent_qty_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EK%s:EL%s' %(row, row), dt_bbpdg_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('EL%s:EM%s' %(row, row), str(round(dt_percent_retail_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EM%s:EN%s' %(row, row), dt_bbpdg_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('EN%s:EO%s' %(row, row), str(round(dt_percent_cost_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EO%s:EP%s' %(row, row), dt_bbpdg_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('EP%s:EQ%s' %(row, row), str(round(dt_percent_qty_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EQ%s:ER%s' %(row, row), dt_bbpdg_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('ER%s:ES%s' %(row, row), str(round(dt_percent_retail_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('ES%s:ET%s' %(row, row), dt_bbpdg_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('ET%s:EU%s' %(row, row), str(round(dt_percent_cost_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EU%s:EV%s' %(row, row), dt_week_cover_bbpdg or 0, wbf['total_content_float'])
+    
+                worksheet.write('EV%s:EW%s' %(row, row), dt_bbkta_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('EW%s:EX%s' %(row, row), str(round(dt_percent_qty_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EX%s:EY%s' %(row, row), dt_bbkta_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('EY%s:EZ%s' %(row, row), str(round(dt_percent_retail_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('EZ%s:FA%s' %(row, row), dt_bbkta_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('FA%s:FB%s' %(row, row), str(round(dt_percent_cost_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FB%s:FC%s' %(row, row), dt_bbkta_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('FC%s:FD%s' %(row, row), str(round(dt_percent_qty_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FD%s:FE%s' %(row, row), dt_bbkta_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('FE%s:FF%s' %(row, row), str(round(dt_percent_retail_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FF%s:FG%s' %(row, row), dt_bbkta_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('FG%s:FH%s' %(row, row), str(round(dt_percent_cost_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FH%s:FI%s' %(row, row), dt_week_cover_bbkta or 0, wbf['total_content_float'])
+    
+                worksheet.write('FI%s:FJ%s' %(row, row), dt_bbptg_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('FJ%s:FK%s' %(row, row), str(round(dt_percent_qty_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FK%s:FL%s' %(row, row), dt_bbptg_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('FL%s:FM%s' %(row, row), str(round(dt_percent_retail_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FM%s:FN%s' %(row, row), dt_bbptg_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('FN%s:FO%s' %(row, row), str(round(dt_percent_cost_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FO%s:FP%s' %(row, row), dt_bbptg_qty_stock or 0, wbf['total_content_float'])
+                worksheet.write('FP%s:FQ%s' %(row, row), str(round(dt_percent_qty_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FQ%s:FR%s' %(row, row), dt_bbptg_retail_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('FR%s:FS%s' %(row, row), str(round(dt_percent_retail_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FS%s:FT%s' %(row, row), dt_bbptg_cost_stock or 0, wbf['total_content_float_price'])
+                worksheet.write('FT%s:FU%s' %(row, row), str(round(dt_percent_cost_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FU%s:FV%s' %(row, row), dt_week_cover_bbptg or 0, wbf['total_content_float'])
+    
+                worksheet.write('FV%s:FW%s' %(row, row), dt_onlne_qty_sold or 0, wbf['total_content_float'])
+                worksheet.write('FW%s:FX%s' %(row, row), str(round(dt_percent_qty_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FX%s:FY%s' %(row, row), dt_onlne_retail_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('FY%s:FZ%s' %(row, row), str(round(dt_percent_retail_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
+                worksheet.write('FZ%s:FA%s' %(row, row), dt_onlne_cost_sold or 0, wbf['total_content_float_price'])
+                worksheet.write('GA%s:GB%s' %(row, row), str(round(dt_percent_cost_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
                 row+=1
 
-                dt_percent_qty_sold += percent_qty_sold
-                dt_percent_retail_sold += percent_retail_sold
-                dt_percent_cost_sold += percent_cost_sold
-                dt_percent_qty_receiving += percent_qty_receiving
-                dt_percent_retail_receiving += percent_retail_receiving
-                dt_percent_cost_receiving += percent_cost_receiving
-                dt_percent_qty_stock_now += percent_qty_stock_now
-                dt_percent_retail_stock_now += percent_retail_stock_now
-                dt_percent_cost_stock_now += percent_cost_stock_now
-                dt_week_cover_all += week_cover_all
-                dt_percent_qty_stock_last += percent_qty_stock_last
-                dt_percent_retail_stock_last += percent_retail_stock_last
-                dt_percent_cost_stock_last += percent_cost_stock_last
-                dt_percent_qty_whbb_stock += percent_qty_whbb_stock
-                dt_percent_retail_whbb_stock += percent_retail_whbb_stock
-                dt_percent_cost_whbb_stock += percent_cost_whbb_stock
-                dt_percent_qty_bbflg_sold += percent_qty_bbflg_sold
-                dt_percent_retail_bbflg_sold += percent_retail_bbflg_sold
-                dt_percent_cost_bbflg_sold += percent_cost_bbflg_sold
-                dt_percent_qty_bbflg_stock += percent_qty_bbflg_stock
-                dt_percent_retail_bbflg_stock += percent_retail_bbflg_stock
-                dt_percent_cost_bbflg_stock += percent_cost_bbflg_stock
-                dt_week_cover_bbflg += week_cover_bbflg
-                dt_percent_qty_bbbrw_sold += percent_qty_bbbrw_sold
-                dt_percent_retail_bbbrw_sold += percent_retail_bbbrw_sold
-                dt_percent_cost_bbbrw_sold += percent_cost_bbbrw_sold
-                dt_percent_qty_bbbrw_stock += percent_qty_bbbrw_stock
-                dt_percent_retail_bbbrw_stock += percent_retail_bbbrw_stock
-                dt_percent_cost_bbbrw_stock += percent_cost_bbbrw_stock
-                dt_week_cover_bbbrw += week_cover_bbbrw
-                dt_percent_qty_bbbwk_sold += percent_qty_bbbwk_sold
-                dt_percent_retail_bbbwk_sold += percent_retail_bbbwk_sold
-                dt_percent_cost_bbbwk_sold += percent_cost_bbbwk_sold
-                dt_percent_qty_bbbwk_stock += percent_qty_bbbwk_stock
-                dt_percent_retail_bbbwk_stock += percent_retail_bbbwk_stock
-                dt_percent_cost_bbbwk_stock += percent_cost_bbbwk_stock
-                dt_week_cover_bbbwk += week_cover_bbbwk
-                dt_percent_qty_bbglr_sold += percent_qty_bbglr_sold
-                dt_percent_retail_bbglr_sold += percent_retail_bbglr_sold
-                dt_percent_cost_bbglr_sold += percent_cost_bbglr_sold
-                dt_percent_qty_bbglr_stock += percent_qty_bbglr_stock
-                dt_percent_retail_bbglr_stock += percent_retail_bbglr_stock
-                dt_percent_cost_bbglr_stock += percent_cost_bbglr_stock
-                dt_week_cover_bbglr += week_cover_bbglr
-                dt_percent_qty_bbsyv_sold += percent_qty_bbsyv_sold
-                dt_percent_retail_bbsyv_sold += percent_retail_bbsyv_sold
-                dt_percent_cost_bbsyv_sold += percent_cost_bbsyv_sold
-                dt_percent_qty_bbsyv_stock += percent_qty_bbsyv_stock
-                dt_percent_retail_bbsyv_stock += percent_retail_bbsyv_stock
-                dt_percent_cost_bbsyv_stock += percent_cost_bbsyv_stock
-                dt_week_cover_bbsyv += week_cover_bbsyv
-                dt_percent_qty_bbbbg_sold += percent_qty_bbbbg_sold
-                dt_percent_retail_bbbbg_sold += percent_retail_bbbbg_sold
-                dt_percent_cost_bbbbg_sold += percent_cost_bbbbg_sold
-                dt_percent_qty_bbbbg_stock += percent_qty_bbbbg_stock
-                dt_percent_retail_bbbbg_stock += percent_retail_bbbbg_stock
-                dt_percent_cost_bbbbg_stock += percent_cost_bbbbg_stock
-                dt_week_cover_bbbbg += week_cover_bbbbg
-                dt_percent_qty_bbsnr_sold += percent_qty_bbsnr_sold
-                dt_percent_retail_bbsnr_sold += percent_retail_bbsnr_sold
-                dt_percent_cost_bbsnr_sold += percent_cost_bbsnr_sold
-                dt_percent_qty_bbsnr_stock += percent_qty_bbsnr_stock
-                dt_percent_retail_bbsnr_stock += percent_retail_bbsnr_stock
-                dt_percent_cost_bbsnr_stock += percent_cost_bbsnr_stock
-                dt_week_cover_bbsnr += week_cover_bbsnr
-                dt_percent_qty_bbblg_sold += percent_qty_bbblg_sold
-                dt_percent_retail_bbblg_sold += percent_retail_bbblg_sold
-                dt_percent_cost_bbblg_sold += percent_cost_bbblg_sold
-                dt_percent_qty_bbblg_stock += percent_qty_bbblg_stock
-                dt_percent_retail_bbblg_stock += percent_retail_bbblg_stock
-                dt_percent_cost_bbblg_stock += percent_cost_bbblg_stock
-                dt_week_cover_bbblg += week_cover_bbblg
-                dt_percent_qty_bbpdg_sold += percent_qty_bbpdg_sold
-                dt_percent_retail_bbpdg_sold += percent_retail_bbpdg_sold
-                dt_percent_cost_bbpdg_sold += percent_cost_bbpdg_sold
-                dt_percent_qty_bbpdg_stock += percent_qty_bbpdg_stock
-                dt_percent_retail_bbpdg_stock += percent_retail_bbpdg_stock
-                dt_percent_cost_bbpdg_stock += percent_cost_bbpdg_stock
-                dt_week_cover_bbpdg += week_cover_bbpdg
-                dt_percent_qty_bbkta_sold += percent_qty_bbkta_sold
-                dt_percent_retail_bbkta_sold += percent_retail_bbkta_sold
-                dt_percent_cost_bbkta_sold += percent_cost_bbkta_sold
-                dt_percent_qty_bbkta_stock += percent_qty_bbkta_stock
-                dt_percent_retail_bbkta_stock += percent_retail_bbkta_stock
-                dt_percent_cost_bbkta_stock += percent_cost_bbkta_stock
-                dt_week_cover_bbkta += week_cover_bbkta
-                dt_percent_qty_bbptg_sold += percent_qty_bbptg_sold
-                dt_percent_retail_bbptg_sold += percent_retail_bbptg_sold
-                dt_percent_cost_bbptg_sold += percent_cost_bbptg_sold
-                dt_percent_qty_bbptg_stock += percent_qty_bbptg_stock
-                dt_percent_retail_bbptg_stock += percent_retail_bbptg_stock
-                dt_percent_cost_bbptg_stock += percent_cost_bbptg_stock
-                dt_week_cover_bbptg += week_cover_bbptg
-                dt_percent_qty_onlne_sold += percent_qty_onlne_sold
-                dt_percent_retail_onlne_sold += percent_retail_onlne_sold
-                dt_percent_cost_onlne_sold += percent_cost_onlne_sold
-                dt_percent_qty_onlne_stock += percent_qty_onlne_stock
-                dt_percent_retail_onlne_stock += percent_retail_onlne_stock
-                dt_percent_cost_onlne_stock += percent_cost_onlne_stock
-                dt_week_cover_onlne += week_cover_onlne
+                cl_percent_qty_sold += dt_percent_qty_sold
+                cl_percent_retail_sold += dt_percent_retail_sold
+                cl_percent_cost_sold += dt_percent_cost_sold
+                cl_percent_qty_receiving += dt_percent_qty_receiving
+                cl_percent_retail_receiving += dt_percent_retail_receiving
+                cl_percent_cost_receiving += dt_percent_cost_receiving
+                cl_percent_qty_stock_now += dt_percent_qty_stock_now
+                cl_percent_retail_stock_now += dt_percent_retail_stock_now
+                cl_percent_cost_stock_now += dt_percent_cost_stock_now
+                cl_week_cover_all += dt_week_cover_all
+                cl_percent_qty_stock_last += dt_percent_qty_stock_last
+                cl_percent_retail_stock_last += dt_percent_retail_stock_last
+                cl_percent_cost_stock_last += dt_percent_cost_stock_last
+                cl_percent_qty_whbb_stock += dt_percent_qty_whbb_stock
+                cl_percent_retail_whbb_stock += dt_percent_retail_whbb_stock
+                cl_percent_cost_whbb_stock += dt_percent_cost_whbb_stock
+                cl_percent_qty_bbflg_sold += dt_percent_qty_bbflg_sold
+                cl_percent_retail_bbflg_sold += dt_percent_retail_bbflg_sold
+                cl_percent_cost_bbflg_sold += dt_percent_cost_bbflg_sold
+                cl_percent_qty_bbflg_stock += dt_percent_qty_bbflg_stock
+                cl_percent_retail_bbflg_stock += dt_percent_retail_bbflg_stock
+                cl_percent_cost_bbflg_stock += dt_percent_cost_bbflg_stock
+                cl_week_cover_bbflg += dt_week_cover_bbflg
+                cl_percent_qty_bbbrw_sold += dt_percent_qty_bbbrw_sold
+                cl_percent_retail_bbbrw_sold += dt_percent_retail_bbbrw_sold
+                cl_percent_cost_bbbrw_sold += dt_percent_cost_bbbrw_sold
+                cl_percent_qty_bbbrw_stock += dt_percent_qty_bbbrw_stock
+                cl_percent_retail_bbbrw_stock += dt_percent_retail_bbbrw_stock
+                cl_percent_cost_bbbrw_stock += dt_percent_cost_bbbrw_stock
+                cl_week_cover_bbbrw += dt_week_cover_bbbrw
+                cl_percent_qty_bbbwk_sold += dt_percent_qty_bbbwk_sold
+                cl_percent_retail_bbbwk_sold += dt_percent_retail_bbbwk_sold
+                cl_percent_cost_bbbwk_sold += dt_percent_cost_bbbwk_sold
+                cl_percent_qty_bbbwk_stock += dt_percent_qty_bbbwk_stock
+                cl_percent_retail_bbbwk_stock += dt_percent_retail_bbbwk_stock
+                cl_percent_cost_bbbwk_stock += dt_percent_cost_bbbwk_stock
+                cl_week_cover_bbbwk += dt_week_cover_bbbwk
+                cl_percent_qty_bbglr_sold += dt_percent_qty_bbglr_sold
+                cl_percent_retail_bbglr_sold += dt_percent_retail_bbglr_sold
+                cl_percent_cost_bbglr_sold += dt_percent_cost_bbglr_sold
+                cl_percent_qty_bbglr_stock += dt_percent_qty_bbglr_stock
+                cl_percent_retail_bbglr_stock += dt_percent_retail_bbglr_stock
+                cl_percent_cost_bbglr_stock += dt_percent_cost_bbglr_stock
+                cl_week_cover_bbglr += dt_week_cover_bbglr
+                cl_percent_qty_bbsyv_sold += dt_percent_qty_bbsyv_sold
+                cl_percent_retail_bbsyv_sold += dt_percent_retail_bbsyv_sold
+                cl_percent_cost_bbsyv_sold += dt_percent_cost_bbsyv_sold
+                cl_percent_qty_bbsyv_stock += dt_percent_qty_bbsyv_stock
+                cl_percent_retail_bbsyv_stock += dt_percent_retail_bbsyv_stock
+                cl_percent_cost_bbsyv_stock += dt_percent_cost_bbsyv_stock
+                cl_week_cover_bbsyv += dt_week_cover_bbsyv
+                cl_percent_qty_bbbbg_sold += dt_percent_qty_bbbbg_sold
+                cl_percent_retail_bbbbg_sold += dt_percent_retail_bbbbg_sold
+                cl_percent_cost_bbbbg_sold += dt_percent_cost_bbbbg_sold
+                cl_percent_qty_bbbbg_stock += dt_percent_qty_bbbbg_stock
+                cl_percent_retail_bbbbg_stock += dt_percent_retail_bbbbg_stock
+                cl_percent_cost_bbbbg_stock += dt_percent_cost_bbbbg_stock
+                cl_week_cover_bbbbg += dt_week_cover_bbbbg
+                cl_percent_qty_bbsnr_sold += dt_percent_qty_bbsnr_sold
+                cl_percent_retail_bbsnr_sold += dt_percent_retail_bbsnr_sold
+                cl_percent_cost_bbsnr_sold += dt_percent_cost_bbsnr_sold
+                cl_percent_qty_bbsnr_stock += dt_percent_qty_bbsnr_stock
+                cl_percent_retail_bbsnr_stock += dt_percent_retail_bbsnr_stock
+                cl_percent_cost_bbsnr_stock += dt_percent_cost_bbsnr_stock
+                cl_week_cover_bbsnr += dt_week_cover_bbsnr
+                cl_percent_qty_bbblg_sold += dt_percent_qty_bbblg_sold
+                cl_percent_retail_bbblg_sold += dt_percent_retail_bbblg_sold
+                cl_percent_cost_bbblg_sold += dt_percent_cost_bbblg_sold
+                cl_percent_qty_bbblg_stock += dt_percent_qty_bbblg_stock
+                cl_percent_retail_bbblg_stock += dt_percent_retail_bbblg_stock
+                cl_percent_cost_bbblg_stock += dt_percent_cost_bbblg_stock
+                cl_week_cover_bbblg += dt_week_cover_bbblg
+                cl_percent_qty_bbpdg_sold += dt_percent_qty_bbpdg_sold
+                cl_percent_retail_bbpdg_sold += dt_percent_retail_bbpdg_sold
+                cl_percent_cost_bbpdg_sold += dt_percent_cost_bbpdg_sold
+                cl_percent_qty_bbpdg_stock += dt_percent_qty_bbpdg_stock
+                cl_percent_retail_bbpdg_stock += dt_percent_retail_bbpdg_stock
+                cl_percent_cost_bbpdg_stock += dt_percent_cost_bbpdg_stock
+                cl_week_cover_bbpdg += dt_week_cover_bbpdg
+                cl_percent_qty_bbkta_sold += dt_percent_qty_bbkta_sold
+                cl_percent_retail_bbkta_sold += dt_percent_retail_bbkta_sold
+                cl_percent_cost_bbkta_sold += dt_percent_cost_bbkta_sold
+                cl_percent_qty_bbkta_stock += dt_percent_qty_bbkta_stock
+                cl_percent_retail_bbkta_stock += dt_percent_retail_bbkta_stock
+                cl_percent_cost_bbkta_stock += dt_percent_cost_bbkta_stock
+                cl_week_cover_bbkta += dt_week_cover_bbkta
+                cl_percent_qty_bbptg_sold += dt_percent_qty_bbptg_sold
+                cl_percent_retail_bbptg_sold += dt_percent_retail_bbptg_sold
+                cl_percent_cost_bbptg_sold += dt_percent_cost_bbptg_sold
+                cl_percent_qty_bbptg_stock += dt_percent_qty_bbptg_stock
+                cl_percent_retail_bbptg_stock += dt_percent_retail_bbptg_stock
+                cl_percent_cost_bbptg_stock += dt_percent_cost_bbptg_stock
+                cl_week_cover_bbptg += dt_week_cover_bbptg
+                cl_percent_qty_onlne_sold += dt_percent_qty_onlne_sold
+                cl_percent_retail_onlne_sold += dt_percent_retail_onlne_sold
+                cl_percent_cost_onlne_sold += dt_percent_cost_onlne_sold
+                cl_percent_qty_onlne_stock += dt_percent_qty_onlne_stock
+                cl_percent_retail_onlne_stock += dt_percent_retail_onlne_stock
+                cl_percent_cost_onlne_stock += dt_percent_cost_onlne_stock
+                cl_week_cover_onlne += dt_week_cover_onlne
 
+            worksheet.write('A%s:B%s' % (row, row), cl_class_name or '', wbf['total_content'])
+            worksheet.write('B%s:C%s' % (row, row), '', wbf['total_content'])
+            worksheet.write('C%s:D%s' % (row, row), '', wbf['total_content'])
 
-            worksheet.write('A%s:B%s' %(row, row), dt_class_name or '', wbf['total_content'])
-            worksheet.write('B%s:C%s' %(row, row), dt_parent_category or '', wbf['total_content'])
-            worksheet.write('C%s:D%s' %(row, row), '', wbf['total_content'])
+            worksheet.write('D%s:E%s' % (row, row), cl_total_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('E%s:F%s' % (row, row), str(round(cl_percent_qty_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('F%s:G%s' % (row, row), cl_total_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('G%s:H%s' % (row, row), str(round(cl_percent_retail_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('H%s:I%s' % (row, row), cl_total_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('I%s:J%s' % (row, row), str(round(cl_percent_cost_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
 
-            worksheet.write('D%s:E%s' %(row, row), dt_total_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('E%s:F%s' %(row, row), str(round(dt_percent_qty_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('F%s:G%s' %(row, row), dt_total_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('G%s:H%s' %(row, row), str(round(dt_percent_retail_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('H%s:I%s' %(row, row), dt_total_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('I%s:J%s' %(row, row), str(round(dt_percent_cost_sold, 2)) + '%' or '', wbf['total_content_float'])
+            worksheet.write('J%s:K%s' % (row, row), cl_total_qty_stock_now or 0, wbf['total_content_float'])
+            worksheet.write('K%s:L%s' % (row, row), str(round(cl_percent_qty_stock_now, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('L%s:M%s' % (row, row), cl_total_retail_stock_now or 0, wbf['total_content_float_price'])
+            worksheet.write('M%s:N%s' % (row, row), str(round(cl_percent_retail_stock_now, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('N%s:O%s' % (row, row), cl_total_cost_stock_now or 0, wbf['total_content_float_price'])
+            worksheet.write('O%s:P%s' % (row, row), str(round(cl_percent_cost_stock_now, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('P%s:Q%s' % (row, row), cl_week_cover_all or 0, wbf['total_content_float'])
 
-            worksheet.write('J%s:K%s' %(row, row), dt_total_qty_stock_now or 0, wbf['total_content_float'])
-            worksheet.write('K%s:L%s' %(row, row), str(round(dt_percent_qty_stock_now, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('L%s:M%s' %(row, row), dt_total_retail_stock_now or 0, wbf['total_content_float_price'])
-            worksheet.write('M%s:N%s' %(row, row), str(round(dt_percent_retail_stock_now, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('N%s:O%s' %(row, row), dt_total_cost_stock_now or 0, wbf['total_content_float_price'])
-            worksheet.write('O%s:P%s' %(row, row), str(round(dt_percent_cost_stock_now, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('P%s:Q%s' %(row, row), dt_week_cover_all or 0, wbf['total_content_float'])
+            worksheet.write('Q%s:R%s' % (row, row), cl_total_qty_stock_last or 0, wbf['total_content_float'])
+            worksheet.write('R%s:S%s' % (row, row), str(round(cl_percent_qty_stock_last, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('S%s:T%s' % (row, row), cl_total_retail_stock_last or 0, wbf['total_content_float_price'])
+            worksheet.write('T%s:U%s' % (row, row), str(round(cl_percent_retail_stock_last, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('U%s:V%s' % (row, row), cl_total_cost_stock_last or 0, wbf['total_content_float_price'])
+            worksheet.write('V%s:W%s' % (row, row), str(round(cl_percent_cost_stock_last, 2)) + '%' or '',
+                            wbf['total_content_float'])
 
-            worksheet.write('Q%s:R%s' %(row, row), dt_total_qty_stock_last or 0, wbf['total_content_float']) 
-            worksheet.write('R%s:S%s' %(row, row), str(round(dt_percent_qty_stock_last, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('S%s:T%s' %(row, row), dt_total_retail_stock_last or 0, wbf['total_content_float_price']) 
-            worksheet.write('T%s:U%s' %(row, row), str(round(dt_percent_retail_stock_last, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('U%s:V%s' %(row, row), dt_total_cost_stock_last or 0, wbf['total_content_float_price']) 
-            worksheet.write('V%s:W%s' %(row, row), str(round(dt_percent_cost_stock_last, 2)) + '%' or '', wbf['total_content_float'])
-          
-            worksheet.write('W%s:X%s' %(row, row), dt_whbb_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('X%s:Y%s' %(row, row), str(round(dt_percent_qty_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('Y%s:Z%s' %(row, row), dt_whbb_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('Z%s:AA%s' %(row, row), str(round(dt_percent_retail_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AA%s:AB%s' %(row, row), dt_whbb_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('AB%s:AC%s' %(row, row), str(round(dt_percent_cost_whbb_stock, 2)) + '%' or '', wbf['total_content_float'])
+            worksheet.write('W%s:X%s' % (row, row), cl_whbb_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('X%s:Y%s' % (row, row), str(round(cl_percent_qty_whbb_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('Y%s:Z%s' % (row, row), cl_whbb_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('Z%s:AA%s' % (row, row), str(round(cl_percent_retail_whbb_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AA%s:AB%s' % (row, row), cl_whbb_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('AB%s:AC%s' % (row, row), str(round(cl_percent_cost_whbb_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
 
             # RECEIVING
-            worksheet.write('AC%s:AD%s' %(row, row), dt_total_qty_receiving or 0, wbf['total_content_float'])
-            worksheet.write('AD%s:AE%s' %(row, row), str(round(dt_percent_qty_receiving, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AE%s:AF%s' %(row, row), dt_total_retail_receiving or 0, wbf['total_content_float_price'])
-            worksheet.write('AF%s:AG%s' %(row, row), str(round(dt_percent_retail_receiving, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AG%s:AH%s' %(row, row), dt_total_cost_receiving or 0, wbf['total_content_float_price'])
-            worksheet.write('AH%s:AI%s' %(row, row), str(round(dt_percent_cost_receiving, 2)) + '%' or '', wbf['total_content_float'])
+            worksheet.write('AC%s:AD%s' % (row, row), cl_total_qty_receiving or 0, wbf['total_content_float'])
+            worksheet.write('AD%s:AE%s' % (row, row), str(round(cl_percent_qty_receiving, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AE%s:AF%s' % (row, row), cl_total_retail_receiving or 0, wbf['total_content_float_price'])
+            worksheet.write('AF%s:AG%s' % (row, row), str(round(cl_percent_retail_receiving, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AG%s:AH%s' % (row, row), cl_total_cost_receiving or 0, wbf['total_content_float_price'])
+            worksheet.write('AH%s:AI%s' % (row, row), str(round(cl_percent_cost_receiving, 2)) + '%' or '',
+                            wbf['total_content_float'])
 
-            worksheet.write('AI%s:AJ%s' %(row, row), dt_bbflg_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('AJ%s:AK%s' %(row, row), str(round(dt_percent_qty_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AK%s:AL%s' %(row, row), dt_bbflg_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('AL%s:AM%s' %(row, row), str(round(dt_percent_retail_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AM%s:AN%s' %(row, row), dt_bbflg_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('AN%s:AO%s' %(row, row), str(round(dt_percent_cost_bbflg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AO%s:AP%s' %(row, row), dt_bbflg_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('AP%s:AQ%s' %(row, row), str(round(dt_percent_qty_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AQ%s:AR%s' %(row, row), dt_bbflg_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('AR%s:AS%s' %(row, row), str(round(dt_percent_retail_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AS%s:AT%s' %(row, row), dt_bbflg_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('AT%s:AU%s' %(row, row), str(round(dt_percent_cost_bbflg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AU%s:AV%s' %(row, row), dt_week_cover_bbflg or 0, wbf['total_content_float'])
+            worksheet.write('AI%s:AJ%s' % (row, row), cl_bbflg_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('AJ%s:AK%s' % (row, row), str(round(cl_percent_qty_bbflg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AK%s:AL%s' % (row, row), cl_bbflg_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('AL%s:AM%s' % (row, row), str(round(cl_percent_retail_bbflg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AM%s:AN%s' % (row, row), cl_bbflg_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('AN%s:AO%s' % (row, row), str(round(cl_percent_cost_bbflg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AO%s:AP%s' % (row, row), cl_bbflg_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('AP%s:AQ%s' % (row, row), str(round(cl_percent_qty_bbflg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AQ%s:AR%s' % (row, row), cl_bbflg_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('AR%s:AS%s' % (row, row), str(round(cl_percent_retail_bbflg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AS%s:AT%s' % (row, row), cl_bbflg_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('AT%s:AU%s' % (row, row), str(round(cl_percent_cost_bbflg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AU%s:AV%s' % (row, row), cl_week_cover_bbflg or 0, wbf['total_content_float'])
 
-            worksheet.write('AV%s:AW%s' %(row, row), dt_bbbrw_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('AW%s:AX%s' %(row, row), str(round(dt_percent_qty_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AX%s:AY%s' %(row, row), dt_bbbrw_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('AY%s:AZ%s' %(row, row), str(round(dt_percent_retail_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('AZ%s:BA%s' %(row, row), dt_bbbrw_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('BA%s:BB%s' %(row, row), str(round(dt_percent_cost_bbbrw_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BB%s:BC%s' %(row, row), dt_bbbrw_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('BC%s:BD%s' %(row, row), str(round(dt_percent_qty_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BD%s:BE%s' %(row, row), dt_bbbrw_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('BE%s:BF%s' %(row, row), str(round(dt_percent_retail_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BF%s:BG%s' %(row, row), dt_bbbrw_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('BG%s:BH%s' %(row, row), str(round(dt_percent_cost_bbbrw_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BH%s:BI%s' %(row, row), dt_week_cover_bbbrw or 0, wbf['total_content_float'])
+            worksheet.write('AV%s:AW%s' % (row, row), cl_bbbrw_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('AW%s:AX%s' % (row, row), str(round(cl_percent_qty_bbbrw_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AX%s:AY%s' % (row, row), cl_bbbrw_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('AY%s:AZ%s' % (row, row), str(round(cl_percent_retail_bbbrw_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('AZ%s:BA%s' % (row, row), cl_bbbrw_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('BA%s:BB%s' % (row, row), str(round(cl_percent_cost_bbbrw_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BB%s:BC%s' % (row, row), cl_bbbrw_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('BC%s:BD%s' % (row, row), str(round(cl_percent_qty_bbbrw_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BD%s:BE%s' % (row, row), cl_bbbrw_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('BE%s:BF%s' % (row, row), str(round(cl_percent_retail_bbbrw_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BF%s:BG%s' % (row, row), cl_bbbrw_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('BG%s:BH%s' % (row, row), str(round(cl_percent_cost_bbbrw_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BH%s:BI%s' % (row, row), cl_week_cover_bbbrw or 0, wbf['total_content_float'])
 
-            worksheet.write('BI%s:BJ%s' %(row, row), dt_bbbwk_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('BJ%s:BK%s' %(row, row), str(round(dt_percent_qty_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BK%s:BL%s' %(row, row), dt_bbbwk_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('BL%s:BM%s' %(row, row), str(round(dt_percent_retail_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BM%s:BN%s' %(row, row), dt_bbbwk_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('BN%s:BO%s' %(row, row), str(round(dt_percent_cost_bbbwk_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BO%s:BP%s' %(row, row), dt_bbbwk_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('BP%s:BQ%s' %(row, row), str(round(dt_percent_qty_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BQ%s:BR%s' %(row, row), dt_bbbwk_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('BR%s:BS%s' %(row, row), str(round(dt_percent_retail_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BS%s:BT%s' %(row, row), dt_bbbwk_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('BT%s:BU%s' %(row, row), str(round(dt_percent_cost_bbbwk_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BU%s:BV%s' %(row, row), dt_week_cover_bbbwk or 0, wbf['total_content_float'])
+            worksheet.write('BI%s:BJ%s' % (row, row), cl_bbbwk_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('BJ%s:BK%s' % (row, row), str(round(cl_percent_qty_bbbwk_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BK%s:BL%s' % (row, row), cl_bbbwk_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('BL%s:BM%s' % (row, row), str(round(cl_percent_retail_bbbwk_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BM%s:BN%s' % (row, row), cl_bbbwk_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('BN%s:BO%s' % (row, row), str(round(cl_percent_cost_bbbwk_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BO%s:BP%s' % (row, row), cl_bbbwk_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('BP%s:BQ%s' % (row, row), str(round(cl_percent_qty_bbbwk_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BQ%s:BR%s' % (row, row), cl_bbbwk_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('BR%s:BS%s' % (row, row), str(round(cl_percent_retail_bbbwk_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BS%s:BT%s' % (row, row), cl_bbbwk_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('BT%s:BU%s' % (row, row), str(round(cl_percent_cost_bbbwk_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BU%s:BV%s' % (row, row), cl_week_cover_bbbwk or 0, wbf['total_content_float'])
 
-            worksheet.write('BV%s:BW%s' %(row, row), dt_bbglr_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('BW%s:BX%s' %(row, row), str(round(dt_percent_qty_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BX%s:BY%s' %(row, row), dt_bbglr_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('BY%s:BZ%s' %(row, row), str(round(dt_percent_retail_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('BZ%s:CA%s' %(row, row), dt_bbglr_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('CA%s:CB%s' %(row, row), str(round(dt_percent_cost_bbglr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CB%s:CC%s' %(row, row), dt_bbglr_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('CC%s:CD%s' %(row, row), str(round(dt_percent_qty_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CD%s:CE%s' %(row, row), dt_bbglr_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('CE%s:CF%s' %(row, row), str(round(dt_percent_retail_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CF%s:CG%s' %(row, row), dt_bbglr_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('CG%s:CH%s' %(row, row), str(round(dt_percent_cost_bbglr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CH%s:CI%s' %(row, row), dt_week_cover_bbglr or 0, wbf['total_content_float'])
+            worksheet.write('BV%s:BW%s' % (row, row), cl_bbglr_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('BW%s:BX%s' % (row, row), str(round(cl_percent_qty_bbglr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BX%s:BY%s' % (row, row), cl_bbglr_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('BY%s:BZ%s' % (row, row), str(round(cl_percent_retail_bbglr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('BZ%s:CA%s' % (row, row), cl_bbglr_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('CA%s:CB%s' % (row, row), str(round(cl_percent_cost_bbglr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CB%s:CC%s' % (row, row), cl_bbglr_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('CC%s:CD%s' % (row, row), str(round(cl_percent_qty_bbglr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CD%s:CE%s' % (row, row), cl_bbglr_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('CE%s:CF%s' % (row, row), str(round(cl_percent_retail_bbglr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CF%s:CG%s' % (row, row), cl_bbglr_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('CG%s:CH%s' % (row, row), str(round(cl_percent_cost_bbglr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CH%s:CI%s' % (row, row), cl_week_cover_bbglr or 0, wbf['total_content_float'])
 
-            worksheet.write('CI%s:BJ%s' %(row, row), dt_bbsyv_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('CJ%s:CK%s' %(row, row), str(round(dt_percent_qty_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CK%s:CL%s' %(row, row), dt_bbsyv_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('CL%s:CM%s' %(row, row), str(round(dt_percent_retail_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CM%s:CN%s' %(row, row), dt_bbsyv_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('CN%s:CO%s' %(row, row), str(round(dt_percent_cost_bbsyv_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CO%s:CP%s' %(row, row), dt_bbsyv_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('CP%s:CQ%s' %(row, row), str(round(dt_percent_qty_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CQ%s:CR%s' %(row, row), dt_bbsyv_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('CR%s:CS%s' %(row, row), str(round(dt_percent_retail_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CS%s:CT%s' %(row, row), dt_bbsyv_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('CT%s:CU%s' %(row, row), str(round(dt_percent_cost_bbsyv_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CU%s:CV%s' %(row, row), dt_week_cover_bbsyv or 0, wbf['total_content_float'])
+            worksheet.write('CI%s:BJ%s' % (row, row), cl_bbsyv_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('CJ%s:CK%s' % (row, row), str(round(cl_percent_qty_bbsyv_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CK%s:CL%s' % (row, row), cl_bbsyv_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('CL%s:CM%s' % (row, row), str(round(cl_percent_retail_bbsyv_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CM%s:CN%s' % (row, row), cl_bbsyv_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('CN%s:CO%s' % (row, row), str(round(cl_percent_cost_bbsyv_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CO%s:CP%s' % (row, row), cl_bbsyv_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('CP%s:CQ%s' % (row, row), str(round(cl_percent_qty_bbsyv_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CQ%s:CR%s' % (row, row), cl_bbsyv_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('CR%s:CS%s' % (row, row), str(round(cl_percent_retail_bbsyv_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CS%s:CT%s' % (row, row), cl_bbsyv_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('CT%s:CU%s' % (row, row), str(round(cl_percent_cost_bbsyv_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CU%s:CV%s' % (row, row), cl_week_cover_bbsyv or 0, wbf['total_content_float'])
 
-            worksheet.write('CV%s:CW%s' %(row, row), dt_bbbbg_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('CW%s:CX%s' %(row, row), str(round(dt_percent_qty_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CX%s:CY%s' %(row, row), dt_bbbbg_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('CY%s:CZ%s' %(row, row), str(round(dt_percent_retail_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('CZ%s:DA%s' %(row, row), dt_bbbbg_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('DA%s:DB%s' %(row, row), str(round(dt_percent_cost_bbbbg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DB%s:DC%s' %(row, row), dt_bbbbg_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('DC%s:DD%s' %(row, row), str(round(dt_percent_qty_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DD%s:DE%s' %(row, row), dt_bbbbg_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('DE%s:DF%s' %(row, row), str(round(dt_percent_retail_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DF%s:DG%s' %(row, row), dt_bbbbg_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('DG%s:DH%s' %(row, row), str(round(dt_percent_cost_bbbbg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DH%s:DI%s' %(row, row), dt_week_cover_bbbbg or 0, wbf['total_content_float'])
+            worksheet.write('CV%s:CW%s' % (row, row), cl_bbbbg_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('CW%s:CX%s' % (row, row), str(round(cl_percent_qty_bbbbg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CX%s:CY%s' % (row, row), cl_bbbbg_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('CY%s:CZ%s' % (row, row), str(round(cl_percent_retail_bbbbg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('CZ%s:DA%s' % (row, row), cl_bbbbg_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('DA%s:DB%s' % (row, row), str(round(cl_percent_cost_bbbbg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DB%s:DC%s' % (row, row), cl_bbbbg_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('DC%s:DD%s' % (row, row), str(round(cl_percent_qty_bbbbg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DD%s:DE%s' % (row, row), cl_bbbbg_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('DE%s:DF%s' % (row, row), str(round(cl_percent_retail_bbbbg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DF%s:DG%s' % (row, row), cl_bbbbg_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('DG%s:DH%s' % (row, row), str(round(cl_percent_cost_bbbbg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DH%s:DI%s' % (row, row), cl_week_cover_bbbbg or 0, wbf['total_content_float'])
 
-            worksheet.write('DI%s:DJ%s' %(row, row), dt_bbsnr_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('DJ%s:DK%s' %(row, row), str(round(dt_percent_qty_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DK%s:DL%s' %(row, row), dt_bbsnr_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('DL%s:DM%s' %(row, row), str(round(dt_percent_retail_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DM%s:DN%s' %(row, row), dt_bbsnr_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('DN%s:DO%s' %(row, row), str(round(dt_percent_cost_bbsnr_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DO%s:DP%s' %(row, row), dt_bbsnr_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('DP%s:DQ%s' %(row, row), str(round(dt_percent_qty_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DQ%s:DR%s' %(row, row), dt_bbsnr_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('DR%s:DS%s' %(row, row), str(round(dt_percent_retail_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DS%s:DT%s' %(row, row), dt_bbsnr_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('DT%s:DU%s' %(row, row), str(round(dt_percent_cost_bbsnr_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DU%s:DV%s' %(row, row), dt_week_cover_bbsnr or 0, wbf['total_content_float'])
+            worksheet.write('DI%s:DJ%s' % (row, row), cl_bbsnr_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('DJ%s:DK%s' % (row, row), str(round(cl_percent_qty_bbsnr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DK%s:DL%s' % (row, row), cl_bbsnr_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('DL%s:DM%s' % (row, row), str(round(cl_percent_retail_bbsnr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DM%s:DN%s' % (row, row), cl_bbsnr_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('DN%s:DO%s' % (row, row), str(round(cl_percent_cost_bbsnr_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DO%s:DP%s' % (row, row), cl_bbsnr_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('DP%s:DQ%s' % (row, row), str(round(cl_percent_qty_bbsnr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DQ%s:DR%s' % (row, row), cl_bbsnr_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('DR%s:DS%s' % (row, row), str(round(cl_percent_retail_bbsnr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DS%s:DT%s' % (row, row), cl_bbsnr_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('DT%s:DU%s' % (row, row), str(round(cl_percent_cost_bbsnr_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DU%s:DV%s' % (row, row), cl_week_cover_bbsnr or 0, wbf['total_content_float'])
 
-            worksheet.write('DV%s:DW%s' %(row, row), dt_bbblg_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('DW%s:DX%s' %(row, row), str(round(dt_percent_qty_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DX%s:DY%s' %(row, row), dt_bbblg_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('DY%s:DZ%s' %(row, row), str(round(dt_percent_retail_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('DZ%s:EA%s' %(row, row), dt_bbblg_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('EA%s:EB%s' %(row, row), str(round(dt_percent_cost_bbblg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EB%s:EC%s' %(row, row), dt_bbblg_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('EC%s:ED%s' %(row, row), str(round(dt_percent_qty_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('ED%s:EE%s' %(row, row), dt_bbblg_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('EE%s:EF%s' %(row, row), str(round(dt_percent_retail_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EF%s:EG%s' %(row, row), dt_bbblg_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('EG%s:EH%s' %(row, row), str(round(dt_percent_cost_bbblg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EH%s:EI%s' %(row, row), dt_week_cover_bbblg or 0, wbf['total_content_float'])
+            worksheet.write('DV%s:DW%s' % (row, row), cl_bbblg_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('DW%s:DX%s' % (row, row), str(round(cl_percent_qty_bbblg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DX%s:DY%s' % (row, row), cl_bbblg_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('DY%s:DZ%s' % (row, row), str(round(cl_percent_retail_bbblg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('DZ%s:EA%s' % (row, row), cl_bbblg_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('EA%s:EB%s' % (row, row), str(round(cl_percent_cost_bbblg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EB%s:EC%s' % (row, row), cl_bbblg_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('EC%s:ED%s' % (row, row), str(round(cl_percent_qty_bbblg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('ED%s:EE%s' % (row, row), cl_bbblg_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('EE%s:EF%s' % (row, row), str(round(cl_percent_retail_bbblg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EF%s:EG%s' % (row, row), cl_bbblg_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('EG%s:EH%s' % (row, row), str(round(cl_percent_cost_bbblg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EH%s:EI%s' % (row, row), cl_week_cover_bbblg or 0, wbf['total_content_float'])
 
-            worksheet.write('EI%s:EJ%s' %(row, row), dt_bbpdg_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('EJ%s:EK%s' %(row, row), str(round(dt_percent_qty_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EK%s:EL%s' %(row, row), dt_bbpdg_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('EL%s:EM%s' %(row, row), str(round(dt_percent_retail_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EM%s:EN%s' %(row, row), dt_bbpdg_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('EN%s:EO%s' %(row, row), str(round(dt_percent_cost_bbpdg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EO%s:EP%s' %(row, row), dt_bbpdg_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('EP%s:EQ%s' %(row, row), str(round(dt_percent_qty_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EQ%s:ER%s' %(row, row), dt_bbpdg_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('ER%s:ES%s' %(row, row), str(round(dt_percent_retail_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('ES%s:ET%s' %(row, row), dt_bbpdg_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('ET%s:EU%s' %(row, row), str(round(dt_percent_cost_bbpdg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EU%s:EV%s' %(row, row), dt_week_cover_bbpdg or 0, wbf['total_content_float'])
+            worksheet.write('EI%s:EJ%s' % (row, row), cl_bbpdg_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('EJ%s:EK%s' % (row, row), str(round(cl_percent_qty_bbpdg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EK%s:EL%s' % (row, row), cl_bbpdg_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('EL%s:EM%s' % (row, row), str(round(cl_percent_retail_bbpdg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EM%s:EN%s' % (row, row), cl_bbpdg_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('EN%s:EO%s' % (row, row), str(round(cl_percent_cost_bbpdg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EO%s:EP%s' % (row, row), cl_bbpdg_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('EP%s:EQ%s' % (row, row), str(round(cl_percent_qty_bbpdg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EQ%s:ER%s' % (row, row), cl_bbpdg_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('ER%s:ES%s' % (row, row), str(round(cl_percent_retail_bbpdg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('ES%s:ET%s' % (row, row), cl_bbpdg_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('ET%s:EU%s' % (row, row), str(round(cl_percent_cost_bbpdg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EU%s:EV%s' % (row, row), cl_week_cover_bbpdg or 0, wbf['total_content_float'])
 
-            worksheet.write('EV%s:EW%s' %(row, row), dt_bbkta_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('EW%s:EX%s' %(row, row), str(round(dt_percent_qty_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EX%s:EY%s' %(row, row), dt_bbkta_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('EY%s:EZ%s' %(row, row), str(round(dt_percent_retail_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('EZ%s:FA%s' %(row, row), dt_bbkta_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('FA%s:FB%s' %(row, row), str(round(dt_percent_cost_bbkta_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FB%s:FC%s' %(row, row), dt_bbkta_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('FC%s:FD%s' %(row, row), str(round(dt_percent_qty_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FD%s:FE%s' %(row, row), dt_bbkta_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('FE%s:FF%s' %(row, row), str(round(dt_percent_retail_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FF%s:FG%s' %(row, row), dt_bbkta_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('FG%s:FH%s' %(row, row), str(round(dt_percent_cost_bbkta_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FH%s:FI%s' %(row, row), dt_week_cover_bbkta or 0, wbf['total_content_float'])
+            worksheet.write('EV%s:EW%s' % (row, row), cl_bbkta_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('EW%s:EX%s' % (row, row), str(round(cl_percent_qty_bbkta_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EX%s:EY%s' % (row, row), cl_bbkta_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('EY%s:EZ%s' % (row, row), str(round(cl_percent_retail_bbkta_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('EZ%s:FA%s' % (row, row), cl_bbkta_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('FA%s:FB%s' % (row, row), str(round(cl_percent_cost_bbkta_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FB%s:FC%s' % (row, row), cl_bbkta_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('FC%s:FD%s' % (row, row), str(round(cl_percent_qty_bbkta_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FD%s:FE%s' % (row, row), cl_bbkta_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('FE%s:FF%s' % (row, row), str(round(cl_percent_retail_bbkta_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FF%s:FG%s' % (row, row), cl_bbkta_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('FG%s:FH%s' % (row, row), str(round(cl_percent_cost_bbkta_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FH%s:FI%s' % (row, row), cl_week_cover_bbkta or 0, wbf['total_content_float'])
 
-            worksheet.write('FI%s:FJ%s' %(row, row), dt_bbptg_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('FJ%s:FK%s' %(row, row), str(round(dt_percent_qty_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FK%s:FL%s' %(row, row), dt_bbptg_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('FL%s:FM%s' %(row, row), str(round(dt_percent_retail_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FM%s:FN%s' %(row, row), dt_bbptg_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('FN%s:FO%s' %(row, row), str(round(dt_percent_cost_bbptg_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FO%s:FP%s' %(row, row), dt_bbptg_qty_stock or 0, wbf['total_content_float'])
-            worksheet.write('FP%s:FQ%s' %(row, row), str(round(dt_percent_qty_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FQ%s:FR%s' %(row, row), dt_bbptg_retail_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('FR%s:FS%s' %(row, row), str(round(dt_percent_retail_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FS%s:FT%s' %(row, row), dt_bbptg_cost_stock or 0, wbf['total_content_float_price'])
-            worksheet.write('FT%s:FU%s' %(row, row), str(round(dt_percent_cost_bbptg_stock, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FU%s:FV%s' %(row, row), dt_week_cover_bbptg or 0, wbf['total_content_float'])
+            worksheet.write('FI%s:FJ%s' % (row, row), cl_bbptg_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('FJ%s:FK%s' % (row, row), str(round(cl_percent_qty_bbptg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FK%s:FL%s' % (row, row), cl_bbptg_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('FL%s:FM%s' % (row, row), str(round(cl_percent_retail_bbptg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FM%s:FN%s' % (row, row), cl_bbptg_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('FN%s:FO%s' % (row, row), str(round(cl_percent_cost_bbptg_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FO%s:FP%s' % (row, row), cl_bbptg_qty_stock or 0, wbf['total_content_float'])
+            worksheet.write('FP%s:FQ%s' % (row, row), str(round(cl_percent_qty_bbptg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FQ%s:FR%s' % (row, row), cl_bbptg_retail_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('FR%s:FS%s' % (row, row), str(round(cl_percent_retail_bbptg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FS%s:FT%s' % (row, row), cl_bbptg_cost_stock or 0, wbf['total_content_float_price'])
+            worksheet.write('FT%s:FU%s' % (row, row), str(round(cl_percent_cost_bbptg_stock, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FU%s:FV%s' % (row, row), cl_week_cover_bbptg or 0, wbf['total_content_float'])
 
-            worksheet.write('FV%s:FW%s' %(row, row), dt_onlne_qty_sold or 0, wbf['total_content_float'])
-            worksheet.write('FW%s:FX%s' %(row, row), str(round(dt_percent_qty_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FX%s:FY%s' %(row, row), dt_onlne_retail_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('FY%s:FZ%s' %(row, row), str(round(dt_percent_retail_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
-            worksheet.write('FZ%s:FA%s' %(row, row), dt_onlne_cost_sold or 0, wbf['total_content_float_price'])
-            worksheet.write('GA%s:GB%s' %(row, row), str(round(dt_percent_cost_onlne_sold, 2)) + '%' or '', wbf['total_content_float'])
-            row+=1
-
-            gt_percent_qty_sold += dt_percent_qty_sold
-            gt_percent_retail_sold += dt_percent_retail_sold
-            gt_percent_cost_sold += dt_percent_cost_sold
-            gt_percent_qty_receiving += dt_percent_qty_receiving
-            gt_percent_retail_receiving += dt_percent_retail_receiving
-            gt_percent_cost_receiving += dt_percent_cost_receiving
-            gt_percent_qty_stock_now += dt_percent_qty_stock_now
-            gt_percent_retail_stock_now += dt_percent_retail_stock_now
-            gt_percent_cost_stock_now += dt_percent_cost_stock_now
-            gt_week_cover_all += dt_week_cover_all
-            gt_percent_qty_stock_last += dt_percent_qty_stock_last
-            gt_percent_retail_stock_last += dt_percent_retail_stock_last
-            gt_percent_cost_stock_last += dt_percent_cost_stock_last
-            gt_percent_qty_whbb_stock += dt_percent_qty_whbb_stock
-            gt_percent_retail_whbb_stock += dt_percent_retail_whbb_stock
-            gt_percent_cost_whbb_stock += dt_percent_cost_whbb_stock
-            gt_percent_qty_bbflg_sold += dt_percent_qty_bbflg_sold
-            gt_percent_retail_bbflg_sold += dt_percent_retail_bbflg_sold
-            gt_percent_cost_bbflg_sold += dt_percent_cost_bbflg_sold
-            gt_percent_qty_bbflg_stock += dt_percent_qty_bbflg_stock
-            gt_percent_retail_bbflg_stock += dt_percent_retail_bbflg_stock
-            gt_percent_cost_bbflg_stock += dt_percent_cost_bbflg_stock
-            gt_week_cover_bbflg += dt_week_cover_bbflg
-            gt_percent_qty_bbbrw_sold += dt_percent_qty_bbbrw_sold
-            gt_percent_retail_bbbrw_sold += dt_percent_retail_bbbrw_sold
-            gt_percent_cost_bbbrw_sold += dt_percent_cost_bbbrw_sold
-            gt_percent_qty_bbbrw_stock += dt_percent_qty_bbbrw_stock
-            gt_percent_retail_bbbrw_stock += dt_percent_retail_bbbrw_stock
-            gt_percent_cost_bbbrw_stock += dt_percent_cost_bbbrw_stock
-            gt_week_cover_bbbrw += dt_week_cover_bbbrw
-            gt_percent_qty_bbbwk_sold += dt_percent_qty_bbbwk_sold
-            gt_percent_retail_bbbwk_sold += dt_percent_retail_bbbwk_sold
-            gt_percent_cost_bbbwk_sold += dt_percent_cost_bbbwk_sold
-            gt_percent_qty_bbbwk_stock += dt_percent_qty_bbbwk_stock
-            gt_percent_retail_bbbwk_stock += dt_percent_retail_bbbwk_stock
-            gt_percent_cost_bbbwk_stock += dt_percent_cost_bbbwk_stock
-            gt_week_cover_bbbwk += dt_week_cover_bbbwk
-            gt_percent_qty_bbglr_sold += dt_percent_qty_bbglr_sold
-            gt_percent_retail_bbglr_sold += dt_percent_retail_bbglr_sold
-            gt_percent_cost_bbglr_sold += dt_percent_cost_bbglr_sold
-            gt_percent_qty_bbglr_stock += dt_percent_qty_bbglr_stock
-            gt_percent_retail_bbglr_stock += dt_percent_retail_bbglr_stock
-            gt_percent_cost_bbglr_stock += dt_percent_cost_bbglr_stock
-            gt_week_cover_bbglr += dt_week_cover_bbglr
-            gt_percent_qty_bbsyv_sold += dt_percent_qty_bbsyv_sold
-            gt_percent_retail_bbsyv_sold += dt_percent_retail_bbsyv_sold
-            gt_percent_cost_bbsyv_sold += dt_percent_cost_bbsyv_sold
-            gt_percent_qty_bbsyv_stock += dt_percent_qty_bbsyv_stock
-            gt_percent_retail_bbsyv_stock += dt_percent_retail_bbsyv_stock
-            gt_percent_cost_bbsyv_stock += dt_percent_cost_bbsyv_stock
-            gt_week_cover_bbsyv += dt_week_cover_bbsyv
-            gt_percent_qty_bbbbg_sold += dt_percent_qty_bbbbg_sold
-            gt_percent_retail_bbbbg_sold += dt_percent_retail_bbbbg_sold
-            gt_percent_cost_bbbbg_sold += dt_percent_cost_bbbbg_sold
-            gt_percent_qty_bbbbg_stock += dt_percent_qty_bbbbg_stock
-            gt_percent_retail_bbbbg_stock += dt_percent_retail_bbbbg_stock
-            gt_percent_cost_bbbbg_stock += dt_percent_cost_bbbbg_stock
-            gt_week_cover_bbbbg += dt_week_cover_bbbbg
-            gt_percent_qty_bbsnr_sold += dt_percent_qty_bbsnr_sold
-            gt_percent_retail_bbsnr_sold += dt_percent_retail_bbsnr_sold
-            gt_percent_cost_bbsnr_sold += dt_percent_cost_bbsnr_sold
-            gt_percent_qty_bbsnr_stock += dt_percent_qty_bbsnr_stock
-            gt_percent_retail_bbsnr_stock += dt_percent_retail_bbsnr_stock
-            gt_percent_cost_bbsnr_stock += dt_percent_cost_bbsnr_stock
-            gt_week_cover_bbsnr += dt_week_cover_bbsnr
-            gt_percent_qty_bbblg_sold += dt_percent_qty_bbblg_sold
-            gt_percent_retail_bbblg_sold += dt_percent_retail_bbblg_sold
-            gt_percent_cost_bbblg_sold += dt_percent_cost_bbblg_sold
-            gt_percent_qty_bbblg_stock += dt_percent_qty_bbblg_stock
-            gt_percent_retail_bbblg_stock += dt_percent_retail_bbblg_stock
-            gt_percent_cost_bbblg_stock += dt_percent_cost_bbblg_stock
-            gt_week_cover_bbblg += dt_week_cover_bbblg
-            gt_percent_qty_bbpdg_sold += dt_percent_qty_bbpdg_sold
-            gt_percent_retail_bbpdg_sold += dt_percent_retail_bbpdg_sold
-            gt_percent_cost_bbpdg_sold += dt_percent_cost_bbpdg_sold
-            gt_percent_qty_bbpdg_stock += dt_percent_qty_bbpdg_stock
-            gt_percent_retail_bbpdg_stock += dt_percent_retail_bbpdg_stock
-            gt_percent_cost_bbpdg_stock += dt_percent_cost_bbpdg_stock
-            gt_week_cover_bbpdg += dt_week_cover_bbpdg
-            gt_percent_qty_bbkta_sold += dt_percent_qty_bbkta_sold
-            gt_percent_retail_bbkta_sold += dt_percent_retail_bbkta_sold
-            gt_percent_cost_bbkta_sold += dt_percent_cost_bbkta_sold
-            gt_percent_qty_bbkta_stock += dt_percent_qty_bbkta_stock
-            gt_percent_retail_bbkta_stock += dt_percent_retail_bbkta_stock
-            gt_percent_cost_bbkta_stock += dt_percent_cost_bbkta_stock
-            gt_week_cover_bbkta += dt_week_cover_bbkta
-            gt_percent_qty_bbptg_sold += dt_percent_qty_bbptg_sold
-            gt_percent_retail_bbptg_sold += dt_percent_retail_bbptg_sold
-            gt_percent_cost_bbptg_sold += dt_percent_cost_bbptg_sold
-            gt_percent_qty_bbptg_stock += dt_percent_qty_bbptg_stock
-            gt_percent_retail_bbptg_stock += dt_percent_retail_bbptg_stock
-            gt_percent_cost_bbptg_stock += dt_percent_cost_bbptg_stock
-            gt_week_cover_bbptg += dt_week_cover_bbptg
-            gt_percent_qty_onlne_sold += dt_percent_qty_onlne_sold
-            gt_percent_retail_onlne_sold += dt_percent_retail_onlne_sold
-            gt_percent_cost_onlne_sold += dt_percent_cost_onlne_sold
-            gt_percent_qty_onlne_stock += dt_percent_qty_onlne_stock
-            gt_percent_retail_onlne_stock += dt_percent_retail_onlne_stock
-            gt_percent_cost_onlne_stock += dt_percent_cost_onlne_stock
-            gt_week_cover_onlne += dt_week_cover_onlne
+            worksheet.write('FV%s:FW%s' % (row, row), cl_onlne_qty_sold or 0, wbf['total_content_float'])
+            worksheet.write('FW%s:FX%s' % (row, row), str(round(cl_percent_qty_onlne_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FX%s:FY%s' % (row, row), cl_onlne_retail_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('FY%s:FZ%s' % (row, row), str(round(cl_percent_retail_onlne_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            worksheet.write('FZ%s:FA%s' % (row, row), cl_onlne_cost_sold or 0, wbf['total_content_float_price'])
+            worksheet.write('GA%s:GB%s' % (row, row), str(round(cl_percent_cost_onlne_sold, 2)) + '%' or '',
+                            wbf['total_content_float'])
+            row += 1
+            
+            gt_percent_qty_sold += cl_percent_qty_sold
+            gt_percent_retail_sold += cl_percent_retail_sold
+            gt_percent_cost_sold += cl_percent_cost_sold
+            gt_percent_qty_receiving += cl_percent_qty_receiving
+            gt_percent_retail_receiving += cl_percent_retail_receiving
+            gt_percent_cost_receiving += cl_percent_cost_receiving
+            gt_percent_qty_stock_now += cl_percent_qty_stock_now
+            gt_percent_retail_stock_now += cl_percent_retail_stock_now
+            gt_percent_cost_stock_now += cl_percent_cost_stock_now
+            gt_week_cover_all += cl_week_cover_all
+            gt_percent_qty_stock_last += cl_percent_qty_stock_last
+            gt_percent_retail_stock_last += cl_percent_retail_stock_last
+            gt_percent_cost_stock_last += cl_percent_cost_stock_last
+            gt_percent_qty_whbb_stock += cl_percent_qty_whbb_stock
+            gt_percent_retail_whbb_stock += cl_percent_retail_whbb_stock
+            gt_percent_cost_whbb_stock += cl_percent_cost_whbb_stock
+            gt_percent_qty_bbflg_sold += cl_percent_qty_bbflg_sold
+            gt_percent_retail_bbflg_sold += cl_percent_retail_bbflg_sold
+            gt_percent_cost_bbflg_sold += cl_percent_cost_bbflg_sold
+            gt_percent_qty_bbflg_stock += cl_percent_qty_bbflg_stock
+            gt_percent_retail_bbflg_stock += cl_percent_retail_bbflg_stock
+            gt_percent_cost_bbflg_stock += cl_percent_cost_bbflg_stock
+            gt_week_cover_bbflg += cl_week_cover_bbflg
+            gt_percent_qty_bbbrw_sold += cl_percent_qty_bbbrw_sold
+            gt_percent_retail_bbbrw_sold += cl_percent_retail_bbbrw_sold
+            gt_percent_cost_bbbrw_sold += cl_percent_cost_bbbrw_sold
+            gt_percent_qty_bbbrw_stock += cl_percent_qty_bbbrw_stock
+            gt_percent_retail_bbbrw_stock += cl_percent_retail_bbbrw_stock
+            gt_percent_cost_bbbrw_stock += cl_percent_cost_bbbrw_stock
+            gt_week_cover_bbbrw += cl_week_cover_bbbrw
+            gt_percent_qty_bbbwk_sold += cl_percent_qty_bbbwk_sold
+            gt_percent_retail_bbbwk_sold += cl_percent_retail_bbbwk_sold
+            gt_percent_cost_bbbwk_sold += cl_percent_cost_bbbwk_sold
+            gt_percent_qty_bbbwk_stock += cl_percent_qty_bbbwk_stock
+            gt_percent_retail_bbbwk_stock += cl_percent_retail_bbbwk_stock
+            gt_percent_cost_bbbwk_stock += cl_percent_cost_bbbwk_stock
+            gt_week_cover_bbbwk += cl_week_cover_bbbwk
+            gt_percent_qty_bbglr_sold += cl_percent_qty_bbglr_sold
+            gt_percent_retail_bbglr_sold += cl_percent_retail_bbglr_sold
+            gt_percent_cost_bbglr_sold += cl_percent_cost_bbglr_sold
+            gt_percent_qty_bbglr_stock += cl_percent_qty_bbglr_stock
+            gt_percent_retail_bbglr_stock += cl_percent_retail_bbglr_stock
+            gt_percent_cost_bbglr_stock += cl_percent_cost_bbglr_stock
+            gt_week_cover_bbglr += cl_week_cover_bbglr
+            gt_percent_qty_bbsyv_sold += cl_percent_qty_bbsyv_sold
+            gt_percent_retail_bbsyv_sold += cl_percent_retail_bbsyv_sold
+            gt_percent_cost_bbsyv_sold += cl_percent_cost_bbsyv_sold
+            gt_percent_qty_bbsyv_stock += cl_percent_qty_bbsyv_stock
+            gt_percent_retail_bbsyv_stock += cl_percent_retail_bbsyv_stock
+            gt_percent_cost_bbsyv_stock += cl_percent_cost_bbsyv_stock
+            gt_week_cover_bbsyv += cl_week_cover_bbsyv
+            gt_percent_qty_bbbbg_sold += cl_percent_qty_bbbbg_sold
+            gt_percent_retail_bbbbg_sold += cl_percent_retail_bbbbg_sold
+            gt_percent_cost_bbbbg_sold += cl_percent_cost_bbbbg_sold
+            gt_percent_qty_bbbbg_stock += cl_percent_qty_bbbbg_stock
+            gt_percent_retail_bbbbg_stock += cl_percent_retail_bbbbg_stock
+            gt_percent_cost_bbbbg_stock += cl_percent_cost_bbbbg_stock
+            gt_week_cover_bbbbg += cl_week_cover_bbbbg
+            gt_percent_qty_bbsnr_sold += cl_percent_qty_bbsnr_sold
+            gt_percent_retail_bbsnr_sold += cl_percent_retail_bbsnr_sold
+            gt_percent_cost_bbsnr_sold += cl_percent_cost_bbsnr_sold
+            gt_percent_qty_bbsnr_stock += cl_percent_qty_bbsnr_stock
+            gt_percent_retail_bbsnr_stock += cl_percent_retail_bbsnr_stock
+            gt_percent_cost_bbsnr_stock += cl_percent_cost_bbsnr_stock
+            gt_week_cover_bbsnr += cl_week_cover_bbsnr
+            gt_percent_qty_bbblg_sold += cl_percent_qty_bbblg_sold
+            gt_percent_retail_bbblg_sold += cl_percent_retail_bbblg_sold
+            gt_percent_cost_bbblg_sold += cl_percent_cost_bbblg_sold
+            gt_percent_qty_bbblg_stock += cl_percent_qty_bbblg_stock
+            gt_percent_retail_bbblg_stock += cl_percent_retail_bbblg_stock
+            gt_percent_cost_bbblg_stock += cl_percent_cost_bbblg_stock
+            gt_week_cover_bbblg += cl_week_cover_bbblg
+            gt_percent_qty_bbpdg_sold += cl_percent_qty_bbpdg_sold
+            gt_percent_retail_bbpdg_sold += cl_percent_retail_bbpdg_sold
+            gt_percent_cost_bbpdg_sold += cl_percent_cost_bbpdg_sold
+            gt_percent_qty_bbpdg_stock += cl_percent_qty_bbpdg_stock
+            gt_percent_retail_bbpdg_stock += cl_percent_retail_bbpdg_stock
+            gt_percent_cost_bbpdg_stock += cl_percent_cost_bbpdg_stock
+            gt_week_cover_bbpdg += cl_week_cover_bbpdg
+            gt_percent_qty_bbkta_sold += cl_percent_qty_bbkta_sold
+            gt_percent_retail_bbkta_sold += cl_percent_retail_bbkta_sold
+            gt_percent_cost_bbkta_sold += cl_percent_cost_bbkta_sold
+            gt_percent_qty_bbkta_stock += cl_percent_qty_bbkta_stock
+            gt_percent_retail_bbkta_stock += cl_percent_retail_bbkta_stock
+            gt_percent_cost_bbkta_stock += cl_percent_cost_bbkta_stock
+            gt_week_cover_bbkta += cl_week_cover_bbkta
+            gt_percent_qty_bbptg_sold += cl_percent_qty_bbptg_sold
+            gt_percent_retail_bbptg_sold += cl_percent_retail_bbptg_sold
+            gt_percent_cost_bbptg_sold += cl_percent_cost_bbptg_sold
+            gt_percent_qty_bbptg_stock += cl_percent_qty_bbptg_stock
+            gt_percent_retail_bbptg_stock += cl_percent_retail_bbptg_stock
+            gt_percent_cost_bbptg_stock += cl_percent_cost_bbptg_stock
+            gt_week_cover_bbptg += cl_week_cover_bbptg
+            gt_percent_qty_onlne_sold += cl_percent_qty_onlne_sold
+            gt_percent_retail_onlne_sold += cl_percent_retail_onlne_sold
+            gt_percent_cost_onlne_sold += cl_percent_cost_onlne_sold
+            gt_percent_qty_onlne_stock += cl_percent_qty_onlne_stock
+            gt_percent_retail_onlne_stock += cl_percent_retail_onlne_stock
+            gt_percent_cost_onlne_stock += cl_percent_cost_onlne_stock
+            gt_week_cover_onlne += cl_week_cover_onlne
 
         worksheet.write('A%s:B%s' %(row, row), 'Grand Total', wbf['total_content'])
         worksheet.write('B%s:C%s' %(row, row), '', wbf['total_content'])

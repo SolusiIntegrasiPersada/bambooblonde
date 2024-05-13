@@ -182,6 +182,7 @@ class WhatsStockinSoldReport(models.TransientModel):
 
             domain = [
                 ('type', '=', 'product'),
+                # ('id', '=', 45263),
             ]
 
             if self.class_product_id and self.product_category_id:
@@ -266,10 +267,12 @@ class WhatsStockinSoldReport(models.TransientModel):
                         'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG', 'BBKTA', 'Onlne'))
                 ])
 
-                qty_sold_per_warehouse = {wh.code: sum(move.product_uom_qty for move in move_lines)
+                qty_sold_per_warehouse = {
+                    wh.code: sum(move.product_uom_qty for move in move_lines)
                                   for wh in self.env['stock.warehouse'].search([])
                                   for move_lines in qty_sold_quantities.picking_ids.move_lines
-                                  if move_lines.location_id.warehouse_id.code == wh.code}
+                                  if move_lines.location_id.warehouse_id.code == wh.code
+                }
 
                 total_qty_sold = sum(qty_sold_per_warehouse.values())
 
