@@ -670,83 +670,9 @@ class RlkMonthyReport(models.TransientModel):
             ('type', '=', 'product'),
             # ('product_category_categ_id', '=', 508),
             # ('product_model_categ_id', '=', 484),
-        ])
+        ], order='class_product asc, product_model_categ_id asc, product_category_categ_id asc')
         data_product = domain_product.filtered(lambda x: not x.is_produk_diskon and not x.is_produk_promotion and not x.is_produk_promotion_free and not x.is_shooping_bag)
 
-
-
-        # grouped_data = {}
-        # for data in data_product:
-        #     prod = data
-        #     class_id = prod.class_product
-        #     category = prod.product_category_categ_id
-        #     parent_category = prod.product_model_categ_id
-        #     name = prod.display_name
-        #     # qty_sold = data.qty
-        #     # order_date = data.order_id.date_order
-        #     qty_sold_per_warehouse = {}
-        #     warehouse_quantities = data.stock_quant_ids.filtered(
-        #         lambda x: x.location_id.usage == 'internal' and
-        #                   x.location_id.warehouse_id.code in (
-        #                       'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR',
-        #                       'BBPTG', 'BBKTA', 'Onlne')
-        #     )
-        #     qty_stock_per_warehouse = {wh.code: sum(
-        #         quant.quantity for quant in warehouse_quantities if quant.location_id.warehouse_id.code == wh.code)
-        #         for wh in set(warehouse_quantities.mapped('location_id.warehouse_id'))}
-        #
-        #     total_qty_stock = sum(qty_stock_per_warehouse.values())
-        #     qty_stock = prod.qty_available
-        #
-        #     last_stock = self.env['product.product'].with_context(to_date=self.last_end_date).search([
-        #         ('type', '=', 'product'),
-        #         ('id', '=', prod.id),
-        #     ])
-        #     result_qty_stock_last = last_stock.mapped('qty_available')
-        #     result_retail_stock_last = last_stock.mapped('lst_price')
-        #     result_cost_stock_last = last_stock.mapped('standard_price')
-        #
-        #     qty_stock_last = float(result_qty_stock_last[0])
-        #     retail_stock_last = float(result_retail_stock_last[0])
-        #     cost_stock_last = float(result_cost_stock_last[0])
-        #
-        #     group_key = (class_id.id, category.id, parent_category.id)
-        #
-        #     if group_key not in grouped_data:
-        #         grouped_data[group_key] = {
-        #             'class_id': class_id.name,
-        #             'category_id': category.name,
-        #             'parent_id': parent_category.name,
-        #             'qty_stock': qty_stock,
-        #             'total_qty_sold': 0,
-        #             # 'order_date': order_date,
-        #             'product': [prod.display_name],
-        #
-        #             'qty_stock_last': qty_stock_last,
-        #             'retail_stock_last': retail_stock_last,
-        #             'cost_stock_last': cost_stock_last,
-        #
-        #             # 'wh': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
-        #             #              'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
-        #             # 'wh_cost_stock': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
-        #             #        'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
-        #             # 'wh_retail_stock': {'WHBB': 0, 'BBFLG': 0, 'BBBBG': 0, 'BBBWK': 0, 'BBBRW': 0, 'BBPDG': 0, 'BBSYV': 0,
-        #             #        'BBGLR': 0, 'BBBLG': 0, 'BBSNR': 0, 'BBPTG': 0, 'BBKTA': 0, 'Online': 0},
-        #         }
-        #     else:
-        #         grouped_data[group_key]['qty_stock'] += qty_stock
-        #         grouped_data[group_key]['qty_stock_last'] += qty_stock_last
-        #         grouped_data[group_key]['retail_stock_last'] += retail_stock_last
-        #         grouped_data[group_key]['cost_stock_last'] += cost_stock_last
-        #         grouped_data[group_key]['product'].append(prod.display_name)
-
-            # for warehouse_key, quantity_sold in qty_sold_per_warehouse.items():
-            #     if warehouse_key in (
-            #     'WHBB', 'BBFLG', 'BBBBG', 'BBBWK', 'BBBRW', 'BBPDG', 'BBSYV', 'BBGLR', 'BBBLG', 'BBSNR', 'BBPTG',
-            #     'BBKTA', 'Onlne'):
-            #         grouped_data[group_key]['wh'][warehouse_key] += quantity_sold
-            #         grouped_data[group_key]['wh_cost_stock'][warehouse_key] += cost_sold
-            #         grouped_data[group_key]['wh_retail_stock'][warehouse_key] += retail_sold
 
         report_data = {}
 

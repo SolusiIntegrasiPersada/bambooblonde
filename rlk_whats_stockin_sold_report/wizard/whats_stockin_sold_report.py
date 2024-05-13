@@ -183,6 +183,7 @@ class WhatsStockinSoldReport(models.TransientModel):
             domain = [
                 ('type', '=', 'product'),
                 # ('id', '=', 45263),
+                # ('product_category_categ_id.id', '=', 711),
             ]
 
             if self.class_product_id and self.product_category_id:
@@ -195,7 +196,9 @@ class WhatsStockinSoldReport(models.TransientModel):
             elif self.product_category_id:
                 domain += [('product_category_categ_id', '=', self.product_category_id.id)]
 
-            product_product = self.env['product.product'].with_context(to_date=self.end_period).search(domain)
+            product_product = self.env['product.product'].with_context(to_date=self.end_period).search(
+                domain, order='class_product asc, product_model_categ_id asc, product_category_categ_id asc'
+            )
 
             report_data = {}
 
