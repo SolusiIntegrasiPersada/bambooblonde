@@ -11,9 +11,10 @@ class PosOrder(models.Model):
     @api.model
     def _order_fields(self, ui_order):
         order_fields = super(PosOrder, self)._order_fields(ui_order)
+        order_fields['note'] = ui_order.get('note')
         order_fields['region_id'] = ui_order['region_id']['id'] if ui_order['region_id'] else False
         return order_fields
-
+    
     def _prepare_invoice_line(self, order_line):
         res = super(PosOrder, self)._prepare_invoice_line(order_line)
         if order_line.order_id.config_id.analytic_account_id:
@@ -41,12 +42,6 @@ class PosOrder(models.Model):
             return sum(tax.get("amount", 0.0) for tax in taxes)
         else:
             return super(PosOrder, self)._amount_line_tax(line, fiscal_position_id)
-
-    @api.model
-    def _order_fields(self, ui_order):
-        order_fields = super(PosOrder, self)._order_fields(ui_order)
-        order_fields['note'] = ui_order.get('note')
-        return order_fields
 
     @api.model
     def create_from_ui(self, orders, draft=False):

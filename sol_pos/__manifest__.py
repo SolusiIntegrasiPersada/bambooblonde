@@ -46,15 +46,6 @@
         'views/stock_need_views.xml',
     ],
     'assets': {
-        'web.assets_backend': [
-            'sol_pos/static/src/js/field_utils.js',
-        ],
-        'web.assets_qweb': [
-            'sol_pos/static/src/xml/pos_screen.xml',
-            'sol_pos/static/src/xml/RegionControlButton.xml',
-            'sol_pos/static/src/xml/RegionList.xml',
-            'sol_pos/static/src/xml/RegionListScreen.xml',
-        ],
         'point_of_sale.assets': [
             'sol_pos/static/src/js/OrderReceipt.js',
             'sol_pos/static/src/js/OrderWidget.js',
@@ -64,6 +55,15 @@
             'sol_pos/static/src/js/RegionListScreen.js',
             'sol_pos/static/src/js/models.js',
             'sol_pos/static/src/js/screens.js',
+        ],
+        'web.assets_backend': [
+            'sol_pos/static/src/js/field_utils.js',
+        ],
+        'web.assets_qweb': [
+            'sol_pos/static/src/xml/pos_screen.xml',
+            'sol_pos/static/src/xml/RegionControlButton.xml',
+            'sol_pos/static/src/xml/RegionList.xml',
+            'sol_pos/static/src/xml/RegionListScreen.xml',
         ],
     },
 }
