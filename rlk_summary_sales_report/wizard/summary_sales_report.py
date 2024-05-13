@@ -22,10 +22,6 @@ class SummarySalesReport(models.TransientModel):
     config_id = fields.Many2one('pos.config', 'Point of Sale')
     shift = fields.Selection([('ALL', 'ALL'), ('Shift A', 'Shift A'), ('Shift B', 'Shift B')], 'Shift', default='ALL')
 
-    # @api.onchange('start_period')
-    # def onchange_end_period(self):
-    #     self.end_period = self.start_period
-
     def print_excel_report(self):
         data = self.read()[0]
         pos_name = self.config_id.name
@@ -39,34 +35,28 @@ class SummarySalesReport(models.TransientModel):
         d_day = str(date.strftime("%d"))
         d_month = str(date.strftime("%B"))
         d_year = str(date.strftime("%y"))
-        
+
         enddate = datetime.strptime(str(self.end_period), '%Y-%m-%d')
         endd_day = str(enddate.strftime("%d"))
         endd_month = str(enddate.strftime("%B"))
         endd_year = str(enddate.strftime("%y"))
-
-       
 
         datetime_string = self.get_default_date_model().strftime("%Y-%m-%d %H:%M:%S")
         date_string = self.get_default_date_model().strftime("%Y-%m-%d")
         report_name = 'Summary Sales Report'
         filename = '%s %s' % (report_name, date_string)
 
-      
-
         where_date = " and 1=1 "
         if self.shift == 'ALL':
             where_date += " and DATE_TRUNC('day', o.date_order) >= '%s' and DATE_TRUNC('day', o.date_order) <= '%s' and s.shift in ('Shift A','Shift B')" % (
-            self.start_period, self.end_period)
+                self.start_period, self.end_period)
         elif self.shift == 'Shift A':
             where_date += " and DATE_TRUNC('day', o.date_order) >= '%s' and DATE_TRUNC('day', o.date_order) <= '%s' and s.shift in ('Shift A')" % (
-            self.start_period, self.end_period)
+                self.start_period, self.end_period)
         elif self.shift == 'Shift B':
             where_date += " and DATE_TRUNC('day', o.date_order) >= '%s' and DATE_TRUNC('day', o.date_order) <= '%s' and s.shift in ('Shift B')" % (
-            self.start_period, self.end_period)
+                self.start_period, self.end_period)
 
-
-        
         domain = [('state', 'not in', ['draft', 'cancel'])]
 
         if self.shift == 'ALL':
@@ -74,13 +64,15 @@ class SummarySalesReport(models.TransientModel):
                        ('date_order', '<=', self.end_period)]
         elif self.shift == 'Shift A':
             domain += [('date_order', '>=', self.start_period), ('date_order',
-                                                                 '<=', self.end_period), ('session_id.shift', '=', 'Shift A')]
+                                                                 '<=', self.end_period),
+                       ('session_id.shift', '=', 'Shift A')]
         elif self.shift == 'Shift B':
             domain += [('date_order', '>=', self.start_period), ('date_order',
-                                                                 '<=', self.end_period), ('session_id.shift', '=', 'Shift B')]
-        if config_id :
+                                                                 '<=', self.end_period),
+                       ('session_id.shift', '=', 'Shift B')]
+        if config_id:
             domain += [('config_id', '=', self.config_id.id)]
-        
+
         orders = self.env['pos.order'].search(domain)
 
         result = []
@@ -102,28 +94,22 @@ class SummarySalesReport(models.TransientModel):
         # visitor_count = 0
         for order in orders:
             region = order.region_id
-            if region.name in ('Asian') :
-                nat_asian += 1
-            if region.name in ('Ina','Indonesian') :
-                nat_ina += 1
-            if region.name in ('West','We','Westerner') :
-                nat_west += 1
-            if region.name in ('Japan','Japa','Japanese') :
-                nat_japan += 1
-            if region.name in ('Aus','Australian') :
-                nat_aus += 1
-                
-            
+            if region.name:
+                if region.name in ('Asian'):
+                    nat_asian += 1
+                if region.name in ('Ina', 'Indonesian'):
+                    nat_ina += 1
+                if region.name in ('West', 'We', 'Westerner'):
+                    nat_west += 1
+                if region.name in ('Japan', 'Japa', 'Japanese'):
+                    nat_japan += 1
+                if region.name in ('Aus', 'Australian'):
+                    nat_aus += 1
+
             name = order.session_id.user_id.name
-            # visitor_count += order.session_id.visitor_count_flt
-            # print('order', order)
-            # print('order.session_id', order.session_id)
-            # print('order.session_id.visitor_count_flt', order.session_id.visitor_count_flt)
             lineplus = order.lines.filtered(lambda x: x.price_subtotal_incl > 0)
             qty = sum(lineplus.mapped('qty'))
-            # print('order', order,name)
-            # print('order', qty)
-            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)    
+            pricexqty = sum(plus.price_unit * plus.qty for plus in lineplus)
             total_sales = pricexqty
             price_inc = sum(lineplus.mapped('price_subtotal_incl'))
             discount = pricexqty - price_inc
@@ -134,18 +120,16 @@ class SummarySalesReport(models.TransientModel):
                 lambda x: x.payment_method_id.journal_id.type == 'bank' and x.amount > 0)
             payment_cash = sum(cash.mapped('amount'))
             payment_cc = sum(bank.mapped('amount'))
-            
+
             amount_coupon = 0
             coupon = order.lines.filtered(lambda x: x.product_id.is_produk_promotion)
-            if coupon :
+            if coupon:
                 amount_coupon = abs(sum(coupon.mapped('price_subtotal_incl')))
-            
+
             discount_member = order.lines.filtered(lambda x: x.product_id.is_produk_diskon)
-            if discount_member :
+            if discount_member:
                 discount += abs(sum(discount_member.mapped('price_subtotal_incl')))
-                
-           
-                
+
             total_qty += qty
             total_receipt += 1
             total_before_diskon += total_sales
@@ -153,7 +137,7 @@ class SummarySalesReport(models.TransientModel):
             total_payment_cash += payment_cash
             total_payment_cc += payment_cc
             total_coupon += amount_coupon
-        
+
         config_id = config_id
         user_name = name
         print_receipt = total_receipt
@@ -165,26 +149,20 @@ class SummarySalesReport(models.TransientModel):
         payment_cc = total_payment_cc
         coupon = total_coupon
         visitor_count22 = sum(orders.mapped('session_id').mapped('visitor_count_flt'))
-        # print('visitor_count22',orders.mapped('session_id'))
-        # print('visitor_count22',orders.mapped('session_id').mapped('visitor_count_flt'))
-        # print('visitor_count22',visitor_count22)
-        # print('visitor_count_new_sum',visitor_count)
-        result.append({'config_id': config_id, 
-                       'user_name': user_name, 
-                       'print_receipt': print_receipt, 
-                       'qty_sold': qty_sold, 
-                       'before_discount': before_discount, 
-                       'discount': discount, 
-                       'after_discount': after_discount, 
-                       'payment_cash': payment_cash, 
-                       'payment_cc': payment_cc, 
-                       'coupon': coupon, 
-                       'visitor_count': visitor_count22, 
+        result.append({'config_id': config_id,
+                       'user_name': user_name,
+                       'print_receipt': print_receipt,
+                       'qty_sold': qty_sold,
+                       'before_discount': before_discount,
+                       'discount': discount,
+                       'after_discount': after_discount,
+                       'payment_cash': payment_cash,
+                       'payment_cc': payment_cc,
+                       'coupon': coupon,
+                       'visitor_count': visitor_count22,
                        })
-            
+
         total = nat_asian + nat_ina + nat_west + nat_japan + nat_aus
-
-
 
         fp = BytesIO()
         workbook = xlsxwriter.Workbook(fp)
@@ -206,16 +184,6 @@ class SummarySalesReport(models.TransientModel):
         period_end = self.end_period
         start_datetime = datetime(period.year, period.month, period.day, 0, 0, 0) - timedelta(hours=7)
         end_datetime = datetime(period_end.year, period_end.month, period_end.day, 23, 59, 59) - timedelta(hours=7)
-        # if self.shift == 'ALL':
-        #     pos_session_ids = self.env['pos.session'].sudo().search(
-        #         [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
-        #          ('config_id', '=', self.config_id.id)])
-        # else:
-        #     pos_session_ids = self.env['pos.session'].sudo().search(
-        #         [('state', '=', 'closed'), ('start_at', '>=', start_datetime), ('stop_at', '<=', end_datetime),
-        #          ('config_id', '=', self.config_id.id), ('shift', '=', self.shift)])
-
-        # visitor_count = sum(pos_session_ids.mapped('visitor_count'))
         for res in result:
 
             worksheet.merge_range('A1:G1', str(pos_name), wbf['title_doc'])
@@ -249,7 +217,8 @@ class SummarySalesReport(models.TransientModel):
             worksheet.merge_range('D5:G5', '', wbf['content'])
             worksheet.merge_range('D6:G6', '-', wbf['content'])
             worksheet.merge_range('D7:G7', pos_name or '', wbf['content'])
-            worksheet.merge_range('D8:G8', str(d_day) + ' ' + str(d_month) + ' ' + str(d_year) + ' - ' + str(endd_day) + ' ' + str(endd_month) + ' ' + str(endd_year), wbf['content'])
+            worksheet.merge_range('D8:G8', str(d_day) + ' ' + str(d_month) + ' ' + str(d_year) + ' - ' + str(
+                endd_day) + ' ' + str(endd_month) + ' ' + str(endd_year), wbf['content'])
             worksheet.merge_range('D9:G9', shift or '', wbf['content'])
             worksheet.merge_range('D10:G10', res['qty_sold'] or '', wbf['content_number'])
             worksheet.merge_range('D11:G11', res['before_discount'] or '', wbf['content_float'])
@@ -319,7 +288,7 @@ class SummarySalesReport(models.TransientModel):
             row7 = row6 + 1
 
             worksheet.merge_range('A%s:G%s' % (row7, row7), 'Conversion Ratio:', wbf['content2'])
-          
+
             row8 = row7 + 1
             worksheet.merge_range('A%s:G%s' % (row8, row8), '', wbf['content'])
 
@@ -416,10 +385,6 @@ class SummarySalesReport(models.TransientModel):
             'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
-        # wbf['title_doc3'].set_top()
-        # wbf['title_doc3'].set_bottom()            
-        # wbf['title_doc3'].set_left()
-        # wbf['title_doc3'].set_right()  
 
         wbf['company'] = workbook.add_format({'align': 'left', 'font_name': 'Georgia'})
         wbf['company'].set_font_size(11)
@@ -430,8 +395,6 @@ class SummarySalesReport(models.TransientModel):
             'font_name': 'Georgia',
             'bg_color': '#FFFFFF',
         })
-        # wbf['content'].set_left()
-        # wbf['content'].set_right()
 
         wbf['content_pm'] = workbook.add_format({
             'align': 'center',
@@ -449,20 +412,14 @@ class SummarySalesReport(models.TransientModel):
         })
 
         wbf['content2'] = workbook.add_format({'align': 'center', 'font_name': 'Georgia', 'bg_color': '#FFFFFF', })
-        # wbf['content2'].set_left()
-        # wbf['content2'].set_right() 
 
         wbf['content_float_bold'] = workbook.add_format(
             {'align': 'left', 'num_format': '#,##0', 'font_name': 'Georgia', 'bg_color': '#FFFFFF', 'bold': True})
         wbf['content_float'] = workbook.add_format(
             {'align': 'left', 'num_format': '#,##0', 'font_name': 'Georgia', 'bg_color': '#FFFFFF', })
-        # wbf['content_float'].set_right() 
-        # wbf['content_float'].set_left()
 
         wbf['content_number'] = workbook.add_format(
             {'align': 'left', 'num_format': '#,##0', 'font_name': 'Georgia', 'bg_color': '#FFFFFF', })
-        # wbf['content_number'].set_right() 
-        # wbf['content_number'].set_left() 
 
         wbf['content_percent'] = workbook.add_format({'align': 'right', 'num_format': '0.00%', 'font_name': 'Georgia'})
         wbf['content_percent'].set_right()

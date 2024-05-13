@@ -1,4 +1,4 @@
-odoo.define('sol_post.RegionList', function(require) {
+odoo.define('sol_pos.RegionList', function(require) {
     'use strict';
 
     const PosComponent = require('point_of_sale.PosComponent');
