@@ -92,10 +92,11 @@ class PurchaseOrder(models.Model):
     ref_count = fields.Integer(string='dp_count', default=1)
 
     def _get_active_id(self):
-        self.purchase_active_id = False
-        if len(self.env['purchase.advance.payment'].search([])) > 1 and self.env['purchase.advance.payment'].search([])[
-            -1].purchase_active_id.id == self.id:
-            self.purchase_active_id = self.env['purchase.advance.payment'].search([])[-1].id
+        for record in self:
+            record.purchase_active_id = False
+            if len(self.env['purchase.advance.payment'].search([])) > 1 and self.env['purchase.advance.payment'].search([])[
+                -1].purchase_active_id.id == record.id:
+                record.purchase_active_id = self.env['purchase.advance.payment'].search([])[-1].id
 
     advance_payment_method = fields.Selection([
         ('delivered', 'Regular bill'),

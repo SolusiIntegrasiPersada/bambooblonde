@@ -14,7 +14,7 @@ class PosOrder(models.Model):
         order_fields['note'] = ui_order.get('note')
         order_fields['region_id'] = ui_order['region_id']['id'] if ui_order['region_id'] else False
         return order_fields
-    
+
     def _prepare_invoice_line(self, order_line):
         res = super(PosOrder, self)._prepare_invoice_line(order_line)
         if order_line.order_id.config_id.analytic_account_id:
